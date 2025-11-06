@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>European Center for Vernacular Spiritual Heritage Studies (EC Hereditas)</title>
+  <meta name="description" content="EC Hereditas: comparative ethnological research on vernacular spiritual heritage across Europe with focus on the Carpathian region. Publications, expeditions, and collaborations." />
+  <link rel="canonical" href="https://ec-hereditas.com/" />
+  <meta property="og:title" content="EC Hereditas – European Center for Vernacular Spiritual Heritage Studies" />
+  <meta property="og:description" content="Pan‑European ethnological research with a focus on the Carpathians." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ec-hereditas.com/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    :root{
+      --bg: #0b0c0f;
+      --panel:#111318;
+      --text:#e8eaed;
+      --muted:#b6bdc7;
+      --brand:#7cc9a6; /* soft green */
+      --accent:#c9a77c; /* soft ochre */
+      --border:#2a2f3a;
+      --shadow: 0 10px 35px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#ffffff; --panel:#f7f9fb; --text:#0d1321; --muted:#495163; --brand:#0f766e; --accent:#b45309; --border:#e3e8ef;
+      }
+      .logo svg path{fill:#0f766e}
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    header{position:sticky;top:0;backdrop-filter:saturate(1.2) blur(8px);background:color-mix(in hsl, var(--bg) 80%, transparent);border-bottom:1px solid var(--border);z-index:9}
+    .wrap{max-width:1000px;margin:auto;padding:0 20px}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .nav-links a{margin:0 10px;padding:6px 10px;border-radius:10px}
+    .nav-links a:hover{background:var(--panel)}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:56px 0}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero .lead{padding:28px;border-radius:var(--radius)}
+    h1{font-size:42px;line-height:1.15;margin:0 0 10px}
+    h2{font-size:28px;margin:0 0 12px}
+    p{margin:0 0 14px}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .badge{background:var(--panel);border:1px solid var(--border);padding:6px 10px;border-radius:999px;font-size:13px;color:var(--muted)}
+    .sections{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:14px 0 60px}
+    section.card{padding:22px}
+    ul{padding-left:20px;margin:8px 0}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .footer{border-top:1px solid var(--border);padding:24px 0;color:var(--muted);font-size:14px}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px}
+    .logo small{font-weight:500;color:var(--muted)}
+    .cta{display:inline-block;background:var(--brand);color:white;border-radius:12px;padding:10px 14px;font-weight:600;box-shadow:var(--shadow)}
+    .cta:hover{text-decoration:none;filter:saturate(1.1)}
+    .lang{margin-left:6px;font-size:12px;color:var(--muted)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+    .kicker{color:var(--accent);text-transform:uppercase;letter-spacing:.12em;font-weight:700;font-size:12px}
+    .pill{display:inline-block;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:999px}
+    .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .note{background:linear-gradient(180deg,transparent,rgba(124,201,166,.08));border-left:3px solid var(--brand);padding:10px 12px;border-radius:10px}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .sections{grid-template-columns:1fr}
+      .grid-3{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="logo">
+          <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" class="logo-mark" role="img"><path fill="#7cc9a6" d="M12 2 3 6v6c0 5 3.8 9.7 9 10 5.2-.3 9-5 9-10V6l-9-4Zm0 3.2 6 2.7v4.9c0 3.9-2.8 7.6-6 7.9-3.2-.3-6-4-6-7.9V7.9l6-2.7Zm0 2.6a1 1 0 0 0-1 1v4.6l-2.2-1.3a1 1 0 1 0-1 1.8l3.7 2.2a1 1 0 0 0 1.5-.9V8.8a1 1 0 0 0-1-1Z"/></svg>
+          EC Hereditas <small>European Center for Vernacular Spiritual Heritage Studies</small>
+        </div>
+        <div class="nav-links">
+          <a href="#mission">Mission</a>
+          <a href="#focus">Research</a>
+          <a href="#publications">Publications</a>
+          <a href="#expeditions">Expeditions</a>
+          <a href="#team">Team</a>
+          <a href="#contact" class="pill">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="hero">
+      <div class="lead card">
+        <div class="kicker">Introducing</div>
+        <h1>EC Hereditas</h1>
+        <p><strong>European Center for Vernacular Spiritual Heritage Studies</strong> – a virtual, scholar‑led initiative for comparative ethnological research on folk belief, demonology, and ritual practice across Europe, with a special focus on the <strong>Carpathian region</strong>.</p>
+        <div class="badges">
+          <span class="badge">Comparative ethnology</span>
+          <span class="badge">Carpathians</span>
+          <span class="badge">Hutsul studies</span>
+          <span class="badge">Field expeditions</span>
+          <span class="badge">Open publications</span>
+        </div>
+        <p style="margin-top:14px">
+          <a class="cta" href="#contact">Collaborate with us</a>
+          <span class="lang">Українська версія – скоро</span>
+        </p>
+      </div>
+      <section class="card" style="padding:20px">
+        <h2 style="margin-bottom:4px">At a glance</h2>
+        <ul>
+          <li><strong>Scope:</strong> pan‑European comparison; core focus on Carpathian vernacular spiritual heritage.</li>
+          <li><strong>Work:</strong> peer‑reviewed articles, expedition reports, public datasets, workshops.</li>
+          <li><strong>Team:</strong> researchers and collaborators; including PhD expertise in Hutsul demonology and folk magic.</li>
+          <li><strong>Legal form:</strong> virtual research center (networked collaboration).</li>
+          <li><strong>Contact:</strong> <a href="mailto:hello@ec-hereditas.com">hello@ec-hereditas.com</a></li>
+        </ul>
+        <p class="note">"Hereditas" is Latin for <em>heritage</em> – the living continuity of practices, narratives, and local knowledge.</p>
+      </section>
+    </div>
+
+    <div class="sections">
+      <section id="mission" class="card">
+        <h2>Mission</h2>
+        <p>To document, analyze, and compare Europe’s vernacular spiritual traditions with scholarly rigor, open methods, and ethical fieldwork, while amplifying local voices and contexts.</p>
+        <ul>
+          <li>Publish accessible research and datasets.</li>
+          <li>Run small, targeted <em>ethnographic expeditions</em> in the Carpathians.</li>
+          <li>Host dialogues that bridge folklore, anthropology, history, and religious studies.</li>
+        </ul>
+      </section>
+      <section id="focus" class="card">
+        <h2>Research Focus</h2>
+        <ul>
+          <li>Comparative demonology and folk magic (with Hutsul emphasis).</li>
+          <li>Ritual specialists, healing practices, and trance/vision narratives.</li>
+          <li>Place‑based cosmologies: mountains, forests, rivers; shrines and household rites.</li>
+          <li>Oral genres: legends, charms, prayer texts, songs, and ritual speech.</li>
+        </ul>
+        <p>Methods: archival work, textual analysis, field interviews, participant observation, and ethical data stewardship.</p>
+      </section>
+      <section id="publications" class="card">
+        <h2>Publications (selected)</h2>
+        <ul>
+          <li><strong>2025</strong> – <em>Carpathian Demonologies: A Comparative Frame</em> (working paper). <span class="muted">Preprint forthcoming.</span></li>
+          <li><strong>2025</strong> – <em>Field Notes from Verkhovyna</em> – micro‑ethnography series. <span class="muted">Q1–Q2.</span></li>
+        </ul>
+        <p>We publish open‑access when possible and archive supplementary datasets and bibliographies.</p>
+      </section>
+      <section id="expeditions" class="card">
+        <h2>Expeditions</h2>
+        <p>Our ethnographic trips are short, scoped, and collaborative. We prioritize community consent and reciprocity.</p>
+        <div class="grid-3">
+          <div class="card" style="padding:14px">
+            <strong>Spring 2026 – Hutsul Region</strong>
+            <p>Pre‑study: interview mapping, local partnerships, and archive scan list.</p>
+          </div>
+          <div class="card" style="padding:14px">
+            <strong>Autumn 2026 – Bukovyna</strong>
+            <p>Ritual specialists and healing narratives; audio documentation pilot.</p>
+          </div>
+          <div class="card" style="padding:14px">
+            <strong>2027 – Slovak & Polish Carpathians</strong>
+            <p>Comparative motifs: protective rites, domestic altars, and charms.</p>
+          </div>
+        </div>
+      </section>
+      <section id="team" class="card">
+        <h2>Team</h2>
+        <div class="cols">
+          <div>
+            <h3 style="margin:0">Core</h3>
+            <ul>
+              <li><strong>Oleksandr Kryvonos</strong> – research lead, comparative frameworks, digital infrastructure.</li>
+              <li><strong>[Name Surname], PhD</strong> – Hutsul demonology & folk magic specialist.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="margin:0">Advisory & collaborators</h3>
+            <ul>
+              <li>Regional ethnographers & archivists (Carpathians).</li>
+              <li>Historians of religion, folklorists, linguists.</li>
+              <li>Digital humanities & data ethics advisors.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <section id="contact" class="card">
+        <h2>Contact</h2>
+        <p>Email us: <a class="mono" href="mailto:hello@ec-hereditas.com">hello@ec-hereditas.com</a></p>
+        <p>GitHub: <a class="mono" href="https://github.com/ec-hereditas">github.com/ec-hereditas</a> (create this org/repo to publish)</p>
+        <p class="note">If you prefer, replace the email with a form handler (e.g., Formspree) once the site is live.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="wrap footer">
+    <div>© <span id="y"></span> EC Hereditas • <a href="/imprint.html">Imprint</a> • <a href="/privacy.html">Privacy</a></div>
+    <div>EC Hereditas — European Center for Vernacular Spiritual Heritage Studies</div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "European Center for Vernacular Spiritual Heritage Studies (EC Hereditas)",
+    "url": "https://ec-hereditas.com/",
+    "email": "hello@ec-hereditas.com",
+    "description": "Comparative ethnological research on vernacular spiritual heritage across Europe with focus on the Carpathian region.",
+    "sameAs": [
+      "https://github.com/ec-hereditas"
+    ]
+  }
+  </script>
+</body>
+</html>
