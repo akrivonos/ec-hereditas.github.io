@@ -11,71 +11,59 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="font-icons.css" />
   <link rel="stylesheet" href="custom.css" />
-  <style>
-    :root{
-      --bg:#0e0f12;--muted:#1a1c22;--card:#13151a;--text:#e7e9ee;--soft:#b9beca;--brand:#7dd3fc;--brand-2:#a78bfa;
-    }
-    html{scroll-behavior:smooth}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-    a{color:var(--brand);text-decoration:none}
-    a:hover{text-decoration:underline}
-
-    /* Header / Nav */
-    .nav{position:sticky;top:0;z-index:50;background:rgba(14,15,18,.75);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid #20232b}
-    .nav .wrap{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;gap:10px;align-items:center;font-weight:700;letter-spacing:.2px}
-    .brand .logo{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:inline-block}
-    .menu{display:flex;gap:18px}
-    .menu a{color:var(--text);opacity:.9}
-
-    /* Hero */
-    .hero{padding:90px 20px 60px;border-bottom:1px solid #20232b;background:radial-gradient(900px 400px at 20% -10%,rgba(125,211,252,.12),transparent),radial-gradient(900px 400px at 80% -20%,rgba(167,139,250,.12),transparent)}
-    .container{max-width:1100px;margin:0 auto}
-    .hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
-    .hero p{max-width:800px;color:var(--soft);margin:0 0 18px}
-    .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-    .badge{border:1px solid #2a2e39;background:linear-gradient(180deg,#171a21,#121419);padding:6px 10px;border-radius:999px;font-size:12px;color:#cdd3df}
-
-    /* Sections */
-    section{padding:70px 20px;border-bottom:1px solid #20232b}
-    section h2{font-size:26px;margin:0 0 8px}
-    .lead{color:var(--soft);max-width:900px}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:22px}
-    @media(min-width:880px){.grid{grid-template-columns:repeat(2,1fr)}}
-    .card{background:var(--card);border:1px solid #1d2028;border-radius:14px;padding:16px}
-    .card h3{margin:0 0 6px;font-size:18px}
-    .muted{color:var(--soft)}
-
-    /* Research list */
-    .research h3{margin-top:18px}
-    .research ul{margin:8px 0 0 20px}
-    .research li{margin:4px 0}
-
-    /* Footer */
-    footer{padding:40px 20px;color:#98a1b3}
-    .foot-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid #20232b;padding-top:18px}
-    .small{font-size:12px}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid #283042;background:#141720}
-  </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="wrap">
-      <div class="brand"><span class="logo" aria-hidden="true"></span><span>EC Hereditas</span></div>
-      <nav class="menu" aria-label="Primary">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#research">Research</a>
-        <a href="#contacts">Contacts</a>
-      </nav>
+  <header id="header" class="page-section">
+    <div id="header-wrap">
+      <div class="container">
+        <div class="header-row">
+          <!-- Logo -->
+          <div id="logo">
+            <a href="#home">
+              <span class="logo" aria-hidden="true"></span>
+              <span>EC Hereditas</span>
+            </a>
+          </div>
+          <!-- Primary Navigation -->
+          <nav class="primary-menu">
+            <ul class="menu-container one-page-menu">
+              <li class="menu-item"><a class="menu-link" href="#home"><div>Home</div></a></li>
+              <li class="menu-item"><a class="menu-link" href="#about"><div>About</div></a></li>
+              <li class="menu-item"><a class="menu-link" href="#research"><div>Research</div></a></li>
+              <li class="menu-item"><a class="menu-link" href="#contacts"><div>Contacts</div></a></li>
+              <!-- Theme Toggle -->
+              <li class="menu-item theme-toggle-item">
+                <button id="theme-toggle-btn" type="button" class="menu-link theme-toggle-btn" aria-label="Toggle theme" title="Toggle dark/light mode">
+                  <div>
+                    <i class="theme-icon-sun" aria-hidden="true">☀️</i>
+                    <i class="theme-icon-moon" aria-hidden="true" style="display: none;">🌙</i>
+                  </div>
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <!-- Header Misc (Mobile Menu) -->
+          <div class="header-misc">
+            <!-- Mobile Menu Trigger -->
+            <div class="primary-menu-trigger">
+              <button class="cnvs-hamburger" type="button" title="Open Mobile Menu" aria-label="Toggle menu">
+                <span class="cnvs-hamburger-box"><span class="cnvs-hamburger-inner"></span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="header-wrap-clone"></div>
   </header>
 
   <main id="home" class="hero">
     <div class="container">
-      <h1>European Center for Vernacular Spiritual Heritage Studies
-        <span style="opacity:.8">— “Hereditas”</span></h1>
-      <p>We investigate Europe’s folk spiritual cultures — cosmologies, rituals, myths, healing, demonology, and material forms of devotion — with a comparative ethnological approach anchored in the Carpathian region.</p>
+      <h1>
+        <span class="hero-title-sub">European Center for Vernacular Spiritual Heritage Studies</span>
+        <span class="hero-title-main">Hereditas</span>
+      </h1>
+      <p>We investigate Europe's folk spiritual cultures — cosmologies, rituals, myths, healing, demonology, and material forms of devotion — with a comparative ethnological approach anchored in the Carpathian region.</p>
       <div class="badges">
         <span class="badge">Pan‑European comparison</span>
         <span class="badge">Carpathian field‑lab</span>
@@ -88,11 +76,11 @@
   <section id="about">
     <div class="container">
       <h2>About</h2>
-      <p class="lead">EC Hereditas (short for <em>European Center for Vernacular Spiritual Heritage Studies</em>) is a virtual, research‑driven organization created by scholars of Hutsul demonology, folk beliefs and folk magic. We publish articles, curate open corpora, and carry out ethnographic expeditions beginning in the Carpathians.</p>
-      <div class="grid" style="margin-top:22px">
+      <p class="lead">EC Hereditas (short for European Center for Vernacular Spiritual Heritage Studies) is a research‑driven organization created by scholars of European demonology, folk beliefs and folk magic. We publish articles, curate open corpora, and carry out ethnographic expeditions.</p>
+      <div class="grid">
         <div class="card">
           <h3>Mission</h3>
-          <p class="muted">To document, analyze, and compare Europe’s vernacular spiritual heritage, and to support its preservation as intangible cultural heritage.</p>
+          <p class="muted">To document, analyze, and compare Europe's vernacular spiritual heritage, and to support its preservation as intangible cultural heritage.</p>
         </div>
         <div class="card">
           <h3>Approach</h3>
@@ -109,8 +97,8 @@
 
       <h3>1. Cosmologies and Everyday Ontologies</h3>
       <ul>
-        <li>Ideas of soul, destiny, and individual “gift” or “power.”</li>
-        <li>Categories of spirits, saints, and “unclean” beings; liminal zones — roads, bridges, thresholds, boundary stones.</li>
+        <li>Ideas of soul, destiny, and individual "gift" or "power."</li>
+        <li>Categories of spirits, saints, and "unclean" beings; liminal zones — roads, bridges, thresholds, boundary stones.</li>
         <li>Comparative analysis of confessional and regional ontologies: Catholic, Protestant, Orthodox, Greek‑Catholic, Jewish, and Muslim environments and their syncretic intersections.</li>
       </ul>
 
@@ -119,18 +107,18 @@
         <li>Calendar rites: Christmas divinations, New‑Year fortune‑telling, Epiphany blessings, spring purification and fertility rituals, midsummer fires, harvest festivals, ancestor commemorations.</li>
         <li>Life‑cycle rites: birth and naming, baptismal and protective rituals for infants, initiation and marriage ceremonies, funerary and memorial customs.</li>
         <li>Domestic and local rituals: household blessings, consecration of tools, field and livestock rites, processions, and village festivals.</li>
-        <li>Interpretation through classic models of transition and liminality (van Gennep, Turner) and regional “calendars of sanctity.”</li>
+        <li>Interpretation through classic models of transition and liminality (van Gennep, Turner) and regional "calendars of sanctity."</li>
       </ul>
 
       <h3>3. Magic, Healing, and Protective Practices</h3>
       <ul>
         <li>Charms, spells, and apocryphal prayers for healing, protection, and success.</li>
-        <li>Social roles of healers, midwives, and charmers; ritual techniques such as “taking away milk,” “extinguishing fire,” or curing the “evil eye.”</li>
+        <li>Social roles of healers, midwives, and charmers; ritual techniques such as "taking away milk," "extinguishing fire," or curing the "evil eye."</li>
         <li>Symbolic media of power — herbs, threads, metals, water, fire, eggs, stones.</li>
         <li>Interfaces of popular religion, folk medicine, and ecological symbolism.</li>
       </ul>
 
-      <h3>4. Demonology and “Extraordinary” Beings or People</h3>
+      <h3>4. Demonology and "Extraordinary" Beings or People</h3>
       <ul>
         <li>Local spirit‑types: witches, werewolves, revenants, house spirits, forest and water entities.</li>
         <li>Social meanings of fear, transgression, and spiritual danger.</li>
@@ -174,7 +162,7 @@
         <li>Build a comparative atlas of European vernacular spirituality.</li>
         <li>Create an open digital corpus of charms, prayers, narratives, and songs.</li>
         <li>Advance interdisciplinary collaboration in ethnology, folklore, and religious anthropology.</li>
-        <li>Support the preservation and revitalization of Europe’s intangible spiritual heritage.</li>
+        <li>Support the preservation and revitalization of Europe's intangible spiritual heritage.</li>
       </ul>
     </div>
   </section>
@@ -184,9 +172,9 @@
       <h2>Contacts</h2>
       <p class="lead">Want to collaborate, invite a talk, or propose a joint expedition?</p>
       <div class="card">
-        <p class="muted" style="margin:0">Email: <a href="mailto:contact@ec-hereditas.com">contact@ec-hereditas.com</a></p>
-        <p class="muted" style="margin:.4rem 0 0">Organization: European Center for Vernacular Spiritual Heritage Studies “Hereditas” (EC Hereditas)</p>
-        <p class="muted" style="margin:.4rem 0 0">Domain: <a href="https://ec-hereditas.com" target="_blank" rel="noopener">ec-hereditas.com</a></p>
+        <p class="muted">Email: <a href="#" id="email-link" data-user="contact" data-domain="ec-hereditas.com"><span id="email-text"></span></a></p>
+        <p class="muted">Organization: European Center for Vernacular Spiritual Heritage Studies "Hereditas" (EC Hereditas)</p>
+        <p class="muted">Domain: <a href="https://ec-hereditas.com" target="_blank" rel="noopener">ec-hereditas.com</a></p>
       </div>
     </div>
   </section>
@@ -199,7 +187,123 @@
   </footer>
 
   <script>
+    // Set current year
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Theme Toggle Functionality
+    (function() {
+      const themeToggleBtn = document.getElementById('theme-toggle-btn');
+      const themeIconSun = themeToggleBtn.querySelector('.theme-icon-sun');
+      const themeIconMoon = themeToggleBtn.querySelector('.theme-icon-moon');
+      const html = document.documentElement;
+
+      // Get saved theme or default to system preference
+      function getInitialTheme() {
+        const saved = localStorage.getItem('theme');
+        if (saved) return saved;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+
+      // Apply theme
+      function setTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        
+        if (theme === 'dark') {
+          themeIconSun.style.display = 'none';
+          themeIconMoon.style.display = 'inline';
+        } else {
+          themeIconSun.style.display = 'inline';
+          themeIconMoon.style.display = 'none';
+        }
+      }
+
+      // Initialize theme
+      const initialTheme = getInitialTheme();
+      setTheme(initialTheme);
+
+      // Toggle theme on button click
+      themeToggleBtn.addEventListener('click', function() {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+      });
+
+      // Listen for system theme changes (only if no manual preference)
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme')) {
+          setTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+
+      // Mobile menu toggle
+      const hamburger = document.querySelector('.cnvs-hamburger');
+      const primaryMenu = document.querySelector('.primary-menu');
+      
+      if (hamburger && primaryMenu) {
+        hamburger.addEventListener('click', function() {
+          hamburger.classList.toggle('active');
+          primaryMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!primaryMenu.contains(e.target) && !hamburger.contains(e.target)) {
+            hamburger.classList.remove('active');
+            primaryMenu.classList.remove('active');
+          }
+        });
+
+        // Close menu when clicking a menu link
+        const menuLinks = primaryMenu.querySelectorAll('.menu-link');
+        menuLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            primaryMenu.classList.remove('active');
+          });
+        });
+      }
+    })();
+
+    // Email obfuscation - decode email address
+    (function() {
+      const emailLink = document.getElementById('email-link');
+      const emailText = document.getElementById('email-text');
+      
+      if (emailLink && emailText) {
+        const user = emailLink.getAttribute('data-user');
+        const domain = emailLink.getAttribute('data-domain');
+        const email = user + '@' + domain;
+        
+        // Set the mailto link
+        emailLink.href = 'mailto:' + email;
+        
+        // Set the display text
+        emailText.textContent = email;
+      }
+    })();
+
+    // Smooth scroll for anchor links
+    (function() {
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          if (href !== '#' && href.length > 1) {
+            const target = document.querySelector(href);
+            if (target) {
+              e.preventDefault();
+              const headerHeight = document.querySelector('#header-wrap')?.offsetHeight || 80;
+              const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+              
+              window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      });
+    })();
   </script>
 </body>
 </html>
