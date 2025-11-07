@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>European Center for Vernacular Spiritual Heritage Studies — Hereditas</title>
+  <title>European Center for Vernacular Spiritual Heritage Studies "Hereditas"</title>
   <meta name="description" content="EC Hereditas — comparative ethnology of European vernacular spiritual heritage with a Carpathian focus." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -54,7 +54,6 @@
         </div>
       </div>
     </div>
-    <div class="header-wrap-clone"></div>
   </header>
 
   <main id="home" class="hero">
@@ -67,7 +66,7 @@
       <div class="badges">
         <span class="badge">Pan‑European comparison</span>
         <span class="badge">Carpathian field‑lab</span>
-        <span class="badge">Ethnography + archives</span>
+        <span class="badge">Ethnography archives</span>
         <span class="badge">Open publications</span>
       </div>
     </div>
@@ -100,11 +99,11 @@
         <li>Cosmologies and Everyday Ontologies</li>
         <li>Vernacular Rites and Ritual Cycles</li>
         <li>Magic, Healing, and Protective Practices</li>
-		<li>Demonology and "Extraordinary" Beings or People</li>
-		<li>Altered States and Mediumship</li>
-		<li>Folklore, Mythology, and Narrative Worlds</li>
-		<li>Songs, Ritual Poetry, and Performance</li>
-		<li>Material Expressions of Spirituality</li>
+        <li>Demonology and "Extraordinary" Beings or People</li>
+        <li>Altered States and Mediumship</li>
+        <li>Folklore, Mythology, and Narrative Worlds</li>
+        <li>Songs, Ritual Poetry, and Performance</li>
+        <li>Material Expressions of Spirituality</li>
       </ul>
 
       <h3>Fieldwork and Methodology</h3>
@@ -125,7 +124,7 @@
       <h2>Contacts</h2>
       <p class="lead">Want to collaborate, invite a talk, or propose a joint expedition?</p>
       <div class="card">
-        <p class="muted">Email: <a href="#" id="email-link" data-user="contact" data-domain="ec-hereditas.com"><span id="email-text"></span></a></p>
+        <p class="muted">Email: <a href="#" id="email-link" data-user="info" data-domain="ec-hereditas.com"><span id="email-text"></span></a></p>
         <p class="muted">Organization: European Center for Vernacular Spiritual Heritage Studies "Hereditas" (EC Hereditas)</p>
         <p class="muted">Domain: <a href="https://ec-hereditas.com" target="_blank" rel="noopener">ec-hereditas.com</a></p>
       </div>
@@ -134,7 +133,7 @@
 
   <footer>
     <div class="foot-inner">
-      <div class="small">© <span id="y"></span> EC Hereditas — European Center for Vernacular Spiritual Heritage Studies</div>
+      <div class="small">© <span id="y"></span> European Center for Vernacular Spiritual Heritage Studies "Hereditas"</div>
       <a class="btn" href="#home">Back to top ↑</a>
     </div>
   </footer>
@@ -149,18 +148,26 @@
       const themeIconSun = themeToggleBtn.querySelector('.theme-icon-sun');
       const themeIconMoon = themeToggleBtn.querySelector('.theme-icon-moon');
       const html = document.documentElement;
+      const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-      // Get saved theme or default to system preference
+      function updateSystemThemeFlag() {
+        html.dataset.systemTheme = darkMediaQuery.matches ? 'dark' : 'light';
+      }
+
+      updateSystemThemeFlag();
+
+      // Get saved theme or default to light mode
       function getInitialTheme() {
         const saved = localStorage.getItem('theme');
         if (saved) return saved;
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        return 'light';
       }
 
       // Apply theme
       function setTheme(theme) {
         html.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
+        html.dataset.userTheme = theme;
         
         if (theme === 'dark') {
           themeIconSun.style.display = 'none';
@@ -182,12 +189,18 @@
         setTheme(newTheme);
       });
 
-      // Listen for system theme changes (only if no manual preference)
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+      const systemPreferenceListener = function(e) {
+        updateSystemThemeFlag();
         if (!localStorage.getItem('theme')) {
           setTheme(e.matches ? 'dark' : 'light');
         }
-      });
+      };
+
+      if (typeof darkMediaQuery.addEventListener === 'function') {
+        darkMediaQuery.addEventListener('change', systemPreferenceListener);
+      } else if (typeof darkMediaQuery.addListener === 'function') {
+        darkMediaQuery.addListener(systemPreferenceListener);
+      }
 
       // Mobile menu toggle
       const hamburger = document.querySelector('.cnvs-hamburger');
