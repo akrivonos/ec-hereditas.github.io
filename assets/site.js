@@ -56,7 +56,7 @@
   });
 
   // Google Analytics is loaded only after explicit visitor consent.
-  const analyticsMeasurementId = 'G-F12W711KRS';
+  const analyticsMeasurementId = 'G-H6PK1FG5F0';
   const analyticsConsentKey = 'hereditas-analytics-consent';
 
   const loadGoogleAnalytics = () => {
