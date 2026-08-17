@@ -3,107 +3,1266 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hereditas — дослідження та збереження культурної спадщини</title>
-  <meta name="description" content="Українська громадська організація, що працює з дослідженням, документуванням, оцифруванням і відповідальним відкриттям культурної спадщини.">
+
+  <title>Hereditas — культурна спадщина, дослідження та цифрова інфраструктура</title>
+
+  <meta
+    name="description"
+    content="Українська громадська організація, що працює зі збереженням, дослідженням і оцифруванням культурної спадщини та розробляє відкриту цифрову інфраструктуру для архівів, музеїв, бібліотек і дослідницьких колекцій."
+  >
+
   <meta name="theme-color" content="#173f4f">
+
   <link rel="canonical" href="https://ec-hereditas.com/">
   <link rel="alternate" hreflang="uk" href="https://ec-hereditas.com/">
   <link rel="alternate" hreflang="en" href="https://ec-hereditas.com/en/">
   <link rel="alternate" hreflang="x-default" href="https://ec-hereditas.com/">
-  <meta property="og:title" content="Hereditas — дослідження та збереження культурної спадщини">
-  <meta property="og:description" content="Документування, оцифрування, дослідження та відповідальний доступ до культурної спадщини.">
+
+  <meta
+    property="og:title"
+    content="Hereditas — культурна спадщина, дослідження та цифрова інфраструктура"
+  >
+
+  <meta
+    property="og:description"
+    content="Збереження, дослідження, оцифрування та відкрита цифрова інфраструктура для культурної спадщини."
+  >
+
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ec-hereditas.com/">
+
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/styles.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"NGO","name":"Громадська організація Європейський центр досліджень культурної спадщини Гередітас","alternateName":"Hereditas","url":"https://ec-hereditas.com/","email":"info@ec-hereditas.com","areaServed":["Ukraine","Europe"],"knowsAbout":["cultural heritage","digitisation","folklore studies","digital humanities"]}</script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    "name": "Громадська організація Європейський центр досліджень культурної спадщини Гередітас",
+    "alternateName": "Hereditas",
+    "url": "https://ec-hereditas.com/",
+    "email": "info@ec-hereditas.com",
+    "areaServed": ["Ukraine", "Europe"],
+    "knowsAbout": [
+      "cultural heritage",
+      "digitisation",
+      "folklore studies",
+      "ethnography",
+      "digital archives",
+      "digital humanities",
+      "cultural heritage infrastructure",
+      "metadata interoperability"
+    ]
+  }
+  </script>
 </head>
+
+
 <body>
-<a class="skip-link" href="#main">Перейти до змісту</a>
+
+<a class="skip-link" href="#main">
+  Перейти до змісту
+</a>
+
+
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label="Hereditas — головна">
-      <img src="/assets/logo.svg" alt="" width="42" height="42">
-      <span class="brand-text"><span class="brand-name">Hereditas</span><span class="brand-sub">Культурна спадщина · дослідження · цифровізація</span></span>
+
+    <a
+      class="brand"
+      href="/"
+      aria-label="Hereditas — головна"
+    >
+      <img
+        src="/assets/logo.svg"
+        alt=""
+        width="42"
+        height="42"
+      >
+
+      <span class="brand-text">
+        <span class="brand-name">Hereditas</span>
+        <span class="brand-sub">
+          Культурна спадщина · дослідження · цифровізація
+        </span>
+      </span>
     </a>
-    <nav class="navigation" data-navigation aria-label="Основна навігація">
-      <a href="#about">Про нас</a><a href="#work">Напрями</a><a href="#catalogue">Каталог</a><a href="#principles">Принципи</a><a href="#contact">Контакти</a>
-      <a class="language-link" href="/en/" lang="en" hreflang="en">EN</a>
-      <button class="icon-button" data-theme-button type="button" aria-label="Змінити тему" aria-pressed="false" title="Темна тема"><span class="theme-icon" aria-hidden="true"></span></button>
+
+
+    <nav
+      class="navigation"
+      data-navigation
+      aria-label="Основна навігація"
+    >
+      <a href="#about">Про нас</a>
+      <a href="#work">Напрями</a>
+      <a href="#infrastructure">Інфраструктура</a>
+      <a href="#platform">Platform</a>
+      <a href="#principles">Принципи</a>
+      <a href="#contact">Співпраця</a>
+
+      <a
+        class="language-link"
+        href="/en/"
+        lang="en"
+        hreflang="en"
+      >
+        EN
+      </a>
+
+      <button
+        class="icon-button"
+        data-theme-button
+        type="button"
+        aria-label="Змінити тему"
+        aria-pressed="false"
+        title="Темна тема"
+      >
+        <span
+          class="theme-icon"
+          aria-hidden="true"
+        ></span>
+      </button>
     </nav>
-    <button class="icon-button menu-button" data-menu-button type="button" aria-label="Відкрити меню" aria-expanded="false"><span></span></button>
+
+
+    <button
+      class="icon-button menu-button"
+      data-menu-button
+      type="button"
+      aria-label="Відкрити меню"
+      aria-expanded="false"
+    >
+      <span></span>
+    </button>
+
   </div>
 </header>
+
+
 <main id="main">
+
+  <!-- HERO -->
+
   <section class="hero">
     <div class="container hero-grid">
+
       <div class="hero-copy">
-        <p class="eyebrow">Громадська організація · Україна</p>
-        <h1>Культурна спадщина, збережена для майбутнього.</h1>
-        <p class="lead">Hereditas документує, досліджує та оцифровує культурну спадщину, розвиває відкриті дослідницькі ресурси й підтримує відповідальну співпрацю між науковцями, архівами, установами та громадами.</p>
-        <div class="hero-actions"><a class="button" href="#work">Наші напрями <span aria-hidden="true">↓</span></a><a class="button button-secondary" href="/catalog/">Переглянути сторінку каталогу</a></div>
+
+        <p class="eyebrow">
+          Громадська організація · Україна
+        </p>
+
+        <h1>
+          Культурна спадщина, збережена для майбутнього.
+        </h1>
+
+        <p class="lead">
+          Hereditas поєднує дослідження, документування,
+          оцифрування та розробку відкритої цифрової
+          інфраструктури, щоб допомагати архівам, музеям,
+          бібліотекам, університетам і громадам зберігати,
+          описувати та відповідально відкривати культурну спадщину.
+        </p>
+
+        <div class="hero-actions">
+
+          <a
+            class="button"
+            href="#infrastructure"
+          >
+            Цифрова інфраструктура
+            <span aria-hidden="true">↓</span>
+          </a>
+
+          <a
+            class="button button-secondary"
+            href="#pilots"
+          >
+            Партнерські пілоти
+          </a>
+
+        </div>
+
       </div>
-      <div class="archive-panel" aria-label="Стилізоване представлення каталожних записів">
-        <div class="archive-label">Дослідницька інфраструктура</div>
-        <div class="archive-card"><div class="archive-code">EUR-0179 · перевірено</div><div class="archive-title">Архівна колекція усних традицій та польових записів</div><div class="archive-meta"><span class="pill">рукопис</span><span class="pill">аудіо</span><span class="pill">метадані</span></div></div>
-        <div class="archive-card"><div class="archive-code">SOURCE · provenance</div><div class="archive-title">Кожен запис зберігає походження, джерельну форму й рівень перевірки.</div></div>
+
+
+      <div
+        class="archive-panel"
+        aria-label="Напрями цифрової інфраструктури Hereditas"
+      >
+
+        <div class="archive-label">
+          Hereditas Digital Infrastructure
+        </div>
+
+
+        <div class="archive-card">
+
+          <div class="archive-code">
+            PLATFORM · EUROPE + CAUCASUS
+          </div>
+
+          <div class="archive-title">
+            Багатомовний каталог джерел і колекцій
+            з простежуваним походженням даних.
+          </div>
+
+          <div class="archive-meta">
+            <span class="pill">3 558 позицій</span>
+            <span class="pill">48 країн і територій</span>
+            <span class="pill">72 мови</span>
+          </div>
+
+        </div>
+
+
+        <div class="archive-card">
+
+          <div class="archive-code">
+            COLLECTIONS · STUDIO · BRIDGE
+          </div>
+
+          <div class="archive-title">
+            Інструменти для інституційних колекцій,
+            оцифрування та перенесення даних —
+            готуються до практичних партнерських пілотів.
+          </div>
+
+        </div>
+
       </div>
+
     </div>
   </section>
 
-  <section class="section section-tint" id="about">
+
+  <!-- ABOUT -->
+
+  <section
+    class="section section-tint"
+    id="about"
+  >
+
     <div class="container intro-grid">
-      <div><p class="eyebrow">Про організацію</p><h2>Незалежна платформа для спадщини, науки й суспільної користі.</h2></div>
+
+      <div>
+
+        <p class="eyebrow">
+          Про організацію
+        </p>
+
+        <h2>
+          Незалежна громадська організація для спадщини,
+          науки й суспільної користі.
+        </h2>
+
+      </div>
+
+
       <div class="intro-copy">
-        <p><strong>Громадська організація «Європейський центр досліджень культурної спадщини Гередітас»</strong> створена в Україні для збереження, дослідження та поширення знань про матеріальну й нематеріальну культурну спадщину.</p>
-        <p>Ми поєднуємо гуманітарні дослідження, роботу з архівами, польове документування, цифрові методи та видавничу діяльність. Наш пріоритет — створювати результати, якими можуть користуватися дослідники, освітяни, установи культури та зацікавлені громади.</p>
+
+        <p>
+          <strong>
+            Громадська організація «Європейський центр
+            досліджень культурної спадщини Гередітас»
+          </strong>
+          створена в Україні для збереження, дослідження
+          та поширення знань про матеріальну й
+          нематеріальну культурну спадщину.
+        </p>
+
+        <p>
+          Ми поєднуємо гуманітарні дослідження, роботу
+          з архівами й колекціями, польове документування,
+          цифрові методи та видавничу діяльність.
+        </p>
+
+        <p>
+          Окремий напрям роботи Hereditas —
+          створення відкритої цифрової інфраструктури,
+          яка допомагає установам працювати з культурними
+          колекціями без втрати контролю над власними
+          даними, походженням матеріалів і правилами доступу.
+        </p>
+
       </div>
+
     </div>
   </section>
 
-  <section class="section" id="work">
+
+  <!-- AREAS OF WORK -->
+
+  <section
+    class="section"
+    id="work"
+  >
+
     <div class="container">
-      <p class="eyebrow">Напрями роботи</p><h2>Від збереження джерела до доступного знання.</h2>
+
+      <p class="eyebrow">
+        Напрями роботи
+      </p>
+
+      <h2>
+        Від збереження джерела до доступного знання.
+      </h2>
+
+
       <div class="card-grid">
-        <article class="card"><div class="card-number">01</div><h3>Оцифрування та збереження</h3><p>Підготовка й цифрове копіювання рукописів, фотографій, аудіо-, відео- та польових матеріалів; метадані, резервне зберігання і планування довготривалого доступу.</p></article>
-        <article class="card"><div class="card-number">02</div><h3>Дослідження та польова робота</h3><p>Архівні й міждисциплінарні дослідження, експедиції, інтерв’ю та документування локальних традицій з дотриманням етичних вимог і прав учасників.</p></article>
-        <article class="card"><div class="card-number">03</div><h3>Цифрові каталоги й дані</h3><p>Структуровані багатомовні каталоги, контрольована термінологія, перевірка посилань, стабільні ідентифікатори та простежуване походження даних.</p></article>
-        <article class="card"><div class="card-number">04</div><h3>Публікації та передача знань</h3><p>Наукові й науково-популярні видання, тематичні збірники, освітні матеріали, відкриті ресурси та професійний обмін.</p></article>
+
+        <article class="card">
+
+          <div class="card-number">01</div>
+
+          <h3>
+            Оцифрування та збереження
+          </h3>
+
+          <p>
+            Підготовка й цифрове копіювання рукописів,
+            фотографій, аудіо-, відео- та польових
+            матеріалів; метадані, контроль цілісності,
+            резервне зберігання і планування
+            довготривалого доступу.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <div class="card-number">02</div>
+
+          <h3>
+            Дослідження та польова робота
+          </h3>
+
+          <p>
+            Архівні й міждисциплінарні дослідження,
+            експедиції, інтерв’ю та документування
+            локальних традицій з дотриманням етичних
+            вимог і прав учасників.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <div class="card-number">03</div>
+
+          <h3>
+            Цифрова інфраструктура та дані
+          </h3>
+
+          <p>
+            Відкриті інструменти для каталогізації,
+            оцифрування, міграції та інтеграції даних;
+            багатомовні метадані, стабільні
+            ідентифікатори, provenance та сумісність
+            із культурними й дослідницькими
+            інфраструктурами.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <div class="card-number">04</div>
+
+          <h3>
+            Публікації та передача знань
+          </h3>
+
+          <p>
+            Наукові й науково-популярні видання,
+            тематичні збірники, освітні матеріали,
+            відкриті ресурси та професійний обмін.
+          </p>
+
+        </article>
+
       </div>
+
     </div>
   </section>
 
-  <section class="section section-tint" id="catalogue">
+
+  <!-- DIGITAL INFRASTRUCTURE -->
+
+  <section
+    class="section section-tint"
+    id="infrastructure"
+  >
+
     <div class="container">
+
+      <p class="eyebrow">
+        Hereditas Digital Infrastructure
+      </p>
+
+      <h2>
+        Від пошуку джерела до роботи з реальною колекцією.
+      </h2>
+
+      <p class="lead">
+        Hereditas розвиває взаємопов’язаний набір відкритих
+        інструментів для дослідження, опису, оцифрування,
+        перенесення та інтеграції культурних колекцій.
+        Кожен продукт має окрему роль, але всі вони
+        використовують спільні принципи даних, provenance,
+        доступу та переносимості.
+      </p>
+
+
+      <div class="card-grid">
+
+        <!-- PLATFORM -->
+
+        <article class="card">
+
+          <div class="card-number">
+            01
+          </div>
+
+          <h3>
+            Hereditas Platform
+          </h3>
+
+          <p>
+            Багатомовний дослідницький і пошуковий каталог
+            джерел та колекцій з фольклору, традиційної
+            культури й суміжних напрямів культурної
+            спадщини Європи та Кавказу.
+          </p>
+
+          <p>
+            Platform поєднує нормалізовані сутності,
+            точні джерельні форми, provenance,
+            рівні перевірки та обережну дедуплікацію.
+          </p>
+
+          <p>
+            <span class="pill">
+              Робочий масив даних
+            </span>
+
+            <span class="pill">
+              Публічний інтерфейс у розробці
+            </span>
+          </p>
+
+          <p>
+            <a href="/catalog/">
+              Переглянути Hereditas Platform →
+            </a>
+          </p>
+
+        </article>
+
+
+        <!-- COLLECTIONS -->
+
+        <article class="card">
+
+          <div class="card-number">
+            02
+          </div>
+
+          <h3>
+            Hereditas Collections
+          </h3>
+
+          <p>
+            Відкрита інституційна система для архівних,
+            етнографічних, фольклорних, oral-history
+            та польових колекцій.
+          </p>
+
+          <p>
+            Поєднує архівну ієрархію з контекстом
+            експедицій, сесій, людей, громад і місць,
+            фізичним обліком, цифровими представленнями,
+            правами, згодою та правилами доступу.
+          </p>
+
+          <p>
+            <span class="pill">
+              У розробці
+            </span>
+
+            <span class="pill">
+              Шукаємо інституційний пілот
+            </span>
+          </p>
+
+        </article>
+
+
+        <!-- STUDIO -->
+
+        <article class="card">
+
+          <div class="card-number">
+            03
+          </div>
+
+          <h3>
+            Hereditas Studio
+          </h3>
+
+          <p>
+            Локальний інструмент для практичного
+            оцифрування за принципом
+            <strong>catalogue as you digitise</strong>.
+          </p>
+
+          <p>
+            Ідентифікація об’єкта, контроль послідовності
+            файлів, checksums, технічні метадані,
+            похідні файли, QC та інтеграція
+            OCR / HTR / STT в одному керованому процесі.
+          </p>
+
+          <p>
+            <span class="pill">
+              У розробці
+            </span>
+
+            <span class="pill">
+              Шукаємо пілот оцифрування
+            </span>
+          </p>
+
+        </article>
+
+
+        <!-- BRIDGE -->
+
+        <article class="card">
+
+          <div class="card-number">
+            04
+          </div>
+
+          <h3>
+            Hereditas Bridge
+          </h3>
+
+          <p>
+            Інструмент для перенесення, нормалізації,
+            перевірки та інтеграції даних між
+            електронними таблицями, legacy-системами,
+            Hereditas та зовнішніми культурними
+            платформами.
+          </p>
+
+          <p>
+            Його принцип —
+            дані мають входити в Hereditas і виходити
+            з неї без прихованої втрати та
+            без vendor lock-in.
+          </p>
+
+          <p>
+            <span class="pill">
+              У розробці
+            </span>
+
+            <span class="pill">
+              Шукаємо migration pilot
+            </span>
+          </p>
+
+        </article>
+
+      </div>
+
+
+      <div class="notice">
+
+        <strong>Hereditas Core</strong>
+        не є окремим користувацьким продуктом.
+        Це спільна архітектурна основа Platform,
+        Collections, Studio та Bridge:
+        ідентифікатори, модель даних, provenance,
+        review workflows, права, згода,
+        правила доступу, API та переносимість даних.
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- PLATFORM -->
+
+  <section
+    class="section"
+    id="platform"
+  >
+
+    <div class="container">
+
       <div class="project-feature">
-        <div class="project-main"><p class="eyebrow">Флагманський цифровий проєкт</p><h2>Каталог джерел Hereditas</h2><p>Дослідницький каталог джерел і колекцій про фольклор, народні вірування, обрядову культуру, традиційні знання та суміжні теми в Європі й на Кавказі. Каталог описує ресурси — книги, рукописи, архівні справи, музейні предмети, аудіозаписи, польові матеріали й цифрові колекції — а не подає неперевірені практики як факти.</p><a class="button" href="/catalog/">Сторінка майбутнього застосунку <span aria-hidden="true">→</span></a></div>
-        <aside class="project-side"><p class="eyebrow">Поточний пілотний масив</p><h3>Прогрес показуємо без змішування перевірених даних і кандидатів.</h3><div class="stats"><div class="stat"><strong>1 792</strong><span>канонічні нормалізовані ресурси</span></div><div class="stat"><strong>1 640</strong><span>записів в інтеграційній черзі</span></div><div class="stat"><strong>126</strong><span>регіональних і тематичних звітів</span></div><div class="stat"><strong>72</strong><span>мови в довідниках каталогу</span></div></div><p class="data-note">Станом на 31 липня 2026 року. Записи в черзі не вважаються автоматично перевіреними або новими ресурсами.</p></aside>
+
+
+        <div class="project-main">
+
+          <p class="eyebrow">
+            Hereditas Platform
+          </p>
+
+          <h2>
+            Каталог джерел Європи та Кавказу
+          </h2>
+
+          <p>
+            Platform допомагає знаходити й зіставляти
+            культурно-спадщинні джерела, розпорошені між
+            архівами, бібліотеками, музеями,
+            університетами, цифровими репозитаріями,
+            виданнями та дослідницькими проєктами.
+          </p>
+
+          <p>
+            Каталог охоплює книги, рукописи, архівні
+            справи, аудіо- й відеозаписи, польові
+            матеріали, цифрові колекції, бібліографії
+            та дослідницькі звіти.
+          </p>
+
+          <p>
+            Його географічна модель охоплює
+            <strong>Європу та Кавказ</strong>
+            і враховує не лише сучасні держави,
+            а й регіони, історико-культурні ареали
+            та транскордонні традиції.
+          </p>
+
+          <a
+            class="button"
+            href="/catalog/"
+          >
+            Докладніше про Platform
+            <span aria-hidden="true">→</span>
+          </a>
+
+        </div>
+
+
+        <aside class="project-side">
+
+          <p class="eyebrow">
+            Поточний робочий масив
+          </p>
+
+          <h3>
+            Прогрес показуємо без змішування
+            перевірених даних і кандидатів.
+          </h3>
+
+
+          <div class="stats">
+
+            <div class="stat">
+              <strong>1 792</strong>
+              <span>
+                канонічні нормалізовані ресурси
+              </span>
+            </div>
+
+
+            <div class="stat">
+              <strong>1 640</strong>
+              <span>
+                записів в інтеграційній черзі
+              </span>
+            </div>
+
+
+            <div class="stat">
+              <strong>126</strong>
+              <span>
+                регіональних і тематичних звітів
+              </span>
+            </div>
+
+
+            <div class="stat">
+              <strong>72</strong>
+              <span>
+                мови в довідниках Platform
+              </span>
+            </div>
+
+          </div>
+
+
+          <p class="data-note">
+            Станом на 31 липня 2026 року.
+            Загалом система містить 3 558 позицій
+            і охоплює 48 країн і територій та
+            745 регіонів. Записи інтеграційної
+            черги не вважаються автоматично
+            перевіреними або новими ресурсами.
+          </p>
+
+        </aside>
+
       </div>
+
     </div>
   </section>
 
-  <section class="section" id="principles">
-    <div class="container"><p class="eyebrow">Принципи</p><h2>Якість, відповідальність і довіра — частина інфраструктури.</h2>
+
+  <!-- WHY INSTITUTIONS -->
+
+  <section class="section section-tint">
+
+    <div class="container">
+
+      <p class="eyebrow">
+        Для установ
+      </p>
+
+      <h2>
+        Технологія має служити колекції,
+        а не навпаки.
+      </h2>
+
+
       <div class="principles">
-        <article class="principle"><h3>Доказовість і походження</h3><p>Ми відокремлюємо джерельні дані, робочі припущення й перевірені висновки та зберігаємо можливість відтворити походження запису.</p></article>
-        <article class="principle"><h3>Етичний доступ</h3><p>Відкритість застосовується там, де це дозволяють права, згода учасників, інтереси громад і характер чутливих матеріалів.</p></article>
-        <article class="principle"><h3>Участь громад</h3><p>Носії традицій і локальні спільноти мають бути не лише об’єктами опису, а партнерами у визначенні контексту та умов представлення.</p></article>
-        <article class="principle"><h3>Сумісність даних</h3><p>Ми прагнемо до багатомовних метаданих, сталих ідентифікаторів та форматів, придатних для обміну з архівами й дослідницькими інфраструктурами.</p></article>
-        <article class="principle"><h3>Людська перевірка</h3><p>Автоматизація допомагає знаходити й упорядковувати матеріали, але спірні зіставлення й змістові рішення перевіряються фахівцями.</p></article>
-        <article class="principle"><h3>Довготривала користь</h3><p>Проєкти плануються не лише до моменту публікації, а з урахуванням зберігання, документації, повторного використання й підтримки.</p></article>
+
+        <article class="principle">
+
+          <h3>
+            Інституційний контроль
+          </h3>
+
+          <p>
+            Архів, музей, бібліотека чи університет
+            залишається джерелом істини для власної
+            колекції та зберігає свої локальні
+            ідентифікатори й правила роботи.
+          </p>
+
+        </article>
+
+
+        <article class="principle">
+
+          <h3>
+            Без примусової централізації
+          </h3>
+
+          <p>
+            Для участі у спільному пошуку установа
+            не повинна передавати Hereditas контроль
+            над оригіналами або всією своєю
+            інформаційною системою.
+          </p>
+
+        </article>
+
+
+        <article class="principle">
+
+          <h3>
+            Міграція без пастки
+          </h3>
+
+          <p>
+            Дані мають бути придатними для імпорту,
+            експорту та переходу між системами
+            без прихованого vendor lock-in.
+          </p>
+
+        </article>
+
+
+        <article class="principle">
+
+          <h3>
+            Простежуване походження
+          </h3>
+
+          <p>
+            Оригінальні значення, джерела,
+            трансформації та важливі рішення
+            мають залишатися відтворюваними.
+          </p>
+
+        </article>
+
+
+        <article class="principle">
+
+          <h3>
+            Етичний доступ
+          </h3>
+
+          <p>
+            Авторські права, приватність, згода,
+            етичні й культурні обмеження
+            не зводяться до одного поля
+            «відкрито / закрито».
+          </p>
+
+        </article>
+
+
+        <article class="principle">
+
+          <h3>
+            Відкриті стандарти
+          </h3>
+
+          <p>
+            Інфраструктура проєктується для
+            взаємодії з іншими архівними,
+            музейними й дослідницькими системами,
+            а не як ізольована база даних.
+          </p>
+
+        </article>
+
       </div>
+
     </div>
   </section>
 
-  <section class="section section-tint" id="roadmap">
-    <div class="container"><p class="eyebrow">Поточний етап</p><h2>Організація розвивається поетапно й не перебільшує готовність.</h2>
-      <div class="timeline"><div class="timeline-item"><strong>Зараз</strong><p>Завершення організаційного оформлення, підготовка політик, очищення каталогу, перевірка джерел і проєктування публічного застосунку.</p></div><div class="timeline-item"><strong>Наступний крок</strong><p>Партнерські пілоти з установами, невеликі проєкти оцифрування, консультації щодо прав і етики та публічний запуск каталогу.</p></div><div class="timeline-item"><strong>Довгостроково</strong><p>Багатомовна інфраструктура, спільні дослідницькі й освітні проєкти, публікації та підтримка збереження вразливих колекцій.</p></div></div>
+
+  <!-- PRINCIPLES -->
+
+  <section
+    class="section"
+    id="principles"
+  >
+
+    <div class="container">
+
+      <p class="eyebrow">
+        Принципи
+      </p>
+
+      <h2>
+        Якість, відповідальність і довіра —
+        частина інфраструктури.
+      </h2>
+
+
+      <div class="principles">
+
+        <article class="principle">
+
+          <h3>
+            Доказовість і походження
+          </h3>
+
+          <p>
+            Ми відокремлюємо джерельні дані,
+            робочі припущення й перевірені
+            висновки та зберігаємо можливість
+            відтворити походження запису.
+          </p>
+
+        </article>
+
+
+        <article class="principle">
+
+          <h3>
+            Етичний доступ
+          </h3>
+
+          <p>
+            Відкритість застосовується там,
+            де це дозволяють права, згода
+            учасників, інтереси громад
+            і характер чутливих матеріалів.
+          </p>
+
+        </article>
+
+
+        <article class="principle">
+
+          <h3>
+            Участь громад
+          </h3>
+
+          <p>
+            Носії традицій і локальні спільноти
+            мають бути не лише об’єктами опису,
+            а партнерами у визначенні контексту
+            та умов представлення.
+          </p>
+
+        </article>
+
+
+        <article class="principle">
+
+          <h3>
+            Сумісність і переносимість даних
+          </h3>
+
+          <p>
+            Відкриті стандарти, документовані
+            структури та повний експорт мають
+            дозволяти установам використовувати
+            Hereditas без втрати контролю
+            над власними даними.
+          </p>
+
+        </article>
+
+
+        <article class="principle">
+
+          <h3>
+            Людська перевірка
+          </h3>
+
+          <p>
+            Автоматизація допомагає знаходити,
+            транскрибувати й упорядковувати
+            матеріали, але спірні зіставлення
+            та змістові рішення мають залишатися
+            перевірюваними людиною.
+          </p>
+
+        </article>
+
+
+        <article class="principle">
+
+          <h3>
+            Довготривала користь
+          </h3>
+
+          <p>
+            Проєкти плануються не лише до моменту
+            публікації, а з урахуванням зберігання,
+            документації, повторного використання,
+            міграції та підтримки.
+          </p>
+
+        </article>
+
+      </div>
+
     </div>
   </section>
 
-  <section class="contact-band" id="contact"><div class="container contact-grid"><div><p class="eyebrow">Співпраця</p><h2>Шукаємо партнерів для відповідальних проєктів зі спадщиною.</h2></div><div class="contact-details"><p class="contact-copy">Відкриті до співпраці з архівами, музеями, бібліотеками, університетами, дослідниками, громадами, технологічними командами та грантодавцями.</p><a href="mailto:info@ec-hereditas.com">info@ec-hereditas.com</a><span>Київ, Україна</span></div></div></section>
+
+  <!-- PILOTS -->
+
+  <section
+    class="section section-tint"
+    id="pilots"
+  >
+
+    <div class="container">
+
+      <p class="eyebrow">
+        Партнерські пілоти
+      </p>
+
+      <h2>
+        Перевіряємо інфраструктуру
+        на реальних колекціях і робочих процесах.
+      </h2>
+
+      <p class="lead">
+        Hereditas шукає установи, готові разом
+        протестувати невеликі, практично обмежені
+        сценарії. Пілот не вимагає перенесення
+        всієї колекції або зміни чинної
+        інформаційної системи установи.
+      </p>
+
+
+      <div class="card-grid">
+
+        <article class="card">
+
+          <div class="card-number">
+            A
+          </div>
+
+          <h3>
+            Collections Pilot
+          </h3>
+
+          <p>
+            Невелика реальна колекція для перевірки
+            опису фондів, людей, місць, польових
+            контекстів, фізичного обліку, цифрових
+            представлень і правил доступу.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <div class="card-number">
+            B
+          </div>
+
+          <h3>
+            Digitisation Pilot
+          </h3>
+
+          <p>
+            Обмежений масив матеріалів для перевірки
+            Studio: ідентифікація об’єктів,
+            створення файлів, checksums,
+            технічні метадані, QC та
+            контрольована передача результатів.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <div class="card-number">
+            C
+          </div>
+
+          <h3>
+            Migration Pilot
+          </h3>
+
+          <p>
+            XLSX, CSV або експорт із legacy-системи
+            для перевірки Bridge: профілювання,
+            mapping, validation, зіставлення
+            сутностей, preview та переносимість
+            без прихованої втрати даних.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <div class="card-number">
+            D
+          </div>
+
+          <h3>
+            Методологічне партнерство
+          </h3>
+
+          <p>
+            Співпраця з архівістами, етнографами,
+            фольклористами, digital-humanities
+            фахівцями та експертами з прав,
+            етики, metadata standards,
+            preservation та interoperability.
+          </p>
+
+        </article>
+
+      </div>
+
+
+      <div class="notice">
+
+        Публікація або федерація метаданих
+        партнерської колекції через
+        <strong>Hereditas Platform</strong>
+        є окремим рішенням.
+        Участь у Collections, Studio або Bridge
+        pilot не означає автоматичної
+        публікації даних.
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ROADMAP -->
+
+  <section
+    class="section"
+    id="roadmap"
+  >
+
+    <div class="container">
+
+      <p class="eyebrow">
+        Поточний етап
+      </p>
+
+      <h2>
+        Розвиваємо інфраструктуру поетапно
+        й не перебільшуємо готовність.
+      </h2>
+
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+
+          <strong>
+            Зараз
+          </strong>
+
+          <p>
+            Розвиток і перевірка Hereditas Platform,
+            очищення каталогу, підготовка Core,
+            Collections, Studio та Bridge,
+            організаційні політики й пошук
+            перших партнерських установ.
+          </p>
+
+        </div>
+
+
+        <div class="timeline-item">
+
+          <strong>
+            Перші інституційні пілоти
+          </strong>
+
+          <p>
+            Міграція невеликої реальної колекції,
+            тестування Collections,
+            практичний digitisation workflow
+            через Studio та перевірка
+            Bridge на реальних даних установ.
+          </p>
+
+        </div>
+
+
+        <div class="timeline-item">
+
+          <strong>
+            Довгостроково
+          </strong>
+
+          <p>
+            Відкриті релізи, партнерські
+            інсталяції, стандартизований
+            обмін даними, федеративний пошук
+            і практична технічна підтримка
+            збереження вразливих колекцій.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- CONTACT -->
+
+  <section
+    class="contact-band"
+    id="contact"
+  >
+
+    <div class="container contact-grid">
+
+      <div>
+
+        <p class="eyebrow">
+          Співпраця
+        </p>
+
+        <h2>
+          Шукаємо партнерів для практичних
+          проєктів зі збереження спадщини.
+        </h2>
+
+      </div>
+
+
+      <div class="contact-details">
+
+        <p class="contact-copy">
+          Відкриті до співпраці з архівами,
+          музеями, бібліотеками, університетами,
+          дослідницькими центрами, громадами
+          та технологічними командами.
+          Особливо зацікавлені в невеликих
+          інституційних пілотах для Collections,
+          Studio та Bridge.
+        </p>
+
+        <a
+          href="mailto:info@ec-hereditas.com?subject=Партнерський%20пілот%20Hereditas"
+        >
+          info@ec-hereditas.com
+        </a>
+
+        <span>
+          Київ, Україна
+        </span>
+
+      </div>
+
+    </div>
+  </section>
+
 </main>
-<footer class="site-footer"><div class="container footer-grid"><div class="small">© <span data-year></span> NGO “Hereditas”. Матеріали сайту — якщо не зазначено інше.</div><div class="footer-links"><a href="/privacy/">Конфіденційність</a><a href="/catalog/">Каталог</a><a href="/en/" lang="en">English</a><button class="analytics-settings" type="button" data-manage-analytics>Аналітика</button></div></div></footer>
+
+
+<footer class="site-footer">
+
+  <div class="container footer-grid">
+
+    <div class="small">
+      © <span data-year></span> NGO “Hereditas”.
+      Матеріали сайту — якщо не зазначено інше.
+    </div>
+
+
+    <div class="footer-links">
+
+      <a href="/privacy/">
+        Конфіденційність
+      </a>
+
+      <a href="/catalog/">
+        Platform
+      </a>
+
+      <a
+        href="/en/"
+        lang="en"
+      >
+        English
+      </a>
+
+      <button
+        class="analytics-settings"
+        type="button"
+        data-manage-analytics
+      >
+        Аналітика
+      </button>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
 <script src="/assets/site.js" defer></script>
+
 </body>
 </html>
