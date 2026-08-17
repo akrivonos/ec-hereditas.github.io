@@ -1,6 +1,574 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Hereditas Catalogue — application in development</title><meta name="description" content="Placeholder page for the future public Hereditas Source Catalogue."><link rel="canonical" href="https://ec-hereditas.com/en/catalog/"><link rel="alternate" hreflang="uk" href="https://ec-hereditas.com/catalog/"><link rel="alternate" hreflang="en" href="https://ec-hereditas.com/en/catalog/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/styles.css"></head>
-<body><a class="skip-link" href="#main">Skip to content</a><header class="site-header"><div class="container header-inner"><a class="brand" href="/en/"><img src="/assets/logo.svg" alt="" width="42" height="42"><span class="brand-text"><span class="brand-name">Hereditas</span><span class="brand-sub">Source catalogue</span></span></a><nav class="navigation" data-navigation aria-label="Primary navigation"><a href="/en/">Home</a><a aria-current="page" href="/en/catalog/">Catalogue</a><a href="/en/#contact">Contact</a><a class="language-link" href="/catalog/" lang="uk">УКР</a><button class="icon-button" data-theme-button type="button" aria-label="Change colour theme" aria-pressed="false" title="Dark theme"><span class="theme-icon" aria-hidden="true"></span></button></nav><button class="icon-button menu-button" data-menu-button type="button" aria-label="Open menu" aria-expanded="false"><span></span></button></div></header>
-<main id="main"><section class="page-hero"><div class="narrow"><p class="eyebrow">Public application in development</p><h1>Hereditas Source Catalogue</h1><p class="lead">A future multilingual interface for discovering verified sources, collections and research reports relating to folklore, traditional culture and adjacent fields.</p><div class="hero-actions"><a class="button" href="mailto:info@ec-hereditas.com?subject=Catalogue%20cooperation">Discuss cooperation</a><a class="button button-secondary" href="/en/">Return home</a></div><div class="catalog-visual" aria-hidden="true"><div class="catalog-search">Search by title, institution, country, language…</div><div class="catalog-rows"><div class="catalog-row"><span></span><span></span><span></span></div><div class="catalog-row"><span></span><span></span><span></span></div><div class="catalog-row"><span></span><span></span><span></span></div><div class="catalog-row"><span></span><span></span><span></span></div></div></div></div></section><section class="content-block section-tint"><div class="narrow prose"><div class="notice"><strong>This is a temporary page.</strong> The full application will be connected here after data review, legal and ethical assessment, and technical deployment.</div><h2>Planned catalogue features</h2><ul><li>combined search across the canonical catalogue, integration queue and research reports;</li><li>filters by country, region, language, institution, creator, subject, access type and verification level;</li><li>stable identifiers, source forms and provenance for normalised relationships;</li><li>clear separation of a digital platform, holding institution, individual resource and digital representation;</li><li>marking of restricted, sensitive or legally uncertain material.</li></ul><h2>Current data status</h2><p>The pilot database contains <strong>3,558 positions</strong>: 1,792 canonical resources, 1,640 integration-queue records and 126 full-text reports. It covers 48 countries and territories, 745 regions and 72 languages. These figures describe distinct data layers and do not imply that every candidate has already been verified.</p><h2>For prospective partners</h2><p>We are interested in pilots with archives, libraries, museums, universities and community initiatives. Advice on metadata, rights, sensitive collections, multilingual terminology and interoperability with other cultural platforms is particularly welcome.</p></div></section></main>
-<footer class="site-footer"><div class="container footer-grid"><div class="small">© <span data-year></span> NGO “Hereditas”.</div><div class="footer-links"><a href="/en/privacy/">Privacy</a><a href="/en/">Home</a><button class="analytics-settings" type="button" data-manage-analytics>Analytics</button></div></div></footer><script src="/assets/site.js" defer></script></body></html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Hereditas Platform — Catalogue of Sources Across Europe and the Caucasus</title>
+
+  <meta
+    name="description"
+    content="Hereditas Platform is a multilingual research catalogue of sources and collections relating to folklore, traditional culture and cultural heritage across Europe and the Caucasus."
+  >
+
+  <meta name="theme-color" content="#173f4f">
+
+  <link rel="canonical" href="https://ec-hereditas.com/en/catalog/">
+  <link rel="alternate" hreflang="uk" href="https://ec-hereditas.com/catalog/">
+  <link rel="alternate" hreflang="en" href="https://ec-hereditas.com/en/catalog/">
+  <link rel="alternate" hreflang="x-default" href="https://ec-hereditas.com/catalog/">
+
+  <meta
+    property="og:title"
+    content="Hereditas Platform — Catalogue of Sources Across Europe and the Caucasus"
+  >
+
+  <meta
+    property="og:description"
+    content="A multilingual catalogue of sources, collections and research materials with traceable provenance, normalization and verification levels."
+  >
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ec-hereditas.com/en/catalog/">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+
+
+<body>
+
+<a class="skip-link" href="#main">
+  Skip to content
+</a>
+
+
+<header class="site-header">
+  <div class="container header-inner">
+
+    <a
+      class="brand"
+      href="/en/"
+      aria-label="Hereditas — home"
+    >
+      <img
+        src="/assets/logo.svg"
+        alt=""
+        width="42"
+        height="42"
+      >
+
+      <span class="brand-text">
+        <span class="brand-name">Hereditas</span>
+        <span class="brand-sub">Platform</span>
+      </span>
+    </a>
+
+
+    <nav
+      class="navigation"
+      data-navigation
+      aria-label="Main navigation"
+    >
+      <a href="/en/">Home</a>
+
+      <a
+        aria-current="page"
+        href="/en/catalog/"
+      >
+        Platform
+      </a>
+
+      <a href="/en/#contact">
+        Partnership
+      </a>
+
+      <a
+        class="language-link"
+        href="/catalog/"
+        lang="uk"
+        hreflang="uk"
+      >
+        UA
+      </a>
+
+      <button
+        class="icon-button"
+        data-theme-button
+        type="button"
+        aria-label="Change theme"
+        aria-pressed="false"
+        title="Dark theme"
+      >
+        <span
+          class="theme-icon"
+          aria-hidden="true"
+        ></span>
+      </button>
+    </nav>
+
+
+    <button
+      class="icon-button menu-button"
+      data-menu-button
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+      <span></span>
+    </button>
+
+  </div>
+</header>
+
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="narrow">
+
+      <p class="eyebrow">
+        Hereditas Platform
+      </p>
+
+      <h1>
+        Catalogue of Sources Across Europe and the Caucasus
+      </h1>
+
+      <p class="lead">
+        A multilingual research platform for discovering
+        sources, collections and digital resources relating
+        to folklore, traditional culture, vernacular beliefs,
+        ritual traditions and adjacent areas of cultural
+        heritage across Europe and the Caucasus.
+      </p>
+
+      <div class="hero-actions">
+
+        <a
+          class="button"
+          href="mailto:info@ec-hereditas.com?subject=Hereditas%20Platform%20collaboration"
+        >
+          Suggest a source or collaboration
+        </a>
+
+        <a
+          class="button button-secondary"
+          href="/en/"
+        >
+          About Hereditas
+        </a>
+
+      </div>
+
+
+      <div
+        class="catalog-visual"
+        aria-label="Stylized representation of Hereditas Platform search"
+      >
+
+        <div class="catalog-search">
+          Search by title, institution, country, region, language…
+        </div>
+
+        <div class="catalog-rows">
+
+          <div class="catalog-row">
+            <span></span><span></span><span></span>
+          </div>
+
+          <div class="catalog-row">
+            <span></span><span></span><span></span>
+          </div>
+
+          <div class="catalog-row">
+            <span></span><span></span><span></span>
+          </div>
+
+          <div class="catalog-row">
+            <span></span><span></span><span></span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <section class="content-block section-tint">
+
+    <div class="narrow prose">
+
+      <div class="notice">
+
+        <strong>
+          The public interface of Hereditas Platform is in development.
+        </strong>
+
+        The core catalogue and research dataset are already
+        maintained in an internal system. The public web interface
+        will be deployed after the current stage of data verification,
+        legal and ethical review and technical preparation.
+
+      </div>
+
+
+      <h2>
+        What is Hereditas Platform?
+      </h2>
+
+      <p>
+        <strong>Hereditas Platform</strong>
+        is a research and discovery catalogue of cultural-heritage
+        sources across Europe and the Caucasus.
+        Its purpose is to help researchers discover, compare
+        and verify materials currently dispersed across libraries,
+        archives, museums, universities, digital repositories,
+        publications and independent research projects.
+      </p>
+
+      <p>
+        Platform primarily describes
+        <strong>sources, collections and resources</strong>
+        rather than presenting individual traditions or practices
+        as unverified facts. A resource can be connected to an
+        institution, region, language, author, collection,
+        digital representation and other related sources.
+      </p>
+
+
+      <h2>
+        What the catalogue contains
+      </h2>
+
+      <ul>
+        <li>books, articles, edited volumes and serial publications;</li>
+        <li>manuscripts and archival records;</li>
+        <li>archival, library and museum collections;</li>
+        <li>audio and video recordings;</li>
+        <li>fieldwork and expedition materials;</li>
+        <li>digital libraries and repositories;</li>
+        <li>bibliographies and institutional catalogues;</li>
+        <li>research datasets;</li>
+        <li>regional and thematic research reports.</li>
+      </ul>
+
+
+      <h2>
+        Geographic coverage
+      </h2>
+
+      <p>
+        The catalogue covers
+        <strong>Europe and the Caucasus</strong>
+        and is not organized exclusively around present-day states.
+        Its geographic model can separately represent countries,
+        historical and cultural areas, administrative regions,
+        local places and transborder traditions.
+      </p>
+
+      <p>
+        This is particularly important for folklore and ethnographic
+        materials, because cultural phenomena, languages and
+        historical communities frequently do not correspond
+        neatly to contemporary political borders.
+      </p>
+
+
+      <h2>
+        How the data are organized
+      </h2>
+
+      <p>
+        Hereditas Platform deliberately distinguishes data
+        with different levels of readiness.
+        A verified record is not treated as equivalent to
+        a candidate still requiring manual review.
+      </p>
+
+
+      <h3>
+        Canonical catalogue
+      </h3>
+
+      <p>
+        Verified and normalized resources with stable identifiers.
+        Records may contain linked authors, institutions, countries,
+        regions, languages, genres, access states, verification
+        levels, URLs and source notes.
+      </p>
+
+
+      <h3>
+        Integration queue
+      </h3>
+
+      <p>
+        Candidates originating from regional spreadsheets,
+        imports and other research sources.
+        A candidate may turn out to be a new resource,
+        a possible duplicate, a child object or a record
+        for which there is not yet enough evidence
+        for a final decision.
+      </p>
+
+
+      <h3>
+        Research reports
+      </h3>
+
+      <p>
+        Full texts of regional and thematic research reports
+        are retained for full-text search, contextual verification
+        and reconstruction of the provenance of structured records.
+      </p>
+
+
+      <h2>
+        Principles of data management
+      </h2>
+
+      <ul>
+
+        <li>
+          <strong>Provenance is preserved.</strong>
+          It should remain possible to determine where a record,
+          relationship or normalized value originated.
+        </li>
+
+        <li>
+          <strong>Source forms are not destroyed.</strong>
+          Original names, spellings and terms are preserved
+          alongside normalized forms.
+        </li>
+
+        <li>
+          <strong>Ambiguous matches are not merged automatically.</strong>
+          A similar title or URL may create a candidate for review,
+          but does not by itself justify a merge.
+        </li>
+
+        <li>
+          <strong>Different entities remain distinct.</strong>
+          An institution, digital platform, individual resource,
+          author and digital representation are represented separately.
+        </li>
+
+        <li>
+          <strong>Uncertainty remains visible.</strong>
+          A working hypothesis should not appear as a confirmed
+          archival fact.
+        </li>
+
+        <li>
+          <strong>Automation does not replace review.</strong>
+          Machine-assisted methods can help reconcile and structure
+          material, but ambiguous decisions remain subject
+          to human review.
+        </li>
+
+        <li>
+          <strong>Access is not assumed to be open.</strong>
+          Rights, ethical restrictions and material sensitivity
+          must be considered separately.
+        </li>
+
+      </ul>
+
+
+      <h2>
+        Current state of Platform
+      </h2>
+
+      <p>
+        As of <strong>31 July 2026</strong>,
+        the working Hereditas Platform dataset contains
+        <strong>3,558 entries</strong>:
+        1,792 canonical resources,
+        1,640 integration-queue records and
+        126 full-text research reports.
+      </p>
+
+      <p>
+        Normalized authorities cover
+        <strong>48 countries and territories</strong>,
+        <strong>745 regions</strong> and
+        <strong>72 languages</strong>.
+      </p>
+
+      <p>
+        These figures describe different layers of the system.
+        Integration-queue records are
+        <strong>not automatically considered verified,
+        new or distinct resources</strong>.
+      </p>
+
+
+      <h2>
+        Next stage
+      </h2>
+
+      <p>
+        Current work focuses on data cleanup,
+        source and URL verification, development of normalized
+        authorities, improvement of multilingual discovery
+        and preparation of the public interface.
+      </p>
+
+      <p>
+        In the longer-term architecture, Platform is also intended
+        to support discovery across partner institutions'
+        collections while preserving their local identifiers,
+        provenance, access rules and status as the authoritative
+        source for their own records.
+      </p>
+
+
+      <h2>
+        Hereditas Platform and institutional pilots
+      </h2>
+
+      <p>
+        Development of Platform forms part of the broader
+        Hereditas digital infrastructure.
+        Other tools in this ecosystem are designed to work
+        directly inside archives, museums, libraries
+        and research collections.
+      </p>
+
+      <p>
+        The first institutional pilots are planned primarily for:
+      </p>
+
+      <ul>
+
+        <li>
+          <strong>Hereditas Collections</strong> —
+          collection description and management;
+        </li>
+
+        <li>
+          <strong>Hereditas Studio</strong> —
+          practical digitisation workflows;
+        </li>
+
+        <li>
+          <strong>Hereditas Bridge</strong> —
+          migration, normalization and integration
+          of existing institutional data.
+        </li>
+
+      </ul>
+
+      <p>
+        Selected metadata from such collections may later
+        become discoverable through Hereditas Platform
+        where the institution chooses this and where legal
+        and ethical access conditions permit it.
+      </p>
+
+
+      <h2>
+        For researchers and institutions
+      </h2>
+
+      <p>
+        We welcome collaboration with archives, libraries,
+        museums, universities, researchers and holders
+        of digital collections in developing and reviewing Platform.
+      </p>
+
+      <p>Particularly useful contributions include:</p>
+
+      <ul>
+
+        <li>
+          information about missing catalogues, collections,
+          bibliographies and digital resources;
+        </li>
+
+        <li>
+          corrections to institutional names and attributions;
+        </li>
+
+        <li>
+          identification of outdated or incorrect URLs;
+        </li>
+
+        <li>
+          advice on regional, historical and multilingual terminology;
+        </li>
+
+        <li>
+          academic review of regional or thematic sections;
+        </li>
+
+        <li>
+          discussion of future federation of institutional
+          catalogues and collections.
+        </li>
+
+      </ul>
+
+      <p>
+        <a
+          class="button"
+          href="mailto:info@ec-hereditas.com?subject=Hereditas%20Platform%20collaboration"
+        >
+          Suggest a source or collaboration
+        </a>
+      </p>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer class="site-footer">
+
+  <div class="container footer-grid">
+
+    <div class="small">
+      © <span data-year></span> NGO “Hereditas”.
+    </div>
+
+    <div class="footer-links">
+
+      <a href="/en/privacy/">
+        Privacy
+      </a>
+
+      <a href="/en/">
+        Home
+      </a>
+
+      <a
+        href="/catalog/"
+        lang="uk"
+      >
+        Українська
+      </a>
+
+      <button
+        class="analytics-settings"
+        type="button"
+        data-manage-analytics
+      >
+        Analytics
+      </button>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<script src="/assets/site.js" defer></script>
+
+</body>
+</html>
