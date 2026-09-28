@@ -1,12 +1,12 @@
-import {mediaPreview} from './session-media.mjs?v=20260928-one-user';
-import {sessionPage} from './session.mjs?v=20260928-one-user';
-import {contactsPage} from './contacts.mjs?v=20260928-one-user';
-import {preparationPage} from './preparation.mjs?v=20260928-one-user';
-import {preparationStatus} from '../data/preparation.mjs?v=20260928-one-user';
-import {can,hash} from '../data/model.mjs?v=20260928-one-user';
-import {hint} from './help.mjs?v=20260928-one-user';
-import {wizard} from './wizard.mjs?v=20260928-one-user';
-import {mediaPages} from './media.mjs?v=20260928-one-user';
+import {mediaPreview} from './session-media.mjs?v=20260928-cultural-media';
+import {sessionPage} from './session.mjs?v=20260928-cultural-media';
+import {contactsPage} from './contacts.mjs?v=20260928-cultural-media';
+import {preparationPage} from './preparation.mjs?v=20260928-cultural-media';
+import {preparationStatus} from '../data/preparation.mjs?v=20260928-cultural-media';
+import {can,hash} from '../data/model.mjs?v=20260928-cultural-media';
+import {hint} from './help.mjs?v=20260928-cultural-media';
+import {wizard} from './wizard.mjs?v=20260928-cultural-media';
+import {mediaPages} from './media.mjs?v=20260928-cultural-media';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;
@@ -114,9 +114,9 @@ export function fieldPages(ctx){
   const r=research();if(params.get('research')&&!r){denied();return;}
   const q=(params.get('q')||'').toLocaleLowerCase('uk'),rows=visible('collecting_session').filter(x=>(!r||x.research_id===r.id)&&x.title.toLocaleLowerCase('uk').includes(q));
   action('create',()=>sessionWizard(r));rows.forEach(x=>{action('unit-'+x.id,()=>unitDialog(x));action('participant-'+x.id,()=>participantDialog(x));action('handover-'+x.id,()=>mediaPages(ctx).prepareHandover(x));});
-  show(heading(r?.title||'Робочий список','Сеанси','Додавайте записи з рядка сеансу. У картці можна уточнити учасників, перебіг, цифрові файли й нотатки.',primary('Новий сеанс','create',r?writable(r.id):visible('field_research').some(x=>writable(x.id))))+
+  show(heading(r?.title||'Робочий список','Сеанси','Додавайте записи з рядка сеансу. Аудіо, відео та фото додавайте до відповідного сеансу. У картці також є учасники, перебіг і нотатки.',primary('Новий сеанс','create',r?writable(r.id):visible('field_research').some(x=>writable(x.id))))+
    `<form class="filters"><input type="hidden" name="role" value="${esc(listContext().role)}">${select('research','Дослідження','<option value="">Усі дослідження</option>'+opts(visible('field_research'),r?.id))}${input('q','Знайти сеанс',params.get('q')||'')}<button class="button">Знайти</button></form>`+
-   panel('Сеанси',table(['Сеанс','Учасники / записи','Передання','Наступна дія'],rows.map(x=>{const units=t.information_unit.filter(u=>u.session_id===x.id),people=t.participation.filter(p=>p.session_id===x.id).length,transfer=transferFor(x);return [`<a href="${pg(8,{...listContext(),id:x.id})}">${esc(x.title)}</a><span class="sub">${esc(label(x.research_id))} · ${esc(x.date_label||date(x.date_from))}</span>`,`Учасники: ${people} · Записи: ${units.length}`,transfer?`<a href="${pg(11,{id:transfer.h.id,tab:'outgoing'})}">${esc(({prepared:'Пакет підготовлено',sent:'Надіслано',accepted:'Прийнято',returned:'Повернуто на уточнення'})[transfer.h.state])}</a>${!transfer.current?'<span class="sub">Матеріали змінено після підготовки пакета</span>':''}`:'Пакет ще не підготовлено',primary(people?'Додати запис':'Додати учасника',(people?'unit-':'participant-')+x.id,writable(x.id))+(units.length&&(!transfer||!transfer.current||transfer.h.state==='returned')?' '+btn('Підготувати передання','handover-'+x.id,writable(x.id,'intake.send')):'')];}))));
+   panel('Сеанси',table(['Сеанс','Учасники / записи','Передання','Наступна дія'],rows.map(x=>{const units=t.information_unit.filter(u=>u.session_id===x.id),people=t.participation.filter(p=>p.session_id===x.id).length,transfer=transferFor(x);return [`<a href="${pg(8,{...listContext(),id:x.id})}">${esc(x.title)}</a><span class="sub">${esc(label(x.research_id))} · ${esc(x.date_label||date(x.date_from))}</span>`,`Учасники: ${people} · Записи: ${units.length}<span class="sub">${button('Аудіо, відео та фото',pg(8,{...listContext(),id:x.id,section:'media'}),true)}</span>`,transfer?`<a href="${pg(11,{id:transfer.h.id,tab:'outgoing'})}">${esc(({prepared:'Пакет підготовлено',sent:'Надіслано',accepted:'Прийнято',returned:'Повернуто на уточнення'})[transfer.h.state])}</a>${!transfer.current?'<span class="sub">Матеріали змінено після підготовки пакета</span>':''}`:'Пакет ще не підготовлено',primary(people?'Додати запис':'Додати учасника',(people?'unit-':'participant-')+x.id,writable(x.id))+(units.length&&(!transfer||!transfer.current||transfer.h.state==='returned')?' '+btn('Підготувати передання','handover-'+x.id,writable(x.id,'intake.send')):'')];}))));
 
  }
  function sessionDetail(){

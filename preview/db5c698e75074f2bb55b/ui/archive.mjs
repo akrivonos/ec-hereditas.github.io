@@ -1,6 +1,6 @@
-import {can} from '../data/model.mjs?v=20260928-one-user';
-import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20260928-one-user';
-import {wizard} from './wizard.mjs?v=20260928-one-user';
+import {can} from '../data/model.mjs?v=20260928-cultural-media';
+import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20260928-cultural-media';
+import {wizard} from './wizard.mjs?v=20260928-cultural-media';
 
 export function archivePages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);

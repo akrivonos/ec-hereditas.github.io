@@ -1,12 +1,12 @@
-import {sessionCommand,validateSession} from './session.mjs?v=20260928-one-user';
-import {contactCommand,validateContacts} from './contacts.mjs?v=20260928-one-user';
-import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20260928-one-user';
+import {sessionCommand,validateSession} from './session.mjs?v=20260928-cultural-media';
+import {contactCommand,validateContacts} from './contacts.mjs?v=20260928-cultural-media';
+import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20260928-cultural-media';
 // Domain operations for the fieldwork and archive prototype. No backend persistence.
-import {mediaRelations} from './media.mjs?v=20260928-one-user';
-import {researchRelations} from './research.mjs?v=20260928-one-user';
-import {publicRelations} from './public.mjs?v=20260928-one-user';
-import {museumRelations} from './museum.mjs?v=20260928-one-user';
-import {workbenchRelations} from './workbench.mjs?v=20260928-one-user';
+import {mediaRelations} from './media.mjs?v=20260928-cultural-media';
+import {researchRelations} from './research.mjs?v=20260928-cultural-media';
+import {publicRelations} from './public.mjs?v=20260928-cultural-media';
+import {museumRelations} from './museum.mjs?v=20260928-cultural-media';
+import {workbenchRelations} from './workbench.mjs?v=20260928-cultural-media';
 export const fieldTypes=['field_research','work_group','participation','collecting_session','geographic_context','potential_respondent','document','information_unit','archive_node','place','institution','timed_layer'];
 const fields={
  field_research:['title','purpose','research_questions','date_from','date_to','preparation_notes','backup_plan'],

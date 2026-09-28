@@ -1,6 +1,6 @@
-import {can,hash} from '../data/model.mjs?v=20260928-one-user';
-import {textList,textView,textKinds,kindCode,useNames,useDecision} from '../data/workbench.mjs?v=20260928-one-user';
-import {wizard} from './wizard.mjs?v=20260928-one-user';
+import {can,hash} from '../data/model.mjs?v=20260928-cultural-media';
+import {textList,textView,textKinds,kindCode,useNames,useDecision} from '../data/workbench.mjs?v=20260928-cultural-media';
+import {wizard} from './wizard.mjs?v=20260928-cultural-media';
 
 export function workbenchPages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search),role=p.get('role')||'R02';

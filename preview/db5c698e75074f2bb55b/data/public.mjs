@@ -1,7 +1,7 @@
 // Public views use only an approved projection. Internal source rows never enter the public payload.
-import {activeAccount} from './model.mjs?v=20260928-one-user';
-import {rawHash} from './media.mjs?v=20260928-one-user';
-import {consentBasisValid} from './workbench.mjs?v=20260928-one-user';
+import {activeAccount} from './model.mjs?v=20260928-cultural-media';
+import {rawHash} from './media.mjs?v=20260928-cultural-media';
+import {consentBasisValid} from './workbench.mjs?v=20260928-cultural-media';
 export const publicTypes=['access_decision','publication_record','user_collection'];
 const publicFields=['title','summary','kind','category','place','period','attribution','terms','context_ids','resource_label'];
 export function publicAccessStamp(s){

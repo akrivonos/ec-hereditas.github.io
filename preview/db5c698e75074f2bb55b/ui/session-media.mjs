@@ -1,5 +1,5 @@
-import {MAX_MEDIA_BYTES,mediaMime,mediaUrl,fileBytes} from '../data/binary.mjs?v=20260928-one-user';
-import {recordingGaps} from '../data/session.mjs?v=20260928-one-user';
+import {MAX_MEDIA_BYTES,mediaMime,mediaUrl,fileBytes} from '../data/binary.mjs?v=20260928-cultural-media';
+import {recordingGaps} from '../data/session.mjs?v=20260928-cultural-media';
 export function mediaPreview(content,mime,esc,id=''){
  const url=mediaUrl(content,mime);if(!url)return `<pre class="source-text reading-text">${esc(typeof content==='string'?content:'Файл недоступний для перегляду.')}</pre>`;
  return mime.startsWith('image/')?`<img src="${url}" alt="Фото сеансу" style="max-width:100%;max-height:440px;object-fit:contain">`:`<${mime.startsWith('audio/')?'audio':'video'} ${id?`id="${esc(id)}"`:''} controls preload="metadata" src="${url}" style="width:100%;max-height:440px"></${mime.startsWith('audio/')?'audio':'video'}>`;
@@ -17,15 +17,23 @@ export function demoWav(){
  for(let i=0;i<count;i++)v.setInt16(44+i*2,Math.sin(i*2*Math.PI*(i<8000?440:660)/8000)*1800,true);return new Blob([b],{type:'audio/wav'});
 }
 export function sessionMediaDialogs(c,r,command){
- const {st,esc,input,dialog,dispatch,render,flash,label}=c;
+ const {st,esc,input,select,choices,dialog,dispatch,render,flash,label}=c;
  const saved=async payload=>{await dispatch(command('field.session.media',payload));flash('Медіазапис додано.');render();};
  const common=input('title','Назва запису')+input('origin_note','Походження та підстава запису','','textarea',true,'Для імпортованого файла вкажіть, хто й коли записав його та де зберігається згода. Збереження файла не надає дозволу на публікацію.')+input('occurred_at','Коли зроблено запис','','datetime-local')+input('device_model','Пристрій')+input('technical_incidents','Технічні зауваження','','textarea');
  function importDialog(demo=false){
-  const d=dialog(demo?'Додати навчальне аудіо':'Додати медіафайл',(demo?'<p>Дві синтетичні ноти, 2 секунди. Можна прослухати й позначити обидві частини.</p>':'<label>Файл<input name="media_file" type="file" accept="audio/*,video/*,image/png,image/jpeg,image/webp" required></label>')+common+input('duration_seconds','Тривалість, секунд (якщо не визначається)','','number',false,'Потрібна для часових позначок; перевірте за оригінальним записом.'),async fd=>{
+  const accepts={all:'audio/*,video/*,image/png,image/jpeg,image/webp',audio:'audio/*',video:'video/*',photo:'image/png,image/jpeg,image/webp'};
+  const d=dialog(demo?'Додати навчальне аудіо':'Додати медіафайл',(demo?'<p>Дві синтетичні ноти, 2 секунди. Можна прослухати й позначити обидві частини.</p>':select('media_kind','Тип матеріалу',choices([['all','Аудіо, відео або фото'],['audio','Аудіо'],['video','Відео'],['photo','Фото']],'all'))+'<label>Файл<input name="media_file" type="file" accept="'+accepts.all+'" required></label>')+common+'<div data-duration>'+input('duration_seconds','Тривалість, секунд (якщо не визначається)','','number',false,'Потрібна для часових позначок; перевірте за оригінальним записом.')+'</div>',async fd=>{
    const blob=demo?demoWav():fd.get('media_file'),mime=blob.type.split(';')[0];if(!mediaMime(mime)||!blob.size||blob.size>MAX_MEDIA_BYTES)throw Error('Оберіть підтримуваний медіафайл до 2 МБ.');
-   const measured=await duration(blob),manual=Number(fd.get('duration_seconds'));await saved({...Object.fromEntries(fd),content:await encode(blob),mime_type:mime,filename:demo?'Навчальні-тони.wav':blob.name,duration_ms:measured||(manual>0?Math.round(manual*1000):null)});
+   const kind=mime.startsWith('image/')?'photo':mime.split('/')[0],requested=fd.get('media_kind');
+   if(requested&&requested!=='all'&&requested!==kind)throw Error('Файл не відповідає обраному типу матеріалу.');
+   const measured=await duration(blob),manual=Number(fd.get('duration_seconds'));await saved({...Object.fromEntries(fd),content:await encode(blob),mime_type:mime,filename:demo?'Навчальні-тони.wav':blob.name,duration_ms:kind==='photo'?null:measured||(manual>0?Math.round(manual*1000):null)});
   });
   if(demo){d.querySelector('[name=title]').value='Навчальне аудіо: дві ноти';d.querySelector('[name=origin_note]').value='Синтетичний приклад для перевірки відтворення й часових позначок; не польовий матеріал.';}
+  else {
+   const type=d.querySelector('[name=media_kind]'),file=d.querySelector('[name=media_file]');
+   const sync=()=>{file.accept=accepts[type.value];const photo=type.value==='photo'||file.files[0]?.type.startsWith('image/');d.querySelector('[data-duration]').hidden=photo;d.querySelector('[name=duration_seconds]').disabled=photo;};
+   type.onchange=()=>{file.value='';sync();};file.onchange=sync;
+  }
  }
  function recordDialog(kind){
   const gaps=recordingGaps(st,r.id,kind);if(gaps.length)throw Error('Спочатку задокументуйте дозвіл на '+({audio:'аудіозапис',video:'відеозапис',photo:'фотографування'}[kind])+': '+gaps.map(label).join(', ')+'.');

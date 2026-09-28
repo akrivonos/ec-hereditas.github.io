@@ -1,5 +1,5 @@
-import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20260928-one-user';
-import {hint} from './help.mjs?v=20260928-one-user';
+import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20260928-cultural-media';
+import {hint} from './help.mjs?v=20260928-cultural-media';
 
 export function preparationPage(c,r){
  const {st,t,by,rev,label,visible,writable,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,save,show,edit,tabs,revisionHistory,programmeDialog,sessionWizard,dialog}=c;

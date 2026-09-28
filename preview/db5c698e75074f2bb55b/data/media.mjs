@@ -1,4 +1,4 @@
-import {fileBytes} from './binary.mjs?v=20260928-one-user';
+import {fileBytes} from './binary.mjs?v=20260928-cultural-media';
 // Internal, scoped prototype operations. Storage and capture actions explicitly simulate hardware.
 export const mediaTypes=['source_system','source_record','physical_object','storage_location','condition_assessment','custody_event','media_asset','representation','file_object','storage_copy','capture_event','qc_record','candidate','review_decision','evidence'];
 export const mediaRelations=(t,type,id)=>Object.fromEntries(({

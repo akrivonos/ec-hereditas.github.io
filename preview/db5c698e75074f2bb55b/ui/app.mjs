@@ -1,15 +1,15 @@
-import {prepareSingleUser} from '../data/single-user.mjs?v=20260928-one-user';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20260928-one-user";
-import {fieldPages} from './field.mjs?v=20260928-one-user';
-import {mediaPages} from './media.mjs?v=20260928-one-user';
-import {researchPages} from './research.mjs?v=20260928-one-user';
-import {publicPages} from './public.mjs?v=20260928-one-user';
-import {archivePages} from './archive.mjs?v=20260928-one-user';
-import {workbenchPages} from './workbench.mjs?v=20260928-one-user';
-import {museumPages} from './museum.mjs?v=20260928-one-user';
-import {museumStamp} from '../data/museum.mjs?v=20260928-one-user';
-import {publicAccessStamp} from '../data/public.mjs?v=20260928-one-user';
-import {bindHelp} from './help.mjs?v=20260928-one-user';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20260928-cultural-media';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20260928-cultural-media";
+import {fieldPages} from './field.mjs?v=20260928-cultural-media';
+import {mediaPages} from './media.mjs?v=20260928-cultural-media';
+import {researchPages} from './research.mjs?v=20260928-cultural-media';
+import {publicPages} from './public.mjs?v=20260928-cultural-media';
+import {archivePages} from './archive.mjs?v=20260928-cultural-media';
+import {workbenchPages} from './workbench.mjs?v=20260928-cultural-media';
+import {museumPages} from './museum.mjs?v=20260928-cultural-media';
+import {museumStamp} from '../data/museum.mjs?v=20260928-cultural-media';
+import {publicAccessStamp} from '../data/public.mjs?v=20260928-cultural-media';
+import {bindHelp} from './help.mjs?v=20260928-cultural-media';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;
@@ -138,7 +138,7 @@ function shell(content){
  if(pageId==="PG-63"){
    app.innerHTML=demoBar()+'<div class="plain-shell"><header class="plain-top"><a class="brand" href="'+url("index.html")+'"><span class="brand-mark" aria-hidden="true">h</span>hereditas</a><span class="muted">Вхід до робочого простору</span></header><main id="main" class="main">'+alert+content+'</main></div>';
  }else{
- app.innerHTML=demoBar()+'<div id="external-update"></div><div class="shell"><aside class="sidebar compact-sidebar"><div><a class="brand" href="'+pg(1)+'"><span class="brand-mark" aria-hidden="true">h</span>hereditas</a><p class="brand-caption">Архів усної спадщини</p></div><button class="mobile-menu" id="mobile-menu" type="button" aria-expanded="false">Меню</button>'+nav+
+ app.innerHTML=demoBar()+'<div id="external-update"></div><div class="shell"><aside class="sidebar compact-sidebar"><div><a class="brand" href="'+pg(1)+'"><span class="brand-mark" aria-hidden="true">h</span>hereditas</a><p class="brand-caption">Архів культурної спадщини</p></div><button class="mobile-menu" id="mobile-menu" type="button" aria-expanded="false">Меню</button>'+nav+
  '<div class="sidebar-bottom"><div class="person"><span class="avatar">'+esc(id.initials)+'</span><div><strong>'+esc(id.name)+'</strong><br><small>'+esc(id.context)+'</small></div></div></div></aside>'+
  '<div class="content-column"><header class="topbar"><div class="crumb">Hereditas <span aria-hidden="true"> / </span> '+esc(manifest.pages.find(p=>p.id===pageId)?.title||(pageId==="catalog"?"Робочі простори":pageId==="workflows"?"Робочі процеси":pageId==="page-preview"?"Робоча сторінка":"Спільні компоненти"))+'</div>'+
  '<label for="scope">Область роботи<select id="scope"><option value="">'+(available.length?"Усі доступні архіви":"Немає архівного доступу")+'</option>'+available.map(a=>'<option value="'+a.id+'"'+(allowed===a.id?' selected':'')+'>'+esc(a.name)+'</option>').join("")+'</select></label></header>'+

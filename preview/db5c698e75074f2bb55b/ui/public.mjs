@@ -1,6 +1,6 @@
-import {activeAccount} from '../data/model.mjs?v=20260928-one-user';
-import {publicView,publicSearch,publicResources,publicDownload,collectionView,collectionOwned,publicCitationVisible,publicExportDownload} from '../data/public.mjs?v=20260928-one-user';
-import {wizard} from './wizard.mjs?v=20260928-one-user';
+import {activeAccount} from '../data/model.mjs?v=20260928-cultural-media';
+import {publicView,publicSearch,publicResources,publicDownload,collectionView,collectionOwned,publicCitationVisible,publicExportDownload} from '../data/public.mjs?v=20260928-cultural-media';
+import {wizard} from './wizard.mjs?v=20260928-cultural-media';
 
 export function publicPages(ctx){
  const {s,actor,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search),signed=!!activeAccount(st,actor);
@@ -27,7 +27,7 @@ export function publicPages(ctx){
  };
  function home(){
   const rows=publicSearch(st),categories=[...new Set(rows.map(x=>x.category).filter(Boolean))],contexts=publicSearch(st,{kind:''}).filter(x=>x.kind!=='material');
-  show(heading('Архів усної спадщини','Відкрийте живу традицію','Шукайте пісні, спогади й польові записи. Відкрийте матеріал, дізнайтеся про його контекст і збережіть у власну добірку.')+searchForm()+
+  show(heading('Архів культурної спадщини','Відкрийте живу традицію','Шукайте пісні, спогади, аудіозаписи, відео та фото. Відкрийте матеріал, дізнайтеся про його контекст і збережіть у власну добірку.')+searchForm()+
    `<nav class="journey-filters" aria-label="Теми">${categories.map(x=>link(49,x,{category:x})).join('')}</nav>`+
    panel('Матеріали архіву',materialRows(rows),link(49,'Увесь каталог →'))+
    panel('Дізнатися більше',table(['Контекст','Опис'],contexts.map(x=>[link(52,x.title,{id:x.id}),esc(x.summary||'')]))));

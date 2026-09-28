@@ -1,8 +1,8 @@
-import {mediaPreview} from './session-media.mjs?v=20260928-one-user';
-import {can,hash} from '../data/model.mjs?v=20260928-one-user';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20260928-one-user';
-import {hint} from './help.mjs?v=20260928-one-user';
-import {wizard} from './wizard.mjs?v=20260928-one-user';
+import {mediaPreview} from './session-media.mjs?v=20260928-cultural-media';
+import {can,hash} from '../data/model.mjs?v=20260928-cultural-media';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20260928-cultural-media';
+import {hint} from './help.mjs?v=20260928-cultural-media';
+import {wizard} from './wizard.mjs?v=20260928-cultural-media';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;
