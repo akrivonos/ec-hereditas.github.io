@@ -1,0 +1,85 @@
+{
+  "page": "PG-02",
+  "title": "Завдання та невирішені питання",
+  "route": "/tasks",
+  "roles": "R01–R04, R05-M; допоміжні функції",
+  "workflows": [
+    "WF-24"
+  ],
+  "phase": "M1",
+  "tables": [
+    "work_item",
+    "workflow_run",
+    "work_item_dependency"
+  ],
+  "fields_and_relations": "Стан, вид роботи, workflow, виконавець, строк, блокувальні залежності.",
+  "required_interaction": "Фільтр/призначення; blocked не можна просто позначити done без підстави.",
+  "fixtures": [
+    "FX-01"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "view_model": "tasks(actor, scope) with URL search/state/owner/workflow/due/sort filters and pagination",
+    "commands": [
+      "task.create"
+    ],
+    "fields": [
+      {
+        "field": "work_item.title",
+        "mode": "editable",
+        "required": true,
+        "max_length": 240
+      },
+      {
+        "field": "work_item.due_at",
+        "mode": "editable",
+        "nullable": true,
+        "unit": "UTC timestamp"
+      },
+      {
+        "field": "entity.archive_id",
+        "mode": "picker",
+        "target": "archive",
+        "required": true
+      },
+      {
+        "field": "entity_revision.change_reason",
+        "mode": "editable",
+        "required": true
+      }
+    ],
+    "permissions": [
+      "task.read",
+      "task.create"
+    ],
+    "checks": [
+      "unknown scope cannot create",
+      "search reload",
+      "pagination uses derived count"
+    ],
+    "input": {
+      "actor": "account.id",
+      "scope": "archive.id or all accessible",
+      "clock": "fixture UTC time",
+      "entity_id": "URL id where applicable"
+    },
+    "state_storage": "Normalized store in localStorage; single administrator and scope in sessionStorage",
+    "atomicity": "clone -> authorize -> validate -> append revision/event -> persist; failures keep state unchanged",
+    "common_states": [
+      "populated",
+      "empty",
+      "loading",
+      "error",
+      "forbidden",
+      "stale where editable"
+    ]
+  }
+}

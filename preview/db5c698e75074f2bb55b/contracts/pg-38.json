@@ -1,0 +1,53 @@
+{
+  "page": "PG-38",
+  "title": "Картка медіаресурсу",
+  "route": "/media/{id}",
+  "roles": "R03, R02; інші ролі за доступом",
+  "workflows": [
+    "WF-04",
+    "WF-11",
+    "WF-12",
+    "WF-13",
+    "WF-14"
+  ],
+  "phase": "M3",
+  "tables": [
+    "media_asset",
+    "representation",
+    "representation_file",
+    "file_object",
+    "storage_copy",
+    "representation_derivation"
+  ],
+  "fields_and_relations": "Asset→representation→file→copy; порядок компонентів, filenames, checksum, derivation.",
+  "required_interaction": "Перегляд master/access, копії й історія; заміна bytes — новий file, недоступний ресурс не завантажується.",
+  "fixtures": [
+    "FX-03"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.derivative",
+      "media.asset.link"
+    ],
+    "view_model": "Representation tabs, ordered file metadata, content preview, exact derivation, copy history",
+    "completion": "partial",
+    "limitations": [
+      "Preview supports the generated text fixtures; no external media playback."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

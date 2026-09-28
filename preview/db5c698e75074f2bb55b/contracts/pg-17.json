@@ -1,0 +1,48 @@
+{
+  "page": "PG-17",
+  "title": "Картка інформаційної одиниці",
+  "route": "/units/{id}",
+  "roles": "R02; R01 у дозволеному обсязі",
+  "workflows": [
+    "WF-07"
+  ],
+  "phase": "M2",
+  "tables": [
+    "information_unit",
+    "unit_participant",
+    "unit_segment",
+    "classification",
+    "semantic_relation"
+  ],
+  "fields_and_relations": "recorded_work/fei, title/incipit, порядок, учасники, терміни й source_label, сегменти.",
+  "required_interaction": "Перемикання підтипу/класифікація з перевіркою D; повторне виконання лишається окремою одиницею.",
+  "fixtures": [
+    "FX-01"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "field.save",
+      "field.placement"
+    ],
+    "view_model": "Curator material list with package/search/placement filters, pinned-package preview, current-description modal and optimistic placement wizard; explicit unit detail",
+    "limitations": [
+      "Performer editing, assertions, media and evidence are pending."
+    ],
+    "completion": "partial",
+    "state_storage": "Shared normalized browser store; fixture version 9",
+    "permissions": [
+      "domain.read",
+      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+    ],
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+  }
+}

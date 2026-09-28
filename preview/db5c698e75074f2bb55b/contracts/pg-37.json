@@ -1,0 +1,47 @@
+{
+  "page": "PG-37",
+  "title": "Цифрові ресурси",
+  "route": "/media",
+  "roles": "R03, R02; R01 у своєму обсязі",
+  "workflows": [
+    "WF-13"
+  ],
+  "phase": "M3",
+  "tables": [
+    "media_asset",
+    "media_asset_subject",
+    "representation",
+    "file_ingest_occurrence"
+  ],
+  "fields_and_relations": "Логічні ресурси, контекст, ролі представлень, непов’язані надходження.",
+  "required_interaction": "Пошук/ingest/зв’язати; одна логічна фотографія з master/preview, не два предмети.",
+  "fixtures": [
+    "FX-03"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.ingest",
+      "media.asset.link"
+    ],
+    "view_model": "Logical asset search, unlinked filter, ingest text fixture and source context",
+    "completion": "partial",
+    "limitations": [
+      "Real audio/video/scan upload is not implemented."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

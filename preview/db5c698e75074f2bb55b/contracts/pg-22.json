@@ -1,0 +1,46 @@
+{
+  "page": "PG-22",
+  "title": "Джерельний запис і його відповідності",
+  "route": "/source-records/{id}",
+  "roles": "R02; інші ролі за доступом",
+  "workflows": [
+    "WF-06",
+    "WF-08"
+  ],
+  "phase": "M3",
+  "tables": [
+    "source_record",
+    "source_record_link",
+    "evidence",
+    "candidate"
+  ],
+  "fields_and_relations": "Оригінал і locator поруч із нормалізованими відповідностями та рішеннями.",
+  "required_interaction": "Подати match-кандидат; reject/defer зберігає raw і пояснення.",
+  "fixtures": [
+    "FX-02"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.match",
+      "media.match.review"
+    ],
+    "view_model": "Candidate matching, explicit human accept/reject/defer, exact target/base versions; raw never rewritten",
+    "completion": "core-interactive",
+    "limitations": [],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "page": "PG-65",
+  "title": "Користувачі та надані права",
+  "route": "/admin/access",
+  "roles": "Системний адміністратор",
+  "workflows": [],
+  "phase": "M1",
+  "tables": [
+    "account",
+    "access_role",
+    "role_permission",
+    "role_assignment",
+    "audit_event"
+  ],
+  "fields_and_relations": "Акаунти, scope/expiry, permissions та історія.",
+  "required_interaction": "Надати/відкликати scoped grant; відповідні дії зникають/блокуються на інших сторінках.",
+  "fixtures": [
+    "FX-09"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "view_model": "Single user Користувач, full administrator access; role navigation does not change login",
+    "commands": [],
+    "external_commands": [],
+    "fields": [
+      {
+        "field": "account.state",
+        "mode": "readonly",
+        "values": [
+          "active"
+        ]
+      }
+    ],
+    "permissions": [
+      "account.manage"
+    ],
+    "checks": [
+      "one account and generic name",
+      "all role sections accessible",
+      "saved materials survive consolidation"
+    ],
+    "limitations": [
+      "Single-user prototype; real authentication and multi-user administration are deferred."
+    ],
+    "input": {
+      "actor": "account.id",
+      "scope": "archive.id or all accessible",
+      "clock": "fixture UTC time",
+      "entity_id": "URL id where applicable"
+    },
+    "state_storage": "Normalized store in localStorage; single administrator and scope in sessionStorage",
+    "atomicity": "clone -> authorize -> validate -> append revision/event -> persist; failures keep state unchanged",
+    "common_states": [
+      "populated",
+      "empty",
+      "loading",
+      "error",
+      "forbidden",
+      "stale where editable"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "page": "PG-46",
+  "title": "Дослідницьке твердження",
+  "route": "/research/assertions/{id}",
+  "roles": "Автор R04 і співпрацівники",
+  "workflows": [
+    "WF-18",
+    "WF-19"
+  ],
+  "phase": "M6",
+  "tables": [
+    "assertion",
+    "evidence_link",
+    "candidate",
+    "research_corpus"
+  ],
+  "fields_and_relations": "scope=research, statement, докази, альтернативи й авторство.",
+  "required_interaction": "Сформувати твердження/передати пропозицію; машинний висновок до review не accepted.",
+  "fixtures": [
+    "FX-06"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "research.assertion",
+      "research.proposal"
+    ],
+    "view_model": "Private assertion list and detail, exact supporting evidence, proposal wizard",
+    "completion": "partial",
+    "limitations": [
+      "Multiple evidence inputs, contradiction roles and collaborative revision are pending."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "permissions": [
+      "research.write in an explicit archive grant",
+      "owner_account_id for private objects",
+      "domain.read rechecked for every source, note, assertion, citation and download"
+    ],
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+  }
+}

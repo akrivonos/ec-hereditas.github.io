@@ -1,0 +1,44 @@
+{
+  "page": "PG-07",
+  "title": "Збирацькі сеанси",
+  "route": "/field/sessions",
+  "roles": "R01, R02",
+  "workflows": [],
+  "phase": "M2",
+  "tables": [
+    "collecting_session",
+    "field_research",
+    "geographic_context"
+  ],
+  "fields_and_relations": "Дата або неточний період, місце, група, дослідження.",
+  "required_interaction": "Фільтр і створення; незалежний підтверджений сеанс без field_research допустимий.",
+  "fixtures": [
+    "FX-01"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "field.session.create",
+      "field.unit.create",
+      "field.participant",
+      "media.handover.create"
+    ],
+    "view_model": "Session list with explicit research/search filters, participant and unit actions, pinned-programme wizard and contextual package draft",
+    "limitations": [],
+    "completion": "core-interactive",
+    "state_storage": "Shared normalized browser store; fixture version 9",
+    "permissions": [
+      "domain.read",
+      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+    ],
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+  }
+}

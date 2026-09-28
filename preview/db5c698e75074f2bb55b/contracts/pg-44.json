@@ -1,0 +1,50 @@
+{
+  "page": "PG-44",
+  "title": "Корпус: склад і версії",
+  "route": "/research/corpora/{id}",
+  "roles": "R04 та дозволені співпрацівники",
+  "workflows": [
+    "WF-16",
+    "WF-17",
+    "WF-18"
+  ],
+  "phase": "M6",
+  "tables": [
+    "research_corpus",
+    "corpus_item",
+    "entity_revision",
+    "corpus_collaborator"
+  ],
+  "fields_and_relations": "Критерії, group/reason, ordered exact target revisions, access snapshot.",
+  "required_interaction": "Freeze/new version; відкликаний елемент лишає дозволене посилання, не старі bytes.",
+  "fixtures": [
+    "FX-06"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "research.corpus.revise",
+      "research.corpus.freeze"
+    ],
+    "view_model": "Ordered exact source versions, criteria/reason/group, immutable history and explicit next version",
+    "completion": "partial",
+    "limitations": [
+      "UI applies a shared reason/group to the selected batch; per-item reordering and grouping are pending."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "permissions": [
+      "research.write in an explicit archive grant",
+      "owner_account_id for private objects",
+      "domain.read rechecked for every source, note, assertion, citation and download"
+    ],
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "page": "PG-11",
+  "title": "Звірка та приймання пакета",
+  "route": "/transfers/{id}",
+  "roles": "Відправник R01/R03, приймач R02/R03",
+  "workflows": [
+    "WF-04",
+    "WF-05",
+    "WF-11",
+    "WF-13"
+  ],
+  "phase": "M3",
+  "tables": [
+    "handover",
+    "handover_item",
+    "file_ingest_occurrence",
+    "storage_copy"
+  ],
+  "fields_and_relations": "Маніфест, вихідні назви, revision елементів, checksum і комплектність.",
+  "required_interaction": "Прийняти/повернути елементи; дефект або відсутня копія → завдання, не фальшивий успіх.",
+  "fixtures": [
+    "FX-01"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.handover"
+    ],
+    "view_model": "Check items; send/return/accept with explicit recipient rights; missing independent copies block acceptance",
+    "completion": "partial",
+    "limitations": [
+      "Transport is local simulation; no network delivery."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

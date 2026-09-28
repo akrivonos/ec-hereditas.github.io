@@ -1,0 +1,48 @@
+{
+  "page": "PG-32",
+  "title": "Картка фізичного носія",
+  "route": "/physical-objects/{id}",
+  "roles": "R02, R03, фондозберігач",
+  "workflows": [
+    "WF-06",
+    "WF-10"
+  ],
+  "phase": "M3",
+  "tables": [
+    "physical_object",
+    "condition_assessment",
+    "custody_event",
+    "evidence_link"
+  ],
+  "fields_and_relations": "Написи, provenance, склад, оцінки/докази, from/to custody.",
+  "required_interaction": "Нова оцінка/переміщення з історією; рух носія не переміщує storage_copy файла.",
+  "fixtures": [
+    "FX-03"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.physical.save",
+      "media.condition",
+      "media.move",
+      "media.job.create"
+    ],
+    "view_model": "Description, append condition/evidence and custody history, create digitization job",
+    "completion": "core-interactive",
+    "limitations": [],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

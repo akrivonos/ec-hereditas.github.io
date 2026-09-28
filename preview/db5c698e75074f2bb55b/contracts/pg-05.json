@@ -1,0 +1,64 @@
+{
+  "page": "PG-05",
+  "title": "Картка польового дослідження",
+  "route": "/field/research/{id}",
+  "roles": "R01, R02",
+  "workflows": [
+    "WF-01",
+    "WF-02",
+    "WF-07"
+  ],
+  "phase": "M2",
+  "tables": [
+    "field_research",
+    "document",
+    "work_group",
+    "research_route_stop",
+    "research_preparation_item",
+    "participation",
+    "person",
+    "place",
+    "document_context",
+    "entity_revision",
+    "entity_revision_member"
+  ],
+  "fields_and_relations": "Програма з revision, маршрут із position, групи, мета, checklist.",
+  "required_interaction": "Зміна програми не змінює використану версію старого сеансу; перестановка маршруту.",
+  "fixtures": [
+    "FX-01"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "field.save",
+      "field.programme",
+      "field.preparation",
+      "field.route",
+      "field.plan.defaults",
+      "field.plan.group",
+      "field.plan.member",
+      "field.plan.document",
+      "field.plan.confirm",
+      "field.session.create"
+    ],
+    "view_model": "WF-01: scope, programme, route CRUD, team/functions, source notes and consent templates, typed checklist, exact-revision human readiness confirmation and contextual handoff",
+    "limitations": [
+      "Local browser prototype; equipment checks are human-attested; no hardware diagnostics or shared backend."
+    ],
+    "completion": "core-interactive",
+    "state_storage": "Shared normalized browser store; fixture version 9",
+    "permissions": [
+      "domain.read",
+      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+    ],
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+  }
+}

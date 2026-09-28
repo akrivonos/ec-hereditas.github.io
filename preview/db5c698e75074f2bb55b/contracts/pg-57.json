@@ -1,0 +1,56 @@
+{
+  "page": "PG-57",
+  "title": "Картка експозиції",
+  "route": "/museum/exhibitions/{id}",
+  "roles": "R05-M та уповноважені співпрацівники",
+  "workflows": [
+    "WF-28",
+    "WF-29"
+  ],
+  "phase": "M7",
+  "tables": [
+    "museum_exhibition",
+    "exhibit_set",
+    "access_point"
+  ],
+  "fields_and_relations": "Добірки, readiness і точки з різними життєвими циклами.",
+  "required_interaction": "Відкрити/закрити експозицію, масовий readiness check; URL після закриття зберігаються.",
+  "fixtures": [
+    "FX-08"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "museum.exhibition.save",
+      "museum.exhibition.state",
+      "museum.set.create",
+      "museum.point.create",
+      "museum.request.create"
+    ],
+    "view_model": "Exhibition sets/points in separate tabs; atomic open/close/archive",
+    "completion": "partial",
+    "state_storage": "Normalized browser store v7; v1–6 migration preserves user work and revoked existing grants",
+    "permissions": [
+      "Explicit museum.write grant + account ownership + archive scope; R05-M never grants access",
+      "Guest resolver requires current approved exact revision and explicit museum/view/cite use"
+    ],
+    "atomicity": "Commands mutate a clone, verify revisions/ownership/policy, validate snapshots and file hashes, then commit once. Review and final set revision are atomic; closure archives points atomically.",
+    "limitations": [
+      "Local browser prototype, no shared server deployment or cross-device persistence. QR encodes its real local resolver URL.",
+      "Museum selection supports publication targets O55; other target types and per-item translated texts remain pending. Museum record URL is supported; registry synchronization is not.",
+      "Online kiosk only; offline cache, audio/video, device provisioning and daily analytics remain pending.",
+      "Rights withdrawal derives needs_review immediately on read; durable invalidation jobs await backend.",
+      "Four curator-text languages supported; navigation remains Ukrainian.",
+      "Request replies do not publish sources or change access. Correction acceptance/application through archival reconciliation remains pending; reasoned rejection is supported.",
+      "Approved public archive contact is not yet configured."
+    ]
+  }
+}

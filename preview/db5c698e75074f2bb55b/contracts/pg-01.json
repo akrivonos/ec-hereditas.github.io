@@ -1,0 +1,72 @@
+{
+  "page": "PG-01",
+  "title": "Мій робочий простір",
+  "route": "/workspace",
+  "roles": "R01–R04, R05-M",
+  "workflows": [],
+  "phase": "M1",
+  "tables": [
+    "work_item",
+    "work_item_target",
+    "role_assignment"
+  ],
+  "fields_and_relations": "Призначені завдання, строки, архів/scope; лічильники обчислені з тих самих рядків, що PG-02.",
+  "required_interaction": "Зміна ролі/області → інша черга; порожній кабінет без вигаданих завдань.",
+  "fixtures": [
+    "FX-09"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "view_model": "tasks(actor, scope) -> derived counts and work queues",
+    "commands": [],
+    "fields": [
+      {
+        "field": "work_item.assigned_account_id",
+        "mode": "readonly",
+        "label": "Призначено мені"
+      },
+      {
+        "field": "work_item.state",
+        "mode": "derived",
+        "label": "Потребують роботи / заблоковані"
+      },
+      {
+        "field": "entity.archive_id",
+        "mode": "filter",
+        "label": "Область роботи"
+      }
+    ],
+    "permissions": [
+      "task.read"
+    ],
+    "checks": [
+      "same records/counts as PG-02",
+      "expired actor empty",
+      "admin has no implicit archive read"
+    ],
+    "input": {
+      "actor": "account.id",
+      "scope": "archive.id or all accessible",
+      "clock": "fixture UTC time",
+      "entity_id": "URL id where applicable"
+    },
+    "state_storage": "Normalized store in localStorage; single administrator and scope in sessionStorage",
+    "atomicity": "clone -> authorize -> validate -> append revision/event -> persist; failures keep state unchanged",
+    "common_states": [
+      "populated",
+      "empty",
+      "loading",
+      "error",
+      "forbidden",
+      "stale where editable"
+    ]
+  }
+}

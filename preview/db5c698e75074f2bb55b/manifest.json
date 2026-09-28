@@ -1,0 +1,1928 @@
+{
+  "version": 1,
+  "pages": [
+    {
+      "id": "PG-01",
+      "title": "Мій робочий простір",
+      "route": "/workspace",
+      "roles": "R01–R04, R05-M",
+      "actions": "Призначення, незавершені матеріали, повернуті на доопрацювання випадки; швидкий перехід до своєї роботи.",
+      "objects": "O49",
+      "workflows": [],
+      "status": "interactive",
+      "file": "pages/pg-01.html",
+      "contract": "contracts/pg-01.json",
+      "phase": "M1",
+      "fixtures": [
+        "FX-09"
+      ]
+    },
+    {
+      "id": "PG-02",
+      "title": "Завдання та невирішені питання",
+      "route": "/tasks",
+      "roles": "R01–R04, R05-M; допоміжні функції",
+      "actions": "Черга з фільтрами за процесом, архівом, виконавцем і строком; створення та призначення завдання.",
+      "objects": "O49",
+      "workflows": [
+        "WF-24"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-02.html",
+      "contract": "contracts/pg-02.json",
+      "phase": "M1",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-03",
+      "title": "Картка завдання",
+      "route": "/tasks/{id}",
+      "roles": "Виконавець і уповноважений координатор",
+      "actions": "Ціль, підстава, залежності, вкладення, історія передання; взяти, повернути, заблокувати або завершити.",
+      "objects": "O49",
+      "workflows": [],
+      "status": "interactive",
+      "file": "pages/pg-03.html",
+      "contract": "contracts/pg-03.json",
+      "phase": "M1",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-04",
+      "title": "Польові дослідження",
+      "route": "/field/research",
+      "roles": "R01, R02",
+      "actions": "Перелік досліджень; створення, пошук, відбір за командою, територією та періодом.",
+      "objects": "O01",
+      "workflows": [
+        "WF-01"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-04.html",
+      "contract": "contracts/pg-04.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-05",
+      "title": "Картка польового дослідження",
+      "route": "/field/research/{id}",
+      "roles": "R01, R02",
+      "actions": "Мета, версії програми, маршрут, групи й функції, підготовка обладнання/згод/резервів; пов’язані сеанси й зошити.",
+      "objects": "O01–O03, O06, O08, O60",
+      "workflows": [
+        "WF-01",
+        "WF-02",
+        "WF-07"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-05.html",
+      "contract": "contracts/pg-05.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-06",
+      "title": "Контакти та зустрічі",
+      "route": "/field/research/{id}/contacts",
+      "roles": "Уповноважені учасники R01",
+      "actions": "Приватні потенційні респонденти, рекомендації, теми, контакти, зустрічі й відмови; картка в бічній панелі.",
+      "objects": "O61",
+      "workflows": [
+        "WF-02"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-06.html",
+      "contract": "contracts/pg-06.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-07",
+      "title": "Збирацькі сеанси",
+      "route": "/field/sessions",
+      "roles": "R01, R02",
+      "actions": "Перелік сеансів із фільтрами; створення сеансу в дослідженні або з підтвердженого незалежного контексту.",
+      "objects": "O04",
+      "workflows": [],
+      "status": "interactive",
+      "file": "pages/pg-07.html",
+      "contract": "contracts/pg-07.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-08",
+      "title": "Робоча картка сеансу",
+      "route": "/sessions/{id}",
+      "roles": "R01, R02; R03 за призначенням",
+      "actions": "Паспорт, місце, нумеровані учасники, події й перерви, згоди, файли, спільний порядок творів/ФЕІ; формування бланка.",
+      "objects": "O04–O09, O14–O15, O21, O31",
+      "workflows": [
+        "WF-02",
+        "WF-03",
+        "WF-04",
+        "WF-05",
+        "WF-07"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-08.html",
+      "contract": "contracts/pg-08.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-09",
+      "title": "Польовий зошит",
+      "route": "/notebooks/{id}",
+      "roles": "R01, R02",
+      "actions": "Наскрізні нотатки, спостереження, ескізи та вкладення групи; зв’язки з дослідженням і кількома сеансами.",
+      "objects": "O63, O03–O04",
+      "workflows": [
+        "WF-01",
+        "WF-03"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-09.html",
+      "contract": "contracts/pg-09.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-10",
+      "title": "Передання та надходження",
+      "route": "/transfers",
+      "roles": "R01, R02, R03",
+      "actions": "Вкладки «Підготовлені», «Надіслані», «До приймання», «Повернуті»; вибір пакета та відповідального.",
+      "objects": "O49; артефакти передання",
+      "workflows": [
+        "WF-04",
+        "WF-05"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-10.html",
+      "contract": "contracts/pg-10.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-11",
+      "title": "Звірка та приймання пакета",
+      "route": "/transfers/{id}",
+      "roles": "Відправник R01/R03, приймач R02/R03",
+      "actions": "Файли, початкові назви, опис, згоди, копії й прогалини; маніфест, надіслати, прийняти/відкласти/повернути елементи.",
+      "objects": "O14–O15, O23–O24, O28, O45–O46",
+      "workflows": [
+        "WF-04",
+        "WF-05",
+        "WF-11",
+        "WF-13"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-11.html",
+      "contract": "contracts/pg-11.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-12",
+      "title": "Робоче місце транскриптора",
+      "route": "/transcriptions/{id}",
+      "roles": "R01, R02 або призначений транскриптор; R03 для опрацювання",
+      "actions": "Синхронні запис і текст, репліки, межі одиниць, часові мітки, словесна/нотна транскрипція, сумнівні місця; виконавець і дата кожної функції.",
+      "objects": "O31, O34–O37, O49",
+      "workflows": [
+        "WF-14",
+        "WF-24",
+        "WF-27"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-12.html",
+      "contract": "contracts/pg-12.json",
+      "phase": "M4",
+      "fixtures": [
+        "FX-04"
+      ]
+    },
+    {
+      "id": "PG-13",
+      "title": "Нормалізація та переклад",
+      "route": "/texts/{id}/translation",
+      "roles": "Уповноважений транскриптор/філолог, R01/R02",
+      "actions": "Дипломатичний текст → нормалізована українська → англійська; вирівнювання, говір, збережені форми, глосарій, походження машинної чернетки.",
+      "objects": "O34, O42–O43; D21–D22",
+      "workflows": [
+        "WF-27"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-13.html",
+      "contract": "contracts/pg-13.json",
+      "phase": "M4",
+      "fixtures": [
+        "FX-04"
+      ]
+    },
+    {
+      "id": "PG-14",
+      "title": "Версії та порівняння тексту",
+      "route": "/texts/{id}/versions",
+      "roles": "Автор, уповноважений редактор/рецензент; R04 у своєму доступі",
+      "actions": "Порівняння ревізій, джерело похідності, авторство, статус людської перевірки; перехід до конкретного рішення.",
+      "objects": "O34, O43–O44",
+      "workflows": [
+        "WF-08",
+        "WF-17",
+        "WF-24",
+        "WF-27"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-14.html",
+      "contract": "contracts/pg-14.json",
+      "phase": "M4",
+      "fixtures": [
+        "FX-04"
+      ]
+    },
+    {
+      "id": "PG-15",
+      "title": "Робочий глосарій",
+      "route": "/glossary",
+      "roles": "Уповноважені учасники WF-27",
+      "actions": "Термін, транслітерація, пояснення, мовні відповідники та застосування; редагування не змінює старих перекладів.",
+      "objects": "Допоміжні записи O34",
+      "workflows": [
+        "WF-27"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-15.html",
+      "contract": "contracts/pg-15.json",
+      "phase": "M4",
+      "fixtures": [
+        "FX-04"
+      ]
+    },
+    {
+      "id": "PG-16",
+      "title": "Архіви та дерево описів",
+      "route": "/archives",
+      "roles": "R02; інші працівники за доступом",
+      "actions": "Вибір архіву, локальна ієрархія та вузол у панелі; розміщення описів, пошук, переходи до дослідження/сеансу/одиниці.",
+      "objects": "O10; D14",
+      "workflows": [
+        "WF-05",
+        "WF-07"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-16.html",
+      "contract": "contracts/pg-16.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-17",
+      "title": "Картка інформаційної одиниці",
+      "route": "/units/{id}",
+      "roles": "R02; R01 у дозволеному обсязі",
+      "actions": "Твір або ФЕІ, порядок у сеансі, учасники, жанр/тема, джерельні позначки, тексти, сегменти й підтверджені зв’язки.",
+      "objects": "O31–O40",
+      "workflows": [
+        "WF-07"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-17.html",
+      "contract": "contracts/pg-17.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-18",
+      "title": "Особи, місця та установи",
+      "route": "/authorities",
+      "roles": "R02; уповноважені R01/R04",
+      "actions": "Пошук і перевірка збігів; три вкладки реальних сутностей, фільтри та перехід до картки.",
+      "objects": "O05, O08, O60",
+      "workflows": [
+        "WF-07"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-18.html",
+      "contract": "contracts/pg-18.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-01"
+      ]
+    },
+    {
+      "id": "PG-19",
+      "title": "Картка особи, місця або установи",
+      "route": "/authorities/{id}",
+      "roles": "За доступом; редагування уповноваженим каталогізатором",
+      "actions": "Назви, джерела, участі, географічні/інституційні зв’язки; біографічні факти з доказами й розбіжностями.",
+      "objects": "O05–O09, O40–O41, O60",
+      "workflows": [
+        "WF-07",
+        "WF-08"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-19.html",
+      "contract": "contracts/pg-19.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-02"
+      ]
+    },
+    {
+      "id": "PG-20",
+      "title": "Довідники та терміни",
+      "route": "/vocabularies",
+      "roles": "R02; читання іншими ролями в межах доступу",
+      "actions": "Вибір довідника, дерево, визначення, синоніми, відповідності та походження; редагування лише належним редактором.",
+      "objects": "D01–D23 за В, крім зарезервованого D18",
+      "workflows": [
+        "WF-07"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-20.html",
+      "contract": "contracts/pg-20.json",
+      "phase": "M2",
+      "fixtures": [
+        "FX-09"
+      ]
+    },
+    {
+      "id": "PG-21",
+      "title": "Спадкові джерела та імпорти",
+      "route": "/legacy",
+      "roles": "R02, інтегратор даних",
+      "actions": "Джерельні системи, документи й партії; імпорт із попередньою звіркою, початкова структура, порядок, проблеми відповідностей.",
+      "objects": "O11–O13, O49",
+      "workflows": [
+        "WF-06"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-21.html",
+      "contract": "contracts/pg-21.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-02"
+      ]
+    },
+    {
+      "id": "PG-22",
+      "title": "Джерельний запис і його відповідності",
+      "route": "/source-records/{id}",
+      "roles": "R02; інші ролі за доступом",
+      "actions": "Незмінний оригінал поруч із пов’язаними описами; джерельний локатор, пропозиція відповідності, перехід до доказів і перевірки.",
+      "objects": "O12–O13, O16, O41–O43",
+      "workflows": [
+        "WF-06",
+        "WF-08"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-22.html",
+      "contract": "contracts/pg-22.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-02"
+      ]
+    },
+    {
+      "id": "PG-23",
+      "title": "Черга перевірки",
+      "route": "/review",
+      "roles": "R02 та призначені рецензенти",
+      "actions": "Кандидати від імпорту, машинної обробки й дослідників; фільтри за видом, джерелом, станом та відповідальним.",
+      "objects": "O42, O49, O54",
+      "workflows": [
+        "WF-08",
+        "WF-14"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-23.html",
+      "contract": "contracts/pg-23.json",
+      "phase": "M4",
+      "fixtures": [
+        "FX-04"
+      ]
+    },
+    {
+      "id": "PG-24",
+      "title": "Розгляд пропозиції та рішення",
+      "route": "/review/{id}",
+      "roles": "Рецензент; автор читає власну пропозицію",
+      "actions": "До/після, точна версія, докази, походження; прийняти, відхилити, виправити, відкласти з підставою. Для автора — подати/доопрацювати й відстежити.",
+      "objects": "O38–O44, O54",
+      "workflows": [
+        "WF-08",
+        "WF-14",
+        "WF-18",
+        "WF-19",
+        "WF-24",
+        "WF-27"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-24.html",
+      "contract": "contracts/pg-24.json",
+      "phase": "M4",
+      "fixtures": [
+        "FX-04"
+      ]
+    },
+    {
+      "id": "PG-25",
+      "title": "Згода та її історія",
+      "route": "/consents/{id}",
+      "roles": "R01 для збору; R02/фахівець із прав за доступом",
+      "actions": "Обсяг згоди, документ/фрагмент доказу, умови, версії, часткове або повне відкликання; пов’язані рішення й наслідки.",
+      "objects": "O45–O46",
+      "workflows": [
+        "WF-03",
+        "WF-09"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-25.html",
+      "contract": "contracts/pg-25.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-05"
+      ]
+    },
+    {
+      "id": "PG-26",
+      "title": "Доступ, використання та атрибуція",
+      "route": "/access-decisions/{id}",
+      "roles": "R02 та уповноважений фахівець із прав",
+      "actions": "Підстави, поля, ресурси, способи використання, строки, ембарго, форма імені; перевірка публічного/дослідницького вигляду й історії.",
+      "objects": "O47, O45",
+      "workflows": [
+        "WF-09",
+        "WF-25"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-26.html",
+      "contract": "contracts/pg-26.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-05"
+      ]
+    },
+    {
+      "id": "PG-27",
+      "title": "Готовність до публікації",
+      "route": "/publication",
+      "roles": "R02 з правом публікації",
+      "actions": "Черга матеріалів, прогалини опису/перевірки/доступу, опубліковані та зняті проєкції; перехід до конкретної підготовки.",
+      "objects": "O43–O44, O47, O55",
+      "workflows": [
+        "WF-09",
+        "WF-26"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-27.html",
+      "contract": "contracts/pg-27.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-05"
+      ]
+    },
+    {
+      "id": "PG-28",
+      "title": "Підготовка та історія публікації",
+      "route": "/publication/{id}",
+      "roles": "Уповноважений публікатор R02",
+      "actions": "Точний публічний preview, дозволені поля й ресурси, підстави; опублікувати, оновити, зняти; показати залежні музейні використання.",
+      "objects": "O55, O47",
+      "workflows": [
+        "WF-25",
+        "WF-26"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-28.html",
+      "contract": "contracts/pg-28.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-05"
+      ]
+    },
+    {
+      "id": "PG-29",
+      "title": "Депонування",
+      "route": "/deposits",
+      "roles": "R02/інтегратор з дозволом; тільки потрібні інсталяції",
+      "actions": "Пакети, напрямок, профіль, приймання й розбіжності; підготовка нового або коригувального передання.",
+      "objects": "O62",
+      "workflows": [
+        "WF-25"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-29.html",
+      "contract": "contracts/pg-29.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-07"
+      ]
+    },
+    {
+      "id": "PG-30",
+      "title": "Пакет депонування",
+      "route": "/deposits/{id}",
+      "roles": "Уповноважені відправник і приймач",
+      "actions": "Дозволений склад, виключені дані, версії, оновлення/вилучення, схвалення архівом, відправлення та підтвердження приймання.",
+      "objects": "O62, O47",
+      "workflows": [
+        "WF-25"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-30.html",
+      "contract": "contracts/pg-30.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-07"
+      ]
+    },
+    {
+      "id": "PG-31",
+      "title": "Фізичні джерела",
+      "route": "/physical-objects",
+      "roles": "R02, R03, фондозберігач",
+      "actions": "Облік архівних носіїв, фільтри за типом, місцем, станом і готовністю; перехід до картки.",
+      "objects": "O16–O17",
+      "workflows": [
+        "WF-06",
+        "WF-10"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-31.html",
+      "contract": "contracts/pg-31.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-03"
+      ]
+    },
+    {
+      "id": "PG-32",
+      "title": "Картка фізичного носія",
+      "route": "/physical-objects/{id}",
+      "roles": "R02, R03, фондозберігач",
+      "actions": "Шифри, написи, склад, походження; оцінки стану з доказами, переміщення, відповідальні, цифрові відповідники.",
+      "objects": "O16–O20, O59",
+      "workflows": [
+        "WF-06",
+        "WF-10"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-32.html",
+      "contract": "contracts/pg-32.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-03"
+      ]
+    },
+    {
+      "id": "PG-33",
+      "title": "Фізичні місця зберігання",
+      "route": "/storage/physical",
+      "roles": "Фондозберігач, уповноважені R02/R03",
+      "actions": "Дерево місць і вміст; інвентаризація, планування ділянки, оформлення переміщення через картку носія.",
+      "objects": "O59, O16, O20",
+      "workflows": [
+        "WF-10"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-33.html",
+      "contract": "contracts/pg-33.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-03"
+      ]
+    },
+    {
+      "id": "PG-34",
+      "title": "Завдання та план оцифрування",
+      "route": "/digitization/{id}",
+      "roles": "R03; R02 для постановки/контролю",
+      "actions": "Стан носія, ризики, профіль фіксації, очікувані сторони/сторінки/треки, порядок і пріоритет; підготувати, відкласти, почати.",
+      "objects": "O25, O27, O18",
+      "workflows": [
+        "WF-10",
+        "WF-11",
+        "WF-12"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-34.html",
+      "contract": "contracts/pg-34.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-03"
+      ]
+    },
+    {
+      "id": "PG-35",
+      "title": "Подія цифрової фіксації",
+      "route": "/captures/{id}",
+      "roles": "R03; R01 для первинної польової фіксації",
+      "actions": "Пристрій, оператор, ПЗ, налаштування; завантаження та порядок результатів, відхилення, нова повторна фіксація, маніфест.",
+      "objects": "O26, O23, O28",
+      "workflows": [
+        "WF-03",
+        "WF-11",
+        "WF-12"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-35.html",
+      "contract": "contracts/pg-35.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-03"
+      ]
+    },
+    {
+      "id": "PG-36",
+      "title": "Контроль якості представлення",
+      "route": "/qc/{id}",
+      "roles": "Уповноважений R03/рецензент",
+      "actions": "План проти фактичного результату, відтворення, порядок, технічні виміри й докази; pass/note/recapture/incomplete.",
+      "objects": "O29–O30, O22, O25",
+      "workflows": [
+        "WF-12"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-36.html",
+      "contract": "contracts/pg-36.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-03"
+      ]
+    },
+    {
+      "id": "PG-37",
+      "title": "Цифрові ресурси",
+      "route": "/media",
+      "roles": "R03, R02; R01 у своєму обсязі",
+      "actions": "Пошук, надходження, незв’язані файли й ресурси, стани представлень; завантаження та прив’язка до контексту.",
+      "objects": "O21–O23",
+      "workflows": [
+        "WF-13"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-37.html",
+      "contract": "contracts/pg-37.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-03"
+      ]
+    },
+    {
+      "id": "PG-38",
+      "title": "Картка медіаресурсу",
+      "route": "/media/{id}",
+      "roles": "R03, R02; інші ролі за доступом",
+      "actions": "Логічний ресурс, оригінали/master/копії доступу; файли й копії у вкладках, початкові назви, похідність, QC, відтворення.",
+      "objects": "O21–O24, O29",
+      "workflows": [
+        "WF-04",
+        "WF-11",
+        "WF-12",
+        "WF-13",
+        "WF-14"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-38.html",
+      "contract": "contracts/pg-38.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-03"
+      ]
+    },
+    {
+      "id": "PG-39",
+      "title": "Збереження та перевірка копій",
+      "route": "/preservation",
+      "roles": "R03, системний адміністратор",
+      "actions": "Незалежні сховища, перевірки цілісності та відновлення, відсутні/пошкоджені копії, завдання на виправлення.",
+      "objects": "O23–O24, O49",
+      "workflows": [
+        "WF-13"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-39.html",
+      "contract": "contracts/pg-39.json",
+      "phase": "M3",
+      "fixtures": [
+        "FX-03"
+      ]
+    },
+    {
+      "id": "PG-40",
+      "title": "Машинне опрацювання: завдання й результати",
+      "route": "/processing/{id}",
+      "roles": "R03; інші уповноважені виконавці WF-14/WF-27",
+      "actions": "Дозволені входи, OCR/HTR/STT, параметри, інструмент/модель, перебіг, помилки, результати-кандидати; передати на перевірку.",
+      "objects": "O34–O36, O42, O49",
+      "workflows": [
+        "WF-14"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-40.html",
+      "contract": "contracts/pg-40.json",
+      "phase": "M4",
+      "fixtures": [
+        "FX-04"
+      ]
+    },
+    {
+      "id": "PG-41",
+      "title": "Дослідницький пошук",
+      "route": "/research/search",
+      "roles": "R04 та інші з дослідницьким доступом",
+      "actions": "Дозволений каталог, тексти й сегменти; розширені фільтри, терміни, походження/перевірка, кандидатний набір для корпусу.",
+      "objects": "O50; дозволені джерела",
+      "workflows": [
+        "WF-15",
+        "WF-16"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-41.html",
+      "contract": "contracts/pg-41.json",
+      "phase": "M6",
+      "fixtures": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "PG-42",
+      "title": "Збережені запити",
+      "route": "/research/queries",
+      "roles": "Власник R04 і дозволені співпрацівники",
+      "actions": "Критерії й контекст пошуку, повторне виконання та створення корпусу; результати можуть змінитися.",
+      "objects": "O50",
+      "workflows": [
+        "WF-15"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-42.html",
+      "contract": "contracts/pg-42.json",
+      "phase": "M6",
+      "fixtures": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "PG-43",
+      "title": "Мої дослідницькі корпуси",
+      "route": "/research/corpora",
+      "roles": "R04",
+      "actions": "Власні/спільні корпуси, створення, версії й стан фіксації складу.",
+      "objects": "O51",
+      "workflows": [
+        "WF-16"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-43.html",
+      "contract": "contracts/pg-43.json",
+      "phase": "M6",
+      "fixtures": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "PG-44",
+      "title": "Корпус: склад і версії",
+      "route": "/research/corpora/{id}",
+      "roles": "R04 та дозволені співпрацівники",
+      "actions": "Питання, критерії включення/виключення, групи, причини добору, точні версії; зафіксувати склад, відкрити джерело/твердження.",
+      "objects": "O51–O53",
+      "workflows": [
+        "WF-16",
+        "WF-17",
+        "WF-18"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-44.html",
+      "contract": "contracts/pg-44.json",
+      "phase": "M6",
+      "fixtures": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "PG-45",
+      "title": "Дослідницьке робоче місце джерела",
+      "route": "/research/sources/{id}",
+      "roles": "R04 за доступом",
+      "actions": "Медіа, паралельні тексти, сегменти, примітки й дослідницькі анотації; запропонувати зв’язок, додати доказ або цитування.",
+      "objects": "O34–O37, O41, O52",
+      "workflows": [
+        "WF-15",
+        "WF-17",
+        "WF-18"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-45.html",
+      "contract": "contracts/pg-45.json",
+      "phase": "M6",
+      "fixtures": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "PG-46",
+      "title": "Дослідницьке твердження",
+      "route": "/research/assertions/{id}",
+      "roles": "Автор R04 і співпрацівники",
+      "actions": "Аргумент, порівняння, докази, сумніви/альтернативи, пов’язані джерела; людська перевірка машинних висновків, пропозиція архіву.",
+      "objects": "O53, O41–O42, O54",
+      "workflows": [
+        "WF-18",
+        "WF-19"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-46.html",
+      "contract": "contracts/pg-46.json",
+      "phase": "M6",
+      "fixtures": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "PG-47",
+      "title": "Мої пропозиції архіву",
+      "route": "/research/proposals",
+      "roles": "R04; R02 у черзі перевірки",
+      "actions": "Перелік поданих зауважень, уточнень і відповідей; доопрацювання та перехід до спільної картки розгляду.",
+      "objects": "O54, O43",
+      "workflows": [
+        "WF-19"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-47.html",
+      "contract": "contracts/pg-47.json",
+      "phase": "M6",
+      "fixtures": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "PG-48",
+      "title": "Головна порталу",
+      "route": "/",
+      "roles": "R05, усі відвідувачі",
+      "actions": "Пошук, входи за архівом/темою/місцем, пояснення архіву та доступного використання.",
+      "objects": "O55",
+      "workflows": [
+        "WF-20"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-48.html",
+      "contract": "contracts/pg-48.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-05"
+      ]
+    },
+    {
+      "id": "PG-49",
+      "title": "Публічний каталог",
+      "route": "/search",
+      "roles": "R05, R05-M, усі відвідувачі",
+      "actions": "Пошук і фільтри лише опублікованого дозволеного; карта як режим цього ж пошуку.",
+      "objects": "O55",
+      "workflows": [
+        "WF-20",
+        "WF-28"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-49.html",
+      "contract": "contracts/pg-49.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-05"
+      ]
+    },
+    {
+      "id": "PG-50",
+      "title": "Публічна сторінка матеріалу",
+      "route": "/catalog/{publicationId}",
+      "roles": "R05 та всі з публічним доступом",
+      "actions": "Дозволений опис, контекст, атрибуція, пов’язані матеріали, доступні тексти/медіа; цитувати, зберегти, відкрити перегляд.",
+      "objects": "O55",
+      "workflows": [
+        "WF-20",
+        "WF-21",
+        "WF-22",
+        "WF-23",
+        "WF-26"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-50.html",
+      "contract": "contracts/pg-50.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-05"
+      ]
+    },
+    {
+      "id": "PG-51",
+      "title": "Публічний переглядач",
+      "route": "/catalog/{publicationId}/view",
+      "roles": "R05 та всі відвідувачі",
+      "actions": "Аудіо/відео/зображення/текст, сегменти, мови, говір, вид і походження тексту, стан перевірки; дозволене завантаження.",
+      "objects": "O55 з дозволеними O22/O34–O36",
+      "workflows": [
+        "WF-22"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-51.html",
+      "contract": "contracts/pg-51.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-05"
+      ]
+    },
+    {
+      "id": "PG-52",
+      "title": "Публічний контекст: архів, особа, місце, установа",
+      "route": "/context/{publicationId}",
+      "roles": "R05 та всі відвідувачі",
+      "actions": "Лише опубліковані відомості, дослідницький/польовий контекст і пов’язані публічні матеріали.",
+      "objects": "O55 для O01/O05/O08/O10/O60",
+      "workflows": [
+        "WF-21"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-52.html",
+      "contract": "contracts/pg-52.json",
+      "phase": "M5",
+      "fixtures": [
+        "FX-05"
+      ]
+    },
+    {
+      "id": "PG-53",
+      "title": "Мої приватні добірки",
+      "route": "/collections",
+      "roles": "R05 після входу; тимчасова добірка можлива без акаунта",
+      "actions": "Перелік власних добірок; створити, перейменувати, видалити приватну добірку.",
+      "objects": "O56",
+      "workflows": [
+        "WF-23"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-53.html",
+      "contract": "contracts/pg-53.json",
+      "phase": "M6",
+      "fixtures": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "PG-54",
+      "title": "Приватна добірка",
+      "route": "/collections/{id}",
+      "roles": "Власник",
+      "actions": "Порядок публічних матеріалів, власні нотатки, недоступні елементи; цитування та експорт.",
+      "objects": "O56, O55",
+      "workflows": [
+        "WF-23"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-54.html",
+      "contract": "contracts/pg-54.json",
+      "phase": "M6",
+      "fixtures": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "PG-55",
+      "title": "Цитування та експорт",
+      "route": "/exports",
+      "roles": "R04, R05, R05-M у власному доступі",
+      "actions": "Підготовлені цитування, формат, склад і результати експорту; для R04 — також дозволений пакет джерел/результатів. Швидке копіювання — діалог.",
+      "objects": "O57–O58; дозволені O51/O56",
+      "workflows": [
+        "WF-19",
+        "WF-23",
+        "WF-28"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-55.html",
+      "contract": "contracts/pg-55.json",
+      "phase": "M6",
+      "fixtures": [
+        "FX-06"
+      ]
+    },
+    {
+      "id": "PG-56",
+      "title": "Мої експозиції та виставки",
+      "route": "/museum/exhibitions",
+      "roles": "R05-M",
+      "actions": "Перелік своїх експозицій, створення, період, відповідальний і стан.",
+      "objects": "O65",
+      "workflows": [
+        "WF-28"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-56.html",
+      "contract": "contracts/pg-56.json",
+      "phase": "M7",
+      "fixtures": [
+        "FX-08"
+      ]
+    },
+    {
+      "id": "PG-57",
+      "title": "Картка експозиції",
+      "route": "/museum/exhibitions/{id}",
+      "roles": "R05-M та уповноважені співпрацівники",
+      "actions": "Установа, місце, дати, добірки й точки доступу, перевірка готовності до відкриття; закрити/архівувати без видалення URL.",
+      "objects": "O65–O67",
+      "workflows": [
+        "WF-28",
+        "WF-29"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-57.html",
+      "contract": "contracts/pg-57.json",
+      "phase": "M7",
+      "fixtures": [
+        "FX-08"
+      ]
+    },
+    {
+      "id": "PG-58",
+      "title": "Добірка при експонаті",
+      "route": "/museum/sets/{id}",
+      "roles": "R05-M",
+      "actions": "Мінімальна ідентифікація експоната, публічні цілі, порядок і підстава кожного зв’язку, мовні версії, авторська довідка, атрибуція, цитування, перевірка.",
+      "objects": "O66, O55, O47, O57; D23",
+      "workflows": [
+        "WF-28"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-58.html",
+      "contract": "contracts/pg-58.json",
+      "phase": "M7",
+      "fixtures": [
+        "FX-08"
+      ]
+    },
+    {
+      "id": "PG-59",
+      "title": "Точки доступу експозиції",
+      "route": "/museum/access-points",
+      "roles": "R05-M",
+      "actions": "Перелік QR/панелей/кіосків, доступність, фільтр за виставкою, створення та неперсоналізовані агрегати використання.",
+      "objects": "O67",
+      "workflows": [
+        "WF-29"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-59.html",
+      "contract": "contracts/pg-59.json",
+      "phase": "M7",
+      "fixtures": [
+        "FX-08"
+      ]
+    },
+    {
+      "id": "PG-60",
+      "title": "Точка доступу та друк етикетки",
+      "route": "/museum/access-points/{id}",
+      "roles": "R05-M з належним дозволом",
+      "actions": "Сталий URL, ціль і версії, вид/стан, QR та макет/цитування/мінімальний розмір, preview, друк, зміна цілі, архівування.",
+      "objects": "O67, O57",
+      "workflows": [
+        "WF-29"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-60.html",
+      "contract": "contracts/pg-60.json",
+      "phase": "M7",
+      "fixtures": [
+        "FX-08"
+      ]
+    },
+    {
+      "id": "PG-61",
+      "title": "Стабільний вхід з QR / музейна добірка",
+      "route": "/x/{token}",
+      "roles": "Відвідувач R05",
+      "actions": "Публічна музейна добірка або перехід до дозволеної одиниці/сегмента/проєкції; якщо недоступно — пояснення й контакт архіву.",
+      "objects": "O67 → O66/O31/O36/O55",
+      "workflows": [
+        "WF-29"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-61.html",
+      "contract": "contracts/pg-61.json",
+      "phase": "M7",
+      "fixtures": [
+        "FX-08"
+      ]
+    },
+    {
+      "id": "PG-62",
+      "title": "Експозиційна панель / кіоск",
+      "route": "/x/{token}/panel",
+      "roles": "Відвідувач R05; налаштування R05-M",
+      "actions": "Великі елементи керування, вибір мови, дозволені медіа, повернення на початок; опційний offline-режим за окремою політикою.",
+      "objects": "O67, O66, O55",
+      "workflows": [
+        "WF-29"
+      ],
+      "status": "interactive",
+      "file": "pages/pg-62.html",
+      "contract": "contracts/pg-62.json",
+      "phase": "M7",
+      "fixtures": [
+        "FX-08"
+      ]
+    },
+    {
+      "id": "PG-63",
+      "title": "Вхід і відновлення доступу",
+      "route": "/login",
+      "roles": "Користувач облікового запису",
+      "actions": "Автентифікація й повернення до дозволеної сторінки; не потрібна для відкритого порталу.",
+      "objects": "Службова підтримка",
+      "workflows": [],
+      "status": "interactive",
+      "file": "pages/pg-63.html",
+      "contract": "contracts/pg-63.json",
+      "phase": "M1",
+      "fixtures": [
+        "FX-09"
+      ]
+    },
+    {
+      "id": "PG-64",
+      "title": "Мій обліковий запис",
+      "route": "/account",
+      "roles": "Власник акаунта",
+      "actions": "Профіль, мова, безпека входу, надані області доступу; профіль акаунта не підмінює O05.",
+      "objects": "Службова підтримка",
+      "workflows": [],
+      "status": "interactive",
+      "file": "pages/pg-64.html",
+      "contract": "contracts/pg-64.json",
+      "phase": "M1",
+      "fixtures": [
+        "FX-09"
+      ]
+    },
+    {
+      "id": "PG-65",
+      "title": "Користувачі та надані права",
+      "route": "/admin/access",
+      "roles": "Системний адміністратор",
+      "actions": "Акаунти, дозволи й області архіву/дослідження/експозиції; журнал змін. Назва професійної ролі не є дозволом.",
+      "objects": "Службова підтримка",
+      "workflows": [],
+      "status": "interactive",
+      "file": "pages/pg-65.html",
+      "contract": "contracts/pg-65.json",
+      "phase": "M1",
+      "fixtures": [
+        "FX-09"
+      ]
+    },
+    {
+      "id": "PG-66",
+      "title": "Налаштування інсталяції та інтеграцій",
+      "route": "/admin/settings",
+      "roles": "Системний адміністратор, уповноважений інтегратор",
+      "actions": "Профілі імпорту/депонування, підключення сховищ/обробки, службові помилки; системні реєстри відкриваються в PG-20.",
+      "objects": "Службова підтримка",
+      "workflows": [],
+      "status": "interactive",
+      "file": "pages/pg-66.html",
+      "contract": "contracts/pg-66.json",
+      "phase": "M1",
+      "fixtures": [
+        "FX-09"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "WF-01",
+      "title": "WF-01 — Підготовка польового дослідження",
+      "actor": "R01",
+      "pages": [
+        "PG-04",
+        "PG-05",
+        "PG-09"
+      ],
+      "actions": "Створити дослідження; погодити програму, маршрут, команду, шаблони згод, обладнання й резерви.",
+      "outcome": "Підготовлений контекст для WF-02/WF-03.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-02",
+      "title": "WF-02 — Пошук і підготовка респондентів",
+      "actor": "R01",
+      "pages": [
+        "PG-05",
+        "PG-06",
+        "PG-08"
+      ],
+      "actions": "Вести приватні контакти, рекомендації й зустрічі; після фактичного запису пов’язати з підтвердженою особою.",
+      "outcome": "Робочий контакт або сеанс; попередня біографія не стає перевіреним фактом.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-03",
+      "title": "WF-03 — Проведення збирацького сеансу",
+      "actor": "R01",
+      "pages": [
+        "PG-08",
+        "PG-25",
+        "PG-35",
+        "PG-09"
+      ],
+      "actions": "Записати контекст, учасників і події; зібрати згоду, первинні файли, нотатки й позначки змісту.",
+      "outcome": "Матеріали з походженням для WF-04.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-04",
+      "title": "WF-04 — Післясеансова звірка і безпечне передання",
+      "actor": "R01",
+      "pages": [
+        "PG-08",
+        "PG-38",
+        "PG-10",
+        "PG-11"
+      ],
+      "actions": "Звірити сеанс/файли, початкові назви, резерви, бланк і комплект; позначити прогалини, передати пакет.",
+      "outcome": "Пакет для WF-05; невирішене — завдання PG-03.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-05",
+      "title": "WF-05 — Приймання нового матеріалу",
+      "actor": "R02",
+      "pages": [
+        "PG-10",
+        "PG-11",
+        "PG-16",
+        "PG-08"
+      ],
+      "actions": "Перевірити комплектність, прийняти або повернути/відкласти елементи, присвоїти локальні ідентифікатори.",
+      "outcome": "Архівне приймання й завдання WF-07; не дозвіл на публікацію.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-06",
+      "title": "WF-06 — Приймання спадкового архіву",
+      "actor": "R02, інтегратор",
+      "pages": [
+        "PG-21",
+        "PG-22",
+        "PG-31",
+        "PG-32"
+      ],
+      "actions": "Зберегти первинну структуру, записи й фізичний/цифровий інвентар; запропонувати відповідності та пріоритети.",
+      "outcome": "Джерельні записи, WF-07/WF-08/WF-10; не вигадувати відсутній сеанс.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-07",
+      "title": "WF-07 — Архівний опис і структуризація",
+      "actor": "R02",
+      "pages": [
+        "PG-16",
+        "PG-05",
+        "PG-08",
+        "PG-17",
+        "PG-18",
+        "PG-19",
+        "PG-20"
+      ],
+      "actions": "Описати архівний контекст і одиниці, порядок, людей/місця, класифікації та медіазв’язки.",
+      "outcome": "Структурований опис; сумнівне — WF-08.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-08",
+      "title": "WF-08 — Звірка відповідностей і верифікація",
+      "actor": "R02 / уповноважений рецензент",
+      "pages": [
+        "PG-23",
+        "PG-24",
+        "PG-22",
+        "PG-19",
+        "PG-14"
+      ],
+      "actions": "Зіставити версії та докази, вирішити кандидат, записати підставу і межі перевірки.",
+      "outcome": "Прийняти/відхилити/виправити/відкласти; результати для WF-07/WF-09.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-09",
+      "title": "WF-09 — Права, доступ і готовність до використання",
+      "actor": "R02 / фахівець із прав",
+      "pages": [
+        "PG-25",
+        "PG-26",
+        "PG-27"
+      ],
+      "actions": "Перевірити згоди й умови; визначити поля, ресурси, атрибуцію, строки та способи використання.",
+      "outcome": "O47; окремі подальші WF-15, WF-25, WF-26, WF-28.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-10",
+      "title": "WF-10 — Підготовка фізичного носія",
+      "actor": "R03, фондозберігач",
+      "pages": [
+        "PG-31",
+        "PG-32",
+        "PG-33",
+        "PG-34"
+      ],
+      "actions": "Оцінити стан і ризики, оформити переміщення, план частин/порядку та профіль фіксації.",
+      "outcome": "Готове або відкладене завдання WF-11.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-11",
+      "title": "WF-11 — Оцифрування",
+      "actor": "R03",
+      "pages": [
+        "PG-34",
+        "PG-35",
+        "PG-38",
+        "PG-11"
+      ],
+      "actions": "Зафіксувати обладнання/оператора/налаштування, створити файли й маніфест; повторну фіксацію зберегти окремо.",
+      "outcome": "Нові представлення для WF-12.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-12",
+      "title": "WF-12 — Контроль якості і приймання цифрового представлення",
+      "actor": "R03 / технічний рецензент",
+      "pages": [
+        "PG-36",
+        "PG-35",
+        "PG-38",
+        "PG-34"
+      ],
+      "actions": "Зіставити план/результат, перевірити порядок, відтворення, параметри й суми, додати докази.",
+      "outcome": "Pass/note → WF-13; recapture/incomplete → завдання й WF-10/WF-11.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-13",
+      "title": "WF-13 — Приймання й збереження цифрових файлів",
+      "actor": "R03",
+      "pages": [
+        "PG-11",
+        "PG-37",
+        "PG-38",
+        "PG-39"
+      ],
+      "actions": "Прийняти файли, зв’язати ресурс/представлення, перевірити копії та відновлення, оформити похідні.",
+      "outcome": "Контрольоване зберігання; доступ до файлів оцінюється окремо.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-14",
+      "title": "WF-14 — OCR, HTR, STT і структурне опрацювання",
+      "actor": "R03 / уповноважений виконавець",
+      "pages": [
+        "PG-38",
+        "PG-40",
+        "PG-12",
+        "PG-23",
+        "PG-24"
+      ],
+      "actions": "Перевірити допустимість обробки, запустити процес, оглянути текст/сегменти/класифікації та передати кандидати людині.",
+      "outcome": "Чернетки з походженням; канонічне прийняття лише через WF-08.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-15",
+      "title": "WF-15 — Пошук і формулювання корпусу кандидатів",
+      "actor": "R04",
+      "pages": [
+        "PG-41",
+        "PG-42",
+        "PG-45"
+      ],
+      "actions": "Шукати в дозволеному обсязі, перевірити релевантність, зберегти критерії.",
+      "outcome": "Запит і кандидатний набір для WF-16.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-16",
+      "title": "WF-16 — Формування відтворюваного корпусу",
+      "actor": "R04",
+      "pages": [
+        "PG-43",
+        "PG-44",
+        "PG-41"
+      ],
+      "actions": "Визначити критерії, групи та причини добору; зафіксувати конкретні об’єкти й версії.",
+      "outcome": "Версія O51; пізніші обмеження доступу продовжують діяти.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-17",
+      "title": "WF-17 — Робота з окремим джерелом",
+      "actor": "R04",
+      "pages": [
+        "PG-44",
+        "PG-45",
+        "PG-14"
+      ],
+      "actions": "Переглядати дозволені версії/сегменти, анотувати точні фрагменти, фіксувати питання й пропоновані зв’язки.",
+      "outcome": "O52 та докази без зміни архівного джерела.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-18",
+      "title": "WF-18 — Аналіз і побудова тверджень",
+      "actor": "R04",
+      "pages": [
+        "PG-44",
+        "PG-45",
+        "PG-46",
+        "PG-24"
+      ],
+      "actions": "Порівняти матеріали, створити доказове дослідницьке твердження; людськи перевірити машинні висновки у своєму scope.",
+      "outcome": "O53 окремо від архівного O40; пропозиція архіву потребує WF-19/WF-08.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-19",
+      "title": "WF-19 — Цитування, експорт і feedback до архіву",
+      "actor": "R04",
+      "pages": [
+        "PG-46",
+        "PG-55",
+        "PG-47",
+        "PG-24"
+      ],
+      "actions": "Підготувати цитування/дозволений експорт; оформити пропозицію з ціллю, доказами та підставою.",
+      "outcome": "O57/O58 або O54 у WF-08; автор бачить відповідь у PG-47.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-20",
+      "title": "WF-20 — Публічний пошук",
+      "actor": "R05",
+      "pages": [
+        "PG-48",
+        "PG-49",
+        "PG-50"
+      ],
+      "actions": "Знайти опубліковані матеріали за контекстом/темами/картою.",
+      "outcome": "Дозволена публічна сторінка; закриті записи не з’являються у фасетах.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-21",
+      "title": "WF-21 — Розуміння контексту",
+      "actor": "R05",
+      "pages": [
+        "PG-50",
+        "PG-52"
+      ],
+      "actions": "Перейти до дозволених відомостей про архів, запис, людей, місця й установи.",
+      "outcome": "Контекст і походження без доступу до приватних доказів/контактів.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-22",
+      "title": "WF-22 — Публічний перегляд джерела",
+      "actor": "R05",
+      "pages": [
+        "PG-50",
+        "PG-51"
+      ],
+      "actions": "Відкрити ресурс, сегмент або текст; обрати мову/версію, бачити статус перевірки й умови.",
+      "outcome": "Тільки актуально дозволений перегляд/завантаження.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-23",
+      "title": "WF-23 — Збереження, цитування і повторне використання",
+      "actor": "R05",
+      "pages": [
+        "PG-50",
+        "PG-53",
+        "PG-54",
+        "PG-55"
+      ],
+      "actions": "Зберегти у приватну добірку, скопіювати цитування або отримати дозволений експорт.",
+      "outcome": "O56–O58; збереження посилання не надає нових прав.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-24",
+      "title": "WF-24 — Транскрибування і текстологічне опрацювання",
+      "actor": "R01 / призначений транскриптор",
+      "pages": [
+        "PG-02",
+        "PG-12",
+        "PG-14",
+        "PG-24"
+      ],
+      "actions": "Виконати словесну й за потреби нотну транскрипцію, часові мітки, редакторські позначки; зафіксувати виконавців/дати.",
+      "outcome": "O34/O35, сумнівні місця й передання до WF-05/WF-07/WF-08/WF-27.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-25",
+      "title": "WF-25 — Депонування до центральної інсталяції",
+      "actor": "R02 / інтегратор з дозволом",
+      "pages": [
+        "PG-29",
+        "PG-30",
+        "PG-26",
+        "PG-28"
+      ],
+      "actions": "Сформувати лише дозволені перевірені описи; схвалити, надіслати, отримати ack; передати update/withdraw.",
+      "outcome": "Прийнятий O62; PG-28/WF-26 на приймальній стороні — окрема дія.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-26",
+      "title": "WF-26 — Публікація і зняття з публікації",
+      "actor": "R02 з правом публікації",
+      "pages": [
+        "PG-27",
+        "PG-28",
+        "PG-50"
+      ],
+      "actions": "Перевірити точний публічний вигляд і підстави; опублікувати/оновити/зняти, запустити перегляд залежних використань.",
+      "outcome": "O55; зміни впливають на пошук, музейні добірки та точки доступу.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-27",
+      "title": "WF-27 — Нормалізація діалектного тексту і переклад",
+      "actor": "Призначений транскриптор/філолог, R01/R02",
+      "pages": [
+        "PG-12",
+        "PG-13",
+        "PG-15",
+        "PG-14",
+        "PG-24"
+      ],
+      "actions": "Вказати говір; створити нормалізований uk, потім en; зберегти вирівнювання, діалектні форми, глосарій та provenance.",
+      "outcome": "Нові O34; людська перевірка, окрема допустимість обробки й публікації.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-28",
+      "title": "WF-28 — Формування музейної інтерпретаційної добірки",
+      "actor": "R05-M",
+      "pages": [
+        "PG-56",
+        "PG-57",
+        "PG-58",
+        "PG-49",
+        "PG-55"
+      ],
+      "actions": "Створити експозицію/добірку, вибрати публічні цілі, обґрунтувати зв’язки, мови, власне авторство та цитування.",
+      "outcome": "Готова O66 або «потребує перегляду»; жодного обходу O47/O55.",
+      "verification": "planned"
+    },
+    {
+      "id": "WF-29",
+      "title": "WF-29 — Точки доступу в експозиційному просторі",
+      "actor": "R05-M; відвідувач R05",
+      "pages": [
+        "PG-57",
+        "PG-59",
+        "PG-60",
+        "PG-61",
+        "PG-62"
+      ],
+      "actions": "Вибрати дозволену ціль, перевірити, надрукувати QR/етикетку або налаштувати панель; підтримувати ціль, стан і агрегати.",
+      "outcome": "Стабільний O67; недоступний/архівований матеріал має пояснення, URL зберігається.",
+      "verification": "planned"
+    }
+  ],
+  "roles": [
+    {
+      "id": "R01",
+      "title": "Збирач",
+      "groups": [
+        {
+          "label": "Основна робота",
+          "pages": [
+            "PG-04",
+            "PG-05",
+            "PG-06",
+            "PG-07",
+            "PG-08",
+            "PG-09",
+            "PG-10",
+            "PG-11",
+            "PG-12",
+            "PG-13",
+            "PG-14",
+            "PG-15"
+          ]
+        },
+        {
+          "label": "Спільні інструменти",
+          "pages": [
+            "PG-02",
+            "PG-03",
+            "PG-17",
+            "PG-18",
+            "PG-19",
+            "PG-24",
+            "PG-25",
+            "PG-35",
+            "PG-37",
+            "PG-38",
+            "PG-40"
+          ]
+        }
+      ],
+      "workflows": [
+        "WF-01",
+        "WF-02",
+        "WF-03",
+        "WF-04",
+        "WF-24",
+        "WF-27"
+      ]
+    },
+    {
+      "id": "R02",
+      "title": "Архівіст",
+      "groups": [
+        {
+          "label": "Основна робота",
+          "pages": [
+            "PG-10",
+            "PG-11",
+            "PG-16",
+            "PG-17",
+            "PG-18",
+            "PG-19",
+            "PG-20",
+            "PG-21",
+            "PG-22",
+            "PG-23",
+            "PG-24",
+            "PG-25",
+            "PG-26",
+            "PG-27",
+            "PG-28",
+            "PG-29",
+            "PG-30"
+          ]
+        },
+        {
+          "label": "Спільні інструменти",
+          "pages": [
+            "PG-02",
+            "PG-03",
+            "PG-04",
+            "PG-05",
+            "PG-07",
+            "PG-08",
+            "PG-09",
+            "PG-12",
+            "PG-13",
+            "PG-14",
+            "PG-15",
+            "PG-31",
+            "PG-32",
+            "PG-33",
+            "PG-37",
+            "PG-38",
+            "PG-55"
+          ]
+        }
+      ],
+      "workflows": [
+        "WF-05",
+        "WF-06",
+        "WF-07",
+        "WF-08",
+        "WF-09",
+        "WF-25",
+        "WF-26"
+      ]
+    },
+    {
+      "id": "R03",
+      "title": "Медіафахівець",
+      "groups": [
+        {
+          "label": "Основна робота",
+          "pages": [
+            "PG-31",
+            "PG-32",
+            "PG-33",
+            "PG-34",
+            "PG-35",
+            "PG-36",
+            "PG-37",
+            "PG-38",
+            "PG-39",
+            "PG-40"
+          ]
+        },
+        {
+          "label": "Спільні інструменти",
+          "pages": [
+            "PG-02",
+            "PG-03",
+            "PG-08",
+            "PG-10",
+            "PG-11",
+            "PG-12",
+            "PG-14",
+            "PG-23",
+            "PG-24"
+          ]
+        }
+      ],
+      "workflows": [
+        "WF-10",
+        "WF-11",
+        "WF-12",
+        "WF-13",
+        "WF-14"
+      ]
+    },
+    {
+      "id": "R04",
+      "title": "Дослідник",
+      "groups": [
+        {
+          "label": "Основна робота",
+          "pages": [
+            "PG-41",
+            "PG-42",
+            "PG-43",
+            "PG-44",
+            "PG-45",
+            "PG-46",
+            "PG-47",
+            "PG-55"
+          ]
+        },
+        {
+          "label": "Спільні інструменти",
+          "pages": [
+            "PG-01",
+            "PG-02",
+            "PG-03",
+            "PG-14",
+            "PG-18",
+            "PG-19",
+            "PG-24"
+          ]
+        }
+      ],
+      "workflows": [
+        "WF-15",
+        "WF-16",
+        "WF-17",
+        "WF-18",
+        "WF-19"
+      ]
+    },
+    {
+      "id": "R05",
+      "title": "Відвідувач",
+      "groups": [
+        {
+          "label": "Основна робота",
+          "pages": [
+            "PG-48",
+            "PG-49",
+            "PG-50",
+            "PG-51",
+            "PG-52",
+            "PG-53",
+            "PG-54",
+            "PG-55"
+          ]
+        },
+        {
+          "label": "Спільні інструменти",
+          "pages": [
+            "PG-61",
+            "PG-62"
+          ]
+        }
+      ],
+      "workflows": [
+        "WF-20",
+        "WF-21",
+        "WF-22",
+        "WF-23"
+      ]
+    },
+    {
+      "id": "R05-M",
+      "title": "Музейник",
+      "groups": [
+        {
+          "label": "Основна робота",
+          "pages": [
+            "PG-56",
+            "PG-57",
+            "PG-58",
+            "PG-59",
+            "PG-60"
+          ]
+        },
+        {
+          "label": "Спільні інструменти",
+          "pages": [
+            "PG-02",
+            "PG-03",
+            "PG-49",
+            "PG-50",
+            "PG-51",
+            "PG-52",
+            "PG-53",
+            "PG-54",
+            "PG-55",
+            "PG-61",
+            "PG-62"
+          ]
+        }
+      ],
+      "workflows": [
+        "WF-28",
+        "WF-29",
+        "WF-20",
+        "WF-21",
+        "WF-22",
+        "WF-23"
+      ]
+    }
+  ],
+  "service_files": [
+    "index.html",
+    "components.html",
+    "workflows.html",
+    "page-preview.html"
+  ],
+  "sources": [
+    {
+      "path": "docs/lnu/А_Ролі_та_процеси.md",
+      "sha256": "cd7b0d16baecc7e49522a1b0da63d7e743704476662025f2337d6f91dc9da18a"
+    },
+    {
+      "path": "docs/lnu/Б_Об'єкти_та_документи.md",
+      "sha256": "39a20b8b6b6bb33c0973e9f1a5e374518eb79f1d8d23e1f2df126c99036d0142"
+    },
+    {
+      "path": "docs/lnu/В_Довідники.md",
+      "sha256": "0de44db174b5a98c335fcd43dbd04ea64604690ffe0b45524bb7561c293474b1"
+    },
+    {
+      "path": "docs/lnu/Г_Структура_бази_даних.md",
+      "sha256": "790f7ba7c6c356ec8977a8ccd7d4eb5cfbd95af3ade459ea3fc6933f1550147d"
+    },
+    {
+      "path": "docs/lnu/Д_Сторінки_ролі_та_процеси.md",
+      "sha256": "6a2f2ff613429f07f13935f4a23815e9c3ebebe38332547f31e23dce45a87196"
+    },
+    {
+      "path": "docs/lnu/Е_План_макетів_сторінок.md",
+      "sha256": "5c60472b225e7eb5e59bda0d167734e7699f7a59c3f246ceb3f248ab9bdf1a80"
+    }
+  ]
+}

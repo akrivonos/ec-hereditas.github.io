@@ -1,0 +1,44 @@
+{
+  "page": "PG-31",
+  "title": "Фізичні джерела",
+  "route": "/physical-objects",
+  "roles": "R02, R03, фондозберігач",
+  "workflows": [
+    "WF-06",
+    "WF-10"
+  ],
+  "phase": "M3",
+  "tables": [
+    "physical_object",
+    "condition_assessment",
+    "custody_event"
+  ],
+  "fields_and_relations": "Шифр, D12, остання оцінка й поточне зберігання як проєкція.",
+  "required_interaction": "Фільтри/новий носій; «стан невідомий» не прирівнюється до придатності.",
+  "fixtures": [
+    "FX-03"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.physical.create"
+    ],
+    "view_model": "Search and condition filter; create typed physical carrier",
+    "completion": "core-interactive",
+    "limitations": [],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

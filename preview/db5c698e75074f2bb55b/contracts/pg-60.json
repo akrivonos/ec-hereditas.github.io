@@ -1,0 +1,54 @@
+{
+  "page": "PG-60",
+  "title": "Точка доступу та друк етикетки",
+  "route": "/museum/access-points/{id}",
+  "roles": "R05-M з належним дозволом",
+  "workflows": [
+    "WF-29"
+  ],
+  "phase": "M7",
+  "tables": [
+    "access_point",
+    "access_point_target",
+    "access_point_print",
+    "citation"
+  ],
+  "fields_and_relations": "Сталий token, history цілі, print version, archive/citation/minimum_size.",
+  "required_interaction": "Retarget/print/archive; QR URL незмінний, друкований citation фіксує свою версію.",
+  "fixtures": [
+    "FX-08"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "museum.point.retarget",
+      "museum.point.archive",
+      "museum.point.print"
+    ],
+    "view_model": "Immutable token, append-only targets, genuine QR SVG file, version-pinned citation on label, stale-label protection and history",
+    "completion": "partial",
+    "state_storage": "Normalized browser store v7; v1–6 migration preserves user work and revoked existing grants",
+    "permissions": [
+      "Explicit museum.write grant + account ownership + archive scope; R05-M never grants access",
+      "Guest resolver requires current approved exact revision and explicit museum/view/cite use"
+    ],
+    "atomicity": "Commands mutate a clone, verify revisions/ownership/policy, validate snapshots and file hashes, then commit once. Review and final set revision are atomic; closure archives points atomically.",
+    "limitations": [
+      "Local browser prototype, no shared server deployment or cross-device persistence. QR encodes its real local resolver URL.",
+      "Museum selection supports publication targets O55; other target types and per-item translated texts remain pending. Museum record URL is supported; registry synchronization is not.",
+      "Online kiosk only; offline cache, audio/video, device provisioning and daily analytics remain pending.",
+      "Rights withdrawal derives needs_review immediately on read; durable invalidation jobs await backend.",
+      "Four curator-text languages supported; navigation remains Ukrainian.",
+      "Request replies do not publish sources or change access. Correction acceptance/application through archival reconciliation remains pending; reasoned rejection is supported.",
+      "Approved public archive contact is not yet configured."
+    ]
+  }
+}

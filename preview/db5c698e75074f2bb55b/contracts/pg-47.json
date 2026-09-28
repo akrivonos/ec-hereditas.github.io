@@ -1,0 +1,46 @@
+{
+  "page": "PG-47",
+  "title": "Мої пропозиції архіву",
+  "route": "/research/proposals",
+  "roles": "R04; R02 у черзі перевірки",
+  "workflows": [
+    "WF-19"
+  ],
+  "phase": "M6",
+  "tables": [
+    "candidate",
+    "candidate_source",
+    "review_decision"
+  ],
+  "fields_and_relations": "kind=change_proposal, ціль/версія, автор, відповідь і стан.",
+  "required_interaction": "Подати/доопрацювати/читати рішення; author-view PG-24 без accept-повноваження.",
+  "fixtures": [
+    "FX-06"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "research.proposal"
+    ],
+    "view_model": "Owned proposals with pending state and available review decisions; source unchanged",
+    "completion": "partial",
+    "limitations": [
+      "Archival acceptance and proposal correction require future WF-08 review pages; there is no fabricated acceptance or delivery."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "permissions": [
+      "research.write in an explicit archive grant",
+      "owner_account_id for private objects",
+      "domain.read rechecked for every source, note, assertion, citation and download"
+    ],
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+  }
+}

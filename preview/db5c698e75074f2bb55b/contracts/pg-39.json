@@ -1,0 +1,48 @@
+{
+  "page": "PG-39",
+  "title": "Збереження та перевірка копій",
+  "route": "/preservation",
+  "roles": "R03, системний адміністратор",
+  "workflows": [
+    "WF-13"
+  ],
+  "phase": "M3",
+  "tables": [
+    "digital_storage_location",
+    "storage_copy",
+    "fixity_check",
+    "storage_recovery_check"
+  ],
+  "fields_and_relations": "Failure domain, результат перевірок, відсутні/пошкоджені копії, restore history.",
+  "required_interaction": "Імітація fixity/restore, повторна перевірка й завдання; дві копії в одному домені не незалежний резерв.",
+  "fixtures": [
+    "FX-03"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.copy",
+      "media.fixity",
+      "media.restore"
+    ],
+    "view_model": "Actual SHA-256 for fixture bytes; simulated corrupt/missing copies, independent failure domains, append-only fixity/recovery and issue tasks",
+    "completion": "partial",
+    "limitations": [
+      "No remote storage access or actual disaster recovery."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "page": "PG-50",
+  "title": "Публічна сторінка матеріалу",
+  "route": "/catalog/{publicationId}",
+  "roles": "R05 та всі з публічним доступом",
+  "workflows": [
+    "WF-20",
+    "WF-21",
+    "WF-22",
+    "WF-23",
+    "WF-26"
+  ],
+  "phase": "M5",
+  "tables": [
+    "publication_record",
+    "publication_basis",
+    "publication_resource",
+    "citation"
+  ],
+  "fields_and_relations": "Дозволені поля, attribution, provenance summary, пов’язані публікації.",
+  "required_interaction": "Відкрити/цитувати/зберегти; unpublished або права змінено → безпечне пояснення.",
+  "fixtures": [
+    "FX-05"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "public.collection.create",
+      "public.collection.add",
+      "public.citation"
+    ],
+    "view_model": "Publication details, context, independent resource access, citation/copy and save wizard; login returns to the chosen material",
+    "completion": "partial",
+    "limitations": [
+      "Public profile supports explicit synthetic non-consent access bases; O45 consent evaluation, curator rights/publication workbench and delivery/index services are pending.",
+      "Shared browser fixture is a prototype, not a secure server-side public API; real private data must not be loaded into it."
+    ],
+    "state_storage": "Shared normalized browser store v5; incremental migration from v1–4 preserves user work",
+    "permissions": [
+      "Public projection: published + exact current effective access basis + explicit fields/use/resource rules",
+      "Collections: active account, owner, lifetime and retired state; professional roles never confer ownership"
+    ],
+    "atomicity": "Revision conflict check; mutate clone; validate references/snapshots/file hashes; commit once. Public withdrawal immediately rechecks display/download/citation."
+  }
+}

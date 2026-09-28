@@ -1,0 +1,55 @@
+{
+  "page": "PG-14",
+  "title": "Версії та порівняння тексту",
+  "route": "/texts/{id}/versions",
+  "roles": "Автор, уповноважений редактор/рецензент; R04 у своєму доступі",
+  "workflows": [
+    "WF-08",
+    "WF-17",
+    "WF-24",
+    "WF-27"
+  ],
+  "phase": "M4",
+  "tables": [
+    "entity_revision",
+    "textual_representation",
+    "review_decision",
+    "review_application"
+  ],
+  "fields_and_relations": "Дві точні ревізії, diff, автор, походження, похідний human_review_state.",
+  "required_interaction": "Перемкнути версію; нова правка не успадковує review попередньої, закрита історія не відкривається.",
+  "fixtures": [
+    "FX-04"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "workbench.text.review"
+    ],
+    "view_model": "Select two exact versions, row comparison, provenance, human accept/reject/defer; new content is unreviewed",
+    "completion": "partial",
+    "state_storage": "Shared normalized browser store v9; additive v1–8 migration without resetting user work or revoked grants",
+    "permissions": [
+      "Scoped text.read/write/review, consent.read/write, processing.run and deposit.manage are independent",
+      "Consent evidence is not exposed by text/public/deposit views",
+      "Processing and deposit require separate current use decisions"
+    ],
+    "atomicity": "Command validates scope, expected version, exact relationships and immutable hashes before one commit; forms hold drafts until confirmation",
+    "limitations": [
+      "Local browser prototype; actual media playback, OCR/HTR/STT services and network transport are not connected.",
+      "Text parts use one line per utterance; derivation aligns equal line counts. Arbitrary many-to-many alignment, timed-layer editor and graphical music notation remain pending.",
+      "Human text review supports accept/reject/defer; correction is an explicit new content revision followed by review.",
+      "Consent create and partial/full withdrawal work. Separate replacement acts, broad multi-person policy authoring and rights renewal UI remain pending.",
+      "Deposits use an explicit title/summary whitelist and a restricted no-public-display snapshot. Receiving is an acknowledgement simulation; production entity_origin projection, receiver policy creation and independent receiving installation remain pending.",
+      "Demonstration processing records its real local tool name with no invented model or confidence; it does not perform recognition."
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "page": "PG-54",
+  "title": "Приватна добірка",
+  "route": "/collections/{id}",
+  "roles": "Власник",
+  "workflows": [
+    "WF-23"
+  ],
+  "phase": "M6",
+  "tables": [
+    "user_collection",
+    "user_collection_item",
+    "publication_record"
+  ],
+  "fields_and_relations": "Порядок, власні note і актуальна доступність матеріалів.",
+  "required_interaction": "Додати/reorder/remove/export; withdrawal не перетворює збережений link на дозвіл.",
+  "fixtures": [
+    "FX-06"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "public.collection.note",
+      "public.collection.move",
+      "public.collection.remove",
+      "public.export"
+    ],
+    "view_model": "Owned collection, ordered materials, notes, removal and bibliography export; withdrawal placeholders hide saved source details",
+    "completion": "partial",
+    "limitations": [
+      "Public profile supports explicit synthetic non-consent access bases; O45 consent evaluation, curator rights/publication workbench and delivery/index services are pending.",
+      "Shared browser fixture is a prototype, not a secure server-side public API; real private data must not be loaded into it."
+    ],
+    "state_storage": "Shared normalized browser store v5; incremental migration from v1–4 preserves user work",
+    "permissions": [
+      "Public projection: published + exact current effective access basis + explicit fields/use/resource rules",
+      "Collections: active account, owner, lifetime and retired state; professional roles never confer ownership"
+    ],
+    "atomicity": "Revision conflict check; mutate clone; validate references/snapshots/file hashes; commit once. Public withdrawal immediately rechecks display/download/citation."
+  }
+}

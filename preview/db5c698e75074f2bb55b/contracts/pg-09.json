@@ -1,0 +1,44 @@
+{
+  "page": "PG-09",
+  "title": "Польовий зошит",
+  "route": "/notebooks/{id}",
+  "roles": "R01, R02",
+  "workflows": [
+    "WF-01",
+    "WF-03"
+  ],
+  "phase": "M2",
+  "tables": [
+    "document",
+    "document_context",
+    "textual_representation"
+  ],
+  "fields_and_relations": "Документ kind=field_notebook, текст/вкладення, група та кілька сеансів.",
+  "required_interaction": "Додати запис/посилання на сеанс; зошит не дублюється для кожного сеансу.",
+  "fixtures": [
+    "FX-01"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "field.notebook"
+    ],
+    "view_model": "Notebook list with explicit research/session filters; draft wizard with multiple session links and preserved group context",
+    "limitations": [],
+    "completion": "core-interactive",
+    "state_storage": "Shared normalized browser store; fixture version 9",
+    "permissions": [
+      "domain.read",
+      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+    ],
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+  }
+}

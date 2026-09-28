@@ -1,0 +1,48 @@
+[
+  {
+    "id": "baseline",
+    "label": "Звичайна робота",
+    "actor": "curator",
+    "status": "implemented"
+  },
+  {
+    "id": "field-worker",
+    "label": "Виконавець без права призначення",
+    "actor": "field",
+    "status": "implemented"
+  },
+  {
+    "id": "expired",
+    "label": "Прострочений доступ",
+    "actor": "expired",
+    "status": "implemented"
+  },
+  {
+    "id": "disabled",
+    "label": "Вимкнений акаунт",
+    "actor": "disabled",
+    "status": "implemented"
+  },
+  {
+    "id": "admin",
+    "label": "Адміністратор без предметних прав",
+    "actor": "admin",
+    "status": "implemented"
+  },
+  {
+    "id": "dependency",
+    "label": "Заблоковане залежністю завдання",
+    "target": "task-package",
+    "status": "implemented"
+  },
+  {
+    "id": "conflict",
+    "label": "Конфлікт версій у двох вкладках",
+    "status": "implemented"
+  },
+  {
+    "id": "connection-failure",
+    "label": "Помилка демонстраційного з’єднання",
+    "status": "implemented"
+  }
+]

@@ -1,0 +1,52 @@
+{
+  "page": "PG-45",
+  "title": "Дослідницьке робоче місце джерела",
+  "route": "/research/sources/{id}",
+  "roles": "R04 за доступом",
+  "workflows": [
+    "WF-15",
+    "WF-17",
+    "WF-18"
+  ],
+  "phase": "M6",
+  "tables": [
+    "annotation",
+    "media_segment",
+    "text_part",
+    "text_alignment",
+    "evidence"
+  ],
+  "fields_and_relations": "Дозволені тексти/медіа й локатори, паралельні версії, власні примітки.",
+  "required_interaction": "Анотувати range/segment; джерело не змінюється, offset прив’язаний до revision.",
+  "fixtures": [
+    "FX-06"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "research.annotation",
+      "research.assertion",
+      "research.citation"
+    ],
+    "view_model": "Explicit source reader, exact-version notes, evidence-backed assertion wizard and citation dialog",
+    "completion": "partial",
+    "limitations": [
+      "Reader shows source description; parallel transcripts, media playback, text-part ranges and segment annotations remain pending."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "permissions": [
+      "research.write in an explicit archive grant",
+      "owner_account_id for private objects",
+      "domain.read rechecked for every source, note, assertion, citation and download"
+    ],
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+  }
+}

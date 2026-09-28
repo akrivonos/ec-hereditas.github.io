@@ -1,0 +1,47 @@
+{
+  "page": "PG-36",
+  "title": "Контроль якості представлення",
+  "route": "/qc/{id}",
+  "roles": "Уповноважений R03/рецензент",
+  "workflows": [
+    "WF-12"
+  ],
+  "phase": "M3",
+  "tables": [
+    "qc_record",
+    "qc_check_item",
+    "evidence_link",
+    "representation"
+  ],
+  "fields_and_relations": "Точна revision, очікуване/фактичне, технічні виміри, докази та outcome.",
+  "required_interaction": "Pass/pass_with_note/recapture_required/incomplete; рішення не є дозволом публікації.",
+  "fixtures": [
+    "FX-03"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.qc"
+    ],
+    "view_model": "Exact representation revision QC, completeness/order/hash facts, explicit readability/parameters, recapture task and evidence",
+    "completion": "partial",
+    "limitations": [
+      "Waveform/image technical analyzers are not implemented.",
+      "Formal pass currently targets plan-based digitization; receipt-only resources retain unknown expected completeness."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

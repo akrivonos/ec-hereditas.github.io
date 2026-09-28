@@ -1,0 +1,52 @@
+{
+  "page": "PG-34",
+  "title": "Завдання та план оцифрування",
+  "route": "/digitization/{id}",
+  "roles": "R03; R02 для постановки/контролю",
+  "workflows": [
+    "WF-10",
+    "WF-11",
+    "WF-12"
+  ],
+  "phase": "M3",
+  "tables": [
+    "digitization_job",
+    "work_item",
+    "document",
+    "capture_plan_item",
+    "condition_assessment"
+  ],
+  "fields_and_relations": "План revision, частини/порядок, профіль, ризики й readiness.",
+  "required_interaction": "Ready/postpone; змінений план не підмінює план старого capture/QC.",
+  "fixtures": [
+    "FX-03"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.job.create",
+      "media.plan",
+      "media.capture",
+      "media.qc"
+    ],
+    "view_model": "Digitization work list with derived stages, search, contextual actions, draft wizards and QC modal; versioned plan and pinned capture history",
+    "completion": "partial",
+    "limitations": [
+      "One expected file per plan line; advanced technical profiles remain pending."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "page": "PG-18",
+  "title": "Особи, місця та установи",
+  "route": "/authorities",
+  "roles": "R02; уповноважені R01/R04",
+  "workflows": [
+    "WF-07"
+  ],
+  "phase": "M2",
+  "tables": [
+    "person",
+    "place",
+    "institution",
+    "identifier"
+  ],
+  "fields_and_relations": "Пошук за назвою/варіантами/ідентифікаторами; три типи сутностей.",
+  "required_interaction": "Порожній результат/можливий дублікат; створення пропозиції замість автоматичного merge.",
+  "fixtures": [
+    "FX-01"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "field.authority.create"
+    ],
+    "view_model": "Type tabs, search, create distinct person/place/institution records",
+    "limitations": [],
+    "completion": "core-interactive",
+    "state_storage": "Shared normalized browser store; fixture version 9",
+    "permissions": [
+      "domain.read",
+      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+    ],
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+  }
+}

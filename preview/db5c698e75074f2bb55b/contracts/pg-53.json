@@ -1,0 +1,48 @@
+{
+  "page": "PG-53",
+  "title": "Мої приватні добірки",
+  "route": "/collections",
+  "roles": "R05 після входу; тимчасова добірка можлива без акаунта",
+  "workflows": [
+    "WF-23"
+  ],
+  "phase": "M6",
+  "tables": [
+    "user_collection",
+    "account"
+  ],
+  "fields_and_relations": "Власні списки, owner і expires_at; тимчасовий guest draft поза БД.",
+  "required_interaction": "Створити/перейменувати; після входу persist з NN owner; чужа добірка недоступна.",
+  "fixtures": [
+    "FX-06"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "public.collection.create",
+      "public.collection.rename",
+      "public.collection.delete"
+    ],
+    "view_model": "Private collection list, search, creation, rename and confirmed soft removal",
+    "completion": "partial",
+    "limitations": [
+      "Public profile supports explicit synthetic non-consent access bases; O45 consent evaluation, curator rights/publication workbench and delivery/index services are pending.",
+      "Shared browser fixture is a prototype, not a secure server-side public API; real private data must not be loaded into it.",
+      "Guest drafts are not persisted; login is required for saved collections."
+    ],
+    "state_storage": "Shared normalized browser store v5; incremental migration from v1–4 preserves user work",
+    "permissions": [
+      "Public projection: published + exact current effective access basis + explicit fields/use/resource rules",
+      "Collections: active account, owner, lifetime and retired state; professional roles never confer ownership"
+    ],
+    "atomicity": "Revision conflict check; mutate clone; validate references/snapshots/file hashes; commit once. Public withdrawal immediately rechecks display/download/citation."
+  }
+}

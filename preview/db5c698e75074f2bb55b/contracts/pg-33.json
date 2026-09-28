@@ -1,0 +1,44 @@
+{
+  "page": "PG-33",
+  "title": "Фізичні місця зберігання",
+  "route": "/storage/physical",
+  "roles": "Фондозберігач, уповноважені R02/R03",
+  "workflows": [
+    "WF-10"
+  ],
+  "phase": "M3",
+  "tables": [
+    "storage_location",
+    "custody_event",
+    "physical_object"
+  ],
+  "fields_and_relations": "Дерево фізичних місць та обчислений вміст.",
+  "required_interaction": "Вибір місця/переміщення; цикл, інший власник, невідоме місце.",
+  "fixtures": [
+    "FX-03"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.location",
+      "media.move"
+    ],
+    "view_model": "Physical storage hierarchy, derived contents, explicit-owner/cycle validation",
+    "completion": "core-interactive",
+    "limitations": [],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "page": "PG-51",
+  "title": "Публічний переглядач",
+  "route": "/catalog/{publicationId}/view",
+  "roles": "R05 та всі відвідувачі",
+  "workflows": [
+    "WF-22"
+  ],
+  "phase": "M5",
+  "tables": [
+    "publication_resource",
+    "representation",
+    "media_segment",
+    "timed_layer",
+    "textual_representation"
+  ],
+  "fields_and_relations": "Тільки дозволені версії, мови, dialect, derivation і human-review badge.",
+  "required_interaction": "Seek/мова/дозволене завантаження; public translation не відкриває restricted source.",
+  "fixtures": [
+    "FX-05"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [],
+    "view_model": "Exact approved plain-text representation reader, text-size controls and independently authorized file download",
+    "completion": "partial",
+    "limitations": [
+      "Public profile supports explicit synthetic non-consent access bases; O45 consent evaluation, curator rights/publication workbench and delivery/index services are pending.",
+      "Shared browser fixture is a prototype, not a secure server-side public API; real private data must not be loaded into it.",
+      "Actual plain-text fixture only; audio/video, image zoom, aligned transcripts, language layers and segments remain pending."
+    ],
+    "state_storage": "Shared normalized browser store v5; incremental migration from v1–4 preserves user work",
+    "permissions": [
+      "Public projection: published + exact current effective access basis + explicit fields/use/resource rules",
+      "Collections: active account, owner, lifetime and retired state; professional roles never confer ownership"
+    ],
+    "atomicity": "Revision conflict check; mutate clone; validate references/snapshots/file hashes; commit once. Public withdrawal immediately rechecks display/download/citation."
+  }
+}

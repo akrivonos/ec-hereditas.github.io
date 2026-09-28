@@ -1,0 +1,48 @@
+{
+  "page": "PG-16",
+  "title": "Архіви та дерево описів",
+  "route": "/archives",
+  "roles": "R02; інші працівники за доступом",
+  "workflows": [
+    "WF-05",
+    "WF-07"
+  ],
+  "phase": "M2",
+  "tables": [
+    "archive",
+    "archive_node",
+    "archival_placement",
+    "archive_vocabulary_binding"
+  ],
+  "fields_and_relations": "Локальний D14, батьки, шифр, position; предметний і фізичний контексти окремо.",
+  "required_interaction": "Розгорнути/перемістити вузол; цикл і батько іншого архіву відхиляються.",
+  "fixtures": [
+    "FX-01"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "field.node.create",
+      "field.save"
+    ],
+    "view_model": "Browse tree/materials; create typed node; edit description",
+    "limitations": [
+      "Moving existing nodes remains pending."
+    ],
+    "completion": "partial",
+    "state_storage": "Shared normalized browser store; fixture version 9",
+    "permissions": [
+      "domain.read",
+      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+    ],
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+  }
+}

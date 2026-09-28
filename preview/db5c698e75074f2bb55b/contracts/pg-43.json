@@ -1,0 +1,45 @@
+{
+  "page": "PG-43",
+  "title": "Мої дослідницькі корпуси",
+  "route": "/research/corpora",
+  "roles": "R04",
+  "workflows": [
+    "WF-16"
+  ],
+  "phase": "M6",
+  "tables": [
+    "research_corpus",
+    "corpus_collaborator"
+  ],
+  "fields_and_relations": "Власник/співпраця, тема, versions і frozen_at.",
+  "required_interaction": "Створити/відкрити; чужий приватний корпус не показується.",
+  "fixtures": [
+    "FX-06"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "research.corpus.create"
+    ],
+    "view_model": "Owned corpus list, state/search filters, atomic creation wizard",
+    "completion": "partial",
+    "limitations": [
+      "Collaborator invitation and shared editing remain pending."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "permissions": [
+      "research.write in an explicit archive grant",
+      "owner_account_id for private objects",
+      "domain.read rechecked for every source, note, assertion, citation and download"
+    ],
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "page": "PG-55",
+  "title": "Цитування та експорт",
+  "route": "/exports",
+  "roles": "R04, R05, R05-M у власному доступі",
+  "workflows": [
+    "WF-19",
+    "WF-23",
+    "WF-28"
+  ],
+  "phase": "M6",
+  "tables": [
+    "citation",
+    "bibliographic_export",
+    "export_citation",
+    "handover",
+    "handover_item"
+  ],
+  "fields_and_relations": "Exact targets/versions, склад, формат, allowed attribution і результат.",
+  "required_interaction": "Copy/download/failed/retry; бібліографія окремо від пакета джерел; повторна перевірка прав.",
+  "fixtures": [
+    "FX-06"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "research.citation",
+      "research.export",
+      "public.citation",
+      "public.export"
+    ],
+    "view_model": "Copy citation; export wizard; real text/CSL JSON file bytes, hashes and guarded download",
+    "completion": "partial",
+    "limitations": [
+      "Local versioned citation style and URN; public identifier resolver, BibTeX/RIS, additional styles and source handover packages remain pending.",
+      "Public citation/export uses current safe publication; advanced styles and formats remain pending."
+    ],
+    "state_storage": "Shared normalized browser store v5; migration preserves prior private research and public collections",
+    "permissions": [
+      "research.write in an explicit archive grant",
+      "owner_account_id for private objects",
+      "domain.read rechecked for every source, note, assertion, citation and download"
+    ],
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once.",
+    "public_view": "Private public-source citations, TXT/CSL JSON export, current publication and policy checked before copy/download; guest copy on material page"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "page": "PG-42",
+  "title": "Збережені запити",
+  "route": "/research/queries",
+  "roles": "Власник R04 і дозволені співпрацівники",
+  "workflows": [
+    "WF-15"
+  ],
+  "phase": "M6",
+  "tables": [
+    "saved_query"
+  ],
+  "fields_and_relations": "query_spec, schema/index profile version, access context.",
+  "required_interaction": "Повторити запит; результат може змінитися, запит не є замороженим корпусом.",
+  "fixtures": [
+    "FX-06"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "research.query"
+    ],
+    "view_model": "Private saved queries and rerun with current access; corpus creation links exact saved query revision",
+    "completion": "core-interactive",
+    "limitations": [],
+    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "permissions": [
+      "research.write in an explicit archive grant",
+      "owner_account_id for private objects",
+      "domain.read rechecked for every source, note, assertion, citation and download"
+    ],
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+  }
+}

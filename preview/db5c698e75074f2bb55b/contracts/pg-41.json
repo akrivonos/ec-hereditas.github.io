@@ -1,0 +1,50 @@
+{
+  "page": "PG-41",
+  "title": "Дослідницький пошук",
+  "route": "/research/search",
+  "roles": "R04 та інші з дослідницьким доступом",
+  "workflows": [
+    "WF-15",
+    "WF-16"
+  ],
+  "phase": "M6",
+  "tables": [
+    "saved_query",
+    "information_unit",
+    "textual_representation",
+    "classification",
+    "access_decision"
+  ],
+  "fields_and_relations": "Дозволені результати/сегменти, терміни, facets, verification context.",
+  "required_interaction": "Фільтри/зберегти запит/у корпус; прихований контент відсутній навіть у counts/snippets.",
+  "fixtures": [
+    "FX-06"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "research.query",
+      "research.corpus.create"
+    ],
+    "view_model": "Scoped source search, explicit multi-selection, save-query dialog and corpus wizard",
+    "completion": "partial",
+    "limitations": [
+      "Search covers reader descriptions of information units, documents and carriers; indexed transcripts, segments and vocabulary facets remain pending."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "permissions": [
+      "research.write in an explicit archive grant",
+      "owner_account_id for private objects",
+      "domain.read rechecked for every source, note, assertion, citation and download"
+    ],
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+  }
+}

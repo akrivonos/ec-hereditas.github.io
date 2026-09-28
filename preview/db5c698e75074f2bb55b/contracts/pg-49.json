@@ -1,0 +1,47 @@
+{
+  "page": "PG-49",
+  "title": "Публічний каталог",
+  "route": "/search",
+  "roles": "R05, R05-M, усі відвідувачі",
+  "workflows": [
+    "WF-20",
+    "WF-28"
+  ],
+  "phase": "M5",
+  "tables": [
+    "publication_record",
+    "classification",
+    "place",
+    "vocabulary_term"
+  ],
+  "fields_and_relations": "Похідний public index із safe labels, географією і counts лише дозволеного.",
+  "required_interaction": "Фільтр/карта/0 results; класифікації та coordinates проходять projection filter.",
+  "fixtures": [
+    "FX-05"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [],
+    "view_model": "Public-only catalog, query/category/place filters and counts; no internal-row fallback",
+    "completion": "partial",
+    "limitations": [
+      "Public profile supports explicit synthetic non-consent access bases; O45 consent evaluation, curator rights/publication workbench and delivery/index services are pending.",
+      "Shared browser fixture is a prototype, not a secure server-side public API; real private data must not be loaded into it.",
+      "Map and geographic browsing are pending."
+    ],
+    "state_storage": "Shared normalized browser store v5; incremental migration from v1–4 preserves user work",
+    "permissions": [
+      "Public projection: published + exact current effective access basis + explicit fields/use/resource rules",
+      "Collections: active account, owner, lifetime and retired state; professional roles never confer ownership"
+    ],
+    "atomicity": "Revision conflict check; mutate clone; validate references/snapshots/file hashes; commit once. Public withdrawal immediately rechecks display/download/citation."
+  }
+}

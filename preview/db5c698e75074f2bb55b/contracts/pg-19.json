@@ -1,0 +1,49 @@
+{
+  "page": "PG-19",
+  "title": "Картка особи, місця або установи",
+  "route": "/authorities/{id}",
+  "roles": "За доступом; редагування уповноваженим каталогізатором",
+  "workflows": [
+    "WF-07",
+    "WF-08"
+  ],
+  "phase": "M2",
+  "tables": [
+    "person_name",
+    "person_fact",
+    "place_name",
+    "place_region",
+    "institution_context",
+    "evidence"
+  ],
+  "fields_and_relations": "Різні профілі особи/місця/установи, доказові факти, дві схеми районування.",
+  "required_interaction": "Суперечливі біографічні факти видимі як свідчення; говір не стає властивістю person.",
+  "fixtures": [
+    "FX-02"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "field.save"
+    ],
+    "view_model": "Type-specific editable basic profiles; source names; linked materials; history",
+    "limitations": [
+      "Conflicting evidence-backed person facts and dual regional classification are pending."
+    ],
+    "completion": "partial",
+    "state_storage": "Shared normalized browser store; fixture version 9",
+    "permissions": [
+      "domain.read",
+      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+    ],
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+  }
+}

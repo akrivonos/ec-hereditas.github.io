@@ -1,0 +1,50 @@
+{
+  "page": "PG-35",
+  "title": "Подія цифрової фіксації",
+  "route": "/captures/{id}",
+  "roles": "R03; R01 для первинної польової фіксації",
+  "workflows": [
+    "WF-03",
+    "WF-11",
+    "WF-12"
+  ],
+  "phase": "M3",
+  "tables": [
+    "capture_event",
+    "capture_output",
+    "file_object",
+    "file_ingest_occurrence",
+    "manifest_entry"
+  ],
+  "fields_and_relations": "Пристрій/оператор/ПЗ, recording_form, settings, час, ordered files.",
+  "required_interaction": "Додати outputs/manifest; recapture створює нові подію й файли, born-digital не вимагає носія.",
+  "fixtures": [
+    "FX-03"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.capture"
+    ],
+    "view_model": "Capture provenance, ordered outputs, immutable files and manifest; new capture/representation/files on repeat; session capture without physical object",
+    "completion": "partial",
+    "limitations": [
+      "Capture creates small text fixtures; no scanner, recorder or media hardware.",
+      "capture_output.plan_item_id remains null because source schema declares a composite capture_plan_item key; matching uses pinned plan revision + ordered component labels."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

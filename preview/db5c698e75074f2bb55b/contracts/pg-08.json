@@ -1,0 +1,75 @@
+{
+  "page": "PG-08",
+  "title": "Робоча картка сеансу",
+  "route": "/sessions/{id}",
+  "roles": "R01, R02; R03 за призначенням",
+  "workflows": [
+    "WF-02",
+    "WF-03",
+    "WF-04",
+    "WF-05",
+    "WF-07"
+  ],
+  "phase": "M2",
+  "tables": [
+    "collecting_session",
+    "participation",
+    "session_event",
+    "information_unit",
+    "entity_revision_member",
+    "geographic_context",
+    "capture_event",
+    "capture_output",
+    "file_object",
+    "media_asset",
+    "representation",
+    "representation_file",
+    "media_segment",
+    "timed_layer",
+    "timed_layer_entry",
+    "document",
+    "document_context",
+    "consent_record",
+    "consent_scope"
+  ],
+  "fields_and_relations": "Контекст, location_environment, numbered participants, спільний position творів/ФЕІ, точний склад O14.",
+  "required_interaction": "Зберегти агрегат; змінити порядок → нова revision; стара форма O15 лишається старою.",
+  "fixtures": [
+    "FX-01"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "field.unit.create",
+      "field.reorder",
+      "field.session.context",
+      "field.session.participant",
+      "field.session.event",
+      "field.session.timing",
+      "field.session.media",
+      "field.session.marker",
+      "field.session.form",
+      "workbench.consent.create",
+      "media.handover.create"
+    ],
+    "view_model": "WF-03: separate lists and contextual forms for session context, participants/consents, events, real media import and short device capture, playback, versioned primary index and frozen session form; WF-04 handoff",
+    "limitations": [
+      "Browser-local storage up to 2 MiB per file and 30 seconds per live recording; no shared backend, long continuous device recording, independent backups or network transfer. Full transcription/subtitle alignment remains WF-24."
+    ],
+    "completion": "core-interactive",
+    "state_storage": "Shared normalized browser store; fixture version 9",
+    "permissions": [
+      "domain.read",
+      "field.write / capture.field / consent.read / consent.write / intake.send in archive scope"
+    ],
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+  }
+}

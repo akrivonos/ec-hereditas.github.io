@@ -1,0 +1,48 @@
+{
+  "page": "PG-20",
+  "title": "Довідники та терміни",
+  "route": "/vocabularies",
+  "roles": "R02; читання іншими ролями в межах доступу",
+  "workflows": [
+    "WF-07"
+  ],
+  "phase": "M2",
+  "tables": [
+    "vocabulary_scheme",
+    "vocabulary_term",
+    "term_label",
+    "term_mapping",
+    "region_term_detail",
+    "person_fact_rule"
+  ],
+  "fields_and_relations": "Дерево, governance, labels, D11→D20, локальний D14; системні правила D13/D19/D21.",
+  "required_interaction": "Deprecated термін/помилкова схема/заборонене редагування; D18 без таблиці значень.",
+  "fixtures": [
+    "FX-09"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "field.term"
+    ],
+    "view_model": "Scheme/tree navigation; labels and definitions; parent; deprecated status; system read-only; archive-bound types",
+    "limitations": [
+      "Term mappings, D11/D20 region constraints and person-fact rules are pending."
+    ],
+    "completion": "partial",
+    "state_storage": "Shared normalized browser store; fixture version 9",
+    "permissions": [
+      "domain.read",
+      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+    ],
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "page": "PG-21",
+  "title": "Спадкові джерела та імпорти",
+  "route": "/legacy",
+  "roles": "R02, інтегратор даних",
+  "workflows": [
+    "WF-06"
+  ],
+  "phase": "M3",
+  "tables": [
+    "source_system",
+    "source_record",
+    "document",
+    "workflow_run",
+    "candidate"
+  ],
+  "fields_and_relations": "Партія, raw records, джерельні parent/position, прогрес імпорту й неоднозначності.",
+  "required_interaction": "Імпорт/повтор/помилка; raw record незмінний, відсутній сеанс не реконструюється.",
+  "fixtures": [
+    "FX-02"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "media.import"
+    ],
+    "view_model": "Explicit source-system list; selected immutable raw source records, duplicate retry and failed import history",
+    "completion": "partial",
+    "limitations": [
+      "Input is a single text record; spreadsheet/bulk parser is pending."
+    ],
+    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "permissions": [
+      "domain.read",
+      "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
+    ],
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+  }
+}

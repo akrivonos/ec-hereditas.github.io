@@ -1,0 +1,84 @@
+{
+  "page": "PG-66",
+  "title": "Налаштування інсталяції та інтеграцій",
+  "route": "/admin/settings",
+  "roles": "Системний адміністратор, уповноважений інтегратор",
+  "workflows": [],
+  "phase": "M1",
+  "tables": [
+    "installation",
+    "digital_storage_location",
+    "vocabulary_scheme"
+  ],
+  "fields_and_relations": "Налаштування інсталяції/сховищ; профілі інтеграцій як зовнішня configuration, якої немає окремою таблицею в Г.",
+  "required_interaction": "Mock save/connection failed; секрети не в fixtures, зміна конфігурації не дає предметних прав.",
+  "fixtures": [
+    "FX-09"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "view_model": "installation + digital_storage_location + vocabulary_scheme",
+    "commands": [
+      "settings.save"
+    ],
+    "external_commands": [
+      "simulated connection success/failure"
+    ],
+    "fields": [
+      {
+        "field": "installation.name",
+        "mode": "editable",
+        "required": true
+      },
+      {
+        "field": "installation.base_uri",
+        "mode": "editable",
+        "validation": "HTTPS URL without credentials"
+      },
+      {
+        "field": "digital_storage_location.failure_domain",
+        "mode": "readonly"
+      },
+      {
+        "field": "vocabulary_scheme.governance_mode",
+        "mode": "readonly"
+      }
+    ],
+    "permissions": [
+      "settings.manage"
+    ],
+    "checks": [
+      "settings grant separate from domain",
+      "mock error explicit",
+      "no transport/secrets"
+    ],
+    "limitations": [
+      "Storage configurations read-only in M1.",
+      "Integration profile outside domain model."
+    ],
+    "input": {
+      "actor": "account.id",
+      "scope": "archive.id or all accessible",
+      "clock": "fixture UTC time",
+      "entity_id": "URL id where applicable"
+    },
+    "state_storage": "Normalized store in localStorage; single administrator and scope in sessionStorage",
+    "atomicity": "clone -> authorize -> validate -> append revision/event -> persist; failures keep state unchanged",
+    "common_states": [
+      "populated",
+      "empty",
+      "loading",
+      "error",
+      "forbidden",
+      "stale where editable"
+    ]
+  }
+}

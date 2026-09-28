@@ -1,0 +1,57 @@
+{
+  "page": "PG-24",
+  "title": "Розгляд пропозиції та рішення",
+  "route": "/review/{id}",
+  "roles": "Рецензент; автор читає власну пропозицію",
+  "workflows": [
+    "WF-08",
+    "WF-14",
+    "WF-18",
+    "WF-19",
+    "WF-24",
+    "WF-27"
+  ],
+  "phase": "M4",
+  "tables": [
+    "candidate",
+    "review_decision",
+    "review_application",
+    "verification_record",
+    "evidence_link"
+  ],
+  "fields_and_relations": "До/після, base revision, докази, scope, decision/reason і конкретний результат.",
+  "required_interaction": "Accept/reject/correct/defer; stale base блокує apply; автор пропозиції не отримує reviewer grant.",
+  "fixtures": [
+    "FX-04"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "archive.review"
+    ],
+    "view_model": "Source/proposal comparison, human accept/correct/reject/defer with evidence, immutable decision history and atomic application",
+    "completion": "partial",
+    "state_storage": "Normalized browser store v8; v1–7 migration preserves existing records, revoked grants and demo walkthroughs",
+    "permissions": [
+      "Separate scoped review.write, publication.write and access.manage grants",
+      "Applying description changes also requires catalog.write",
+      "Navigation and demo account choice do not change permission assignments"
+    ],
+    "atomicity": "Review, exact result revision, evidence, verification and application commit together. Deferred review retains a task. Source changes invalidate linked effective policies and withdraw affected publications. Revocation withdraws linked publications in the same transaction.",
+    "limitations": [
+      "Local browser prototype only; no real publication server or network transport.",
+      "Review application supports title/description of information units, documents and physical objects; identity matches retain their dedicated source workflow. No generic classification or relation application.",
+      "Existing decisions can be inspected/revoked; consent lifecycle, new access grants and rights renewal after source edits remain pending.",
+      "New publication preparation covers public metadata; configuring new media release permissions, translations and deposit transport remains pending.",
+      "Existing historical publications may be visible but require a separate exact-source verification before republishing."
+    ]
+  }
+}

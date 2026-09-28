@@ -1,0 +1,45 @@
+{
+  "page": "PG-04",
+  "title": "Польові дослідження",
+  "route": "/field/research",
+  "roles": "R01, R02",
+  "workflows": [
+    "WF-01"
+  ],
+  "phase": "M2",
+  "tables": [
+    "field_research",
+    "geographic_context",
+    "participation"
+  ],
+  "fields_and_relations": "Назва, мета, період, територія, команда; count сеансів — похідний.",
+  "required_interaction": "Пошук/нове дослідження; порожній список і відсутня точна дата.",
+  "fixtures": [
+    "FX-01"
+  ],
+  "states": [
+    "populated",
+    "empty",
+    "loading",
+    "error",
+    "forbidden"
+  ],
+  "maturity": "implemented",
+  "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
+  "implementation": {
+    "commands": [
+      "field.research.create",
+      "field.programme",
+      "field.session.create"
+    ],
+    "view_model": "Research list, search, contextual programme/session actions; atomic research and optional programme draft wizard",
+    "limitations": [],
+    "completion": "core-interactive",
+    "state_storage": "Shared normalized browser store; fixture version 9",
+    "permissions": [
+      "domain.read",
+      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+    ],
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+  }
+}
