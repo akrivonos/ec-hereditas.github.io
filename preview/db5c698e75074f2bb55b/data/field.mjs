@@ -1,12 +1,13 @@
-import {sessionCommand,validateSession} from './session.mjs?v=20260930-wf04';
-import {contactCommand,validateContacts} from './contacts.mjs?v=20260930-wf04';
-import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20260930-wf04';
+import {intakeRelations} from './intake.mjs?v=20260930-wf05';
+import {sessionCommand,validateSession} from './session.mjs?v=20260930-wf05';
+import {contactCommand,validateContacts} from './contacts.mjs?v=20260930-wf05';
+import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20260930-wf05';
 // Domain operations for the fieldwork and archive prototype. No backend persistence.
-import {mediaRelations} from './media.mjs?v=20260930-wf04';
-import {researchRelations} from './research.mjs?v=20260930-wf04';
-import {publicRelations} from './public.mjs?v=20260930-wf04';
-import {museumRelations} from './museum.mjs?v=20260930-wf04';
-import {workbenchRelations} from './workbench.mjs?v=20260930-wf04';
+import {mediaRelations} from './media.mjs?v=20260930-wf05';
+import {researchRelations} from './research.mjs?v=20260930-wf05';
+import {publicRelations} from './public.mjs?v=20260930-wf05';
+import {museumRelations} from './museum.mjs?v=20260930-wf05';
+import {workbenchRelations} from './workbench.mjs?v=20260930-wf05';
 export const fieldTypes=['field_research','work_group','participation','collecting_session','geographic_context','potential_respondent','document','information_unit','archive_node','place','institution','timed_layer'];
 const fields={
  field_research:['title','purpose','research_questions','date_from','date_to','preparation_notes','backup_plan'],
@@ -18,7 +19,7 @@ const fields={
 };
 export function relations(t,type,id){
  const keys={field_research:[['research_route_stop','research_id'],['research_preparation_item','research_id']],collecting_session:[['session_event','session_id']],document:[['document_context','document_id']],information_unit:[['unit_participant','unit_id']],person:[['person_name','person_id']],place:[['place_name','place_id']]};
- return {...Object.fromEntries((keys[type]||[]).map(([table,key])=>[table,structuredClone((t[table]||[]).filter(x=>x[key]===id))])),...(type==='timed_layer'?{timed_layer_entry:structuredClone((t.timed_layer_entry||[]).filter(x=>x.layer_revision_id===t.entity.find(e=>e.id===id)?.current_revision_id))}:{}),...mediaRelations(t,type,id),...researchRelations(t,type,id),...publicRelations(t,type,id),...museumRelations(t,type,id),...workbenchRelations(t,type,id)};
+ return {...Object.fromEntries((keys[type]||[]).map(([table,key])=>[table,structuredClone((t[table]||[]).filter(x=>x[key]===id))])),...(type==='timed_layer'?{timed_layer_entry:structuredClone((t.timed_layer_entry||[]).filter(x=>x.layer_revision_id===t.entity.find(e=>e.id===id)?.current_revision_id))}:{}),...intakeRelations(t,type,id),...mediaRelations(t,type,id),...researchRelations(t,type,id),...publicRelations(t,type,id),...museumRelations(t,type,id),...workbenchRelations(t,type,id)};
 }
 export function snapshot(t,type,row){const rel=relations(t,type,row.id);return {...structuredClone(row),...(Object.keys(rel).length?{_relations:rel}:{})};}
 export function addMembers(t,type,id,revision){

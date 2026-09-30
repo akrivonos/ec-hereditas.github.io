@@ -1,16 +1,16 @@
-import {mediaPreview} from './session-media.mjs?v=20260930-wf04';
-import {sessionPage} from './session.mjs?v=20260930-wf04';
-import {contactsPage} from './contacts.mjs?v=20260930-wf04';
-import {preparationPage} from './preparation.mjs?v=20260930-wf04';
-import {preparationStatus} from '../data/preparation.mjs?v=20260930-wf04';
-import {can,hash} from '../data/model.mjs?v=20260930-wf04';
-import {hint} from './help.mjs?v=20260930-wf04';
-import {wizard} from './wizard.mjs?v=20260930-wf04';
-import {mediaPages} from './media.mjs?v=20260930-wf04';
+import {mediaPreview} from './session-media.mjs?v=20260930-wf05';
+import {sessionPage} from './session.mjs?v=20260930-wf05';
+import {contactsPage} from './contacts.mjs?v=20260930-wf05';
+import {preparationPage} from './preparation.mjs?v=20260930-wf05';
+import {preparationStatus} from '../data/preparation.mjs?v=20260930-wf05';
+import {can,hash} from '../data/model.mjs?v=20260930-wf05';
+import {hint} from './help.mjs?v=20260930-wf05';
+import {wizard} from './wizard.mjs?v=20260930-wf05';
+import {mediaPages} from './media.mjs?v=20260930-wf05';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;
- const st=s(),t=st.tables,by=(table,id)=>t[table].find(x=>x.id===id),entity=id=>by('entity',id),rev=id=>entity(id)?.current_revision_id;
+ const st=s(),t=st.tables,by=(table,id)=>t[table]?.find(x=>x.id===id),entity=id=>by('entity',id),rev=id=>entity(id)?.current_revision_id;
  const label=id=>{const e=entity(id),r=e&&by(e.entity_type,id);return r?.title||r?.preferred_name||r?.name||r?.display_hint||r?.original_filename||'Без назви';};
  const params=new URLSearchParams(location.search),chosen=(rows)=>params.has('id')?rows.find(x=>x.id===params.get('id')):rows[0];
  const allowed=(id,p='domain.read')=>can(st,actor,p,entity(id)?.archive_id);
@@ -134,12 +134,20 @@ export function fieldPages(ctx){
   show(heading(r.title,doc?.title||'Польовий зошит','Один зошит може об’єднувати нотатки кількох сеансів.',button('← Польові зошити',pg(9,{...listContext(),session:params.get('session')}),true))+tabs(r)+`<div class="two-col"><div>`+panel('Нотатки',body(`<div class="reading-text notebook-text">${esc(doc?.body_text||'Нотаток ще немає.')}</div>`),btn(doc?'Редагувати':'Додати нотатки','edit',writable(r.id)))+(doc?revisionHistory(doc.id):'')+`</div><aside>`+panel('Сеанси зошита',body(sessions.filter(x=>linked.includes(x.id)).map(x=>`<p>${link(8,x)}</p>`).join('')||'<p>Сеансів ще не пов’язано.</p>'))+panel('Зошити дослідження',body(docs.map(x=>`<p><a href="${pg(9,{id:x.id,research:r.id})}">${esc(x.title)}</a></p>`).join('')||'<p>Зошитів ще немає.</p>'))+'</aside></div>');
  }
  function materials(){
+  if(params.has('intake')){
+   const receipt=by('intake_record',params.get('intake'));if(!receipt||!allowed(receipt.id)||(scope&&receipt.archive_id!==scope)){denied();return;}
+   const items=(t.intake_item||[]).filter(i=>i.intake_id===receipt.id&&i.local_entity_id),rows=items.filter(i=>allowed(i.local_entity_id)&&(i.source_type!=='consent_record'||can(st,actor,'consent.read',receipt.archive_id)));
+   for(const i of rows){action('received-'+i.position,()=>{const e=entity(i.local_entity_id),row=by(e.entity_type,i.local_entity_id);dialog(label(i.local_entity_id),body(details([['Архівний шифр',i.archive_code],['Опис',row.body_text||row.summary||row.context_notes||'Опис у пакеті надходження'],['Обмеження',i.decision==='restricted'?i.reason:'Окремі права ще не визначено']]))+(e.entity_type==='file_object'?mediaPreview(st.demo.file_contents[row.id],row.mime_type,esc):''),null,'Закрити');});
+    action('received-place-'+i.position,()=>form('Розмістити в архіві',select('node_id','Розділ архіву',opts(visible('archive_node').filter(n=>n.archive_id===receipt.archive_id))),fd=>({type:'field.placement',id:i.local_entity_id,node_id:fd.get('node_id')})));
+   }
+   show(heading('Прийняте надходження',receipt.title,'',button('← Надходження',pg(11,{role:'R02',intake:receipt.id}),true))+panel('Прийняті матеріали',table(['Матеріал','Архівний шифр','Обмеження','Дії'],rows.map(i=>[esc(label(i.local_entity_id)),esc(i.archive_code),esc(i.decision==='restricted'?i.reason:'Публікація не дозволена автоматично'),btn('Переглянути','received-'+i.position)+(writable(i.local_entity_id,'catalog.write')?' '+btn('Розмістити','received-place-'+i.position):'')]))));return;
+  }
   const h=params.get('handover')&&by('handover',params.get('handover')),origin=h&&by('workflow_run',h.from_workflow_run_id),owner=origin&&entity(origin.primary_entity_id);
   if(params.has('handover')&&(!h||!allowed(origin?.primary_entity_id)||(scope&&owner?.archive_id!==scope))){denied();return;}
   if(h&&h.state!=='accepted'){show(heading('Архівна робота','Матеріали','Опрацювання прийнятого пакета починається після рішення отримувача.',button('← Надходження',pg(10,{role:'R02'}),true))+body('<p>Пакет ще не прийнято. Завершіть його звірку у надходженнях.</p>'));return;}
   const types={collecting_session:'Сеанс',information_unit:'Інформаційний запис',physical_object:'Фізичний носій',file_object:'Цифровий файл',document:'Польовий документ'},items=h?t.handover_item.filter(x=>x.handover_id===h.id):[],q=(params.get('q')||'').toLocaleLowerCase('uk'),mode=params.get('placement')||'';
   const placement=id=>t.archival_placement.find(x=>x.entity_id===id&&x.placement_role==='primary');
-  const rows=Object.keys(types).flatMap(visible).filter(x=>(entity(x.id).entity_type!=='document'||['field_notebook','session_form'].includes(x.kind))&&(!h||items.some(i=>i.entity_id===x.id))&&label(x.id).toLocaleLowerCase('uk').includes(q)&&(!mode||(mode==='placed')===!!placement(x.id)));
+  const rows=Object.keys(types).flatMap(visible).filter(x=>!x.technical_metadata?.intake_package&&(entity(x.id).entity_type!=='document'||['field_notebook','session_form','received_description'].includes(x.kind))&&(!h||items.some(i=>i.entity_id===x.id))&&label(x.id).toLocaleLowerCase('uk').includes(q)&&(!mode||(mode==='placed')===!!placement(x.id)));
   for(const row of rows){
    const kind=entity(row.id).entity_type,item=items.find(i=>i.entity_id===row.id),snapshot=item?by('entity_revision',item.revision_id).snapshot:row;
    action('view-'+row.id,()=>dialog(label(row.id),body(details([['Тип',types[kind]],['Опис',snapshot.summary||snapshot.context_notes||snapshot.composition||snapshot.body_text||'Не зазначено'],...(item?[['Версія у прийнятому пакеті',String(by('entity_revision',item.revision_id).revision_no)]]:[])]))+(kind==='file_object'?mediaPreview(st.demo.file_contents[row.id],row.mime_type,esc):''),null,'Закрити'));

@@ -65,6 +65,8 @@
   "installation",
   "institution",
   "institution_context",
+  "intake_item",
+  "intake_record",
   "kiosk_cache_item",
   "kiosk_cache_manifest",
   "manifest_entry",

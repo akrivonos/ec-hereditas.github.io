@@ -14,9 +14,15 @@
     "handover",
     "handover_item",
     "file_ingest_occurrence",
-    "storage_copy"
+    "storage_copy",
+    "intake_record",
+    "intake_item",
+    "identifier",
+    "work_item",
+    "document",
+    "document_context"
   ],
-  "fields_and_relations": "Маніфест, вихідні назви, revision елементів, checksum і комплектність.",
+  "fields_and_relations": "Маніфест, вихідні назви, revision елементів, checksum і комплектність. Надходження, джерельний пакет, локальні ID та шифри, перевірки документації/згод, рішення і завдання.",
   "required_interaction": "Прийняти/повернути елементи; дефект або відсутня копія → завдання, не фальшивий успіх.",
   "fixtures": [
     "FX-01"
@@ -39,16 +45,20 @@
       "media.transfer.resolve",
       "media.transfer.refresh",
       "media.transfer.export",
-      "media.transfer.backup"
+      "media.transfer.backup",
+      "intake.import",
+      "intake.receive-local",
+      "intake.review"
     ],
-    "view_model": "WF-04 sender reconciliation, immutable portable package with real file bytes and provenance, issue tasks, configurable copy policy and external byte verification; explicit receiver decisions stay separate.",
+    "view_model": "WF-04 sender reconciliation and exact-byte portable packages; WF-05 immutable receipt, research/session checks, documentation and individual consent review, per-item accept/restrict/defer/return, stable local IDs and archive codes, partial re-review and linked work items; duplicate import protection.",
     "completion": "core-interactive",
     "limitations": [
-      "Browser file package (up to 32 MiB); no automatic network delivery or remote graph import.",
-      "SHA-256 verifies selected copy bytes; storage location and independence are declared by the user, not measured by the browser.",
-      "Consent records are opt-in; private consent evidence is excluded. Complete consent intake belongs to WF-05."
+      "Browser-local portable package up to 32 MiB; manual file delivery, no shared server or network transport.",
+      "Incoming descriptions preserve source snapshots; canonical graph mapping and reconciliation belong to WF-07/08.",
+      "Consent evidence is reviewed by a person with a locator and scope; private evidence is not automatically imported and no O46/O47/publication grant is created.",
+      "Selected backup bytes are verified; physical storage independence remains user-declared."
     ],
-    "state_storage": "Shared browser store; optional handover.preflight preserves old packets and adds explicit sender reconciliation.",
+    "state_storage": "Shared browser store; lazily added versioned intake records preserve existing browser data.",
     "permissions": [
       "domain.read",
       "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"

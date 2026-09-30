@@ -1,5 +1,5 @@
-import {transferCommand,transferProblems,transferBundle} from './handover.mjs?v=20260930-wf04';
-import {fileBytes} from './binary.mjs?v=20260930-wf04';
+import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20260930-wf05';
+import {fileBytes} from './binary.mjs?v=20260930-wf05';
 // Internal, scoped prototype operations. Storage and capture actions explicitly simulate hardware.
 export const mediaTypes=['source_system','source_record','physical_object','storage_location','condition_assessment','custody_event','media_asset','representation','file_object','storage_copy','capture_event','qc_record','candidate','review_decision','evidence'];
 export const mediaRelations=(t,type,id)=>Object.fromEntries(({
@@ -189,6 +189,7 @@ export async function mediaCommand(s,actor,c,ctx){
   const out=run('WF-04',selected[0]),incoming=run('WF-05',selected[0]);incoming.started_by=c.receiver_id;if(!can(s,c.receiver_id,'intake.receive',c.archive_id))fail('invalid','Приймач не має доступу до архіву.');
   const h={id:crypto.randomUUID(),from_workflow_run_id:out.id,to_workflow_run_id:incoming.id,manifest_file_id:null,manifest_checksum:'',state:'prepared',accepted_by:null,accepted_at:null,notes:c.notes||null};t.handover.push(h);
   for(const [i,id]of selected.entries())t.handover_item.push({handover_id:h.id,entity_id:id,revision_id:rev(id),position:i+1,item_checksum:reg(id).entity_type==='file_object'?by('file_object',id).sha256:null,item_state:'unresolved'});
+  h.package_context=transferContext(s,t.handover_item.filter(x=>x.handover_id===h.id));
   if(c.field_preflight||reg(selected[0]).entity_type==='collecting_session')h.preflight={confirmed:false,expected_files:selected.filter(id=>reg(id).entity_type==='file_object').length,required_copies:2,issues:[],backups:[],export_digest:null};
   h.manifest_checksum=await hash(manifestPayload(t.handover_item.filter(x=>x.handover_id===h.id)));audit('handover.create',selected[0],null,null,'Підготовлено пакет');return h;
  }

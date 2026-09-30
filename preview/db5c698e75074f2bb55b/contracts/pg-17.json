@@ -12,7 +12,9 @@
     "unit_participant",
     "unit_segment",
     "classification",
-    "semantic_relation"
+    "semantic_relation",
+    "intake_record",
+    "intake_item"
   ],
   "fields_and_relations": "recorded_work/fei, title/incipit, порядок, учасники, терміни й source_label, сегменти.",
   "required_interaction": "Перемикання підтипу/класифікація з перевіркою D; повторне виконання лишається окремою одиницею.",
@@ -33,7 +35,7 @@
       "field.save",
       "field.placement"
     ],
-    "view_model": "Curator material list with package/search/placement filters, pinned-package preview, current-description modal and optimistic placement wizard; explicit unit detail",
+    "view_model": "Curator material list with package/search/placement filters, pinned-package preview, current-description modal and optimistic placement wizard; explicit unit detail Receipt context lists only accepted local materials; pending items and package containers are excluded.",
     "limitations": [
       "Performer editing, assertions, media and evidence are pending."
     ],

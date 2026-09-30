@@ -1,6 +1,6 @@
-import {can} from '../data/model.mjs?v=20260930-wf04';
-import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20260930-wf04';
-import {wizard} from './wizard.mjs?v=20260930-wf04';
+import {can} from '../data/model.mjs?v=20260930-wf05';
+import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20260930-wf05';
+import {wizard} from './wizard.mjs?v=20260930-wf05';
 
 export function archivePages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);

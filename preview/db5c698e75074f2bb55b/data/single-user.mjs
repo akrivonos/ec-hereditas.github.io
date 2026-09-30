@@ -1,5 +1,5 @@
-import {hash,validate,verifyHashes} from './model.mjs?v=20260930-wf04';
-import {upgrade,snapshot} from './field.mjs?v=20260930-wf04';
+import {hash,validate,verifyHashes} from './model.mjs?v=20260930-wf05';
+import {upgrade,snapshot} from './field.mjs?v=20260930-wf05';
 
 // A one-time prototype migration: consolidate login identities, not archival people.
 export async function singleUser(source){
