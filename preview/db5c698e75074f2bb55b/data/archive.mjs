@@ -1,6 +1,6 @@
 // Human review and publication workbench; no transport or implicit access grants.
-import {can} from './model.mjs?v=20260928-cultural-media';
-import {publicView,publicResources} from './public.mjs?v=20260928-cultural-media';
+import {can} from './model.mjs?v=20260930-wf04';
+import {publicView,publicResources} from './public.mjs?v=20260930-wf04';
 export const archiveTypes=['verification_record'];
 export const descriptionFields={information_unit:{title:'Назва',summary:'Опис'},document:{title:'Назва',body_text:'Текст документа'},physical_object:{title:'Назва',inscriptions:'Написи'}};
 export const reviewStates={pending:'Очікує перевірки',deferred:'Відкладено',accepted:'Прийнято',corrected:'Прийнято з виправленням',rejected:'Відхилено',superseded:'Замінено'};

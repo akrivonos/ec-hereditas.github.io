@@ -32,14 +32,23 @@
   "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
   "implementation": {
     "commands": [
-      "media.handover"
+      "media.handover",
+      "media.transfer.begin",
+      "media.transfer.confirm",
+      "media.transfer.issue",
+      "media.transfer.resolve",
+      "media.transfer.refresh",
+      "media.transfer.export",
+      "media.transfer.backup"
     ],
-    "view_model": "Check items; send/return/accept with explicit recipient rights; missing independent copies block acceptance",
-    "completion": "partial",
+    "view_model": "WF-04 sender reconciliation, immutable portable package with real file bytes and provenance, issue tasks, configurable copy policy and external byte verification; explicit receiver decisions stay separate.",
+    "completion": "core-interactive",
     "limitations": [
-      "Transport is local simulation; no network delivery."
+      "Browser file package (up to 32 MiB); no automatic network delivery or remote graph import.",
+      "SHA-256 verifies selected copy bytes; storage location and independence are declared by the user, not measured by the browser.",
+      "Consent records are opt-in; private consent evidence is excluded. Complete consent intake belongs to WF-05."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "state_storage": "Shared browser store; optional handover.preflight preserves old packets and adds explicit sender reconciliation.",
     "permissions": [
       "domain.read",
       "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"

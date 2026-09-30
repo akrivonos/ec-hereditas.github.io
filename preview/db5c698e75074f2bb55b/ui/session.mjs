@@ -1,7 +1,7 @@
-import {eventKinds,sessionRepresentations,markerEntries} from '../data/session.mjs?v=20260928-cultural-media';
-import {useNames} from '../data/workbench.mjs?v=20260928-cultural-media';
-import {hint} from './help.mjs?v=20260928-cultural-media';
-import {mediaPreview,download,sessionMediaDialogs} from './session-media.mjs?v=20260928-cultural-media';
+import {eventKinds,sessionRepresentations,markerEntries} from '../data/session.mjs?v=20260930-wf04';
+import {useNames} from '../data/workbench.mjs?v=20260930-wf04';
+import {hint} from './help.mjs?v=20260930-wf04';
+import {mediaPreview,download,sessionMediaDialogs} from './session-media.mjs?v=20260930-wf04';
 export function sessionPage(c,r){
  const {st,t,by,rev,label,visible,writable,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,save,show,revisionHistory,dialog,unitDialog,prepareHandover}=c;
  const write=writable(r.id),expected=rev(r.id),command=(type,v={})=>({type,id:r.id,expected_revision_id:expected,...v});

@@ -1,12 +1,12 @@
-import {mediaPreview} from './session-media.mjs?v=20260928-cultural-media';
-import {sessionPage} from './session.mjs?v=20260928-cultural-media';
-import {contactsPage} from './contacts.mjs?v=20260928-cultural-media';
-import {preparationPage} from './preparation.mjs?v=20260928-cultural-media';
-import {preparationStatus} from '../data/preparation.mjs?v=20260928-cultural-media';
-import {can,hash} from '../data/model.mjs?v=20260928-cultural-media';
-import {hint} from './help.mjs?v=20260928-cultural-media';
-import {wizard} from './wizard.mjs?v=20260928-cultural-media';
-import {mediaPages} from './media.mjs?v=20260928-cultural-media';
+import {mediaPreview} from './session-media.mjs?v=20260930-wf04';
+import {sessionPage} from './session.mjs?v=20260930-wf04';
+import {contactsPage} from './contacts.mjs?v=20260930-wf04';
+import {preparationPage} from './preparation.mjs?v=20260930-wf04';
+import {preparationStatus} from '../data/preparation.mjs?v=20260930-wf04';
+import {can,hash} from '../data/model.mjs?v=20260930-wf04';
+import {hint} from './help.mjs?v=20260930-wf04';
+import {wizard} from './wizard.mjs?v=20260930-wf04';
+import {mediaPages} from './media.mjs?v=20260930-wf04';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;

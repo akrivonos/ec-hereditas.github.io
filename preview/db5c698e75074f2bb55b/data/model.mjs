@@ -1,14 +1,14 @@
-import {fileBytes} from './binary.mjs?v=20260928-cultural-media';
+import {fileBytes} from './binary.mjs?v=20260930-wf04';
 // Shared mock adapter. Domain rows use the names/fields of schema Г.
 // Permissions below are a provisional demo profile, not the professional R-codes.
-import {fieldTypes,snapshot,addMembers,upgrade,validateField,fieldCommand} from './field.mjs?v=20260928-cultural-media';
-import {mediaTypes,validateMedia,mediaCommand,rawHash,manifestPayload} from './media.mjs?v=20260928-cultural-media';
-import {researchTypes,validateResearch,researchCommand} from './research.mjs?v=20260928-cultural-media';
-import {publicTypes,validatePublic,publicCommand} from './public.mjs?v=20260928-cultural-media';
-import {museumTypes,validateMuseum,museumCommand} from './museum.mjs?v=20260928-cultural-media';
-import {archiveTypes,validateArchive,archiveCommand} from './archive.mjs?v=20260928-cultural-media';
-import {workbenchTypes,validateWorkbench,workbenchCommand,verifyWorkbenchHashes} from './workbench.mjs?v=20260928-cultural-media';
-import {prepareMuseumDemo} from './demo-museum.mjs?v=20260928-cultural-media';
+import {fieldTypes,snapshot,addMembers,upgrade,validateField,fieldCommand} from './field.mjs?v=20260930-wf04';
+import {mediaTypes,validateMedia,mediaCommand,rawHash,manifestPayload} from './media.mjs?v=20260930-wf04';
+import {researchTypes,validateResearch,researchCommand} from './research.mjs?v=20260930-wf04';
+import {publicTypes,validatePublic,publicCommand} from './public.mjs?v=20260930-wf04';
+import {museumTypes,validateMuseum,museumCommand} from './museum.mjs?v=20260930-wf04';
+import {archiveTypes,validateArchive,archiveCommand} from './archive.mjs?v=20260930-wf04';
+import {workbenchTypes,validateWorkbench,workbenchCommand,verifyWorkbenchHashes} from './workbench.mjs?v=20260930-wf04';
+import {prepareMuseumDemo} from './demo-museum.mjs?v=20260930-wf04';
 export class ModelError extends Error {
   constructor(code,message){super(message);this.code=code;}
 }

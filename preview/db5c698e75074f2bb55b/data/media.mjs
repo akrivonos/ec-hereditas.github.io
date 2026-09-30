@@ -1,4 +1,5 @@
-import {fileBytes} from './binary.mjs?v=20260928-cultural-media';
+import {transferCommand,transferProblems,transferBundle} from './handover.mjs?v=20260930-wf04';
+import {fileBytes} from './binary.mjs?v=20260930-wf04';
 // Internal, scoped prototype operations. Storage and capture actions explicitly simulate hardware.
 export const mediaTypes=['source_system','source_record','physical_object','storage_location','condition_assessment','custody_event','media_asset','representation','file_object','storage_copy','capture_event','qc_record','candidate','review_decision','evidence'];
 export const mediaRelations=(t,type,id)=>Object.fromEntries(({
@@ -74,6 +75,7 @@ export async function mediaCommand(s,actor,c,ctx){
  const file=async(name,content,a,workflow,capture=null)=>{text(name);if(!content||content.length>100000)fail('invalid','Додайте вміст прикладу до 100 000 символів.');const row=await newEntity('file_object',{sha256:await rawHash(content),byte_size:new TextEncoder().encode(content).length,mime_type:'text/plain',pronom_id:null,original_filename:name,received_at:s.clock,technical_metadata:{demo:true}},a);s.demo.file_contents[row.id]=content;t.file_ingest_occurrence.push({file_id:row.id,workflow_run_id:workflow,received_filename:name,source_path:null,received_at:s.clock,capture_event_id:capture});return row;};
  const copy=async(f,location)=>{if(!by('digital_storage_location',location))fail('invalid','Оберіть цифрове сховище.');const row=await newEntity('storage_copy',{file_id:f.id,storage_location_id:location,storage_key:f.id+'/'+f.original_filename,state:'pending',created_at:s.clock},archive(f.id));t.fixity_check.push({copy_id:row.id,checked_at:s.clock,algorithm:'SHA-256',observed_hash:await rawHash(s.demo.file_contents[f.id]),result:'match',process_run_id:null});row.state='verified';await revise(row,'Контрольна сума збігається');return row;};
  const manifest=async(capture,outputs)=>{if(!capture.digitization_job_id)return;const j=t.digitization_job.find(x=>x.work_item_id===capture.digitization_job_id);const doc=await newEntity('document',{kind:'digitization_manifest',title:'Опис отриманих файлів',body_text:outputs.map(o=>o.notes).join('\n'),language_tag:'uk',media_asset_id:null,physical_object_id:j.physical_object_id},archive(capture.id));for(const o of outputs)t.manifest_entry.push({manifest_revision_id:rev(doc.id),physical_object_id:j.physical_object_id,digitization_job_id:j.work_item_id,capture_event_id:capture.id,file_id:o.file_id,position:o.position,checksum:by('file_object',o.file_id).sha256,part_label:o.notes});};
+ if(c.type.startsWith('media.transfer.'))return transferCommand(s,actor,c,{...ctx,task});
  if(c.type==='media.physical.create'){
   need('physical.write',c.archive_id);const term=by('vocabulary_term',c.carrier_type_term_id);if(term?.status!=='active')fail('invalid','Оберіть чинний тип носія.');return newEntity('physical_object',{archive_id:c.archive_id,carrier_type_term_id:term.id,title:text(c.title),reference_code:c.reference_code||null,inscriptions:c.inscriptions||null,composition:c.composition||null,provenance_note:null,carrier_stage:'original'},c.archive_id);
  }
@@ -183,10 +185,11 @@ export async function mediaCommand(s,actor,c,ctx){
   if(c.decision==='defer')await task('Уточнити відповідність джерельного запису',candidate.target_entity_id);return decision;
  }
  if(c.type==='media.handover.create'){
-  need('intake.send',c.archive_id);const selected=[...new Set(c.entity_ids||[])];if(!selected.length)fail('invalid','Оберіть матеріали.');for(const id of selected){const e=reg(id);if(!e||!['collecting_session','information_unit','file_object','physical_object','document','timed_layer'].includes(e.entity_type)||e.archive_id!==c.archive_id)fail('invalid','Матеріал поза обраним архівом.');get(e.entity_type,id,'domain.read');if(e.entity_type==='document'&&!['field_notebook','session_form'].includes(by('document',id).kind))fail('invalid','Оберіть польовий зошит або бланк сеансу.');if(c.expected_revision_ids)fresh(id,c.expected_revision_ids[id]);}
+  need('intake.send',c.archive_id);const selected=[...new Set(c.entity_ids||[])];if(!selected.length)fail('invalid','Оберіть матеріали.');for(const id of selected){const e=reg(id);if(!e||!['collecting_session','information_unit','file_object','physical_object','document','timed_layer','textual_representation','consent_record'].includes(e.entity_type)||e.archive_id!==c.archive_id)fail('invalid','Матеріал поза обраним архівом.');get(e.entity_type,id,'domain.read');if(e.entity_type==='consent_record')need('consent.read',c.archive_id);if(e.entity_type==='document'&&!['field_notebook','session_form'].includes(by('document',id).kind))fail('invalid','Оберіть польовий зошит або бланк сеансу.');if(c.expected_revision_ids)fresh(id,c.expected_revision_ids[id]);}
   const out=run('WF-04',selected[0]),incoming=run('WF-05',selected[0]);incoming.started_by=c.receiver_id;if(!can(s,c.receiver_id,'intake.receive',c.archive_id))fail('invalid','Приймач не має доступу до архіву.');
   const h={id:crypto.randomUUID(),from_workflow_run_id:out.id,to_workflow_run_id:incoming.id,manifest_file_id:null,manifest_checksum:'',state:'prepared',accepted_by:null,accepted_at:null,notes:c.notes||null};t.handover.push(h);
   for(const [i,id]of selected.entries())t.handover_item.push({handover_id:h.id,entity_id:id,revision_id:rev(id),position:i+1,item_checksum:reg(id).entity_type==='file_object'?by('file_object',id).sha256:null,item_state:'unresolved'});
+  if(c.field_preflight||reg(selected[0]).entity_type==='collecting_session')h.preflight={confirmed:false,expected_files:selected.filter(id=>reg(id).entity_type==='file_object').length,required_copies:2,issues:[],backups:[],export_digest:null};
   h.manifest_checksum=await hash(manifestPayload(t.handover_item.filter(x=>x.handover_id===h.id)));audit('handover.create',selected[0],null,null,'Підготовлено пакет');return h;
  }
  if(c.type==='media.handover.review'){
@@ -204,14 +207,15 @@ export async function mediaCommand(s,actor,c,ctx){
  if(c.type==='media.handover'){
   const h=by('handover',c.id),origin=h&&by('workflow_run',h.from_workflow_run_id),a=origin&&(archive(origin.primary_entity_id)||origin.primary_entity_id);if(!h)fail('forbidden','Пакет недоступний.');need(c.action==='send'?'intake.send':'intake.receive',a);
   if(await hash(handoverState(s,h))!==c.expected_hash)fail('stale','Пакет змінився. Оновіть сторінку.');const items=t.handover_item.filter(x=>x.handover_id===h.id);
-  if(c.action==='send'){if(!['prepared','returned'].includes(h.state))fail('invalid','Пакет уже надіслано.');h.state='sent';}
+  const copyReady=id=>h.preflight?!transferProblems(s,h).length:independentCopies(s,id)>=2;
+  if(c.action==='send'){if(reg(origin.primary_entity_id)?.entity_type==='collecting_session'&&!h.preflight)fail('blocked','Відкрийте пакет і почніть післясеансову звірку.');if(!['prepared','returned'].includes(h.state))fail('invalid','Пакет уже надіслано.');if(h.preflight){const issues=transferProblems(s,h);if(issues.length)fail('blocked',issues.join(' '));if((await transferBundle(s,h)).digest!==h.preflight.export_digest)fail('blocked','Завантажте поточний пакет і перевірте його копії.');if(c.delivery_confirmed!==true)fail('blocked','Підтвердьте фактичне передання файла отримувачу.');h.preflight.delivery={method:'manual-file',confirmed_by:actor,confirmed_at:s.clock};}h.state='sent';}
   else if(c.action==='check'){
    if(h.state!=='sent')fail('invalid','Звіряти можна надісланий пакет.');const item=items.find(x=>x.position===c.position);if(!item||!['present','missing','unresolved'].includes(c.item_state))fail('invalid','Оберіть елемент і стан.');
-   if(c.item_state==='present'&&reg(item.entity_id).entity_type==='file_object'&&independentCopies(s,item.entity_id)<2)fail('blocked','Спочатку забезпечте дві перевірені копії в незалежних сховищах.');
+   if(c.item_state==='present'&&reg(item.entity_id).entity_type==='file_object'&&!copyReady(item.entity_id))fail('blocked','Спочатку перевірте копії за планом резервування.');
    item.item_state=c.item_state;if(c.item_state!=='present'){text(c.reason);await task('Звірити елемент пакета: '+c.reason,item.entity_id,h.to_workflow_run_id);}
   }else if(c.action==='accept'){
    if(h.state!=='sent'||!items.length||items.some(x=>x.item_state!=='present'))fail('blocked','Спочатку звірте всі елементи пакета.');
-   if(items.some(x=>reg(x.entity_id).entity_type==='file_object'&&(x.item_checksum!==by('file_object',x.entity_id).sha256||independentCopies(s,x.entity_id)<2)))fail('blocked','Файли потребують перевірки контрольних сум і резервів.');h.state='accepted';h.accepted_by=actor;h.accepted_at=s.clock;
+   if(items.some(x=>reg(x.entity_id).entity_type==='file_object'&&(x.item_checksum!==by('file_object',x.entity_id).sha256||!copyReady(x.entity_id))))fail('blocked','Файли потребують перевірки контрольних сум і резервів.');h.state='accepted';h.accepted_by=actor;h.accepted_at=s.clock;
   }else if(c.action==='return'){if(h.state!=='sent')fail('invalid','Повернути можна надісланий пакет.');h.state='returned';h.notes=text(c.reason);await task('Усунути зауваження до пакета: '+c.reason,origin.primary_entity_id,h.from_workflow_run_id);}
   else fail('invalid','Невідома дія пакета.');audit('handover.'+c.action,origin.primary_entity_id,null,null,c.reason||'Оновлено передання');return h;
  }

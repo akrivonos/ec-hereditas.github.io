@@ -1,8 +1,8 @@
-import {can} from '../data/model.mjs?v=20260928-cultural-media';
-import {museumOwned} from '../data/museum.mjs?v=20260928-cultural-media';
-import {publicSearch} from '../data/public.mjs?v=20260928-cultural-media';
-import {museumRequests,requestKinds} from '../data/museum-requests.mjs?v=20260928-cultural-media';
-import {wizard} from './wizard.mjs?v=20260928-cultural-media';
+import {can} from '../data/model.mjs?v=20260930-wf04';
+import {museumOwned} from '../data/museum.mjs?v=20260930-wf04';
+import {publicSearch} from '../data/public.mjs?v=20260930-wf04';
+import {museumRequests,requestKinds} from '../data/museum-requests.mjs?v=20260930-wf04';
+import {wizard} from './wizard.mjs?v=20260930-wf04';
 
 export function museumRequestUI(ctx,h){
  const {s,actor,scope,pg,esc,dialog,dispatch,flash,render,heading,panel}=ctx,{body,details,input,textarea,select,table,act,btn,show}=h;

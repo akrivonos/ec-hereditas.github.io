@@ -1,6 +1,6 @@
-import {fileBytes,mediaMime,MAX_MEDIA_BYTES} from './binary.mjs?v=20260928-cultural-media';
-import {rawHash} from './media.mjs?v=20260928-cultural-media';
-import {consentBasisValid,useNames} from './workbench.mjs?v=20260928-cultural-media';
+import {fileBytes,mediaMime,MAX_MEDIA_BYTES} from './binary.mjs?v=20260930-wf04';
+import {rawHash} from './media.mjs?v=20260930-wf04';
+import {consentBasisValid,useNames} from './workbench.mjs?v=20260930-wf04';
 export const eventKinds=[['participant_joined','Приєднання учасника'],['participant_left','Вихід учасника'],['interruption','Перерва'],['technical_incident','Технічна проблема'],['other','Інша подія']];
 export function recordingGaps(s,id,kind){
  const t=s.tables,use='record_'+kind,people=[...new Set(t.participation.filter(x=>x.session_id===id&&x.role_code==='performer').map(x=>x.person_id))];
@@ -63,7 +63,7 @@ export async function sessionCommand(s,actor,c,h){
   const run={id:crypto.randomUUID(),workflow_code:'WF-03',primary_entity_id:r.id,started_by:actor,started_at:s.clock,finished_at:s.clock,state:'completed',notes:origin};t.workflow_run.push(run);
   const capture=await newEntity('capture_event',{session_id:r.id,digitization_job_id:null,operator_person_id:by('account',actor).person_id,occurred_at:stamp(c.occurred_at)||s.clock,recording_form:kind,recorder_type_term_id:null,device_make:null,device_model:c.device_model||null,device_serial:null,device_year:null,software_name:c.live?'Browser MediaRecorder':'File import',software_version:null,settings:{origin_note:origin,live:!!c.live},technical_incidents:c.technical_incidents||null},arch(r.id));
   const f=await newEntity('file_object',{sha256:await rawHash(c.content),byte_size:bytes.length,mime_type:c.mime_type,pronom_id:null,original_filename:required(c.filename),received_at:s.clock,technical_metadata:{local_browser:true}},arch(r.id));s.demo.file_contents[f.id]=structuredClone(c.content);
-  t.file_ingest_occurrence.push({file_id:f.id,workflow_run_id:run.id,received_filename:f.original_filename,source_path:null,received_at:s.clock,capture_event_id:capture.id});t.capture_output.push({capture_event_id:capture.id,file_id:f.id,plan_item_id:null,position:1,notes:origin});await revise(capture,'Додано первинний файл');
+  t.file_ingest_occurrence.push({file_id:f.id,workflow_run_id:run.id,received_filename:f.original_filename,source_path:c.source_path?.trim()||null,received_at:s.clock,capture_event_id:capture.id});t.capture_output.push({capture_event_id:capture.id,file_id:f.id,plan_item_id:null,position:1,notes:origin});await revise(capture,'Додано первинний файл');
   const asset=await newEntity('media_asset',{title:c.title?.trim()||f.original_filename,media_kind:kind,description:origin},arch(r.id));t.media_asset_subject.push({asset_id:asset.id,subject_entity_id:r.id,relation_role:'capture',evidence_id:null});await revise(asset,'Пов’язано із сеансом');
   const rep=await newEntity('representation',{asset_id:asset.id,role:'received_original',representation_version:1,duration_ms:kind==='photo'?null:c.duration_ms??null,technical_metadata:{capture_event_id:capture.id}},arch(r.id));t.representation_file.push({representation_id:rep.id,file_id:f.id,position:1,component_label:f.original_filename,component_role:'primary',timeline_offset_ms:0});await revise(rep,'Додано первинний файл');
   await revise(r,'Додано медіазапис сеансу');return {id:rep.id,file_id:f.id};
