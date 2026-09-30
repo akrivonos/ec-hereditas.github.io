@@ -24,6 +24,8 @@
   "capture_event",
   "capture_output",
   "capture_plan_item",
+  "catalog_record",
+  "catalog_record_item",
   "citation",
   "classification",
   "collecting_session",

@@ -1,6 +1,6 @@
 // Private research objects reference exact archival revisions. Access is checked on every projection.
-import {can} from './model.mjs?v=20260930-wf06';
-import {rawHash} from './media.mjs?v=20260930-wf06';
+import {can} from './model.mjs?v=20260930-wf07';
+import {rawHash} from './media.mjs?v=20260930-wf07';
 export const researchTypes=['saved_query','research_corpus','annotation','assertion','citation','bibliographic_export'];
 export const sourceTypes=['information_unit','document','physical_object'];
 export const researchEnabled=(s,a)=>s.tables.archive.some(x=>can(s,a,'research.write',x.id));
@@ -23,7 +23,7 @@ export const researchRelations=(t,type,id)=>type==='research_corpus'?{corpus_ite
 export function researchVisible(s,a,row,type){
  if(!owns(s,a,row.id))return false;
  if(type==='annotation'||type==='citation')return !!sourceView(s,a,row.target_entity_id,row.target_revision_id);
- if(type==='assertion')return !!sourceView(s,a,row.subject_entity_id)&&s.tables.evidence_link.filter(x=>x.subject_entity_id===row.id).every(x=>{
+ if(type==='assertion')return row.scope==='research'&&!!sourceView(s,a,row.subject_entity_id)&&s.tables.evidence_link.filter(x=>x.subject_entity_id===row.id).every(x=>{
   const e=s.tables.evidence.find(e=>e.id===x.evidence_id);return e&&!!sourceView(s,a,e.source_entity_id,e.source_revision_id);
  });
  if(type==='candidate')return !!sourceView(s,a,row.target_entity_id,row.base_revision_id)&&s.tables.candidate_source.filter(x=>x.candidate_id===row.id).every(x=>{
@@ -44,13 +44,13 @@ export function validateResearch(s,require,fk,canonical){
  const t=s.tables;if(!t.research_corpus)return;
  const by=(table,id)=>t[table].find(x=>x.id===id),reg=id=>by('entity',id);
  const exact=(id,rid)=>require(by('entity_revision',rid)?.entity_id===id,'Чужа версія дослідницького джерела');
- for(const type of researchTypes)for(const x of t[type]){fk('account',reg(x.id).owner_account_id);require(reg(x.id).archive_id===null,'Приватна дослідницька область');}
+ for(const type of researchTypes)for(const x of t[type].filter(x=>type!=='assertion'||x.scope==='research')){fk('account',reg(x.id).owner_account_id);require(reg(x.id).archive_id===null,'Приватна дослідницька область');}
  for(const x of t.saved_query){require(x.owner_account_id===reg(x.id).owner_account_id&&!!x.name.trim(),'Власник або назва запиту');require(x.query_schema_version==='1'&&x.index_profile_version==='local-reader-1','Профіль пошуку');}
  for(const x of t.research_corpus){require(x.owner_account_id===reg(x.id).owner_account_id&&!!x.title.trim()&&!!x.inclusion_criteria.trim(),'Назва, власник і критерії корпусу');if(x.saved_query_revision_id){const r=by('entity_revision',x.saved_query_revision_id);require(reg(r?.entity_id)?.entity_type==='saved_query'&&reg(r.entity_id).owner_account_id===x.owner_account_id,'Запит іншого власника');}}
  const positions=new Set();for(const x of t.corpus_item){require(reg(by('entity_revision',x.corpus_revision_id)?.entity_id)?.entity_type==='research_corpus','Потрібна версія корпусу');exact(x.target_entity_id,x.target_revision_id);require(sourceTypes.includes(reg(x.target_entity_id)?.entity_type),'Тип джерела корпусу');const key=x.corpus_revision_id+':'+x.position;require(Number.isInteger(x.position)&&x.position>0&&!positions.has(key),'Порядок корпусу');positions.add(key);}
  for(const r of t.entity_revision.filter(r=>reg(r.entity_id)?.entity_type==='research_corpus'))require(canonical(r.snapshot._relations?.corpus_item)===canonical(t.corpus_item.filter(x=>x.corpus_revision_id===r.id)),'Змінено склад версії корпусу');
  for(const x of t.annotation){exact(x.target_entity_id,x.target_revision_id);fk('person',x.author_person_id);require(x.kind==='research'&&!!x.body.trim()&&x.range_start===null&&x.range_end===null&&x.text_part_id===null,'Дослідницька анотація');if(x.corpus_id)fk('research_corpus',x.corpus_id);}
- for(const x of t.assertion){fk('entity',x.subject_entity_id);require(x.scope==='research'&&x.assertion_kind==='research'&&x.acceptance_state==='draft'&&!!x.statement_text.trim(),'Дослідницьке твердження');if(x.corpus_id)fk('research_corpus',x.corpus_id);require(t.evidence_link.some(e=>e.subject_entity_id===x.id),'Потрібен доказ твердження');}
+ for(const x of t.assertion.filter(x=>x.scope==='research')){fk('entity',x.subject_entity_id);require(x.scope==='research'&&x.assertion_kind==='research'&&x.acceptance_state==='draft'&&!!x.statement_text.trim(),'Дослідницьке твердження');if(x.corpus_id)fk('research_corpus',x.corpus_id);require(t.evidence_link.some(e=>e.subject_entity_id===x.id),'Потрібен доказ твердження');}
  for(const x of t.candidate_source){fk('candidate',x.candidate_id);exact(x.source_entity_id,x.source_revision_id);}
  for(const x of t.candidate.filter(x=>x.kind==='change_proposal'&&x.payload_schema_version!=='museum-proposal-1')){fk('account',x.proposed_by);require(x.proposed_by===reg(x.id).owner_account_id&&x.payload_schema_version==='research-proposal-1'&&typeof x.proposed_payload.description==='string'&&!!x.proposed_payload.description.trim(),'Пропозиція архіву');require(t.candidate_source.some(y=>y.candidate_id===x.id&&reg(y.source_entity_id)?.entity_type==='assertion'),'Підстава пропозиції');}
  for(const x of t.citation){exact(x.target_entity_id,x.target_revision_id);require(by('identifier',x.stable_identifier_id)?.entity_id===x.target_entity_id,'Ідентифікатор цитування');}

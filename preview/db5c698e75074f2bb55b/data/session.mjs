@@ -1,6 +1,6 @@
-import {fileBytes,mediaMime,MAX_MEDIA_BYTES} from './binary.mjs?v=20260930-wf06';
-import {rawHash} from './media.mjs?v=20260930-wf06';
-import {consentBasisValid,useNames} from './workbench.mjs?v=20260930-wf06';
+import {fileBytes,mediaMime,MAX_MEDIA_BYTES} from './binary.mjs?v=20260930-wf07';
+import {rawHash} from './media.mjs?v=20260930-wf07';
+import {consentBasisValid,useNames} from './workbench.mjs?v=20260930-wf07';
 export const eventKinds=[['participant_joined','Приєднання учасника'],['participant_left','Вихід учасника'],['interruption','Перерва'],['technical_incident','Технічна проблема'],['other','Інша подія']];
 export function recordingGaps(s,id,kind){
  const t=s.tables,use='record_'+kind,people=[...new Set(t.participation.filter(x=>x.session_id===id&&x.role_code==='performer').map(x=>x.person_id))];

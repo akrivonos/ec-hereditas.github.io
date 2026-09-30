@@ -1,17 +1,18 @@
-import {mediaPreview} from './session-media.mjs?v=20260930-wf06';
-import {sessionPage} from './session.mjs?v=20260930-wf06';
-import {contactsPage} from './contacts.mjs?v=20260930-wf06';
-import {preparationPage} from './preparation.mjs?v=20260930-wf06';
-import {preparationStatus} from '../data/preparation.mjs?v=20260930-wf06';
-import {can,hash} from '../data/model.mjs?v=20260930-wf06';
-import {hint} from './help.mjs?v=20260930-wf06';
-import {wizard} from './wizard.mjs?v=20260930-wf06';
-import {mediaPages} from './media.mjs?v=20260930-wf06';
+import {catalogPage} from './catalog.mjs?v=20260930-wf07';
+import {mediaPreview} from './session-media.mjs?v=20260930-wf07';
+import {sessionPage} from './session.mjs?v=20260930-wf07';
+import {contactsPage} from './contacts.mjs?v=20260930-wf07';
+import {preparationPage} from './preparation.mjs?v=20260930-wf07';
+import {preparationStatus} from '../data/preparation.mjs?v=20260930-wf07';
+import {can,hash} from '../data/model.mjs?v=20260930-wf07';
+import {hint} from './help.mjs?v=20260930-wf07';
+import {wizard} from './wizard.mjs?v=20260930-wf07';
+import {mediaPages} from './media.mjs?v=20260930-wf07';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;
  const st=s(),t=st.tables,by=(table,id)=>t[table]?.find(x=>x.id===id),entity=id=>by('entity',id),rev=id=>entity(id)?.current_revision_id;
- const label=id=>{const e=entity(id),r=e&&by(e.entity_type,id);return r?.title||r?.preferred_name||r?.name||r?.display_hint||r?.original_filename||'Без назви';};
+ const label=id=>{const e=entity(id),r=e&&by(e.entity_type,id);return r?.title||r?.preferred_name||r?.name||r?.display_hint||r?.original_filename||r?.external_key||'Без назви';};
  const params=new URLSearchParams(location.search),chosen=(rows)=>params.has('id')?rows.find(x=>x.id===params.get('id')):rows[0];
  const allowed=(id,p='domain.read')=>can(st,actor,p,entity(id)?.archive_id);
  const visible=table=>t[table].filter(x=>allowed(x.id)&&(!scope||entity(x.id).archive_id===scope));
@@ -140,18 +141,18 @@ export function fieldPages(ctx){
    for(const i of rows){action('received-'+i.position,()=>{const e=entity(i.local_entity_id),row=by(e.entity_type,i.local_entity_id);dialog(label(i.local_entity_id),body(details([['Архівний шифр',i.archive_code],['Опис',row.body_text||row.summary||row.context_notes||'Опис у пакеті надходження'],['Обмеження',i.decision==='restricted'?i.reason:'Окремі права ще не визначено']]))+(e.entity_type==='file_object'?mediaPreview(st.demo.file_contents[row.id],row.mime_type,esc):''),null,'Закрити');});
     action('received-place-'+i.position,()=>form('Розмістити в архіві',select('node_id','Розділ архіву',opts(visible('archive_node').filter(n=>n.archive_id===receipt.archive_id))),fd=>({type:'field.placement',id:i.local_entity_id,node_id:fd.get('node_id')})));
    }
-   show(heading('Прийняте надходження',receipt.title,'',button('← Надходження',pg(11,{role:'R02',intake:receipt.id}),true))+panel('Прийняті матеріали',table(['Матеріал','Архівний шифр','Обмеження','Дії'],rows.map(i=>[esc(label(i.local_entity_id)),esc(i.archive_code),esc(i.decision==='restricted'?i.reason:'Публікація не дозволена автоматично'),btn('Переглянути','received-'+i.position)+(writable(i.local_entity_id,'catalog.write')?' '+btn('Розмістити','received-place-'+i.position):'')]))));return;
+   show(heading('Прийняте надходження',receipt.title,'',button('← Надходження',pg(11,{role:'R02',intake:receipt.id}),true))+panel('Прийняті матеріали',table(['Матеріал','Архівний шифр','Обмеження','Дії'],rows.map(i=>[esc(label(i.local_entity_id)),esc(i.archive_code),esc(i.decision==='restricted'?i.reason:'Публікація не дозволена автоматично'),button('Опрацювати опис',pg(17,{role:'R02',material:i.local_entity_id}),true)+' '+btn('Переглянути','received-'+i.position)+(writable(i.local_entity_id,'catalog.write')?' '+btn('Розмістити','received-place-'+i.position):'')]))));return;
   }
   const h=params.get('handover')&&by('handover',params.get('handover')),origin=h&&by('workflow_run',h.from_workflow_run_id),owner=origin&&entity(origin.primary_entity_id);
   if(params.has('handover')&&(!h||!allowed(origin?.primary_entity_id)||(scope&&owner?.archive_id!==scope))){denied();return;}
   if(h&&h.state!=='accepted'){show(heading('Архівна робота','Матеріали','Опрацювання прийнятого пакета починається після рішення отримувача.',button('← Надходження',pg(10,{role:'R02'}),true))+body('<p>Пакет ще не прийнято. Завершіть його звірку у надходженнях.</p>'));return;}
-  const types={collecting_session:'Сеанс',information_unit:'Інформаційний запис',physical_object:'Фізичний носій',file_object:'Цифровий файл',document:'Польовий документ'},items=h?t.handover_item.filter(x=>x.handover_id===h.id):[],q=(params.get('q')||'').toLocaleLowerCase('uk'),mode=params.get('placement')||'';
+  const types={field_research:'Дослідження',source_record:'Джерельний запис',media_asset:'Медіаресурс',collecting_session:'Сеанс',information_unit:'Інформаційний запис',physical_object:'Фізичний носій',file_object:'Цифровий файл',document:'Польовий документ'},items=h?t.handover_item.filter(x=>x.handover_id===h.id):[],q=(params.get('q')||'').toLocaleLowerCase('uk'),mode=params.get('placement')||'';
   const placement=id=>t.archival_placement.find(x=>x.entity_id===id&&x.placement_role==='primary');
-  const rows=Object.keys(types).flatMap(visible).filter(x=>!x.technical_metadata?.intake_package&&(entity(x.id).entity_type!=='document'||['field_notebook','session_form','received_description'].includes(x.kind))&&(!h||items.some(i=>i.entity_id===x.id))&&label(x.id).toLocaleLowerCase('uk').includes(q)&&(!mode||(mode==='placed')===!!placement(x.id)));
+  const rows=Object.keys(types).flatMap(visible).filter(x=>!x.technical_metadata?.intake_package&&(entity(x.id).entity_type!=='document'||['field_notebook','session_form','received_description','source_document'].includes(x.kind))&&(!h||items.some(i=>i.entity_id===x.id))&&label(x.id).toLocaleLowerCase('uk').includes(q)&&(!mode||(mode==='placed')===!!placement(x.id)));
   for(const row of rows){
    const kind=entity(row.id).entity_type,item=items.find(i=>i.entity_id===row.id),snapshot=item?by('entity_revision',item.revision_id).snapshot:row;
    action('view-'+row.id,()=>dialog(label(row.id),body(details([['Тип',types[kind]],['Опис',snapshot.summary||snapshot.context_notes||snapshot.composition||snapshot.body_text||'Не зазначено'],...(item?[['Версія у прийнятому пакеті',String(by('entity_revision',item.revision_id).revision_no)]]:[])]))+(kind==='file_object'?mediaPreview(st.demo.file_contents[row.id],row.mime_type,esc):''),null,'Закрити'));
-   action('describe-'+row.id,()=>edit(row,kind==='information_unit'?[['title','Назва'],['summary','Зміст','textarea']]:[['title','Назва'],['processing_notes','Примітки до опрацювання','textarea']],'Уточнити опис'));
+
    action('place-'+row.id,()=>{
     const nodes=visible('archive_node').filter(n=>n.archive_id===entity(row.id).archive_id),expected=hash(t.archival_placement.filter(x=>x.entity_id===row.id&&x.placement_role==='primary'));
     const path=node=>node.parent_id?path(by('archive_node',node.parent_id))+' / '+node.title:node.title;
@@ -160,7 +161,7 @@ export function fieldPages(ctx){
   }
   show(heading(h?'Прийняте надходження':'Архівна робота','Матеріали','Переглядайте матеріали, уточнюйте описи й обирайте основний розділ архіву. Розміщення не змінює зафіксовані версії у прийнятому пакеті.',h?button('← Надходження',pg(10,{role:'R02',state:'accepted'}),true):button('Структура архіву',pg(16,{role:'R02'}),true))+
    `<form class="filters"><input type="hidden" name="role" value="R02">${h?`<input type="hidden" name="handover" value="${h.id}">`:''}${input('q','Знайти матеріал',params.get('q')||'')}${select('placement','Розміщення',choices([['','Усі матеріали'],['unplaced','Без розділу'],['placed','Розміщені']],mode))}<button class="button">Знайти</button></form>`+
-   panel('Матеріали',table(['Матеріал','Тип','В архіві','Дії'],rows.map(row=>{const kind=entity(row.id).entity_type,p=placement(row.id),item=items.find(i=>i.entity_id===row.id),nodes=visible('archive_node').filter(n=>n.archive_id===entity(row.id).archive_id);return [`<button class="link-button" data-action="view-${row.id}">${esc(label(row.id))}</button>${item&&item.revision_id!==rev(row.id)?'<span class="sub">Опис оновлено після приймання</span>':''}`,types[kind],p?link(16,by('archive_node',p.archive_node_id)):'Не розміщено',btn(p?'Змінити розділ':'Розмістити','place-'+row.id,writable(row.id,'catalog.write')&&nodes.length>0)+(['information_unit','collecting_session'].includes(kind)?' '+btn('Уточнити опис','describe-'+row.id,writable(row.id)):'')+(!nodes.length?' <span class="sub">Спочатку створіть розділ архіву.</span>':'')];}))));
+   panel('Матеріали',table(['Матеріал','Тип','В архіві','Дії'],rows.map(row=>{const kind=entity(row.id).entity_type,p=placement(row.id),item=items.find(i=>i.entity_id===row.id),nodes=visible('archive_node').filter(n=>n.archive_id===entity(row.id).archive_id);return [`<button class="link-button" data-action="view-${row.id}">${esc(label(row.id))}</button>${item&&item.revision_id!==rev(row.id)?'<span class="sub">Опис оновлено після приймання</span>':''}`,types[kind],p?link(16,by('archive_node',p.archive_node_id)):'Не розміщено',button('Опрацювати опис',pg(17,{role:'R02',material:row.id}),true)+' '+btn(p?'Змінити розділ':'Розмістити','place-'+row.id,writable(row.id,'catalog.write')&&nodes.length>0)+(!nodes.length?' <span class="sub">Спочатку створіть розділ архіву.</span>':'')];}))));
  }
  function archiveTree(){
   const nodes=visible('archive_node'),selected=params.has('id')?nodes.find(x=>x.id===params.get('id')):null;if(params.has('id')&&!selected){denied();return;}
@@ -169,19 +170,12 @@ export function fieldPages(ctx){
   if(selected)action('edit',()=>edit(selected,[['title','Назва'],['reference_code','Шифр']]));
   const branch=parent=>`<ul>${nodes.filter(x=>x.parent_id===parent).sort((a,b)=>a.position-b.position).map(x=>`<li><a href="${pg(16,{id:x.id})}" ${selected?.id===x.id?'aria-current="page"':''}>${esc(x.title)}<small>${esc(x.reference_code||termLabel(x.node_type_term_id))}</small></a>${branch(x.id)}</li>`).join('')}</ul>`;
   const materials=selected?t.archival_placement.filter(x=>x.archive_node_id===selected.id&&allowed(x.entity_id)):[];
-  const targetPage=id=>({field_research:5,collecting_session:8,information_unit:17})[entity(id)?.entity_type]||19;
+  const targetPage=id=>({field_research:5,collecting_session:8,information_unit:17})[entity(id)?.entity_type]||17;
   show(heading('Архів','Структура архіву','Розділи та матеріали зберігаються окремо: матеріал можна розмістити в потрібному розділі.',btn('Новий розділ','add',can(st,actor,'catalog.write',nodeArchive)))+`<div class="archive-layout"><nav class="archive-tree" aria-label="Дерево архіву">${branch(null)}</nav><div>`+(selected?panel(selected.title,(nodes.some(x=>x.parent_id===selected.id)?body('<div class="sub-sections">'+nodes.filter(x=>x.parent_id===selected.id).map(x=>'<p>'+link(16,x)+' <small>('+t.archival_placement.filter(p=>p.archive_node_id===x.id&&allowed(p.entity_id)).length+')</small></p>').join('')+'</div>'):'')+table(['Матеріал','Розміщення'],materials.map(x=>[`<a href="${pg(targetPage(x.entity_id),{id:x.entity_id})}">${esc(label(x.entity_id))}</a>`,x.placement_role==='primary'?'Основне':'Посилання'])),btn('Редагувати розділ','edit',writable(selected.id,'catalog.write'))):panel('Розділи архіву',body(nodes.length?'<p>Оберіть розділ у дереві, щоб переглянути його матеріали.</p>':'<p>Розділів ще немає. Створіть перший розділ.</p>')))+`</div></div>`);
  }
  function unitDetail(){
-  if(!params.has('id')){if(curatorRole)materials();else sessions();return;}
-  const row=chosen(visible('information_unit'));if(!row){denied();return;}
-  const session=by('collecting_session',row.session_id),placement=t.archival_placement.find(x=>x.entity_id===row.id&&x.placement_role==='primary');
-  action('edit',()=>edit(row,[['title','Назва'],...(row.unit_kind==='recorded_work'?[['incipit','Інципіт']]:[]),['summary','Зміст','textarea'],['dialect_label_raw','Говір у джерелі','text','Це характеристика конкретного запису, а не постійна властивість особи.']], 'Редагувати запис'));
-  action('place',()=>form('Розмістити в архіві',select('node_id','Розділ',opts(visible('archive_node'),placement?.archive_node_id)),fd=>({type:'field.placement',id:row.id,node_id:fd.get('node_id')})));
-  show(heading(kinds.find(k=>k[0]===row.unit_kind)[1],row.title,'Запис пов’язаний із сеансом, учасниками й місцем в архіві.',btn('Редагувати','edit',writable(row.id)))+`<div class="record-tabs">${button('← '+session.title,pg(8,{id:session.id}),true)}</div><div class="two-col"><div>`+
-   panel('Опис',body(details([['Інципіт',row.incipit],['Зміст',row.summary],['Говір у джерелі',row.dialect_label_raw],['Номер у сеансі',row.position]])))+
-   panel('Виконавці та оповідачі',table(['Особа','Функція'],t.unit_participant.filter(x=>x.unit_id===row.id).map(x=>[link(19,by('person',x.person_id)),esc(participantRole(x.role_code))])))+revisionHistory(row.id)+`</div><aside>`+
-   panel('В архіві',body(placement?link(16,by('archive_node',placement.archive_node_id)):'<p>Ще не розміщено.</p>'),btn('Обрати розділ','place',writable(row.id,'catalog.write')))+panel('Сеанс',body(`<p>${link(8,session)}</p><p>${esc(session.date_label||date(session.date_from))}</p>`))+'</aside></div>');
+  if(!params.has('id')&&!params.has('material')){if(curatorRole)materials();else sessions();return;}
+  catalogPage({st,t,actor,scope,params,by,entity,rev,label,allowed,visible,writable,action,show,heading,panel,body,table,details,btn,button,pg,esc,input,select,opts,choices,dialog,form,dispatch,render,denied});
  }
  function authorities(){
   const kind=params.get('kind')||'person',types=[['person','Особи'],['place','Місця'],['institution','Установи']];

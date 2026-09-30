@@ -1,15 +1,15 @@
-import {prepareSingleUser} from '../data/single-user.mjs?v=20260930-wf06';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20260930-wf06";
-import {fieldPages} from './field.mjs?v=20260930-wf06';
-import {mediaPages} from './media.mjs?v=20260930-wf06';
-import {researchPages} from './research.mjs?v=20260930-wf06';
-import {publicPages} from './public.mjs?v=20260930-wf06';
-import {archivePages} from './archive.mjs?v=20260930-wf06';
-import {workbenchPages} from './workbench.mjs?v=20260930-wf06';
-import {museumPages} from './museum.mjs?v=20260930-wf06';
-import {museumStamp} from '../data/museum.mjs?v=20260930-wf06';
-import {publicAccessStamp} from '../data/public.mjs?v=20260930-wf06';
-import {bindHelp} from './help.mjs?v=20260930-wf06';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20260930-wf07';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20260930-wf07";
+import {fieldPages} from './field.mjs?v=20260930-wf07';
+import {mediaPages} from './media.mjs?v=20260930-wf07';
+import {researchPages} from './research.mjs?v=20260930-wf07';
+import {publicPages} from './public.mjs?v=20260930-wf07';
+import {archivePages} from './archive.mjs?v=20260930-wf07';
+import {workbenchPages} from './workbench.mjs?v=20260930-wf07';
+import {museumPages} from './museum.mjs?v=20260930-wf07';
+import {museumStamp} from '../data/museum.mjs?v=20260930-wf07';
+import {publicAccessStamp} from '../data/public.mjs?v=20260930-wf07';
+import {bindHelp} from './help.mjs?v=20260930-wf07';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;
@@ -237,7 +237,7 @@ function taskDetail(){
  '</div>'+(!allowed&&!["done","cancelled"].includes(task.state)?'<p class="form-note">Змінювати це завдання може призначений виконавець або координатор.</p>':'')+'</div>')+
  panel("Історія",'<div class="panel-body"><ol class="timeline">'+[...task.events].reverse().map(e=>'<li><strong>'+esc(stateLabels[e.from_state]||"Створено")+' → '+esc(stateLabels[e.to_state])+'</strong><p style="margin:6px 0">'+esc(e.reason)+'</p><small>'+esc(actorLabel(e.actor_account_id))+' · '+date(e.occurred_at)+'</small></li>').join("")+'</ol></div>')+'</div><aside>'+
  panel("Архівний контекст",'<div class="panel-body"><dl class="detail-list"><div><dt>Область</dt><dd>'+esc(archive.name)+'</dd></div><div><dt>Процес</dt><dd>'+esc(workflowTitle(st.tables.workflow_run.find(w=>w.id===task.workflow_run_id)?.workflow_code))+'</dd></div></dl></div>')+
- panel("Цілі та точні версії",'<div class="panel-body">'+task.targets.map(t=>t.restricted?'<p>Ціль недоступна.</p>':'<div class="scope-card"><strong>'+esc(t.label)+'</strong><p>Зафіксована версія '+t.revision_no+'</p><small>Картка архіву готується.</small></div>').join("")+'</div>','', 'Завершення цього завдання не приймає, не публікує й не відкриває його цілі.')+'</aside></div>');
+ panel("Цілі та точні версії",'<div class="panel-body">'+task.targets.map(t=>t.restricted?'<p>Ціль недоступна.</p>':'<div class="scope-card"><strong>'+esc(t.label)+'</strong><p>Зафіксована версія '+t.revision_no+'</p>'+button('Відкрити матеріал',t.type==='catalog_record'?pg(17,{role:'R02',material:st.tables.catalog_record.find(r=>r.id===t.entity_id)?.subject_entity_id,section:'review'}):pg(({archive:16,source_record:22,physical_object:32,collecting_session:8,field_research:5,information_unit:17})[t.type]||17,{id:t.entity_id,role:'R02'}),true)+'</div>').join("")+'</div>','', 'Завершення цього завдання не приймає, не публікує й не відкриває його цілі.')+'</aside></div>');
  document.querySelectorAll("[data-task-action]").forEach(b=>b.onclick=()=>dialog(b.textContent,'<label>Підстава / результат<textarea name="reason"'+(["block","return","complete"].includes(b.dataset.taskAction)?' required':'')+'></textarea></label>',async data=>{
    await store.dispatch(actor,{type:"task.transition",id,expected_revision_id:task.revision_id,action:b.dataset.taskAction,reason:data.get("reason")});
    flash("Зміну збережено. Створено нову версію завдання та подію історії.");render();
