@@ -1,5 +1,5 @@
-import {MAX_MEDIA_BYTES,mediaMime,mediaUrl,fileBytes} from '../data/binary.mjs?v=20260930-wf08';
-import {recordingGaps} from '../data/session.mjs?v=20260930-wf08';
+import {MAX_MEDIA_BYTES,mediaMime,mediaUrl,fileBytes} from '../data/binary.mjs?v=20260930-wf08-final';
+import {recordingGaps} from '../data/session.mjs?v=20260930-wf08-final';
 export function mediaPreview(content,mime,esc,id=''){
  const url=mediaUrl(content,mime);if(!url)return `<pre class="source-text reading-text">${esc(typeof content==='string'?content:'Файл недоступний для перегляду.')}</pre>`;
  return mime.startsWith('image/')?`<img src="${url}" alt="Фото сеансу" style="max-width:100%;max-height:440px;object-fit:contain">`:`<${mime.startsWith('audio/')?'audio':'video'} ${id?`id="${esc(id)}"`:''} controls preload="metadata" src="${url}" style="width:100%;max-height:440px"></${mime.startsWith('audio/')?'audio':'video'}>`;

@@ -1,15 +1,15 @@
-import {prepareSingleUser} from '../data/single-user.mjs?v=20260930-wf08';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20260930-wf08";
-import {fieldPages} from './field.mjs?v=20260930-wf08';
-import {mediaPages} from './media.mjs?v=20260930-wf08';
-import {researchPages} from './research.mjs?v=20260930-wf08';
-import {publicPages} from './public.mjs?v=20260930-wf08';
-import {archivePages} from './archive.mjs?v=20260930-wf08';
-import {workbenchPages} from './workbench.mjs?v=20260930-wf08';
-import {museumPages} from './museum.mjs?v=20260930-wf08';
-import {museumStamp} from '../data/museum.mjs?v=20260930-wf08';
-import {publicAccessStamp} from '../data/public.mjs?v=20260930-wf08';
-import {bindHelp} from './help.mjs?v=20260930-wf08';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20260930-wf08-final';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20260930-wf08-final";
+import {fieldPages} from './field.mjs?v=20260930-wf08-final';
+import {mediaPages} from './media.mjs?v=20260930-wf08-final';
+import {researchPages} from './research.mjs?v=20260930-wf08-final';
+import {publicPages} from './public.mjs?v=20260930-wf08-final';
+import {archivePages} from './archive.mjs?v=20260930-wf08-final';
+import {workbenchPages} from './workbench.mjs?v=20260930-wf08-final';
+import {museumPages} from './museum.mjs?v=20260930-wf08-final';
+import {museumStamp} from '../data/museum.mjs?v=20260930-wf08-final';
+import {publicAccessStamp} from '../data/public.mjs?v=20260930-wf08-final';
+import {bindHelp} from './help.mjs?v=20260930-wf08-final';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;

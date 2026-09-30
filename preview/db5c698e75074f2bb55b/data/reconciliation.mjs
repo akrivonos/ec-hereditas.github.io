@@ -1,5 +1,5 @@
-import {can,canonical} from './model.mjs?v=20260930-wf08';
-import {classificationFits} from './catalog.mjs?v=20260930-wf08';
+import {can,canonical} from './model.mjs?v=20260930-wf08-final';
+import {classificationFits} from './catalog.mjs?v=20260930-wf08-final';
 export const reviewSourceTypes=['source_record','document','physical_object','media_asset','representation','file_object','information_unit','collecting_session','field_research','person','place','institution','textual_representation'];
 export const relationPredicates={
  represented_by:{label:'Представлено цифровим матеріалом',domain:['physical_object','information_unit','collecting_session','document'],range:['media_asset','representation','file_object'],symmetric:false},
@@ -55,7 +55,9 @@ export async function reconciliationCommand(s,actor,c,ctx){
  if(c.type==='reconcile.reopen'){
   if(target.entity_type!=='assertion'||!['accepted','rejected'].includes(row.acceptance_state))fail('invalid','Цей висновок не можна відкрити повторно.');need('catalog.write',archive);required(c.reason);fresh(view.subject,c.expected_subject_revision_id);if(view.object)fresh(view.object,c.expected_object_revision_id);await proof(row.id);
   const previousDecision=row.review_decision_id;for(const link of t.source_record_link.filter(x=>x.review_decision_id===previousDecision&&x.source_record_id===view.subject&&x.entity_id===view.object)){if(link.link_role==='describes')t.source_record_link=t.source_record_link.filter(x=>x!==link);else link.review_decision_id=null;}
-  row.acceptance_state='draft';row.review_decision_id=null;row.subject_revision_id=revision(view.subject);if(view.object)row.object_revision_id=revision(view.object);await revise(row,c.reason);await task(row.id,'Повторно звірити: '+view.title);await invalidate(view.subject);if(view.object)await invalidate(view.object);audit(c.type,row.id,c.expected_revision_id,revision(row.id),c.reason);return {id:row.id};
+  row.acceptance_state='draft';row.review_decision_id=null;row.subject_revision_id=revision(view.subject);if(view.object)row.object_revision_id=revision(view.object);await revise(row,c.reason);await task(row.id,'Повторно звірити: '+view.title);
+  for(const record of (t.catalog_record||[]).filter(r=>r.state==='verified'&&t.catalog_record_item.some(i=>i.record_id===r.id&&i.target_entity_id===row.id))){record.state='in_review';record.review_decision_id=null;for(const item of t.catalog_record_item.filter(i=>i.record_id===record.id&&i.target_entity_id===row.id))item.target_revision_id=revision(row.id);await revise(record,'Висновок у складі опису відкрито повторно');const w=await task(record.id,'Повторно перевірити опис: '+record.title);record.review_task_id=w.id;await revise(record,'Опис повернуто на звірку');t.work_item_target.find(x=>x.work_item_id===w.id).revision_id=revision(record.id);}
+  await invalidate(view.subject);if(view.object)await invalidate(view.object);audit(c.type,row.id,c.expected_revision_id,revision(row.id),c.reason);return {id:row.id};
  }
  if(c.type==='reconcile.refresh'){
   if(!['pending','deferred','unresolved','disputed'].includes(view.state)||view.kind==='catalog')fail('invalid','Поверніть опис на доопрацювання.');required(c.reason);fresh(view.subject,c.expected_subject_revision_id);if(view.object)fresh(view.object,c.expected_object_revision_id);
