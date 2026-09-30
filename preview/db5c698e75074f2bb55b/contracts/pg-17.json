@@ -73,9 +73,9 @@
       "catalog.submit",
       "field.placement"
     ],
-    "view_model": "WF-07: material list → description tabs with contextual dialogs; source-faithful profiles, documented sessions and separate ordered units, participant functions, geographic roles, scoped draft classifications with evidence, pinned representations/segments, exact-version review handoff",
+    "view_model": "WF-07: material list → description tabs with contextual dialogs; source-faithful profiles, documented sessions and separate ordered units, participant functions, geographic roles, scoped draft classifications with evidence, pinned representations/segments, exact-version review handoff WF-08 review links expose decisions, accepted relations and classification states.",
     "limitations": [
-      "Browser-local prototype; draft classifications require WF-08 human review. No automatic graph merge, authoritative vocabulary import or rights approval. Advanced D13 semantic relations and D11/D20 regional taxonomy remain separate gaps."
+      "Browser-local prototype; classifications use the explicit WF-08 human review. No automatic graph merge, authoritative vocabulary import or rights approval. Specialist D13 semantic relations and D11/D20 regional taxonomy remain separate gaps."
     ],
     "completion": "core-interactive",
     "state_storage": "Shared normalized browser store; fixture version 9",

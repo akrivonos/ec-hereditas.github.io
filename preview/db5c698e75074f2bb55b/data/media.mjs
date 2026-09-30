@@ -1,5 +1,6 @@
-import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20260930-wf07';
-import {fileBytes} from './binary.mjs?v=20260930-wf07';
+import {reconciliationCommand} from './reconciliation.mjs?v=20260930-wf08';
+import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20260930-wf08';
+import {fileBytes} from './binary.mjs?v=20260930-wf08';
 // Internal, scoped prototype operations. Storage and capture actions explicitly simulate hardware.
 export const mediaTypes=['source_system','source_record','physical_object','storage_location','condition_assessment','custody_event','media_asset','representation','file_object','storage_copy','capture_event','qc_record','candidate','review_decision','evidence'];
 export const mediaRelations=(t,type,id)=>Object.fromEntries(({
@@ -178,11 +179,9 @@ export async function mediaCommand(s,actor,c,ctx){
   const candidate=await newEntity('candidate',{kind:'identity_match',target_entity_id:source.id,base_revision_id:rev(source.id),proposed_payload:{entity_id:target.id,entity_revision_id:rev(target.id),reason:text(c.reason)},payload_schema_version:'identity-match/1',proposed_entity_id:target.id,process_run_id:null,proposed_by:actor,confidence:null,state:'pending'},archive(source.id));t.candidate_source.push({candidate_id:candidate.id,source_entity_id:source.id,source_revision_id:rev(source.id),source_role:'source'});return candidate;
  }
  if(c.type==='media.match.review'){
-  const candidate=get('candidate',c.id,'legacy.review');fresh(candidate.id,c.expected_revision_id);if(!['pending','deferred'].includes(candidate.state))fail('invalid','Рішення вже прийнято.');if(!['accept','reject','defer'].includes(c.decision))fail('invalid','Оберіть рішення.');
-  if(candidate.base_revision_id!==rev(candidate.target_entity_id)||candidate.proposed_payload.entity_revision_id!==rev(candidate.proposed_entity_id))fail('stale','Відповідність потрібно звірити з актуальним описом.');
-  const decision=await newEntity('review_decision',{target_entity_id:candidate.id,target_revision_id:rev(candidate.id),decision:c.decision,reviewer_account_id:actor,decided_at:s.clock,reason:text(c.reason),supersedes_decision_id:null},archive(candidate.id));candidate.state={accept:'accepted',reject:'rejected',defer:'deferred'}[c.decision];await revise(candidate,'Зафіксовано рішення про відповідність');
-  if(c.decision==='accept'){if(!t.source_record_link.some(x=>x.source_record_id===candidate.target_entity_id&&x.entity_id===candidate.proposed_entity_id))t.source_record_link.push({source_record_id:candidate.target_entity_id,entity_id:candidate.proposed_entity_id,review_decision_id:decision.id,link_role:'describes'});t.review_application.push({review_decision_id:decision.id,result_entity_id:candidate.proposed_entity_id,result_revision_id:rev(candidate.proposed_entity_id),applied_at:s.clock});}
-  if(c.decision==='defer')await task('Уточнити відповідність джерельного запису',candidate.target_entity_id);return decision;
+  const candidate=get('candidate',c.id,'legacy.review'),source=by('source_record',candidate.target_entity_id);
+  const result=await reconciliationCommand(s,actor,{...c,type:'reconcile.review',expected_subject_revision_id:rev(candidate.target_entity_id),expected_object_revision_id:rev(candidate.proposed_entity_id),confirm:true,method:c.method||'Зіставлення джерельного запису',evidence_source_id:source.id,evidence_source_revision_id:rev(source.id),locator:c.locator||source.source_locator||source.external_key,evidence_note:c.evidence_note||c.reason},ctx);
+  return by('review_decision',result.decision_id);
  }
  if(c.type==='media.handover.create'){
   need('intake.send',c.archive_id);const selected=[...new Set(c.entity_ids||[])];if(!selected.length)fail('invalid','Оберіть матеріали.');for(const id of selected){const e=reg(id);if(!e||!['collecting_session','information_unit','file_object','physical_object','document','timed_layer','textual_representation','consent_record'].includes(e.entity_type)||e.archive_id!==c.archive_id)fail('invalid','Матеріал поза обраним архівом.');get(e.entity_type,id,'domain.read');if(e.entity_type==='consent_record')need('consent.read',c.archive_id);if(e.entity_type==='document'&&!['field_notebook','session_form'].includes(by('document',id).kind))fail('invalid','Оберіть польовий зошит або бланк сеансу.');if(c.expected_revision_ids)fresh(id,c.expected_revision_ids[id]);}

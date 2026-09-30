@@ -1,13 +1,13 @@
-import {catalogPage} from './catalog.mjs?v=20260930-wf07';
-import {mediaPreview} from './session-media.mjs?v=20260930-wf07';
-import {sessionPage} from './session.mjs?v=20260930-wf07';
-import {contactsPage} from './contacts.mjs?v=20260930-wf07';
-import {preparationPage} from './preparation.mjs?v=20260930-wf07';
-import {preparationStatus} from '../data/preparation.mjs?v=20260930-wf07';
-import {can,hash} from '../data/model.mjs?v=20260930-wf07';
-import {hint} from './help.mjs?v=20260930-wf07';
-import {wizard} from './wizard.mjs?v=20260930-wf07';
-import {mediaPages} from './media.mjs?v=20260930-wf07';
+import {catalogPage} from './catalog.mjs?v=20260930-wf08';
+import {mediaPreview} from './session-media.mjs?v=20260930-wf08';
+import {sessionPage} from './session.mjs?v=20260930-wf08';
+import {contactsPage} from './contacts.mjs?v=20260930-wf08';
+import {preparationPage} from './preparation.mjs?v=20260930-wf08';
+import {preparationStatus} from '../data/preparation.mjs?v=20260930-wf08';
+import {can,hash} from '../data/model.mjs?v=20260930-wf08';
+import {hint} from './help.mjs?v=20260930-wf08';
+import {wizard} from './wizard.mjs?v=20260930-wf08';
+import {mediaPages} from './media.mjs?v=20260930-wf08';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;

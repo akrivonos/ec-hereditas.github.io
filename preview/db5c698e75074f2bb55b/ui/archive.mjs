@@ -1,6 +1,7 @@
-import {can} from '../data/model.mjs?v=20260930-wf07';
-import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20260930-wf07';
-import {wizard} from './wizard.mjs?v=20260930-wf07';
+import {reconciliationUI,caseKinds,caseStates} from './reconciliation.mjs?v=20260930-wf08';
+import {can} from '../data/model.mjs?v=20260930-wf08';
+import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20260930-wf08';
+import {wizard} from './wizard.mjs?v=20260930-wf08';
 
 export function archivePages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);
@@ -15,6 +16,7 @@ export function archivePages(ctx){
  const done=message=>{flash(message);render();};
  const permitted=(permission,id)=>can(st,actor,permission,reg(id)?.archive_id)&&(!scope||reg(id)?.archive_id===scope);
  const sources=permission=>t.entity.filter(e=>descriptionFields[e.entity_type]&&permitted(permission,e.id)&&!e.retired_at);
+ const reconciliation=reconciliationUI({st,t,actor,scope,by,reg,rev,esc,pg,heading,panel,dialog,dispatch,render,flash,denied,body,input,area,select,details,table,btn,link,go,action,show});
  const proof=()=>input('method','Спосіб перевірки','Звірка з джерелом')+input('locator','Де саме перевірено','',false)+area('evidence_note','Що підтверджує рішення')+'<label class="check-label"><input type="checkbox" name="confirm" required>Я перевірив джерело та підставу рішення</label>';
  function propose(){
   const choices=sources('review.write');if(!choices.length)return;
@@ -26,11 +28,11 @@ export function archivePages(ctx){
  }
  function queue(){
   if(!t.archive.some(a=>can(st,actor,'review.write',a.id)))return denied();
-  const state=p.get('state')||'pending',q=(p.get('q')||'').toLocaleLowerCase('uk');
-  const rows=t.candidate.map(c=>archiveCandidate(st,actor,c.id)).filter(x=>x&&(!scope||x.archive_id===scope)&&(state==='all'||x.state===state)&&[x.current?.title,x.proposed_payload.description].join(' ').toLocaleLowerCase('uk').includes(q));action('propose',propose);
-  show(heading('Архівіст','Черга перевірки','Відкрийте пропозицію, зіставте її з джерелом і зафіксуйте рішення.',btn('Запропонувати уточнення','propose',!!sources('review.write').length))+
-   `<form class="filters"><input type="hidden" name="role" value="R02">${input('q','Знайти пропозицію',p.get('q')||'',false)}${select('state','Стан',[['all','Усі стани'],...Object.entries(reviewStates)],state)}<button class="button">Знайти</button></form>`+
-   panel('Пропозиції',table(['Матеріал','Що пропонують','Стан'],rows.map(x=>[link(24,x.current?.title||'Відповідність',{id:x.id}),esc(x.proposed_payload.description||x.proposed_payload.reason||'Звірити відповідність'),esc(reviewStates[x.state])+(x.stale?'<span class="sub">Основа змінилася</span>':'')]))));
+  const kind=p.get('kind')||'',state=p.get('state')||'pending',q=(p.get('q')||'').toLocaleLowerCase('uk');
+  const rows=t.candidate.map(c=>archiveCandidate(st,actor,c.id)).filter(x=>x&&!reconciliation.handles(x.id)&&(!kind||x.kind===kind)&&(!scope||x.archive_id===scope)&&(state==='all'||x.state===state)&&[x.current?.title,x.proposed_payload.description].join(' ').toLocaleLowerCase('uk').includes(q));action('propose',propose);action('reconcile-propose',()=>reconciliation.propose('identity'));action('relation-propose',()=>reconciliation.propose('relation'));const extra=reconciliation.rows(state,q,kind);
+  show(heading('Архівіст','Черга перевірки','Відкрийте пропозицію, зіставте її з джерелом і зафіксуйте рішення.','<div class="public-actions">'+btn('Додати відповідність','reconcile-propose')+btn('Запропонувати зв’язок','relation-propose')+btn('Запропонувати уточнення','propose',!!sources('review.write').length)+'</div>')+
+   `<form class="filters"><input type="hidden" name="role" value="R02">${input('q','Знайти пропозицію',p.get('q')||'',false)}${select('state','Стан',[['all','Усі стани'],...Object.entries({...reviewStates,unresolved:caseStates.unresolved,disputed:caseStates.disputed})],state)}${select('kind','Вид перевірки',[['','Усі види'],...Object.entries(caseKinds),['description','Уточнення опису'],['text','Текст'],['change_proposal','Пропозиція дослідника']],kind)}<button class="button">Знайти</button></form>`+
+   panel('Пропозиції та описи',table(['Матеріал','Що перевіряємо','Стан'],[...extra.map(x=>[link(24,x.title,{id:x.id}),esc(caseKinds[x.kind]),esc(caseStates[x.state])+(x.stale?'<span class="sub">Основа змінилася</span>':'')]),...rows.map(x=>[link(24,x.current?.title||'Відповідність',{id:x.id}),esc(x.proposed_payload.description||x.proposed_payload.reason||'Звірити відповідність'),esc(reviewStates[x.state])+(x.stale?'<span class="sub">Основа змінилася</span>':'')])])));
  }
  function reviewDialog(view,decision){
   const apply=['accept','correct'].includes(decision),description=view.kind==='description',names={accept:'Прийняти',correct:'Прийняти з виправленням',reject:'Відхилити',defer:'Відкласти'};
@@ -38,7 +40,7 @@ export function archivePages(ctx){
   dialog(names[decision]+' пропозицію',(apply?(!description?select('field','Поле опису',Object.entries(descriptionFields[view.source_type])):'')+((!description||decision==='correct')?area('value','Нове значення',proposed):body(details([['Поле',descriptionFields[view.source_type][field]],['Буде записано',proposed]])))+proof():'')+area('reason',decision==='defer'?'Що потрібно перевірити далі':'Обґрунтування рішення'),async fd=>{await dispatch({type:'archive.review',id:view.id,expected_revision_id:view.revision_id,decision,...Object.fromEntries(fd),confirm:fd.has('confirm')});done(apply?'Опис оновлено. Пов’язана публікація потребує повторної перевірки доступу.':'Рішення збережено.');},names[decision]);
  }
  function candidate(){
-  if(!p.get('id'))return queue();const v=archiveCandidate(st,actor,p.get('id'));if(!v||scope&&v.archive_id!==scope)return denied();
+  if(!p.get('id'))return queue();if(reconciliation.handles(p.get('id')))return reconciliation.detail(p.get('id'));const v=archiveCandidate(st,actor,p.get('id'));if(!v||scope&&v.archive_id!==scope)return denied();
   const terminal=!['pending','deferred'].includes(v.state);for(const key of ['accept','correct','reject','defer'])action(key,()=>reviewDialog(v,key));
   const basis=by('entity_revision',v.source_revision_id)?.snapshot,field=v.proposed_payload.field;
   const controls=v.editable&&!terminal?btn('Прийняти','accept',!v.stale&&can(st,actor,'catalog.write',v.archive_id))+btn('Виправити й прийняти','correct',!v.stale&&can(st,actor,'catalog.write',v.archive_id))+btn('Відхилити','reject')+btn('Відкласти','defer'):'';

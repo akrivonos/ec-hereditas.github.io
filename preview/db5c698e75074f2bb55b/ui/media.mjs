@@ -1,11 +1,11 @@
-import {legacyPages} from './legacy.mjs?v=20260930-wf07';
-import {intakePages} from './intake.mjs?v=20260930-wf07';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20260930-wf07';
-import {mediaPreview} from './session-media.mjs?v=20260930-wf07';
-import {can,hash} from '../data/model.mjs?v=20260930-wf07';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20260930-wf07';
-import {hint} from './help.mjs?v=20260930-wf07';
-import {wizard} from './wizard.mjs?v=20260930-wf07';
+import {legacyPages} from './legacy.mjs?v=20260930-wf08';
+import {intakePages} from './intake.mjs?v=20260930-wf08';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20260930-wf08';
+import {mediaPreview} from './session-media.mjs?v=20260930-wf08';
+import {can,hash} from '../data/model.mjs?v=20260930-wf08';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20260930-wf08';
+import {hint} from './help.mjs?v=20260930-wf08';
+import {wizard} from './wizard.mjs?v=20260930-wf08';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;
@@ -144,7 +144,7 @@ export function mediaPages(ctx){
   action('match',()=>form('Запропонувати відповідність',select('entity_id','Матеріал або особа',options(['person','place','physical_object','information_unit'].flatMap(visible)))+input('reason','Підстава','','textarea',true),fd=>({type:'media.match',id:row.id,expected_revision_id:rev(row.id),...Object.fromEntries(fd)})));
   matches.forEach(x=>action('review-'+x.id,()=>form('Звірити відповідність',select('decision','Рішення',choices({accept:'Підтвердити',reject:'Відхилити',defer:'Відкласти'},'defer'))+input('reason','Обґрунтування','','textarea',true),fd=>({type:'media.match.review',id:x.id,expected_revision_id:rev(x.id),...Object.fromEntries(fd)}))));
   show(heading(label(row.source_system_id),row.source_locator||'Джерельний запис','Оригінал незмінний. Нова відповідність проходить окреме людське рішення.',button('← Джерело',pg(21,{id:row.source_system_id,role:'R02'}),true))+legacyUI().record(row)+`<div class="two-col"><div>`+panel('Оригінал',row.raw_payload?.columns&&row.raw_payload?.cells?table(['Поле джерела','Значення'],row.raw_payload.columns.map((name,i)=>[esc(name),esc(row.raw_payload.cells[i])])):body(`<pre class="source-text">${esc(row.raw_text||JSON.stringify(row.raw_payload,null,2))}</pre>`))+panel('Походження',body(details([['Позначення',row.external_key],['Місце в джерелі',row.source_locator],['Порядок',row.source_position],['Батьківський запис',row.parent_record_id?label(row.parent_record_id):'Не зазначено']])) )+`</div><aside>`+panel('Пов’язані об’єкти',body(links.map(x=>`<p>${entityLink(x.entity_id)}</p>`).join('')||'<p>Відповідностей ще немає.</p>'))+'</aside></div>'+
-   panel('Пропозиції',table(['Можлива відповідність','Підстава','Стан',''],matches.map(x=>[entityLink(x.proposed_entity_id),esc(x.proposed_payload.reason),badge(x.state),btn('Перевірити','review-'+x.id,allowed(row.id,'legacy.review')&&['pending','deferred'].includes(x.state))])),btn('Запропонувати відповідність','match',sourceRead(row.id)))+
+   panel('Пропозиції',table(['Можлива відповідність','Підстава','Стан',''],matches.map(x=>[entityLink(x.proposed_entity_id),esc(x.proposed_payload.reason),badge(x.state),button('Перевірити',pg(24,{role:'R02',id:x.id}),true)])),btn('Запропонувати відповідність','match',sourceRead(row.id)))+
    panel('Рішення',table(['Результат','Обґрунтування','Хто перевірив'],t.review_decision.filter(x=>matches.some(m=>m.id===x.target_entity_id)).map(x=>[esc({accept:'Підтверджено',reject:'Відхилено',defer:'Відкладено'}[x.decision]),esc(x.reason),esc(actorLabel(x.reviewer_account_id))]))));
  }
  function physicalList(){

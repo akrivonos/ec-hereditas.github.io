@@ -43,7 +43,6 @@
     "atomicity": "Review, exact result revision, evidence, verification and application commit together. Deferred review retains a task. Source changes invalidate linked effective policies and withdraw affected publications. Revocation withdraws linked publications in the same transaction.",
     "limitations": [
       "Local browser prototype only; no real publication server or network transport.",
-      "Review application supports title/description of information units, documents and physical objects; identity matches retain their dedicated source workflow. No generic classification or relation application.",
       "Existing decisions can be inspected/revoked; consent lifecycle, new access grants and rights renewal after source edits remain pending.",
       "New publication preparation covers public metadata; configuring new media release permissions, translations and deposit transport remains pending.",
       "Existing historical publications may be visible but require a separate exact-source verification before republishing."

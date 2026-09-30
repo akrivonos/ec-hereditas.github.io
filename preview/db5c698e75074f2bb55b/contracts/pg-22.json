@@ -44,7 +44,7 @@
       "media.match",
       "media.match.review"
     ],
-    "view_model": "Source-faithful original fields, explicit physical registration/condition/location and real digital file/provenance, description/digitization priorities and unresolved issue tasks; independent human reconciliation preserves raw records.",
+    "view_model": "Source-faithful original fields, explicit physical registration/condition/location and real digital file/provenance, description/digitization priorities and unresolved issue tasks; independent human reconciliation preserves raw records. WF-08 review links expose decisions, accepted relations and classification states.",
     "completion": "core-interactive",
     "limitations": [
       "Browser-local CSV/TSV UTF-8 import: up to 500 records and 2 MiB per input or original file; actual storage capacity depends on the browser.",

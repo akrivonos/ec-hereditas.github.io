@@ -1,17 +1,18 @@
-import {catalogTypes,validateCatalog,catalogCommand} from './catalog.mjs?v=20260930-wf07';
-import {legacyTypes,validateLegacy,legacyCommand} from './legacy.mjs?v=20260930-wf07';
-import {intakeTypes,validateIntake,intakeCommand} from './intake.mjs?v=20260930-wf07';
-import {fileBytes} from './binary.mjs?v=20260930-wf07';
+import {validateReconciliation,reconciliationCommand} from './reconciliation.mjs?v=20260930-wf08';
+import {catalogTypes,validateCatalog,catalogCommand} from './catalog.mjs?v=20260930-wf08';
+import {legacyTypes,validateLegacy,legacyCommand} from './legacy.mjs?v=20260930-wf08';
+import {intakeTypes,validateIntake,intakeCommand} from './intake.mjs?v=20260930-wf08';
+import {fileBytes} from './binary.mjs?v=20260930-wf08';
 // Shared mock adapter. Domain rows use the names/fields of schema Г.
 // Permissions below are a provisional demo profile, not the professional R-codes.
-import {fieldTypes,snapshot,addMembers,upgrade,validateField,fieldCommand} from './field.mjs?v=20260930-wf07';
-import {mediaTypes,validateMedia,mediaCommand,rawHash,manifestPayload} from './media.mjs?v=20260930-wf07';
-import {researchTypes,validateResearch,researchCommand} from './research.mjs?v=20260930-wf07';
-import {publicTypes,validatePublic,publicCommand} from './public.mjs?v=20260930-wf07';
-import {museumTypes,validateMuseum,museumCommand} from './museum.mjs?v=20260930-wf07';
-import {archiveTypes,validateArchive,archiveCommand} from './archive.mjs?v=20260930-wf07';
-import {workbenchTypes,validateWorkbench,workbenchCommand,verifyWorkbenchHashes} from './workbench.mjs?v=20260930-wf07';
-import {prepareMuseumDemo} from './demo-museum.mjs?v=20260930-wf07';
+import {fieldTypes,snapshot,addMembers,upgrade,validateField,fieldCommand} from './field.mjs?v=20260930-wf08';
+import {mediaTypes,validateMedia,mediaCommand,rawHash,manifestPayload} from './media.mjs?v=20260930-wf08';
+import {researchTypes,validateResearch,researchCommand} from './research.mjs?v=20260930-wf08';
+import {publicTypes,validatePublic,publicCommand} from './public.mjs?v=20260930-wf08';
+import {museumTypes,validateMuseum,museumCommand} from './museum.mjs?v=20260930-wf08';
+import {archiveTypes,validateArchive,archiveCommand} from './archive.mjs?v=20260930-wf08';
+import {workbenchTypes,validateWorkbench,workbenchCommand,verifyWorkbenchHashes} from './workbench.mjs?v=20260930-wf08';
+import {prepareMuseumDemo} from './demo-museum.mjs?v=20260930-wf08';
 export class ModelError extends Error {
   constructor(code,message){super(message);this.code=code;}
 }
@@ -154,6 +155,7 @@ export function validate(s){
   validateIntake(s,require,fk,canonical);
   validateLegacy(s,require,fk);
   validateCatalog(s,require,fk);
+  validateReconciliation(s,require,fk);
   validateWorkbench(s,require,fk);
   return true;
 }
@@ -192,6 +194,7 @@ export function createStore(base,persistence=null){
       };
       let result={};
       if(c.type.startsWith('workbench.'))result=await workbenchCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
+      else if(c.type.startsWith('reconcile.'))result=await reconciliationCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
       else if(c.type.startsWith('catalog.'))result=await catalogCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
       else if(c.type.startsWith('legacy.'))result=await legacyCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
       else if(c.type.startsWith('intake.'))result=await intakeCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
@@ -218,7 +221,7 @@ export function createStore(base,persistence=null){
       }else if(c.type==="task.transition"||c.type==="task.assign"){
         const task=t.work_item.find(w=>w.id===c.id),entity=t.entity.find(e=>e.id===c.id);
         if(!task||!can(next,actor,"task.read",entity.archive_id))fail("forbidden","Завдання недоступне.");
-        if(task.kind==='archival_review')fail('invalid','Опрацьовуйте завдання на сторінці розгляду пропозиції.');
+        if(['archival_review','reconciliation_review','catalog_review'].includes(task.kind))fail('invalid','Опрацьовуйте завдання на сторінці розгляду пропозиції.');
         if(task.kind==='text_review')fail('invalid','Ухваліть рішення на сторінці перевірки тексту.');
         if(['museum_publication_request','museum_correction_request'].includes(task.kind))fail('invalid','Опрацьовуйте це звернення на сторінці «Запити музею».');
         if(c.expected_revision_id!==entity.current_revision_id)fail("stale","Версію завдання змінено. Оновіть сторінку перед збереженням.");

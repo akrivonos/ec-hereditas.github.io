@@ -1,15 +1,15 @@
-import {prepareSingleUser} from '../data/single-user.mjs?v=20260930-wf07';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20260930-wf07";
-import {fieldPages} from './field.mjs?v=20260930-wf07';
-import {mediaPages} from './media.mjs?v=20260930-wf07';
-import {researchPages} from './research.mjs?v=20260930-wf07';
-import {publicPages} from './public.mjs?v=20260930-wf07';
-import {archivePages} from './archive.mjs?v=20260930-wf07';
-import {workbenchPages} from './workbench.mjs?v=20260930-wf07';
-import {museumPages} from './museum.mjs?v=20260930-wf07';
-import {museumStamp} from '../data/museum.mjs?v=20260930-wf07';
-import {publicAccessStamp} from '../data/public.mjs?v=20260930-wf07';
-import {bindHelp} from './help.mjs?v=20260930-wf07';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20260930-wf08';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20260930-wf08";
+import {fieldPages} from './field.mjs?v=20260930-wf08';
+import {mediaPages} from './media.mjs?v=20260930-wf08';
+import {researchPages} from './research.mjs?v=20260930-wf08';
+import {publicPages} from './public.mjs?v=20260930-wf08';
+import {archivePages} from './archive.mjs?v=20260930-wf08';
+import {workbenchPages} from './workbench.mjs?v=20260930-wf08';
+import {museumPages} from './museum.mjs?v=20260930-wf08';
+import {museumStamp} from '../data/museum.mjs?v=20260930-wf08';
+import {publicAccessStamp} from '../data/public.mjs?v=20260930-wf08';
+import {bindHelp} from './help.mjs?v=20260930-wf08';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;
@@ -217,6 +217,7 @@ function taskDetail(){
  if(!task){denied();return;}
  if(["museum_publication_request","museum_correction_request"].includes(task.kind)){shell(heading("Звернення до архіву",task.title,"",button("Відкрити звернення",pg(56,{role:can(st,actor,"task.assign",task.archive_id)?"R02":"R05-M",tab:"requests",id}))));return;}
  if(task.kind==='text_review'){const target=st.tables.work_item_target.find(x=>x.work_item_id===id);shell(heading('Перевірка тексту',task.title,'',button('Відкрити текст',pg(14,{role:'R02',id:target?.entity_id}))));return;}
+ if(['reconciliation_review','catalog_review'].includes(task.kind)){const target=st.tables.work_item_target.find(x=>x.work_item_id===id);const record=st.tables.catalog_record?.find(x=>x.id===target?.entity_id);shell(heading('Перевірка',task.title,'',button('Розглянути',pg(24,{role:'R02',id:target?.entity_id}))+(record?button('Відкрити матеріал',pg(17,{role:'R02',material:record.subject_entity_id,section:'review'}),true):'')));return;}
  if(task.kind==='archival_review'){const target=st.tables.work_item_target.find(x=>x.work_item_id===id&&st.tables.candidate.some(c=>c.id===x.entity_id));shell(heading('Перевірка',task.title,'',button('Відкрити пропозицію',pg(24,{role:'R02',id:target?.entity_id}))));return;}
  const archive=st.tables.archive.find(a=>a.id===task.archive_id),revision=st.tables.entity_revision.find(r=>r.id===task.revision_id);
  const allowed=can(st,actor,"task.work",task.archive_id)&&(!task.assigned_account_id||task.assigned_account_id===actor||can(st,actor,"task.assign",task.archive_id));

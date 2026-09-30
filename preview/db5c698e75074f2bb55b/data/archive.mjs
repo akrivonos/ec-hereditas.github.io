@@ -1,6 +1,6 @@
 // Human review and publication workbench; no transport or implicit access grants.
-import {can} from './model.mjs?v=20260930-wf07';
-import {publicView,publicResources} from './public.mjs?v=20260930-wf07';
+import {can} from './model.mjs?v=20260930-wf08';
+import {publicView,publicResources} from './public.mjs?v=20260930-wf08';
 export const archiveTypes=['verification_record'];
 export const descriptionFields={information_unit:{title:'Назва',summary:'Опис'},document:{title:'Назва',body_text:'Текст документа'},physical_object:{title:'Назва',inscriptions:'Написи'}};
 export const reviewStates={pending:'Очікує перевірки',deferred:'Відкладено',accepted:'Прийнято',corrected:'Прийнято з виправленням',rejected:'Відхилено',superseded:'Замінено'};
@@ -45,10 +45,10 @@ export async function archiveCommand(s,actor,c,ctx){
  const {need,fail,hash,snapshot,revise,audit}=ctx,t=s.tables,by=(k,id)=>t[k]?.find(x=>x.id===id),e=id=>reg(s,id),r=id=>rev(s,id),text=v=>{if(typeof v!=='string'||!v.trim())fail('invalid','Заповніть обов’язкове поле.');return v.trim();};
  const fresh=(id,expected)=>{if(r(id)!==expected)fail('stale','Запис змінено. Оновіть сторінку та повторіть звірку.');};
  const add=async(kind,values,archive)=>{const row={id:crypto.randomUUID(),...values},rid=crypto.randomUUID();(t[kind]??=[]).push(row);t.entity.push({id:row.id,entity_type:kind,owner_installation_id:s.demo.ids.installation,archive_id:archive,owner_account_id:actor,current_revision_id:rid,retired_at:null});const snap=snapshot(t,kind,row);t.entity_revision.push({id:rid,entity_id:row.id,revision_no:1,previous_revision_id:null,snapshot:snap,snapshot_hash:await hash(snap),recorded_at:s.clock,actor_account_id:actor,process_run_id:null,change_reason:c.reason||'Людська перевірка'});audit(c.type,row.id,null,rid,c.reason);return row;};
- const verification=async(id,rid,reason,decision=null)=>{
-  const evidence=await add('evidence',{source_entity_id:id,source_revision_id:rid,external_uri:null,locator:c.locator?.trim()||null,quote_text:c.quote?.trim()||null,note:text(c.evidence_note),captured_at:s.clock},e(id).archive_id);
-  const v=await add('verification_record',{target_entity_id:id,target_revision_id:rid,verified_by:actor,verified_at:s.clock,method:text(c.method),checked_aspect:reason,result:'confirmed',review_decision_id:decision},e(id).archive_id);
-  t.evidence_link.push({subject_entity_id:v.id,subject_revision_id:r(v.id),evidence_id:evidence.id,evidence_role:'review'});return v;
+ const verification=async(id,rid,reason,decision=null,outcome='confirmed')=>{
+  const evidence=await add('evidence',{source_entity_id:id,source_revision_id:rid,external_uri:null,locator:c.locator?.trim()||null,quote_text:c.quote?.trim()||null,note:text(c.evidence_note||(outcome!=='confirmed'?c.reason:null)),captured_at:s.clock},e(id).archive_id);
+  const v=await add('verification_record',{target_entity_id:id,target_revision_id:rid,verified_by:actor,verified_at:s.clock,method:text(c.method||(outcome!=='confirmed'?'Людська звірка пропозиції':null)),checked_aspect:reason,result:outcome,review_decision_id:decision},e(id).archive_id);
+  t.evidence_link.push({subject_entity_id:v.id,subject_revision_id:r(v.id),evidence_id:evidence.id,evidence_role:'review'});if(decision)t.evidence_link.push({subject_entity_id:decision,subject_revision_id:r(decision),evidence_id:evidence.id,evidence_role:'review_basis'});return v;
  };
  const hidePublications=async ids=>{for(const p of t.publication_record.filter(p=>ids.includes(p.id)&&p.state==='published')){p.state='unpublished';p.unpublished_at=s.clock;await revise(p,c.reason||'Потрібна повторна перевірка');}};
  if(c.type==='archive.propose'){
@@ -84,6 +84,7 @@ export async function archiveCommand(s,actor,c,ctx){
    for(const d of t.access_decision.filter(x=>x.target_entity_id===result.id&&x.state==='effective')){d.state='needs_review';await revise(d,'Опис змінено після звірки');}
    await hidePublications(t.publication_record.filter(p=>p.source_entity_id===result.id).map(p=>p.id));
   }
+  if(!result)await verification(candidate.id,r(candidate.id),c.reason,decision.id,c.decision==='reject'?'rejected':'unresolved');
   candidate.state={accept:'accepted',correct:'corrected',reject:'rejected',defer:'deferred'}[c.decision];await revise(candidate,c.reason);
   const linked=t.work_item.filter(w=>t.work_item_target.some(x=>x.work_item_id===w.id&&x.entity_id===candidate.id)&&['archival_review','museum_correction_request'].includes(w.kind)&&!['done','cancelled'].includes(w.state));
   if(c.decision==='defer'&&!linked.length){const w=await add('work_item',{workflow_run_id:null,kind:'archival_review',title:'Повторна звірка: '+(view.current?.title||'матеріал'),state:'open',assigned_account_id:actor,assigned_role_id:null,due_at:null,resolution:null},view.archive_id);t.work_item_target.push({work_item_id:w.id,entity_id:candidate.id,revision_id:r(candidate.id)});t.work_item_event.push({work_item_id:w.id,from_state:null,to_state:'open',actor_account_id:actor,occurred_at:s.clock,reason:c.reason});}
