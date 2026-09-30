@@ -2,10 +2,10 @@ import {catalogRoles,geoRoles,catalogSchemes,classificationFits} from '../data/c
 import {mediaPreview} from './session-media.mjs?v=20260930-wf07';
 export function catalogPage(c){
  const {st,t,actor,scope,params,by,entity,rev,label,allowed,visible,writable,action,show,heading,panel,body,table,details,btn,button,pg,esc,input,select,opts,choices,dialog,form,dispatch,render,denied}=c;
- const id=params.get('material')||params.get('id'),e=entity(id),row=e&&by(e.entity_type,id);if(!row||!allowed(id)||(scope&&e.archive_id!==scope)){denied();return;}
+ const id=params.get('material')||params.get('id'),e=entity(id),row=e&&by(e.entity_type,id);if(!row||!allowed(id)||e.entity_type==='document'&&row.kind==='received_consent'&&!allowed(id,'consent.read')||(scope&&e.archive_id!==scope)){denied();return;}
  const record=t.catalog_record?.find(x=>x.subject_entity_id===id),items=(t.catalog_record_item||[]).filter(x=>x.record_id===record?.id),a=e.archive_id,write=allowed(id,'catalog.write'),kind=e.entity_type;
  const cmd=type=>({type,id,expected_subject_revision_id:rev(id),expected_record_revision_id:record?rev(record.id):null});
- const ofType=type=>(t[type]||[]).filter(x=>entity(x.id)?.archive_id===a&&allowed(x.id));
+ const ofType=type=>(t[type]||[]).filter(x=>entity(x.id)?.archive_id===a&&allowed(x.id)&&(type!=='document'||x.kind!=='received_consent'||allowed(x.id,'consent.read')));
  const termLabel=id=>t.term_label.find(l=>l.term_id===id&&l.kind==='preferred')?.label||by('vocabulary_term',id)?.code||'Термін';
  const evidenceFields=()=>select('evidence_source_id','Джерело підстави',opts([row,...['source_record','document','information_unit','physical_object'].flatMap(ofType).filter(x=>x.id!==id)],id,x=>x.title||x.external_key||x.original_filename||x.raw_text?.slice(0,60)||label(x.id)))+input('locator','Де саме в джерелі','Опис матеріалу','text',true)+input('reason','Підстава та пояснення','','textarea',true);
  const submit=(type,title,html,extra={},after)=>form(title,html,fd=>({...cmd(type),...extra,...Object.fromEntries(fd)}),after);
