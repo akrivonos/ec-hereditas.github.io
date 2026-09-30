@@ -1,10 +1,11 @@
-import {intakePages} from './intake.mjs?v=20260930-wf05';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20260930-wf05';
-import {mediaPreview} from './session-media.mjs?v=20260930-wf05';
-import {can,hash} from '../data/model.mjs?v=20260930-wf05';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20260930-wf05';
-import {hint} from './help.mjs?v=20260930-wf05';
-import {wizard} from './wizard.mjs?v=20260930-wf05';
+import {legacyPages} from './legacy.mjs?v=20260930-wf06';
+import {intakePages} from './intake.mjs?v=20260930-wf06';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20260930-wf06';
+import {mediaPreview} from './session-media.mjs?v=20260930-wf06';
+import {can,hash} from '../data/model.mjs?v=20260930-wf06';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20260930-wf06';
+import {hint} from './help.mjs?v=20260930-wf06';
+import {wizard} from './wizard.mjs?v=20260930-wf06';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;
@@ -134,24 +135,15 @@ export function mediaPages(ctx){
    preflight+panel('Склад пакета',table(['Матеріал','Версія','Копії / контрольна сума','Звірка',''],items.map(i=>{const r=by('entity_revision',i.revision_id),f=by('file_object',i.entity_id);return [f?link(39,f.id,f.original_filename):entityLink(i.entity_id),String(r.revision_no),f?`${h.preflight?'Копії перевіряються для всього пакета':'Незалежних сховищ: '+independentCopies(st,f.id)}<small class="hash-value">${esc(i.item_checksum)}</small>`:'—',badge(i.item_state),btn('Звірити','item-'+i.position,receive&&h.state==='sent')];})))+
    panel('Рішення',body(`<p>${esc(h.notes||'Зауважень немає.')}</p>${h.accepted_at?`<p>Прийняла / прийняв: ${esc(actorLabel(h.accepted_by))} · ${esc(date(h.accepted_at))}</p>`:''}<div class="actions">${btn(h.preflight?'Зафіксувати передання':'Надіслати','send',send&&['prepared','returned'].includes(h.state))}${btn('Розглянути надходження','accept',receive&&h.state==='sent')}${btn('Повернути на уточнення','return',receive&&h.state==='sent')}${button('Збереження копій',pg(39),true)}</div>`)));
  }
- function legacy(){
-  if(!params.has('id')){
-   show(heading('Архівна робота','Спадкові джерела','Оберіть джерело, щоб переглянути його записи або додати надходження.')+panel('Джерела',table(['Джерело','Записи','Дія'],visible('source_system').map(x=>[esc(x.name),String(t.source_record.filter(r=>r.source_system_id===x.id).length),button('Відкрити записи',pg(21,{id:x.id,role:'R02'}),true)]))));return;
-  }
-  const systems=visible('source_system'),selected=chosen(systems);if(!selected){denied();return;}
-  action('import',()=>form('Додати джерельний запис',input('external_key','Позначення в джерелі','','text',true)+input('locator','Сторінка / картка / рядок')+input('raw_text','Оригінальний текст','','textarea',true,'Текст зберігається без виправлень. Відповідності додаються окремо.')+select('scenario','Сценарій прикладу',choices({success:'Звичайне надходження',failure:'Помилка читання'},'success')),fd=>({type:'media.import',id:selected.id,external_key:fd.get('external_key'),locator:fd.get('locator'),raw_text:fd.get('raw_text'),simulate_failure:fd.get('scenario')==='failure'}),r=>{if(r.ok===false){render();return;}location.href=pg(22,{id:r.id});}));
-  const records=t.source_record.filter(x=>x.source_system_id===selected.id),runs=t.workflow_run.filter(x=>x.workflow_code==='WF-06'&&x.primary_entity_id===selected.id);
-  show(heading('Спадкові матеріали','Спадкові джерела та імпорти','Зберігайте оригінальне формулювання та порядок. Невідомі сеанс, дата чи особа залишаються невідомими.',btn('Додати запис','import',sourceRead(selected.id)))+`<div class="record-tabs">${systems.map(x=>link(21,x.id,x.name)).join('')}</div>`+
-   panel(selected.name,table(['Позначення','Оригінальний текст','Відповідності'],records.map(x=>[link(22,x.id,x.source_locator||x.external_key),esc(x.raw_text),String(t.source_record_link.filter(l=>l.source_record_id===x.id).length)])))+
-   panel('Історія надходжень',table(['Дата','Стан','Примітка'],runs.slice().reverse().map(x=>[esc(date(x.started_at)),badge(x.state),esc(x.notes||'Записи збережено')]))));
- }
+ const legacyUI=()=>legacyPages({st,actor,archive,scope,params,t,by,rev,can,visible,allowed,label,action,dialog,input,select,options,choices,dispatch,render,flash,panel,body,table,details,btn,button,pg,esc,show,heading,form});
+ function legacy(){legacyUI().list();}
  function sourceDetail(){
   if(!params.has('id')){legacy();return;}
   const row=chosen(visible('source_record'));if(!row){denied();return;}
   const matches=t.candidate.filter(x=>x.target_entity_id===row.id),links=t.source_record_link.filter(x=>x.source_record_id===row.id);
   action('match',()=>form('Запропонувати відповідність',select('entity_id','Матеріал або особа',options(['person','place','physical_object','information_unit'].flatMap(visible)))+input('reason','Підстава','','textarea',true),fd=>({type:'media.match',id:row.id,expected_revision_id:rev(row.id),...Object.fromEntries(fd)})));
   matches.forEach(x=>action('review-'+x.id,()=>form('Звірити відповідність',select('decision','Рішення',choices({accept:'Підтвердити',reject:'Відхилити',defer:'Відкласти'},'defer'))+input('reason','Обґрунтування','','textarea',true),fd=>({type:'media.match.review',id:x.id,expected_revision_id:rev(x.id),...Object.fromEntries(fd)}))));
-  show(heading(label(row.source_system_id),row.source_locator||'Джерельний запис','Оригінал незмінний. Нова відповідність проходить окреме людське рішення.',button('← Джерело',pg(21,{id:row.source_system_id}),true))+`<div class="two-col"><div>`+panel('Оригінал',body(`<pre class="source-text">${esc(row.raw_text||JSON.stringify(row.raw_payload,null,2))}</pre>`))+panel('Походження',body(details([['Позначення',row.external_key],['Місце в джерелі',row.source_locator],['Порядок',row.source_position],['Батьківський запис',row.parent_record_id?label(row.parent_record_id):'Не зазначено']])) )+`</div><aside>`+panel('Підтверджені відповідності',body(links.map(x=>`<p>${entityLink(x.entity_id)}</p>`).join('')||'<p>Відповідностей ще немає.</p>'))+'</aside></div>'+
+  show(heading(label(row.source_system_id),row.source_locator||'Джерельний запис','Оригінал незмінний. Нова відповідність проходить окреме людське рішення.',button('← Джерело',pg(21,{id:row.source_system_id,role:'R02'}),true))+legacyUI().record(row)+`<div class="two-col"><div>`+panel('Оригінал',row.raw_payload?.columns&&row.raw_payload?.cells?table(['Поле джерела','Значення'],row.raw_payload.columns.map((name,i)=>[esc(name),esc(row.raw_payload.cells[i])])):body(`<pre class="source-text">${esc(row.raw_text||JSON.stringify(row.raw_payload,null,2))}</pre>`))+panel('Походження',body(details([['Позначення',row.external_key],['Місце в джерелі',row.source_locator],['Порядок',row.source_position],['Батьківський запис',row.parent_record_id?label(row.parent_record_id):'Не зазначено']])) )+`</div><aside>`+panel('Пов’язані об’єкти',body(links.map(x=>`<p>${entityLink(x.entity_id)}</p>`).join('')||'<p>Відповідностей ще немає.</p>'))+'</aside></div>'+
    panel('Пропозиції',table(['Можлива відповідність','Підстава','Стан',''],matches.map(x=>[entityLink(x.proposed_entity_id),esc(x.proposed_payload.reason),badge(x.state),btn('Перевірити','review-'+x.id,allowed(row.id,'legacy.review')&&['pending','deferred'].includes(x.state))])),btn('Запропонувати відповідність','match',sourceRead(row.id)))+
    panel('Рішення',table(['Результат','Обґрунтування','Хто перевірив'],t.review_decision.filter(x=>matches.some(m=>m.id===x.target_entity_id)).map(x=>[esc({accept:'Підтверджено',reject:'Відхилено',defer:'Відкладено'}[x.decision]),esc(x.reason),esc(actorLabel(x.reviewer_account_id))]))));
  }

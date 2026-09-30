@@ -1,15 +1,16 @@
-import {intakeTypes,validateIntake,intakeCommand} from './intake.mjs?v=20260930-wf05';
-import {fileBytes} from './binary.mjs?v=20260930-wf05';
+import {legacyTypes,validateLegacy,legacyCommand} from './legacy.mjs?v=20260930-wf06';
+import {intakeTypes,validateIntake,intakeCommand} from './intake.mjs?v=20260930-wf06';
+import {fileBytes} from './binary.mjs?v=20260930-wf06';
 // Shared mock adapter. Domain rows use the names/fields of schema Г.
 // Permissions below are a provisional demo profile, not the professional R-codes.
-import {fieldTypes,snapshot,addMembers,upgrade,validateField,fieldCommand} from './field.mjs?v=20260930-wf05';
-import {mediaTypes,validateMedia,mediaCommand,rawHash,manifestPayload} from './media.mjs?v=20260930-wf05';
-import {researchTypes,validateResearch,researchCommand} from './research.mjs?v=20260930-wf05';
-import {publicTypes,validatePublic,publicCommand} from './public.mjs?v=20260930-wf05';
-import {museumTypes,validateMuseum,museumCommand} from './museum.mjs?v=20260930-wf05';
-import {archiveTypes,validateArchive,archiveCommand} from './archive.mjs?v=20260930-wf05';
-import {workbenchTypes,validateWorkbench,workbenchCommand,verifyWorkbenchHashes} from './workbench.mjs?v=20260930-wf05';
-import {prepareMuseumDemo} from './demo-museum.mjs?v=20260930-wf05';
+import {fieldTypes,snapshot,addMembers,upgrade,validateField,fieldCommand} from './field.mjs?v=20260930-wf06';
+import {mediaTypes,validateMedia,mediaCommand,rawHash,manifestPayload} from './media.mjs?v=20260930-wf06';
+import {researchTypes,validateResearch,researchCommand} from './research.mjs?v=20260930-wf06';
+import {publicTypes,validatePublic,publicCommand} from './public.mjs?v=20260930-wf06';
+import {museumTypes,validateMuseum,museumCommand} from './museum.mjs?v=20260930-wf06';
+import {archiveTypes,validateArchive,archiveCommand} from './archive.mjs?v=20260930-wf06';
+import {workbenchTypes,validateWorkbench,workbenchCommand,verifyWorkbenchHashes} from './workbench.mjs?v=20260930-wf06';
+import {prepareMuseumDemo} from './demo-museum.mjs?v=20260930-wf06';
 export class ModelError extends Error {
   constructor(code,message){super(message);this.code=code;}
 }
@@ -79,14 +80,14 @@ export function validate(s){
   }
   for(const e of t.entity){
     fk("installation",e.owner_installation_id);fk("archive",e.archive_id,true);fk("account",e.owner_account_id,true);
-    require(["archive","person","work_item",...fieldTypes,...mediaTypes,...researchTypes,...publicTypes,...museumTypes,...archiveTypes,...workbenchTypes,...intakeTypes].includes(e.entity_type),"Непідтриманий тип запису");
+    require(["archive","person","work_item",...fieldTypes,...mediaTypes,...researchTypes,...publicTypes,...museumTypes,...archiveTypes,...workbenchTypes,...intakeTypes,...legacyTypes].includes(e.entity_type),"Непідтриманий тип запису");
     const row=by(e.entity_type,e.id);require(!!row,"Відсутній типізований запис");
     const r=by("entity_revision",e.current_revision_id);
     require(r?.entity_id===e.id,"Поточна версія іншого об’єкта");
     const {_relations,...core}=r.snapshot;
     require(canonical(row)===canonical(core),"Поточний рядок не відповідає snapshot");
   }
-  for(const table of ["person","archive","work_item",...fieldTypes,...mediaTypes,...researchTypes,...publicTypes,...museumTypes,...archiveTypes,...workbenchTypes,...intakeTypes])for(const row of t[table]||[])
+  for(const table of ["person","archive","work_item",...fieldTypes,...mediaTypes,...researchTypes,...publicTypes,...museumTypes,...archiveTypes,...workbenchTypes,...intakeTypes,...legacyTypes])for(const row of t[table]||[])
     require(by("entity",row.id)?.entity_type===table,"Відсутня реєстрація entity");
   for(const m of t.entity_revision_member){
     fk("entity_revision",m.aggregate_revision_id);
@@ -150,6 +151,7 @@ export function validate(s){
   validateMuseum(s,require,fk,canonical);
   validateArchive(s,require,fk);
   validateIntake(s,require,fk,canonical);
+  validateLegacy(s,require,fk);
   validateWorkbench(s,require,fk);
   return true;
 }
@@ -188,6 +190,7 @@ export function createStore(base,persistence=null){
       };
       let result={};
       if(c.type.startsWith('workbench.'))result=await workbenchCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
+      else if(c.type.startsWith('legacy.'))result=await legacyCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
       else if(c.type.startsWith('intake.'))result=await intakeCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
       else if(c.type.startsWith('archive.'))result=await archiveCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
       else if(c.type==='demo.museum.prepare')result=await prepareMuseumDemo(next,actor,{need,can,fail,revise,audit,hash,snapshot});

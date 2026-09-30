@@ -12,7 +12,15 @@
     "source_record",
     "document",
     "workflow_run",
-    "candidate"
+    "candidate",
+    "legacy_batch",
+    "legacy_inventory",
+    "document_context",
+    "file_object",
+    "file_ingest_occurrence",
+    "physical_object",
+    "custody_event",
+    "work_item"
   ],
   "fields_and_relations": "Партія, raw records, джерельні parent/position, прогрес імпорту й неоднозначності.",
   "required_interaction": "Імпорт/повтор/помилка; raw record незмінний, відсутній сеанс не реконструюється.",
@@ -30,14 +38,19 @@
   "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
   "implementation": {
     "commands": [
-      "media.import"
+      "legacy.source",
+      "legacy.import",
+      "legacy.record",
+      "legacy.document"
     ],
-    "view_model": "Explicit source-system list; selected immutable raw source records, duplicate retry and failed import history",
-    "completion": "partial",
+    "view_model": "Source creation, UTF-8 CSV/TSV import with mapping and preview, immutable originals and records, hierarchy/order/labels, idempotent retry and changed-source batches, source documents and inventory filters.",
+    "completion": "core-interactive",
     "limitations": [
-      "Input is a single text record; spreadsheet/bulk parser is pending."
+      "Browser-local CSV/TSV UTF-8 import: up to 500 records and 2 MiB per input or original file; actual storage capacity depends on the browser.",
+      "Word/XLSX/scans are preserved as original documents; automatic native parsing and OCR are not implemented. Use CSV exports for batch spreadsheet inventory.",
+      "Physical presence, inscriptions, location and urgency are explicitly recorded by a person; no automatic Session/Person/Genre reconstruction or rights/publication changes."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "state_storage": "Shared browser store; legacy batches and inventory are added lazily without resetting existing user data.",
     "permissions": [
       "domain.read",
       "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"

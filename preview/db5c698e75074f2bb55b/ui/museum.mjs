@@ -1,8 +1,8 @@
-import {can} from '../data/model.mjs?v=20260930-wf05';
-import {museumEnabled,museumOwned,museumMaterials,museumReasons,setItems,setTexts,setIssues,setState,resolvePoint,museumAuthor,museumPrintView} from '../data/museum.mjs?v=20260930-wf05';
-import {publicView,publicResources} from '../data/public.mjs?v=20260930-wf05';
-import {museumRequestUI} from './museum-requests.mjs?v=20260930-wf05';
-import {wizard} from './wizard.mjs?v=20260930-wf05';
+import {can} from '../data/model.mjs?v=20260930-wf06';
+import {museumEnabled,museumOwned,museumMaterials,museumReasons,setItems,setTexts,setIssues,setState,resolvePoint,museumAuthor,museumPrintView} from '../data/museum.mjs?v=20260930-wf06';
+import {publicView,publicResources} from '../data/public.mjs?v=20260930-wf06';
+import {museumRequestUI} from './museum-requests.mjs?v=20260930-wf06';
+import {wizard} from './wizard.mjs?v=20260930-wf06';
 
 export function museumPages(ctx){
  const {s,actor,scope,esc,pg,panel,heading,shell,dialog,render,flash,dispatch,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);

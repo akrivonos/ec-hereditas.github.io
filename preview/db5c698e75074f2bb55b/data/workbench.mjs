@@ -1,5 +1,5 @@
 // Texts, private consents and explicit local processing/transport demonstrations.
-import {can} from './model.mjs?v=20260930-wf05';
+import {can} from './model.mjs?v=20260930-wf06';
 export const workbenchTypes=['textual_representation','media_segment','consent_record','deposit_record'];
 export const textKinds={diplomatic:'Дослівна транскрипція',normalized:'Нормалізований текст',translation:'Переклад',notation:'Нотна транскрипція'};
 export const useNames={record_audio:'Аудіозапис',record_video:'Відеозапис',record_photo:'Фотографування',field_notes:'Польові нотатки',view:'Перегляд',cite:'Цитування',museum:'Музейне використання',download:'Завантаження',machine_process:'Машинне опрацювання',deposit:'Депонування'};

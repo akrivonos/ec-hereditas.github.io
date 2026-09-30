@@ -1,6 +1,6 @@
-import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20260930-wf05';
-import {wizard} from './wizard.mjs?v=20260930-wf05';
-import {hint} from './help.mjs?v=20260930-wf05';
+import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20260930-wf06';
+import {wizard} from './wizard.mjs?v=20260930-wf06';
+import {hint} from './help.mjs?v=20260930-wf06';
 
 export function researchPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);

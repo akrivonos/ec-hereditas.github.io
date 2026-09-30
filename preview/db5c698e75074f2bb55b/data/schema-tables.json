@@ -69,6 +69,8 @@
   "intake_record",
   "kiosk_cache_item",
   "kiosk_cache_manifest",
+  "legacy_batch",
+  "legacy_inventory",
   "manifest_entry",
   "media_asset",
   "media_asset_subject",

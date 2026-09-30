@@ -12,7 +12,15 @@
     "source_record",
     "source_record_link",
     "evidence",
-    "candidate"
+    "candidate",
+    "legacy_batch",
+    "legacy_inventory",
+    "document_context",
+    "file_object",
+    "file_ingest_occurrence",
+    "physical_object",
+    "custody_event",
+    "work_item"
   ],
   "fields_and_relations": "Оригінал і locator поруч із нормалізованими відповідностями та рішеннями.",
   "required_interaction": "Подати match-кандидат; reject/defer зберігає raw і пояснення.",
@@ -30,13 +38,20 @@
   "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
   "implementation": {
     "commands": [
+      "legacy.physical",
+      "legacy.file",
+      "legacy.triage",
       "media.match",
       "media.match.review"
     ],
-    "view_model": "Candidate matching, explicit human accept/reject/defer, exact target/base versions; raw never rewritten",
+    "view_model": "Source-faithful original fields, explicit physical registration/condition/location and real digital file/provenance, description/digitization priorities and unresolved issue tasks; independent human reconciliation preserves raw records.",
     "completion": "core-interactive",
-    "limitations": [],
-    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "limitations": [
+      "Browser-local CSV/TSV UTF-8 import: up to 500 records and 2 MiB per input or original file; actual storage capacity depends on the browser.",
+      "Word/XLSX/scans are preserved as original documents; automatic native parsing and OCR are not implemented. Use CSV exports for batch spreadsheet inventory.",
+      "Physical presence, inscriptions, location and urgency are explicitly recorded by a person; no automatic Session/Person/Genre reconstruction or rights/publication changes."
+    ],
+    "state_storage": "Shared browser store; legacy batches and inventory are added lazily without resetting existing user data.",
     "permissions": [
       "domain.read",
       "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
