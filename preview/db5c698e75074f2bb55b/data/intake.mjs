@@ -1,5 +1,5 @@
-import {verifyTransferBundle,transferBundle} from './handover.mjs?v=20261001-wf12';
-import {rawHash} from './media.mjs?v=20261001-wf12';
+import {verifyTransferBundle,transferBundle} from './handover.mjs?v=20261001-wf13';
+import {rawHash} from './media.mjs?v=20261001-wf13';
 export const intakeTypes=['intake_record'];
 export const intakeRelations=(t,type,id)=>type==='intake_record'?{intake_item:structuredClone((t.intake_item||[]).filter(i=>i.intake_id===id))}:{};
 export const intakePackage=(s,r)=>JSON.parse(s.demo.file_contents[r.package_file_id]);

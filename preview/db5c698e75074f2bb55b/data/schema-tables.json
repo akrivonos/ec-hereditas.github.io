@@ -150,5 +150,6 @@
   "work_item_event",
   "work_item_target",
   "workflow_object",
-  "workflow_run"
+  "workflow_run",
+  "preservation_plan"
 ]

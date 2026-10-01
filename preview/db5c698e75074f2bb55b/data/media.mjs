@@ -1,9 +1,10 @@
-import {qualityCommand,validateQuality} from './quality.mjs?v=20261001-wf12';
-import {digitize,validateDigitization} from './digitization.mjs?v=20261001-wf12';
-import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261001-wf12';
-import {reconciliationCommand} from './reconciliation.mjs?v=20261001-wf12';
-import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261001-wf12';
-import {fileBytes} from './binary.mjs?v=20261001-wf12';
+import {preservationCommand,validatePreservation} from './preservation.mjs?v=20261001-wf13';
+import {qualityCommand,validateQuality} from './quality.mjs?v=20261001-wf13';
+import {digitize,validateDigitization} from './digitization.mjs?v=20261001-wf13';
+import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261001-wf13';
+import {reconciliationCommand} from './reconciliation.mjs?v=20261001-wf13';
+import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261001-wf13';
+import {fileBytes} from './binary.mjs?v=20261001-wf13';
 // Internal, scoped prototype operations. Storage and capture actions explicitly simulate hardware.
 export const mediaTypes=['source_system','source_record','physical_object','storage_location','condition_assessment','custody_event','media_asset','representation','file_object','storage_copy','capture_event','qc_record','candidate','review_decision','evidence'];
 export const mediaRelations=(t,type,id)=>Object.fromEntries(({
@@ -24,7 +25,7 @@ export function qcFacts(s,rep){
  return {capture,plan,files,expected,complete:expected!==null&&files.length===expected,order:plan.length>0&&plannedOutputs(s,capture.settings.capture_plan_revision_id).every((p,i)=>files.some(f=>f.position===i+1&&f.component_label===p.label)),checksums:files.length>0&&files.every(f=>t.storage_copy.some(c=>c.file_id===f.file_id&&c.state==='verified'))};
 }
 export function validateMedia(s,require,fk,canonical){
- const t=s.tables;if(!t.physical_object)return;validatePreparation(s,require,canonical);validateDigitization(s,require);validateQuality(s,require);
+ const t=s.tables;if(!t.physical_object)return;validatePreparation(s,require,canonical);validateDigitization(s,require);validateQuality(s,require);validatePreservation(s,require,fk);
  const by=(table,id)=>t[table]?.find(x=>x.id===id),reg=id=>by('entity',id),same=(a,b)=>require(reg(a)?.archive_id===reg(b)?.archive_id,'Зв’язок поза архівом');
  const revision=(id,type)=>{const r=by('entity_revision',id);require(!!r&&reg(r.entity_id)?.entity_type===type,'Неправильний тип версії');return r;};
  const unique=(rows,key,message)=>require(new Set(rows.map(key)).size===rows.length,message);
@@ -79,6 +80,7 @@ export async function mediaCommand(s,actor,c,ctx){
  const file=async(name,content,a,workflow,capture=null)=>{text(name);if(!content||content.length>100000)fail('invalid','Додайте вміст прикладу до 100 000 символів.');const row=await newEntity('file_object',{sha256:await rawHash(content),byte_size:new TextEncoder().encode(content).length,mime_type:'text/plain',pronom_id:null,original_filename:name,received_at:s.clock,technical_metadata:{demo:true}},a);s.demo.file_contents[row.id]=content;t.file_ingest_occurrence.push({file_id:row.id,workflow_run_id:workflow,received_filename:name,source_path:null,received_at:s.clock,capture_event_id:capture});return row;};
  const copy=async(f,location)=>{if(!by('digital_storage_location',location))fail('invalid','Оберіть цифрове сховище.');const row=await newEntity('storage_copy',{file_id:f.id,storage_location_id:location,storage_key:f.id+'/'+f.original_filename,state:'pending',created_at:s.clock},archive(f.id));t.fixity_check.push({copy_id:row.id,checked_at:s.clock,algorithm:'SHA-256',observed_hash:await rawHash(s.demo.file_contents[f.id]),result:'match',process_run_id:null});row.state='verified';await revise(row,'Контрольна сума збігається');return row;};
  const manifest=async(capture,outputs)=>{if(!capture.digitization_job_id)return;const j=t.digitization_job.find(x=>x.work_item_id===capture.digitization_job_id);const doc=await newEntity('document',{kind:'digitization_manifest',title:'Опис отриманих файлів',body_text:outputs.map(o=>o.notes).join('\n'),language_tag:'uk',media_asset_id:null,physical_object_id:j.physical_object_id},archive(capture.id));for(const o of outputs)t.manifest_entry.push({manifest_revision_id:rev(doc.id),physical_object_id:j.physical_object_id,digitization_job_id:j.work_item_id,capture_event_id:capture.id,file_id:o.file_id,position:o.position,checksum:by('file_object',o.file_id).sha256,part_label:o.notes});};
+ if(['media.ingest','media.derivative','media.copy','media.fixity','media.restore','media.storage.location','media.preservation.plan'].includes(c.type))return preservationCommand(s,actor,c,{get,fresh,newEntity,revise,run,task,rawHash,fail,need});
  if(c.type.startsWith('media.transfer.'))return transferCommand(s,actor,c,{...ctx,task});
  if(c.type==='media.physical.create'){
   need('physical.write',c.archive_id);const term=by('vocabulary_term',c.carrier_type_term_id);if(term?.status!=='active')fail('invalid','Оберіть чинний тип носія.');return newEntity('physical_object',{archive_id:c.archive_id,carrier_type_term_id:term.id,title:text(c.title),reference_code:c.reference_code||null,inscriptions:c.inscriptions||null,composition:c.composition||null,provenance_note:null,carrier_stage:'original'},c.archive_id);
@@ -119,32 +121,8 @@ export async function mediaCommand(s,actor,c,ctx){
   for(let i=0;i<count;i++){const f=await file('part-'+(i+1)+'.txt',`${parts[i]}\nНавчальний результат фіксації ${cap.id}.\n${c.content||''}`,a,w.id,cap.id);t.capture_output.push({capture_event_id:cap.id,file_id:f.id,plan_item_id:null,position:i+1,notes:parts[i]});t.representation_file.push({representation_id:rep.id,file_id:f.id,position:i+1,component_label:parts[i],component_role:'page',timeline_offset_ms:null});await copy(f,t.digital_storage_location[0].id);}
   await revise(cap,'Додано результати фіксації');await revise(rep,'Зафіксовано порядок файлів');await manifest(cap,t.capture_output.filter(x=>x.capture_event_id===cap.id));return {id:cap.id,asset_id:asset.id,representation_id:rep.id};
  }
- if(c.type==='media.ingest'||c.type==='media.derivative'){
-  let asset,a,input;
-  if(c.type==='media.derivative'){input=get('representation',c.representation_id);fresh(input.id,c.expected_revision_id);asset=by('media_asset',input.asset_id);a=archive(asset.id);}
-  else{need('media.write',c.archive_id);a=c.archive_id;asset=await newEntity('media_asset',{title:text(c.title),media_kind:'document',description:c.description||null},a);if(c.subject_id){get(reg(c.subject_id)?.entity_type,c.subject_id,'domain.read');t.media_asset_subject.push({asset_id:asset.id,subject_entity_id:c.subject_id,relation_role:'documents',evidence_id:null});await revise(asset,'Пов’язано з матеріалом');}}
-  const role=input?'access_derivative':'received_original',version=Math.max(0,...t.representation.filter(x=>x.asset_id===asset.id&&x.role===role).map(x=>x.representation_version))+1;
-  const rep=await newEntity('representation',{asset_id:asset.id,role,representation_version:version,duration_ms:null,technical_metadata:null},a),w=run('WF-13',asset.id),f=await file(text(c.filename),text(c.content),a,w.id);
-  t.representation_file.push({representation_id:rep.id,file_id:f.id,position:1,component_label:f.original_filename,component_role:'content',timeline_offset_ms:null});if(input)t.representation_derivation.push({output_representation_id:rep.id,input_representation_revision_id:rev(input.id),process_run_id:null,operation:'Приклад створення копії для перегляду'});
-  await copy(f,t.digital_storage_location[0].id);await revise(rep,'Додано файл');return {id:asset.id,representation_id:rep.id};
- }
  if(c.type==='media.asset.link'){
   const asset=get('media_asset',c.id);fresh(asset.id,c.expected_revision_id);const e=reg(c.subject_id);if(!e||!['physical_object','collecting_session','information_unit','document'].includes(e.entity_type))fail('invalid','Оберіть матеріал.');get(e.entity_type,e.id,'domain.read');if(!t.media_asset_subject.some(x=>x.asset_id===asset.id&&x.subject_entity_id===e.id))t.media_asset_subject.push({asset_id:asset.id,subject_entity_id:e.id,relation_role:'documents',evidence_id:null});await revise(asset,'Уточнено зв’язок із матеріалом');return asset;
- }
- if(c.type==='media.copy'){
-  const f=get('file_object',c.file_id);return copy(f,c.location_id);
- }
- if(c.type==='media.fixity'||c.type==='media.restore'){
-  const row=get('storage_copy',c.id);fresh(row.id,c.expected_revision_id);const f=by('file_object',row.file_id),content=s.demo.file_contents[f.id];
-  if(c.type==='media.restore'){
-   const source=t.storage_copy.find(x=>x.file_id===f.id&&x.id!==row.id&&x.state==='verified'),ok=!!source&&await rawHash(content)===f.sha256;
-   t.storage_recovery_check.push({copy_id:row.id,checked_at:s.clock,method:'Демонстраційне відновлення з перевіреної копії',result:ok?'pass':'fail',restored_hash:ok?f.sha256:null,notes:ok?'Відновлення перевірено':'Немає справної вихідної копії',process_run_id:null});
-   if(ok){row.state='verified';t.fixity_check.push({copy_id:row.id,checked_at:s.clock,algorithm:'SHA-256',observed_hash:f.sha256,result:'match',process_run_id:null});await revise(row,'Відновлено копію');}
-   else await task('Відновити недоступний файл',f.id);audit('storage.restore',row.id,null,null,ok?'Відновлення пройшло':'Відновлення не вдалося');return {ok};
-  }
-  const outcome=c.scenario||'actual';if(!['actual','mismatch','missing'].includes(outcome))fail('invalid','Невідомий сценарій перевірки.');
-  const observed=outcome==='missing'||row.state==='missing'&&outcome==='actual'?null:await rawHash(content+(outcome==='mismatch'||row.state==='corrupt'?'пошкодження':''));
-  const result=observed===null?'missing':observed===f.sha256?'match':'mismatch';row.state=result==='match'?'verified':result==='missing'?'missing':'corrupt';t.fixity_check.push({copy_id:row.id,checked_at:s.clock,algorithm:'SHA-256',observed_hash:observed,result,process_run_id:null});await revise(row,'Перевірено цілісність копії');if(result!=='match')await task('Перевірити пошкоджену або відсутню копію',f.id);return {result};
  }
  if(c.type==='media.qc')return qualityCommand(s,actor,c,{get,fresh,newEntity,revise,fail,run});
  if(c.type==='media.import'){

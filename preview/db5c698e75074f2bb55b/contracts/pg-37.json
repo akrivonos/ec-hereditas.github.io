@@ -14,7 +14,7 @@
     "file_ingest_occurrence"
   ],
   "fields_and_relations": "Логічні ресурси, контекст, ролі представлень, непов’язані надходження.",
-  "required_interaction": "Пошук/ingest/зв’язати; одна логічна фотографія з master/preview, не два предмети.",
+  "required_interaction": "Прийняти фактичні файли, звірити очікувану суму, зберегти назви/шляхи та відкрити ресурс.",
   "fixtures": [
     "FX-03"
   ],
@@ -32,16 +32,19 @@
       "media.ingest",
       "media.asset.link"
     ],
-    "view_model": "Logical asset search, unlinked filter, ingest text fixture and source context",
-    "completion": "partial",
+    "view_model": "Asset list/search, binary ingest wizard with optional expected checksum, ordered filenames/paths and contextual links",
+    "completion": "closed-for-local-prototype",
     "limitations": [
-      "Real audio/video/scan upload is not implemented."
+      "2 MiB per ingest/conversion; external storage is read via user-selected files, no remote writes or background scheduler.",
+      "Physical independence is declared by the responsible person; target restore requires a separate reread after download.",
+      "Canvas PNG thumbnails; other derived files imported from external tools. No audio/video transcoding or streaming server."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "state_storage": "Shared normalized browser store v9; existing files, revisions and historical checks preserved",
     "permissions": [
       "domain.read",
       "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
     ],
-    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically.",
+    "preservation": "WF-13: actual bytes and SHA-256/size; filename/path occurrences; immutable file identity; exact representation derivation; proof-based independent copy policy and due dates; append-only fixity/recovery and targeted issue resolution."
   }
 }

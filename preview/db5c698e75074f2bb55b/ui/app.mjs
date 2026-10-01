@@ -1,15 +1,15 @@
-import {prepareSingleUser} from '../data/single-user.mjs?v=20261001-wf12';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261001-wf12";
-import {fieldPages} from './field.mjs?v=20261001-wf12';
-import {mediaPages} from './media.mjs?v=20261001-wf12';
-import {researchPages} from './research.mjs?v=20261001-wf12';
-import {publicPages} from './public.mjs?v=20261001-wf12';
-import {archivePages} from './archive.mjs?v=20261001-wf12';
-import {workbenchPages} from './workbench.mjs?v=20261001-wf12';
-import {museumPages} from './museum.mjs?v=20261001-wf12';
-import {museumStamp} from '../data/museum.mjs?v=20261001-wf12';
-import {publicAccessStamp} from '../data/public.mjs?v=20261001-wf12';
-import {bindHelp} from './help.mjs?v=20261001-wf12';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20261001-wf13';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261001-wf13";
+import {fieldPages} from './field.mjs?v=20261001-wf13';
+import {mediaPages} from './media.mjs?v=20261001-wf13';
+import {researchPages} from './research.mjs?v=20261001-wf13';
+import {publicPages} from './public.mjs?v=20261001-wf13';
+import {archivePages} from './archive.mjs?v=20261001-wf13';
+import {workbenchPages} from './workbench.mjs?v=20261001-wf13';
+import {museumPages} from './museum.mjs?v=20261001-wf13';
+import {museumStamp} from '../data/museum.mjs?v=20261001-wf13';
+import {publicAccessStamp} from '../data/public.mjs?v=20261001-wf13';
+import {bindHelp} from './help.mjs?v=20261001-wf13';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;
@@ -217,6 +217,7 @@ function taskDetail(){
  if(!task){denied();return;}
  if(["museum_publication_request","museum_correction_request"].includes(task.kind)){shell(heading("Звернення до архіву",task.title,"",button("Відкрити звернення",pg(56,{role:can(st,actor,"task.assign",task.archive_id)?"R02":"R05-M",tab:"requests",id}))));return;}
  if(task.kind==='rights_review'){const target=st.tables.work_item_target.find(x=>x.work_item_id===id),decisions=st.tables.access_decision.filter(d=>d.target_entity_id===target?.entity_id);shell(heading('Права й етика',task.title,'Зафіксуйте висновок під час поновлення рішення про доступ. Завдання не надає дозволів.',button('← До черги',pg(2),true))+panel('Питання та висновок','<div class="panel-body">'+task.events.map(e=>'<p>'+esc(e.reason)+'</p>').join('')+'<p>'+esc(task.resolution||'Висновок ще не зафіксовано')+'</p></div>')+panel('Рішення для перегляду','<div class="panel-body">'+(decisions.map(d=>'<p>'+button(({public:'Публічний показ',research:'Дослідницька робота',deposit:'Депонування',processing:'Машинне опрацювання'})[d.purpose_code]||'Переглянути рішення',pg(26,{role:'R02',id:d.id}),true)+'</p>').join('')||button('Ухвалити рішення',pg(26,{role:'R02',source:target?.entity_id}),true))+'</div>'));return;}
+ if(task.kind==='preservation_review'){const target=st.tables.work_item_target.find(x=>x.work_item_id===id),copy=st.tables.storage_copy.find(x=>x.id===target?.entity_id);shell(heading('Збереження копій',task.title,'Питання завершується після повторного читання копії та збігу контрольної суми.',button('Перевірити копію',pg(39,{role:'R03',id:copy?.file_id})))+panel('Зауваження','<div class="panel-body">'+task.events.map(x=>'<p>'+esc(x.reason)+'</p>').join('')+'</div>'));return;}
  if(task.kind==='quality_review'){const target=st.tables.work_item_target.find(x=>x.work_item_id===id);shell(heading('Контроль якості',task.title,'Питання завершується після технічного приймання цього або пов’язаного повторного результату.',button('Перевірити результат',pg(36,{role:'R03',id:target?.entity_id})))+panel('Зауваження','<div class="panel-body">'+task.events.map(x=>'<p>'+esc(x.reason)+'</p>').join('')+'</div>'));return;}
  if(task.kind==='capture_preparation_review'){const target=st.tables.work_item_target.find(x=>x.work_item_id===id);shell(heading('Підготовка носія',task.title,'Питання завершується після перевірки й підтвердження готовності.',button('Підготувати носій',pg(34,{role:'R03',id:target?.entity_id})))+panel('Що потрібно усунути','<div class="panel-body">'+task.events.map(x=>'<p>'+esc(x.reason)+'</p>').join('')+'</div>'));return;}
  if(task.kind==='text_review'){const target=st.tables.work_item_target.find(x=>x.work_item_id===id);shell(heading('Перевірка тексту',task.title,'',button('Відкрити текст',pg(14,{role:'R02',id:target?.entity_id}))));return;}

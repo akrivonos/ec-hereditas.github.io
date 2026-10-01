@@ -1,15 +1,17 @@
-import {qualityDialog,qualityHistory} from './quality.mjs?v=20261001-wf12';
-import {digitizationDialog} from './digitization.mjs?v=20261001-wf12';
-import {preparationUI} from './capture-preparation.mjs?v=20261001-wf12';
-import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261001-wf12';
-import {legacyPages} from './legacy.mjs?v=20261001-wf12';
-import {intakePages} from './intake.mjs?v=20261001-wf12';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf12';
-import {mediaPreview,download} from './session-media.mjs?v=20261001-wf12';
-import {can,hash} from '../data/model.mjs?v=20261001-wf12';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf12';
-import {hint} from './help.mjs?v=20261001-wf12';
-import {wizard} from './wizard.mjs?v=20261001-wf12';
+import {preservationUI} from './preservation.mjs?v=20261001-wf13';
+import {preservationStatus} from '../data/preservation.mjs?v=20261001-wf13';
+import {qualityDialog,qualityHistory} from './quality.mjs?v=20261001-wf13';
+import {digitizationDialog} from './digitization.mjs?v=20261001-wf13';
+import {preparationUI} from './capture-preparation.mjs?v=20261001-wf13';
+import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261001-wf13';
+import {legacyPages} from './legacy.mjs?v=20261001-wf13';
+import {intakePages} from './intake.mjs?v=20261001-wf13';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf13';
+import {mediaPreview,download} from './session-media.mjs?v=20261001-wf13';
+import {can,hash} from '../data/model.mjs?v=20261001-wf13';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf13';
+import {hint} from './help.mjs?v=20261001-wf13';
+import {wizard} from './wizard.mjs?v=20261001-wf13';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;
@@ -218,45 +220,36 @@ export function mediaPages(ctx){
    panel('Звірка з планом',table(['Перевірка','Очікуване / наявне','Результат'],[['Комплектність',`${facts.expected??'Не визначено'} / ${facts.files.length}`,badge(facts.complete?'pass':'fail')],['Порядок частин','За планом використаної фіксації',badge(facts.order?'pass':'unknown')],['Контрольні суми','Повторний розрахунок під час перевірки','Відкрийте перевірку']]))+
    panel('Рішення та докази',body(qualityHistory({st,esc,details,action,btn,table,label},records)))+(['pass','pass_with_note'].includes(records.at(-1)?.outcome)?body(button('До збереження файлів',pg(39,{role:'R03',id:facts.files[0]?.file_id}),true)+' '+button('До звірки опису',pg(23,{role:'R02'}),true)):''));
  }
+ const preservationTools=()=>preservationUI({write:can(st,actor,'media.write',archive),st,t,esc,dialog,input,select,choices,options,details,table,dispatch,render,flash,rev,archive,pg,button,btn,action,allowed,visible,by,panel,body,heading,show,label,params,date,badge});
  function mediaList(){
   const q=(params.get('q')||'').toLocaleLowerCase('uk'),unlinked=params.get('unlinked')==='yes',rows=visible('media_asset').filter(x=>x.title.toLocaleLowerCase('uk').includes(q)&&(!unlinked||!t.media_asset_subject.some(l=>l.asset_id===x.id)));
-  action('ingest',()=>form('Додати файл прикладу',input('title','Назва ресурсу','','text',true)+input('filename','Назва файла','example.txt','text',true)+input('content','Вміст текстового файла','','textarea',true)+select('subject_id','Пов’язаний матеріал','<option value="">Пов’язати пізніше</option>'+options(['physical_object','collecting_session','information_unit'].flatMap(visible))),fd=>({type:'media.ingest',archive_id:archive,...Object.fromEntries(fd)}),r=>location.href=pg(38,{id:r.id})));
-  show(heading('Цифрові матеріали','Цифрові ресурси','Ресурс об’єднує оригінал, майстер і копії для перегляду. Файли та місця їх збереження мають власну історію.',btn('Додати файл прикладу','ingest',can(st,actor,'media.write',archive)))+`<form class="filters"><label>Пошук<input name="q" value="${esc(params.get('q')||'')}"></label>${select('unlinked','Зв’язок із матеріалами',choices({'':'Усі',yes:'Ще не пов’язані'},params.get('unlinked')||''))}<button class="button">Знайти</button></form>`+panel('Ресурси',table(['Ресурс','Матеріали','Представлення'],rows.map(x=>[link(38,x.id),t.media_asset_subject.filter(l=>l.asset_id===x.id).map(l=>entityLink(l.subject_entity_id)).join('<br>')||'Ще не пов’язано',t.representation.filter(r=>r.asset_id===x.id).map(r=>badge(r.role)).join(' ')]))));
+  action('ingest',()=>preservationTools().ingest());
+  show(heading('Цифрові матеріали','Цифрові ресурси','Ресурс об’єднує оригінал, майстер і копії для перегляду. Файли та місця їх збереження мають власну історію.',btn('Прийняти файли','ingest',can(st,actor,'media.write',archive)))+`<form class="filters"><label>Пошук<input name="q" value="${esc(params.get('q')||'')}"></label>${select('unlinked','Зв’язок із матеріалами',choices({'':'Усі',yes:'Ще не пов’язані'},params.get('unlinked')||''))}<button class="button">Знайти</button></form>`+panel('Ресурси',table(['Ресурс','Матеріали','Представлення'],rows.map(x=>[link(38,x.id),t.media_asset_subject.filter(l=>l.asset_id===x.id).map(l=>entityLink(l.subject_entity_id)).join('<br>')||'Ще не пов’язано',t.representation.filter(r=>r.asset_id===x.id).map(r=>badge(r.role)).join(' ')]))));
  }
  function mediaDetail(){
   if(!params.has('id')){mediaList();return;}
   const asset=chosen(visible('media_asset'));if(!asset){denied();return;}
   const reps=t.representation.filter(x=>x.asset_id===asset.id),rep=params.has('representation')?reps.find(x=>x.id===params.get('representation')):reps[0];if(!rep){denied();return;}
   const files=t.representation_file.filter(x=>x.representation_id===rep.id).sort((a,b)=>a.position-b.position),facts=qcFacts(st,rep),job=jobFor(facts.capture?.digitization_job_id),write=allowed(asset.id,'media.write');
-  action('derivative',()=>form('Створити копію для перегляду',input('filename','Назва нового файла','preview.txt','text',true)+input('content','Вміст файла прикладу','','textarea',true,'Новий вміст створить новий файл. Отриманий оригінал зберігається без змін.'),fd=>({type:'media.derivative',representation_id:rep.id,expected_revision_id:rev(rep.id),...Object.fromEntries(fd)}),r=>location.href=pg(38,{id:r.id,representation:r.representation_id})));
+  action('derivative',()=>preservationTools().ingest(rep));
+  action('thumbnail',()=>preservationTools().thumbnail(rep));
   action('link',()=>form('Пов’язати з матеріалом',select('subject_id','Матеріал',options(['physical_object','collecting_session','information_unit'].flatMap(visible))),fd=>({type:'media.asset.link',id:asset.id,expected_revision_id:rev(asset.id),subject_id:fd.get('subject_id')})));
   files.forEach(x=>action('view-'+x.file_id,()=>{if(!allowed(x.file_id)){denied();return;}dialog('Вміст файла',mediaPreview(st.demo.file_contents[x.file_id],by('file_object',x.file_id).mime_type,esc),null,'Закрити');}));
   files.forEach(x=>action('download-'+x.file_id,()=>{if(allowed(x.file_id)){const f=by('file_object',x.file_id);download(st.demo.file_contents[f.id],f.mime_type,f.original_filename);}}));
   const source=t.representation_derivation.filter(x=>x.output_representation_id===rep.id);
-  show(heading('Цифровий ресурс',asset.title,'Перемикання представлення не змінює оригінал. Перегляд доступний лише в межах наданих прав.',btn('Копія для перегляду','derivative',write))+chain(job?.physical_object_id,job?.work_item_id,facts.capture?.id,rep.id)+
+  show(heading('Цифровий ресурс',asset.title,'Перемикання представлення не змінює оригінал. Перегляд доступний лише в межах наданих прав.',btn('Додати похідну копію','derivative',write)+' '+btn('Створити мініатюру','thumbnail',write&&files.some(x=>/^image\/(png|jpeg|webp)$/.test(by('file_object',x.file_id).mime_type))))+chain(job?.physical_object_id,job?.work_item_id,facts.capture?.id,rep.id)+
    `<nav class="record-tabs" aria-label="Представлення">${reps.map(x=>`<a href="${pg(38,{id:asset.id,representation:x.id})}" ${x.id===rep.id?'aria-current="page"':''}>${esc(labels[x.role])} · ${x.representation_version}</a>`).join('')}</nav>`+
    panel('Файли представлення',table(['№ / частина','Файл','Контрольна сума',''],files.map(x=>{const f=by('file_object',x.file_id);return [`${x.position} · ${esc(x.component_label)}`,esc(f.original_filename)+`<span class="sub">${f.byte_size} байт · ${esc(f.mime_type)}</span>`,`<small class="hash-value">${esc(f.sha256)}</small>`,btn('Переглянути','view-'+f.id,allowed(f.id))+' '+btn('Завантажити','download-'+f.id,allowed(f.id))];})))+
-   `<div class="two-col"><div>`+panel('Копії файлів',table(['Файл','Сховище','Стан','Незалежні сховища'],files.flatMap(x=>t.storage_copy.filter(c=>c.file_id===x.file_id).map(c=>[link(39,x.file_id,by('file_object',x.file_id).original_filename),esc(by('digital_storage_location',c.storage_location_id).name),badge(c.state),String(independentCopies(st,x.file_id))]))))+history(rep.id)+`</div><aside>`+
+   body(button('Збереження файлів',pg(39,{id:files[0]?.file_id}),true)+' '+button('До архівного опису',pg(17,{role:'R02'}),true)+' '+button('Машинне опрацювання',pg(40,{role:'R03'}),true))+
+   `<div class="two-col"><div>`+panel('Копії файлів',table(['Файл','Сховище','Стан','Незалежні сховища'],files.flatMap(x=>t.storage_copy.filter(c=>c.file_id===x.file_id).map(c=>[link(39,x.file_id,by('file_object',x.file_id).original_filename),esc(by('digital_storage_location',c.storage_location_id).name),badge(c.state),String(preservationStatus(st,x.file_id).independent)]))))+history(rep.id)+`</div><aside>`+
    panel('Пов’язані матеріали',body(t.media_asset_subject.filter(x=>x.asset_id===asset.id).map(x=>`<p>${entityLink(x.subject_entity_id)}</p>`).join('')||'<p>Ще не пов’язано.</p>'),btn('Пов’язати','link',write))+
-   panel('Походження представлення',body(source.length?source.map(x=>{const r=by('entity_revision',x.input_representation_revision_id),inputRep=by('representation',r.entity_id);return `<p>${link(38,inputRep.asset_id,labels[inputRep.role]+' · '+inputRep.representation_version,{representation:inputRep.id})}</p><small>Версія опису ${r.revision_no}</small>`;}).join(''):'<p>Отриманий результат фіксації або надходження.</p>'))+'</aside></div>');
+   panel('Походження представлення',body(source.length?source.map(x=>{const r=by('entity_revision',x.input_representation_revision_id),inputRep=by('representation',r.entity_id);return `<p>${link(38,inputRep.asset_id,labels[inputRep.role]+' · '+inputRep.representation_version,{representation:inputRep.id})}</p><small>Версія опису ${r.revision_no}</small><p>${esc(x.operation)}</p>`;}).join(''):'<p>Отриманий результат фіксації або надходження.</p>'))+'</aside></div>');
  }
  function preservation(){
   const packageRow=params.get('handover')&&by('handover',params.get('handover'));
   if(params.has('handover')&&(!packageRow||!can(st,actor,'domain.read',scopeForH(packageRow))||(scope&&scopeForH(packageRow)!==scope))){denied();return;}
   const files=visible('file_object').filter(x=>!packageRow||t.handover_item.some(i=>i.handover_id===packageRow.id&&i.entity_id===x.id)),selected=params.has('id')?files.find(x=>x.id===params.get('id')):null;if(params.has('id')&&!selected){denied();return;}
-  const rows=visible('storage_copy').filter(x=>files.some(f=>f.id===x.file_id)&&(!selected||x.file_id===selected.id));
-  action('copy',()=>form('Створити копію прикладу',select('file_id','Файл',options(files,selected?.id))+select('location_id','Цифрове сховище',options(t.digital_storage_location,'',x=>x.name)),fd=>({type:'media.copy',...Object.fromEntries(fd)})));
-  rows.forEach(x=>{
-   action('fixity-'+x.id,()=>form('Імітувати перевірку копії',select('scenario','Сценарій',choices({actual:'Перевірити поточний стан',mismatch:'Пошкодження файла',missing:'Файл відсутній'},'actual'),'Перевірка працює з байтами прикладу; віддалене сховище не опитується.'),fd=>({type:'media.fixity',id:x.id,expected_revision_id:rev(x.id),scenario:fd.get('scenario')})));
-   action('restore-'+x.id,()=>dialog('Імітувати відновлення','<p>Відновити файл із наявної перевіреної копії та звірити контрольну суму?</p>',()=>save({type:'media.restore',id:x.id,expected_revision_id:rev(x.id)}),'Відновити'));
-  });
-  const issues=(selected?[selected]:files).filter(x=>independentCopies(st,x.id)<2);
-  show(heading('Збереження',selected?selected.original_filename:'Цифрові копії та перевірки','Копії в одному домені відмови не утворюють незалежний резерв. Відновлення та перевірка цілісності мають окремі журнали.',btn('Додати копію','copy',can(st,actor,'media.write',archive)))+
-   (packageRow?`<nav class="record-tabs">${button('← Надходження',pg(10,inboxQuery()),true)}</nav>`:'')+
-   (issues.length?`<div class="notice warning" role="status">Файлів без незалежної перевіреної резервної копії: ${issues.length}.</div>`:'')+
-   panel('Копії',table(['Файл','Сховище','Стан','Остання перевірка',''],rows.map(x=>{const check=t.fixity_check.filter(c=>c.copy_id===x.id).at(-1),loc=by('digital_storage_location',x.storage_location_id);return [link(39,x.file_id,by('file_object',x.file_id).original_filename),esc(loc.name)+`<span class="sub">Група сховищ №${[...new Set(t.digital_storage_location.map(l=>l.failure_domain))].indexOf(loc.failure_domain)+1}</span>`,badge(x.state),check?badge(check.result):'Ще не перевірено',`<div class="row-actions">${btn('Перевірити','fixity-'+x.id,allowed(x.id,'media.write'))}${btn('Відновити','restore-'+x.id,allowed(x.id,'media.write')&&x.state!=='verified')}</div>`];})))+
-   `<div class="two-col"><div>`+panel('Журнал цілісності',table(['Файл','Результат','Дата'],t.fixity_check.filter(x=>rows.some(r=>r.id===x.copy_id)).slice().reverse().map(x=>[esc(by('file_object',by('storage_copy',x.copy_id).file_id).original_filename),badge(x.result),esc(date(x.checked_at))])))+`</div><aside>`+
-   panel('Відновлення',table(['Результат','Примітка'],t.storage_recovery_check.filter(x=>rows.some(r=>r.id===x.copy_id)).slice().reverse().map(x=>[badge(x.result),esc(x.notes)])))+'</aside></div>');
+  preservationTools().preservation(files,selected,packageRow);
  }
  return {prepareHandover,'PG-10':transfers,'PG-11':transferDetail,'PG-21':legacy,'PG-22':sourceDetail,'PG-31':physicalList,'PG-32':physicalDetail,'PG-33':locations,'PG-34':plan,'PG-35':capture,'PG-36':qc,'PG-37':mediaList,'PG-38':mediaDetail,'PG-39':preservation};
 }

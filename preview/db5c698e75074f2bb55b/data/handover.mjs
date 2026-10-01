@@ -1,4 +1,4 @@
-import {fileBytes} from './binary.mjs?v=20261001-wf12';
+import {fileBytes} from './binary.mjs?v=20261001-wf13';
 
 const canonical=v=>JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.fromEntries(Object.entries(x).sort(([a],[b])=>a<b?-1:a>b?1:0)):x);
 const digest=async bytes=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(x=>x.toString(16).padStart(2,'0')).join('');

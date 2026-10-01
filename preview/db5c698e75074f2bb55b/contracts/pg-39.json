@@ -11,10 +11,11 @@
     "digital_storage_location",
     "storage_copy",
     "fixity_check",
-    "storage_recovery_check"
+    "storage_recovery_check",
+    "preservation_plan"
   ],
   "fields_and_relations": "Failure domain, результат перевірок, відсутні/пошкоджені копії, restore history.",
-  "required_interaction": "Імітація fixity/restore, повторна перевірка й завдання; дві копії в одному домені не незалежний резерв.",
+  "required_interaction": "Прочитати копію, звірити SHA-256, налаштувати план, перевірити відновлення й повторно прочитати ціль; звіт/історія.",
   "fixtures": [
     "FX-03"
   ],
@@ -31,18 +32,23 @@
     "commands": [
       "media.copy",
       "media.fixity",
-      "media.restore"
+      "media.restore",
+      "media.storage.location",
+      "media.preservation.plan"
     ],
-    "view_model": "Actual SHA-256 for fixture bytes; simulated corrupt/missing copies, independent failure domains, append-only fixity/recovery and issue tasks",
-    "completion": "partial",
+    "view_model": "File plans, independent current byte proofs, manual locations, real copy reread, missing/corrupt issue, restore from reselected source with separate target check, portable report",
+    "completion": "closed-for-local-prototype",
     "limitations": [
-      "No remote storage access or actual disaster recovery."
+      "2 MiB per ingest/conversion; external storage is read via user-selected files, no remote writes or background scheduler.",
+      "Physical independence is declared by the responsible person; target restore requires a separate reread after download.",
+      "Canvas PNG thumbnails; other derived files imported from external tools. No audio/video transcoding or streaming server."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "state_storage": "Shared normalized browser store v9; existing files, revisions and historical checks preserved",
     "permissions": [
       "domain.read",
       "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
     ],
-    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically.",
+    "preservation": "WF-13: actual bytes and SHA-256/size; filename/path occurrences; immutable file identity; exact representation derivation; proof-based independent copy policy and due dates; append-only fixity/recovery and targeted issue resolution."
   }
 }

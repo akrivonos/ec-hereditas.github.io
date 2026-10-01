@@ -1,8 +1,8 @@
-import {rightsUI} from './rights.mjs?v=20261001-wf12';
-import {reconciliationUI,caseKinds,caseStates} from './reconciliation.mjs?v=20261001-wf12';
-import {can} from '../data/model.mjs?v=20261001-wf12';
-import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20261001-wf12';
-import {wizard} from './wizard.mjs?v=20261001-wf12';
+import {rightsUI} from './rights.mjs?v=20261001-wf13';
+import {reconciliationUI,caseKinds,caseStates} from './reconciliation.mjs?v=20261001-wf13';
+import {can} from '../data/model.mjs?v=20261001-wf13';
+import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20261001-wf13';
+import {wizard} from './wizard.mjs?v=20261001-wf13';
 
 export function archivePages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);
