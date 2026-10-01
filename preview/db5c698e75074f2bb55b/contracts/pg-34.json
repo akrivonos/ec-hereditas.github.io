@@ -56,6 +56,7 @@
       "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
     ],
     "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically.",
-    "digitization": "WF-11: binary files or browser camera/microphone; ordered composite plan mapping; explicit provenance, deviations and recapture; immutable originals and downloadable manifest/files."
+    "digitization": "WF-11: binary files or browser camera/microphone; ordered composite plan mapping; explicit provenance, deviations and recapture; immutable originals and downloadable manifest/files.",
+    "quality_handoff": "WF-12: exact representation QC, recalculated checksums, parameter comparisons and per-file evidence; known-defect acceptance or explicit recapture; linked issue resolution only after acceptance."
   }
 }

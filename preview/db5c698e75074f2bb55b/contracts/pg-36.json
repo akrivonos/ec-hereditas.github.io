@@ -31,13 +31,14 @@
     "commands": [
       "media.qc"
     ],
-    "view_model": "Exact representation revision QC, completeness/order/hash facts, explicit readability/parameters, recapture task and evidence",
-    "completion": "partial",
+    "view_model": "Result queue; wizard with byte checksums, structural/parameter measurements, per-file review/evidence, exact revision QC, known-defect acceptance, linked recapture tasks, report export and preservation/reconciliation navigation.",
+    "completion": "complete_for_local_prototype",
     "limitations": [
-      "Waveform/image technical analyzers are not implemented.",
-      "Formal pass currently targets plan-based digitization; receipt-only resources retain unknown expected completeness."
+      "PNG/JPEG/WAV basic parsers and browser opening probes; no exhaustive codec or conservation analysis.",
+      "Unsupported and unmeasured parameters require an evidenced external review; browser probing does not prove playback of the entire recording.",
+      "No acceptance without expected capture plan; no change of access rights or publication."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "state_storage": "Normalized browser store v9; preserves old QC and original files.",
     "permissions": [
       "domain.read",
       "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"

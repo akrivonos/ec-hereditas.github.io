@@ -1,14 +1,15 @@
-import {digitizationDialog} from './digitization.mjs?v=20261001-wf11';
-import {preparationUI} from './capture-preparation.mjs?v=20261001-wf11';
-import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261001-wf11';
-import {legacyPages} from './legacy.mjs?v=20261001-wf11';
-import {intakePages} from './intake.mjs?v=20261001-wf11';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf11';
-import {mediaPreview,download} from './session-media.mjs?v=20261001-wf11';
-import {can,hash} from '../data/model.mjs?v=20261001-wf11';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf11';
-import {hint} from './help.mjs?v=20261001-wf11';
-import {wizard} from './wizard.mjs?v=20261001-wf11';
+import {qualityDialog,qualityHistory} from './quality.mjs?v=20261001-wf12';
+import {digitizationDialog} from './digitization.mjs?v=20261001-wf12';
+import {preparationUI} from './capture-preparation.mjs?v=20261001-wf12';
+import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261001-wf12';
+import {legacyPages} from './legacy.mjs?v=20261001-wf12';
+import {intakePages} from './intake.mjs?v=20261001-wf12';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf12';
+import {mediaPreview,download} from './session-media.mjs?v=20261001-wf12';
+import {can,hash} from '../data/model.mjs?v=20261001-wf12';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf12';
+import {hint} from './help.mjs?v=20261001-wf12';
+import {wizard} from './wizard.mjs?v=20261001-wf12';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;
@@ -85,12 +86,7 @@ export function mediaPages(ctx){
  const workLink=job=>pg(34,{...listQuery(),id:job.work_item_id});
  const done=message=>{flash(message);render();};
  const planWizard=(job=null,physical=null)=>preparation.planWizard(job,physical);
- function qcDialog(rep){
-  const facts=qcFacts(st,rep);
-  form('Перевірити результат',body(details([['Матеріал',label(rep.asset_id)],['Комплектність',`${facts.files.length} із ${facts.expected??'невідомої кількості'} частин`],['Порядок',facts.order?'За планом':'Потребує звірки'],['Контрольні суми',facts.checksums?'Збігаються':'Потребують перевірки']]))+
-   `<details class="record-history"><summary>Переглянути файли результату</summary>${t.representation_file.filter(x=>x.representation_id===rep.id).sort((a,b)=>a.position-b.position).map(x=>`<p><strong>${esc(x.component_label||by('file_object',x.file_id).original_filename)}</strong></p>${mediaPreview(st.demo.file_contents[x.file_id],by('file_object',x.file_id).mime_type,esc)}`).join('')}</details>`+
-   select('readability','Читабельність',choices({unknown:'Ще не перевірено',pass:'Пройдено',fail:'Не пройдено'},'unknown'))+select('parameters','Технічні параметри',choices({unknown:'Ще не перевірено',pass:'Пройдено',fail:'Не пройдено'},'unknown'))+select('outcome','Висновок',choices({incomplete:'Некомплектне',recapture_required:'Потрібна повторна фіксація',pass_with_note:'Прийняти із зауваженням',pass:'Прийняти технічно'},'incomplete'))+input('notes','Обґрунтування та відомі дефекти','','textarea',false,'Висновок стосується лише цього результату й не надає дозволу на публікацію.'),fd=>({type:'media.qc',id:rep.id,expected_revision_id:rev(rep.id),...Object.fromEntries(fd)}));
- }
+ function qcDialog(rep){return qualityDialog({st,t,esc,dialog,input,select,choices,details,table,dispatch,done,rev,label},rep);}
  function nextAction(job,p){
   const key='next-'+job.work_item_id;
   if(p.stage==='prepare')return button('Підготувати носій',workLink(job)+'#preparation',true);
@@ -102,7 +98,7 @@ export function mediaPages(ctx){
  function jobList(){
   const all=jobsVisible(),q=(params.get('q')||'').toLocaleLowerCase('uk'),stage=params.get('stage')||'',rows=all.filter(j=>(label(j.physical_object_id)+' '+by('physical_object',j.physical_object_id).reference_code).toLocaleLowerCase('uk').includes(q)&&(!stage||jobProgress(j).stage===stage));
   action('new-job',()=>planWizard());
-  show(heading('Робочий список','Оцифрування','Оберіть носій у списку та виконайте наступну дію. План і фіксація мають покрокові форми; перевірка результату відкривається в діалозі. У цьому прикладі фіксація створює текстові файли без підключення обладнання.',btn('Нове оцифрування','new-job',can(st,actor,'physical.write',archive)&&visible('physical_object').some(x=>allowed(x.id,'physical.write'))))+
+  show(heading('Робочий список','Оцифрування','Оберіть носій у списку та виконайте наступну дію. План і фіксація мають покрокові форми; перевірка результату відкривається в діалозі.',btn('Нове оцифрування','new-job',can(st,actor,'physical.write',archive)&&visible('physical_object').some(x=>allowed(x.id,'physical.write'))))+
    `<nav class="journey-filters" aria-label="Етапи оцифрування">${[['','Усі роботи'],...Object.entries(stageNames)].map(([key,name])=>`<a href="${pg(34,{role:'R03',q:params.get('q'),stage:key})}" ${key===stage?'aria-current="page"':''}>${esc(name)} <span>${key?all.filter(j=>jobProgress(j).stage===key).length:all.length}</span></a>`).join('')}</nav>`+
    `<form class="filters"><input type="hidden" name="role" value="R03"><input type="hidden" name="stage" value="${esc(stage)}">${input('q','Знайти носій',params.get('q')||'')}<button class="button">Знайти</button></form>`+
    (rows.length?panel('Роботи',table(['Носій','Етап','Результат','Наступна дія'],rows.map(job=>{const p=jobProgress(job),obj=by('physical_object',job.physical_object_id);return [`<a href="${workLink(job)}">${esc(obj.title)}</a><span class="sub">${esc(obj.reference_code||'Без шифру')}</span>`,badge(stageNames[p.stage]),p.rep?`${p.facts.files.length} із ${p.facts.expected??'?'} частин`:'Ще немає',nextAction(job,p)];}))):body(`<p>${all.length?'Немає робіт за цими умовами. Змініть пошук або етап.':'Робіт ще немає. Додайте носій, а потім створіть оцифрування.'}</p>${button('Фізичні носії',pg(31),true)}`)));
@@ -210,14 +206,17 @@ export function mediaPages(ctx){
    panel('Використаний план',body(planrev?`<p>Версія ${planrev.revision_no}</p><ol>${parts.map(x=>`<li>${esc(x.part_label)}</li>`).join('')}</ol>`:'<p>Первісно цифровий запис сеансу.</p>'))+'</aside></div>');
  }
  function qc(){
-  if(!params.has('id')){jobList();return;}
+  if(!params.has('id')){
+   const rows=visible('representation').filter(r=>t.capture_event.some(c=>c.id===r.technical_metadata?.capture_event_id&&c.digitization_job_id));
+   show(heading('Контроль якості','Результати на перевірку','Відкрийте конкретний результат, звірте його з планом і зафіксуйте висновок.')+panel('Результати',table(['Матеріал','Версія','Висновок',''],rows.slice().reverse().map(r=>{const q=t.qc_record.filter(x=>x.representation_revision_id===rev(r.id)).at(-1);return [esc(label(r.asset_id)),String(r.representation_version),q?badge(q.outcome):'Очікує перевірки',link(36,r.id,'Перевірити')];}))));return;
+  }
   const rep=chosen(visible('representation'));if(!rep){denied();return;}
   const facts=qcFacts(st,rep),job=jobFor(facts.capture?.digitization_job_id),records=t.qc_record.filter(x=>x.representation_revision_id===rev(rep.id));
   action('check',()=>qcDialog(rep));
   show(heading('Контроль якості',label(rep.asset_id),'Рішення стосується конкретної версії представлення. Комплектність і контрольні суми перевіряються за даними файлів.',btn('Записати перевірку','check',allowed(rep.id,'media.write')))+chain(job?.physical_object_id,job?.work_item_id,facts.capture?.id,rep.id)+
    `<div class="media-status">${badge(rep.role)}<span>Версія ${rep.representation_version}</span>${button('Переглянути файли',pg(38,{id:rep.asset_id,representation:rep.id}),true)}</div>`+
-   panel('Звірка з планом',table(['Перевірка','Очікуване / наявне','Результат'],[['Комплектність',`${facts.expected??'Не визначено'} / ${facts.files.length}`,badge(facts.complete?'pass':'fail')],['Порядок частин','За планом використаної фіксації',badge(facts.order?'pass':'unknown')],['Контрольні суми','Перевірені копії отриманих файлів',badge(facts.checksums?'pass':'fail')]]))+
-   panel('Рішення щодо цієї версії',table(['Висновок','Примітка','Хто перевірив'],records.slice().reverse().map(x=>[badge(x.outcome),esc(x.notes||'Без зауважень'),esc(label(x.reviewer_person_id))]))));
+   panel('Звірка з планом',table(['Перевірка','Очікуване / наявне','Результат'],[['Комплектність',`${facts.expected??'Не визначено'} / ${facts.files.length}`,badge(facts.complete?'pass':'fail')],['Порядок частин','За планом використаної фіксації',badge(facts.order?'pass':'unknown')],['Контрольні суми','Повторний розрахунок під час перевірки','Відкрийте перевірку']]))+
+   panel('Рішення та докази',body(qualityHistory({st,esc,details,action,btn,table,label},records)))+(['pass','pass_with_note'].includes(records.at(-1)?.outcome)?body(button('До збереження файлів',pg(39,{role:'R03',id:facts.files[0]?.file_id}),true)+' '+button('До звірки опису',pg(23,{role:'R02'}),true)):''));
  }
  function mediaList(){
   const q=(params.get('q')||'').toLocaleLowerCase('uk'),unlinked=params.get('unlinked')==='yes',rows=visible('media_asset').filter(x=>x.title.toLocaleLowerCase('uk').includes(q)&&(!unlinked||!t.media_asset_subject.some(l=>l.asset_id===x.id)));

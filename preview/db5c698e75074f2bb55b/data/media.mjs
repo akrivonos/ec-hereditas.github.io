@@ -1,8 +1,9 @@
-import {digitize,validateDigitization} from './digitization.mjs?v=20261001-wf11';
-import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261001-wf11';
-import {reconciliationCommand} from './reconciliation.mjs?v=20261001-wf11';
-import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261001-wf11';
-import {fileBytes} from './binary.mjs?v=20261001-wf11';
+import {qualityCommand,validateQuality} from './quality.mjs?v=20261001-wf12';
+import {digitize,validateDigitization} from './digitization.mjs?v=20261001-wf12';
+import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261001-wf12';
+import {reconciliationCommand} from './reconciliation.mjs?v=20261001-wf12';
+import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261001-wf12';
+import {fileBytes} from './binary.mjs?v=20261001-wf12';
 // Internal, scoped prototype operations. Storage and capture actions explicitly simulate hardware.
 export const mediaTypes=['source_system','source_record','physical_object','storage_location','condition_assessment','custody_event','media_asset','representation','file_object','storage_copy','capture_event','qc_record','candidate','review_decision','evidence'];
 export const mediaRelations=(t,type,id)=>Object.fromEntries(({
@@ -23,7 +24,7 @@ export function qcFacts(s,rep){
  return {capture,plan,files,expected,complete:expected!==null&&files.length===expected,order:plan.length>0&&plannedOutputs(s,capture.settings.capture_plan_revision_id).every((p,i)=>files.some(f=>f.position===i+1&&f.component_label===p.label)),checksums:files.length>0&&files.every(f=>t.storage_copy.some(c=>c.file_id===f.file_id&&c.state==='verified'))};
 }
 export function validateMedia(s,require,fk,canonical){
- const t=s.tables;if(!t.physical_object)return;validatePreparation(s,require,canonical);validateDigitization(s,require);
+ const t=s.tables;if(!t.physical_object)return;validatePreparation(s,require,canonical);validateDigitization(s,require);validateQuality(s,require);
  const by=(table,id)=>t[table]?.find(x=>x.id===id),reg=id=>by('entity',id),same=(a,b)=>require(reg(a)?.archive_id===reg(b)?.archive_id,'Зв’язок поза архівом');
  const revision=(id,type)=>{const r=by('entity_revision',id);require(!!r&&reg(r.entity_id)?.entity_type===type,'Неправильний тип версії');return r;};
  const unique=(rows,key,message)=>require(new Set(rows.map(key)).size===rows.length,message);
@@ -145,16 +146,7 @@ export async function mediaCommand(s,actor,c,ctx){
   const observed=outcome==='missing'||row.state==='missing'&&outcome==='actual'?null:await rawHash(content+(outcome==='mismatch'||row.state==='corrupt'?'пошкодження':''));
   const result=observed===null?'missing':observed===f.sha256?'match':'mismatch';row.state=result==='match'?'verified':result==='missing'?'missing':'corrupt';t.fixity_check.push({copy_id:row.id,checked_at:s.clock,algorithm:'SHA-256',observed_hash:observed,result,process_run_id:null});await revise(row,'Перевірено цілісність копії');if(result!=='match')await task('Перевірити пошкоджену або відсутню копію',f.id);return {result};
  }
- if(c.type==='media.qc'){
-  const rep=get('representation',c.id);fresh(rep.id,c.expected_revision_id);const facts=qcFacts(s,rep);
-  const checks=[['completeness',facts.complete?'pass':'fail'],['order',facts.order?'pass':'unknown'],['checksum',facts.checksums?'pass':'fail'],['readability',c.readability],['parameters',c.parameters]];
-  if(['pass','pass_with_note'].includes(c.outcome)&&checks.some(([,v])=>v!=='pass'))fail('blocked','Потрібні всі частини, правильний порядок, контрольні суми та підтверджені читабельність і параметри.');
-  if(c.outcome!=='pass')text(c.notes);
-  const qc=await newEntity('qc_record',{representation_revision_id:rev(rep.id),digitization_job_id:facts.capture?.digitization_job_id||null,reviewer_person_id:person(),checked_at:s.clock,outcome:c.outcome,notes:c.notes||null},archive(rep.id));
-  for(const [code,result]of checks)t.qc_check_item.push({qc_record_id:qc.id,check_code:code,result,measured_value:code==='completeness'?{expected:facts.expected,actual:facts.files.length}:null,note:null,evidence_id:null});await revise(qc,'Зафіксовано перевірки');
-  const evidence=await newEntity('evidence',{source_entity_id:rep.id,source_revision_id:rev(rep.id),external_uri:null,locator:'Представлення та послідовність файлів',quote_text:null,note:c.notes||'Перевірки виконано',captured_at:s.clock},archive(rep.id));t.evidence_link.push({subject_entity_id:qc.id,subject_revision_id:rev(qc.id),evidence_id:evidence.id,evidence_role:'qc'});
-  if(c.outcome==='recapture_required')await task('Повторити фіксацію: '+by('media_asset',rep.asset_id).title,rep.id);return qc;
- }
+ if(c.type==='media.qc')return qualityCommand(s,actor,c,{get,fresh,newEntity,revise,fail,run});
  if(c.type==='media.import'){
   const source=get('source_system',c.id,'legacy.write');const w=run('WF-06',source.id);
   if(c.simulate_failure){w.state='failed';w.finished_at=s.clock;w.notes='Не вдалося прочитати приклад';return {ok:false,id:w.id};}

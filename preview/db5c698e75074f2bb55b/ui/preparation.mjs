@@ -1,5 +1,5 @@
-import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20261001-wf11';
-import {hint} from './help.mjs?v=20261001-wf11';
+import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20261001-wf12';
+import {hint} from './help.mjs?v=20261001-wf12';
 
 export function preparationPage(c,r){
  const {st,t,by,rev,label,visible,writable,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,save,show,edit,tabs,revisionHistory,programmeDialog,sessionWizard,dialog}=c;
