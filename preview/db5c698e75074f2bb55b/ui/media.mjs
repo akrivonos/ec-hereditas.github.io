@@ -1,11 +1,11 @@
-import {legacyPages} from './legacy.mjs?v=20260930-wf08-final';
-import {intakePages} from './intake.mjs?v=20260930-wf08-final';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20260930-wf08-final';
-import {mediaPreview} from './session-media.mjs?v=20260930-wf08-final';
-import {can,hash} from '../data/model.mjs?v=20260930-wf08-final';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20260930-wf08-final';
-import {hint} from './help.mjs?v=20260930-wf08-final';
-import {wizard} from './wizard.mjs?v=20260930-wf08-final';
+import {legacyPages} from './legacy.mjs?v=20261001-wf09';
+import {intakePages} from './intake.mjs?v=20261001-wf09';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf09';
+import {mediaPreview} from './session-media.mjs?v=20261001-wf09';
+import {can,hash} from '../data/model.mjs?v=20261001-wf09';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf09';
+import {hint} from './help.mjs?v=20261001-wf09';
+import {wizard} from './wizard.mjs?v=20261001-wf09';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;

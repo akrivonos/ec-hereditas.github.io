@@ -39,12 +39,13 @@
     "limitations": [
       "Search covers reader descriptions of information units, documents and carriers; indexed transcripts, segments and vocabulary facets remain pending."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "state_storage": "Normalized browser store v9; existing user state is preserved, new grants require explicit human review.",
     "permissions": [
       "research.write in an explicit archive grant",
       "owner_account_id for private objects",
       "domain.read rechecked for every source, note, assertion, citation and download"
     ],
-    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once.",
+    "subject_access": "Requires scoped domain.read and exact-version O47 research; all known relevant consent bases, state, time, embargo, field projection and separate cite/download use are evaluated. Existing exports recheck access and approved title."
   }
 }

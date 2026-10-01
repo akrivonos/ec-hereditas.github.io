@@ -1,18 +1,20 @@
+import {accessPolicy,projectFields,attributionNames} from './rights.mjs?v=20261001-wf09';
 // Private research objects reference exact archival revisions. Access is checked on every projection.
-import {can} from './model.mjs?v=20260930-wf08-final';
-import {rawHash} from './media.mjs?v=20260930-wf08-final';
+import {can} from './model.mjs?v=20261001-wf09';
+import {rawHash} from './media.mjs?v=20261001-wf09';
 export const researchTypes=['saved_query','research_corpus','annotation','assertion','citation','bibliographic_export'];
 export const sourceTypes=['information_unit','document','physical_object'];
 export const researchEnabled=(s,a)=>s.tables.archive.some(x=>can(s,a,'research.write',x.id));
 export const owns=(s,a,id)=>researchEnabled(s,a)&&s.tables.entity.some(e=>e.id===id&&e.owner_account_id===a);
-export function sourceView(s,a,id,rid=null){
+export function sourceView(s,a,id,rid=null,use='view'){
  const t=s.tables,e=t.entity.find(x=>x.id===id);
  if(!e||e.retired_at||!sourceTypes.includes(e.entity_type)||!can(s,a,'domain.read',e.archive_id))return null;
  const r=t.entity_revision.find(x=>x.id===(rid||e.current_revision_id)&&x.entity_id===id);
- if(!r)return null;
+ if(!r)return null;const ds=accessPolicy(s,id,r.id,'research',use);if(!ds)return null;
  // Only the reader projection is returned, never contact fields or arbitrary snapshots.
- const v=r.snapshot;return {id,revision_id:r.id,revision_no:r.revision_no,type:e.entity_type,archive_id:e.archive_id,title:v.title,
-  text:v.summary||v.body_text||v.inscriptions||v.incipit||'',reference:v.reference_code||null};
+ const v=r.snapshot,fields=projectFields(s,ds,{title:v.title,summary:v.summary||v.body_text||v.inscriptions||v.incipit||'',reference:v.reference_code||null,attribution:attributionNames(s,ds)});
+ if(!fields.title)return null;
+ return {id,revision_id:r.id,revision_no:r.revision_no,type:e.entity_type,archive_id:e.archive_id,title:fields.title,text:fields.summary||'',reference:fields.reference||null,attribution:fields.attribution||''};
 }
 export function searchSources(s,a,{q='',kind='',archive_id=null}={}){
  return s.tables.entity.filter(e=>sourceTypes.includes(e.entity_type)).map(e=>sourceView(s,a,e.id)).filter(Boolean)
@@ -22,7 +24,8 @@ export const corpusItems=(s,rid)=>s.tables.corpus_item.filter(x=>x.corpus_revisi
 export const researchRelations=(t,type,id)=>type==='research_corpus'?{corpus_item:structuredClone(t.corpus_item.filter(x=>x.corpus_revision_id===t.entity.find(e=>e.id===id)?.current_revision_id))}:{};
 export function researchVisible(s,a,row,type){
  if(!owns(s,a,row.id))return false;
- if(type==='annotation'||type==='citation')return !!sourceView(s,a,row.target_entity_id,row.target_revision_id);
+ if(type==='annotation')return !!sourceView(s,a,row.target_entity_id,row.target_revision_id);
+ if(type==='citation'){const v=sourceView(s,a,row.target_entity_id,row.target_revision_id,'cite');return !!v&&v.title===row.structured_data?.title;}
  if(type==='assertion')return row.scope==='research'&&!!sourceView(s,a,row.subject_entity_id)&&s.tables.evidence_link.filter(x=>x.subject_entity_id===row.id).every(x=>{
   const e=s.tables.evidence.find(e=>e.id===x.evidence_id);return e&&!!sourceView(s,a,e.source_entity_id,e.source_revision_id);
  });
@@ -31,7 +34,7 @@ export function researchVisible(s,a,row,type){
   return v&&researchVisible(s,a,v,e.entity_type);
  });
  if(type==='bibliographic_export')return s.tables.export_citation.filter(x=>x.export_id===row.id).every(x=>{
-  const r=s.tables.entity_revision.find(r=>r.id===x.citation_revision_id);return r&&researchVisible(s,a,r.snapshot,'citation');
+  const r=s.tables.entity_revision.find(r=>r.id===x.citation_revision_id);return r&&researchVisible(s,a,r.snapshot,'citation')&&!!sourceView(s,a,r.snapshot.target_entity_id,r.snapshot.target_revision_id,'download');
  });
  return true;
 }
@@ -86,6 +89,7 @@ export async function researchCommand(s,actor,c,{fail,hash,audit,snapshot}){
  }
  if(['research.annotation','research.assertion','research.citation'].includes(c.type)){
   const src=source(c.target_entity_id,c.target_revision_id),corpus=corpusContext(c.corpus_id,src),person=by('account',actor).person_id;
+  if(c.type==='research.citation'&&!sourceView(s,actor,src.id,src.revision_id,'cite'))fail('forbidden','Цитування не дозволено рішенням про доступ.');
   if(c.type==='research.annotation')return append('annotation',{kind:'research',target_entity_id:src.id,target_revision_id:src.revision_id,text_part_id:null,range_start:null,range_end:null,body:text(c.body),author_person_id:person,corpus_id:corpus});
   if(c.type==='research.assertion'){
    const row=await append('assertion',{subject_entity_id:src.id,assertion_kind:'research',scope:'research',corpus_id:corpus,statement_text:text(c.statement_text),acceptance_state:'draft',author_person_id:person,review_decision_id:null});
@@ -106,7 +110,7 @@ export async function researchCommand(s,actor,c,{fail,hash,audit,snapshot}){
  }
  if(c.type==='research.export'){
   if(!['text','csl_json'].includes(c.format)||!Array.isArray(c.citation_ids)||!c.citation_ids.length||new Set(c.citation_ids).size!==c.citation_ids.length)fail('invalid','Оберіть цитування та формат.');
-  const rows=c.citation_ids.map(id=>{const x=own('citation',id);if(!researchVisible(s,actor,x,'citation'))fail('forbidden','Цитування недоступне.');return x;});
+  const rows=c.citation_ids.map(id=>{const x=own('citation',id);if(!researchVisible(s,actor,x,'citation')||!sourceView(s,actor,x.target_entity_id,x.target_revision_id,'download'))fail('forbidden','Цитування недоступне.');return x;});
   const content=c.format==='text'?rows.map(x=>x.rendered_text).join('\n\n'):JSON.stringify(rows.map(x=>x.structured_data),null,2),mime=c.format==='text'?'text/plain':'application/json';
   const file=await append('file_object',{sha256:await rawHash(content),byte_size:new TextEncoder().encode(content).length,mime_type:mime,pronom_id:null,original_filename:'bibliography.'+(c.format==='text'?'txt':'json'),received_at:s.clock,technical_metadata:{}});s.demo.file_contents[file.id]=content;
   const row=await append('bibliographic_export',{requested_by:actor,context_entity_id:null,context_revision_id:null,format:c.format,file_id:file.id,generated_at:s.clock,export_profile_version:'1'});

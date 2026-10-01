@@ -1399,6 +1399,186 @@
         "retired_at": null
       },
       {
+        "id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "entity_type": "access_decision",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "64543622-f5a4-4c1d-9ae6-4979b31d4bed",
+        "retired_at": null
+      },
+      {
+        "id": "44e53791-9ef4-4783-8445-cdba02ca2c47",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "80865b1e-8e06-4ae1-8c07-89c7ee5a6542",
+        "retired_at": null
+      },
+      {
+        "id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "entity_type": "access_decision",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "2a50e7ae-975e-4f2a-9317-e1c634cb65dc",
+        "retired_at": null
+      },
+      {
+        "id": "b403918a-eeb9-42f9-b9a2-902142616c5b",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "ccea8352-ba4b-4f1b-b2e7-75bad606229c",
+        "retired_at": null
+      },
+      {
+        "id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "entity_type": "access_decision",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "8cfc43f4-afa0-4516-b3b1-122d99171433",
+        "retired_at": null
+      },
+      {
+        "id": "f9c48739-02b9-43c2-b76c-9d9cb6585b06",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "d2f8a5bb-d5f6-4a40-b7a2-4e70962153a2",
+        "retired_at": null
+      },
+      {
+        "id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "entity_type": "access_decision",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "9c40faef-1656-4be0-af8a-ec78154fa875",
+        "retired_at": null
+      },
+      {
+        "id": "d8b17d68-deb9-4d4f-9837-bf1c7ddc916e",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "0bc90f39-89be-4981-916c-c2d0f0196fb4",
+        "retired_at": null
+      },
+      {
+        "id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "entity_type": "access_decision",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "0dfca4da-970d-4ff3-a9b2-14d20c7bddf5",
+        "retired_at": null
+      },
+      {
+        "id": "80d1ab1f-da73-409d-9f9b-ec8ad941eab0",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "1302c134-9cba-422d-b583-7a9e01f1fffc",
+        "retired_at": null
+      },
+      {
+        "id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "entity_type": "access_decision",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "49adf60b-cd3f-4b35-8631-6882f5a58e60",
+        "retired_at": null
+      },
+      {
+        "id": "e95e3f23-8226-4f32-8f23-5b379089c588",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "e214142e-03e8-47b5-85aa-9db919c8300c",
+        "retired_at": null
+      },
+      {
+        "id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "entity_type": "access_decision",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "6fe6b139-a685-4762-a696-fa761599d0d3",
+        "retired_at": null
+      },
+      {
+        "id": "91a62ef0-a86c-4262-ad17-12b7e1f57f8c",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "cccf7a9e-8ec2-4e90-b614-a68cc6017cae",
+        "retired_at": null
+      },
+      {
+        "id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "entity_type": "access_decision",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "7d3bbffb-dec1-490c-acb7-70d252f8a639",
+        "retired_at": null
+      },
+      {
+        "id": "234149c1-f82d-4b9e-a911-a76897f9f4e1",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "b6ebf369-f076-404b-801a-cbc28f774f44",
+        "retired_at": null
+      },
+      {
+        "id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "entity_type": "access_decision",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "09a1557f-bd75-40dc-bfd8-bb4d03fe3c29",
+        "retired_at": null
+      },
+      {
+        "id": "a53dc3c3-27cf-43b4-9ab4-24cf248f74ee",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "32b6d7c9-9ff3-4cb7-8a00-8889f528eb97",
+        "retired_at": null
+      },
+      {
+        "id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "entity_type": "access_decision",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "8770be82-5d6e-4cc7-a416-c8c692db0628",
+        "retired_at": null
+      },
+      {
+        "id": "b2660247-40d2-4ee5-b83e-0c72f6a8a0e0",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "1205a44d-1ea2-498e-aad2-d14aca15a765",
+        "retired_at": null
+      },
+      {
         "id": "935623af-494e-4f35-bbbb-a022f024ab09",
         "entity_type": "person",
         "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
@@ -5505,6 +5685,1496 @@
         "change_reason": "Навчальний приклад робочого процесу"
       },
       {
+        "id": "439e1c63-bc3b-4b19-a3df-91a8a1e6bf01",
+        "entity_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+          "target_entity_id": "9de99210-c452-5714-b203-ded9e95142b2",
+          "target_revision_id": "ca02e4ed-f0a9-5fed-97b3-8ac9365e7a95",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [],
+            "access_decision_field": [],
+            "access_decision_resource": [],
+            "access_decision_use": [],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "9293bbb3515c4fa74790b52f608fe78df4e899fbb85dd400aade56471d2a2c9e",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "80865b1e-8e06-4ae1-8c07-89c7ee5a6542",
+        "entity_id": "44e53791-9ef4-4783-8445-cdba02ca2c47",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "44e53791-9ef4-4783-8445-cdba02ca2c47",
+          "source_entity_id": "9de99210-c452-5714-b203-ded9e95142b2",
+          "source_revision_id": "ca02e4ed-f0a9-5fed-97b3-8ac9365e7a95",
+          "external_uri": null,
+          "locator": null,
+          "quote_text": null,
+          "note": "Вигаданий початковий набір прототипу",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "496211530a9b22c87f88e51548cf5a86320c9dea801f53ee0e92fa624976c946",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "64543622-f5a4-4c1d-9ae6-4979b31d4bed",
+        "entity_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "revision_no": 2,
+        "previous_revision_id": "439e1c63-bc3b-4b19-a3df-91a8a1e6bf01",
+        "snapshot": {
+          "id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+          "target_entity_id": "9de99210-c452-5714-b203-ded9e95142b2",
+          "target_revision_id": "ca02e4ed-f0a9-5fed-97b3-8ac9365e7a95",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [
+              {
+                "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+                "consent_id": null,
+                "consent_revision_id": null,
+                "evidence_id": "44e53791-9ef4-4783-8445-cdba02ca2c47",
+                "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+              }
+            ],
+            "access_decision_field": [
+              {
+                "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+                "field_path": "title",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+                "field_path": "summary",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+                "field_path": "reference",
+                "effect": "allow",
+                "replacement_text": null
+              }
+            ],
+            "access_decision_resource": [],
+            "access_decision_use": [
+              {
+                "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+                "use_code": "view",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+                "use_code": "cite",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+                "use_code": "download",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+                "use_code": "museum",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+                "use_code": "deposit",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+                "use_code": "machine_process",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              }
+            ],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "05cc4696fb035346ac1a88a6e9911affdb16de5b39c3dbe99f11da9c9df93834",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "6d98cdb2-3417-48a7-956d-099cc6003f64",
+        "entity_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "0847d670-f782-4773-a539-00e1885a8af1",
+          "target_entity_id": "9913474a-5726-52bc-8514-0128e7403de1",
+          "target_revision_id": "74f703ff-1d1d-5fab-a7df-407efad25ba3",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [],
+            "access_decision_field": [],
+            "access_decision_resource": [],
+            "access_decision_use": [],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "0cdb1457f73e6c7c03f028529148b19306d182c5797c14948384b41eed6dea54",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "ccea8352-ba4b-4f1b-b2e7-75bad606229c",
+        "entity_id": "b403918a-eeb9-42f9-b9a2-902142616c5b",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "b403918a-eeb9-42f9-b9a2-902142616c5b",
+          "source_entity_id": "9913474a-5726-52bc-8514-0128e7403de1",
+          "source_revision_id": "74f703ff-1d1d-5fab-a7df-407efad25ba3",
+          "external_uri": null,
+          "locator": null,
+          "quote_text": null,
+          "note": "Вигаданий початковий набір прототипу",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "947b4d014e51ffe0b53682da263e45e674af1150268863722f92d072198c1421",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "2a50e7ae-975e-4f2a-9317-e1c634cb65dc",
+        "entity_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "revision_no": 2,
+        "previous_revision_id": "6d98cdb2-3417-48a7-956d-099cc6003f64",
+        "snapshot": {
+          "id": "0847d670-f782-4773-a539-00e1885a8af1",
+          "target_entity_id": "9913474a-5726-52bc-8514-0128e7403de1",
+          "target_revision_id": "74f703ff-1d1d-5fab-a7df-407efad25ba3",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [
+              {
+                "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+                "consent_id": null,
+                "consent_revision_id": null,
+                "evidence_id": "b403918a-eeb9-42f9-b9a2-902142616c5b",
+                "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+              }
+            ],
+            "access_decision_field": [
+              {
+                "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+                "field_path": "title",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+                "field_path": "summary",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+                "field_path": "reference",
+                "effect": "allow",
+                "replacement_text": null
+              }
+            ],
+            "access_decision_resource": [],
+            "access_decision_use": [
+              {
+                "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+                "use_code": "view",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+                "use_code": "cite",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+                "use_code": "download",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+                "use_code": "museum",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+                "use_code": "deposit",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+                "use_code": "machine_process",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              }
+            ],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "61d8af946128d54dd2ffb096fd0e25cf95146a3744e13d2bb9a7f525c8e4012d",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "b397b3af-78e4-4f98-bd04-992aac60218b",
+        "entity_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+          "target_entity_id": "04f13818-82bd-5a45-861a-a35d7244777a",
+          "target_revision_id": "d244ab2f-2dcf-528c-94a5-04239e763ef0",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [],
+            "access_decision_field": [],
+            "access_decision_resource": [],
+            "access_decision_use": [],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "29649298f1bfb94635bbc2a14d98bac45c0dacb6d946992c270ab4ce34ce4d26",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "d2f8a5bb-d5f6-4a40-b7a2-4e70962153a2",
+        "entity_id": "f9c48739-02b9-43c2-b76c-9d9cb6585b06",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "f9c48739-02b9-43c2-b76c-9d9cb6585b06",
+          "source_entity_id": "04f13818-82bd-5a45-861a-a35d7244777a",
+          "source_revision_id": "d244ab2f-2dcf-528c-94a5-04239e763ef0",
+          "external_uri": null,
+          "locator": null,
+          "quote_text": null,
+          "note": "Вигаданий початковий набір прототипу",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "5b64af17770caa1a06da9eeea29501ec854aa2c0fe64ac1e092cf430d6fad7e3",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "8cfc43f4-afa0-4516-b3b1-122d99171433",
+        "entity_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "revision_no": 2,
+        "previous_revision_id": "b397b3af-78e4-4f98-bd04-992aac60218b",
+        "snapshot": {
+          "id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+          "target_entity_id": "04f13818-82bd-5a45-861a-a35d7244777a",
+          "target_revision_id": "d244ab2f-2dcf-528c-94a5-04239e763ef0",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [
+              {
+                "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+                "consent_id": null,
+                "consent_revision_id": null,
+                "evidence_id": "f9c48739-02b9-43c2-b76c-9d9cb6585b06",
+                "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+              }
+            ],
+            "access_decision_field": [
+              {
+                "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+                "field_path": "title",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+                "field_path": "summary",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+                "field_path": "reference",
+                "effect": "allow",
+                "replacement_text": null
+              }
+            ],
+            "access_decision_resource": [],
+            "access_decision_use": [
+              {
+                "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+                "use_code": "view",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+                "use_code": "cite",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+                "use_code": "download",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+                "use_code": "museum",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+                "use_code": "deposit",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+                "use_code": "machine_process",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              }
+            ],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "9093b3e6b436749b735f1e8e699de39c92ee1d192ed097f9fdb6d01d9b769618",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "4237a76b-6107-4995-92de-b3557a7ff7b0",
+        "entity_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "4a95c571-a293-46ca-900b-263cc97b5195",
+          "target_entity_id": "d9837599-cb0c-52ff-a02f-d9b3491555cd",
+          "target_revision_id": "a72b843a-33cf-5cb1-8c26-428f733eff7e",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [],
+            "access_decision_field": [],
+            "access_decision_resource": [],
+            "access_decision_use": [],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "b3ef5dd8baabb36e7d3698ba72874fc6c89f0abd5c0af221cd5d33253095abe7",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "0bc90f39-89be-4981-916c-c2d0f0196fb4",
+        "entity_id": "d8b17d68-deb9-4d4f-9837-bf1c7ddc916e",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "d8b17d68-deb9-4d4f-9837-bf1c7ddc916e",
+          "source_entity_id": "d9837599-cb0c-52ff-a02f-d9b3491555cd",
+          "source_revision_id": "a72b843a-33cf-5cb1-8c26-428f733eff7e",
+          "external_uri": null,
+          "locator": null,
+          "quote_text": null,
+          "note": "Вигаданий початковий набір прототипу",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "78e08b4e94fb3f55cf693d144c4e8f06f6d3fa018565d69b7b7203772ef8c251",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "9c40faef-1656-4be0-af8a-ec78154fa875",
+        "entity_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "revision_no": 2,
+        "previous_revision_id": "4237a76b-6107-4995-92de-b3557a7ff7b0",
+        "snapshot": {
+          "id": "4a95c571-a293-46ca-900b-263cc97b5195",
+          "target_entity_id": "d9837599-cb0c-52ff-a02f-d9b3491555cd",
+          "target_revision_id": "a72b843a-33cf-5cb1-8c26-428f733eff7e",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [
+              {
+                "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+                "consent_id": null,
+                "consent_revision_id": null,
+                "evidence_id": "d8b17d68-deb9-4d4f-9837-bf1c7ddc916e",
+                "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+              }
+            ],
+            "access_decision_field": [
+              {
+                "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+                "field_path": "title",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+                "field_path": "summary",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+                "field_path": "reference",
+                "effect": "allow",
+                "replacement_text": null
+              }
+            ],
+            "access_decision_resource": [],
+            "access_decision_use": [
+              {
+                "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+                "use_code": "view",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+                "use_code": "cite",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+                "use_code": "download",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+                "use_code": "museum",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+                "use_code": "deposit",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+                "use_code": "machine_process",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              }
+            ],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "1e13d4a11e3d03e0a9657ca7530fe636e325a89593da29f2a33fee3996f29b6f",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "63e95f94-dc14-4511-8134-9c2fd6bf91e5",
+        "entity_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+          "target_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+          "target_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [],
+            "access_decision_field": [],
+            "access_decision_resource": [],
+            "access_decision_use": [],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "29f71e8265e9a132e078017e4251beab60f8bb61aeee18272666a32e025ee748",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "1302c134-9cba-422d-b583-7a9e01f1fffc",
+        "entity_id": "80d1ab1f-da73-409d-9f9b-ec8ad941eab0",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "80d1ab1f-da73-409d-9f9b-ec8ad941eab0",
+          "source_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+          "source_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+          "external_uri": null,
+          "locator": null,
+          "quote_text": null,
+          "note": "Вигаданий початковий набір прототипу",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "6f96db724a7026f919daa6a81a8918d55f6801a714eef91e98972b9cf650eca1",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "0dfca4da-970d-4ff3-a9b2-14d20c7bddf5",
+        "entity_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "revision_no": 2,
+        "previous_revision_id": "63e95f94-dc14-4511-8134-9c2fd6bf91e5",
+        "snapshot": {
+          "id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+          "target_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+          "target_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [
+              {
+                "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+                "consent_id": null,
+                "consent_revision_id": null,
+                "evidence_id": "80d1ab1f-da73-409d-9f9b-ec8ad941eab0",
+                "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+              }
+            ],
+            "access_decision_field": [
+              {
+                "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+                "field_path": "title",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+                "field_path": "summary",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+                "field_path": "reference",
+                "effect": "allow",
+                "replacement_text": null
+              }
+            ],
+            "access_decision_resource": [],
+            "access_decision_use": [
+              {
+                "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+                "use_code": "view",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+                "use_code": "cite",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+                "use_code": "download",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+                "use_code": "museum",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+                "use_code": "deposit",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+                "use_code": "machine_process",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              }
+            ],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "b59807de80136de8fa6d2c384fe9ccc8888da660099e8f9681a50cd46c39bd55",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "293158a8-0184-46e1-abb9-0ebf680018e6",
+        "entity_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+          "target_entity_id": "9d5f3f55-51b1-5469-8d61-0dd68730afce",
+          "target_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [],
+            "access_decision_field": [],
+            "access_decision_resource": [],
+            "access_decision_use": [],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "59b63ad8ebf09ab8fd688066c6589c36bbd6fbf65d7f04d36d8a4cc1744bdb05",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "e214142e-03e8-47b5-85aa-9db919c8300c",
+        "entity_id": "e95e3f23-8226-4f32-8f23-5b379089c588",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "e95e3f23-8226-4f32-8f23-5b379089c588",
+          "source_entity_id": "9d5f3f55-51b1-5469-8d61-0dd68730afce",
+          "source_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+          "external_uri": null,
+          "locator": null,
+          "quote_text": null,
+          "note": "Вигаданий початковий набір прототипу",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "d28d7b077b15ea6028b7d065adcf41631e201f6dd1f4e22f0d78b0723dda083e",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "49adf60b-cd3f-4b35-8631-6882f5a58e60",
+        "entity_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "revision_no": 2,
+        "previous_revision_id": "293158a8-0184-46e1-abb9-0ebf680018e6",
+        "snapshot": {
+          "id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+          "target_entity_id": "9d5f3f55-51b1-5469-8d61-0dd68730afce",
+          "target_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [
+              {
+                "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+                "consent_id": null,
+                "consent_revision_id": null,
+                "evidence_id": "e95e3f23-8226-4f32-8f23-5b379089c588",
+                "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+              }
+            ],
+            "access_decision_field": [
+              {
+                "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+                "field_path": "title",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+                "field_path": "summary",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+                "field_path": "reference",
+                "effect": "allow",
+                "replacement_text": null
+              }
+            ],
+            "access_decision_resource": [],
+            "access_decision_use": [
+              {
+                "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+                "use_code": "view",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+                "use_code": "cite",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+                "use_code": "download",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+                "use_code": "museum",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+                "use_code": "deposit",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+                "use_code": "machine_process",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              }
+            ],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "e04d5957004c1c2ed9b370899ec3048e9223fa751db4f5712c5af54c85575141",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "3d5367e4-c8d5-490f-823e-279abdc0251c",
+        "entity_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+          "target_entity_id": "fb7c7fab-3699-587a-91aa-91b45e05cc92",
+          "target_revision_id": "03f1aff6-0ed1-5e0c-b729-b5cd3773acd7",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [],
+            "access_decision_field": [],
+            "access_decision_resource": [],
+            "access_decision_use": [],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "626360f92f49c1551ac496b1e3b35d4750e3460bbce0b9249cc5eaa8c329a6a6",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "cccf7a9e-8ec2-4e90-b614-a68cc6017cae",
+        "entity_id": "91a62ef0-a86c-4262-ad17-12b7e1f57f8c",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "91a62ef0-a86c-4262-ad17-12b7e1f57f8c",
+          "source_entity_id": "fb7c7fab-3699-587a-91aa-91b45e05cc92",
+          "source_revision_id": "03f1aff6-0ed1-5e0c-b729-b5cd3773acd7",
+          "external_uri": null,
+          "locator": null,
+          "quote_text": null,
+          "note": "Вигаданий початковий набір прототипу",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "41c9443949b5d25ca2b707c48cc665d9cec9d4fb54227f286ea1127458f2d436",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "6fe6b139-a685-4762-a696-fa761599d0d3",
+        "entity_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "revision_no": 2,
+        "previous_revision_id": "3d5367e4-c8d5-490f-823e-279abdc0251c",
+        "snapshot": {
+          "id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+          "target_entity_id": "fb7c7fab-3699-587a-91aa-91b45e05cc92",
+          "target_revision_id": "03f1aff6-0ed1-5e0c-b729-b5cd3773acd7",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [
+              {
+                "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+                "consent_id": null,
+                "consent_revision_id": null,
+                "evidence_id": "91a62ef0-a86c-4262-ad17-12b7e1f57f8c",
+                "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+              }
+            ],
+            "access_decision_field": [
+              {
+                "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+                "field_path": "title",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+                "field_path": "summary",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+                "field_path": "reference",
+                "effect": "allow",
+                "replacement_text": null
+              }
+            ],
+            "access_decision_resource": [],
+            "access_decision_use": [
+              {
+                "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+                "use_code": "view",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+                "use_code": "cite",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+                "use_code": "download",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+                "use_code": "museum",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+                "use_code": "deposit",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+                "use_code": "machine_process",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              }
+            ],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "951933991bca14a0af8dcb73e7efb6849f23ef5f2733da1e743beae1ab84500e",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "79f5bc95-ca33-439c-bff5-05f26f473b22",
+        "entity_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+          "target_entity_id": "7bb29537-2d03-5661-b1c9-f65f3323d4d2",
+          "target_revision_id": "9f77a0eb-64a9-5969-a958-845fac78fe5a",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [],
+            "access_decision_field": [],
+            "access_decision_resource": [],
+            "access_decision_use": [],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "4496db95d4bd81ca711ab3e51ad27529b36f74dccedae869c2e22a630838d506",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "b6ebf369-f076-404b-801a-cbc28f774f44",
+        "entity_id": "234149c1-f82d-4b9e-a911-a76897f9f4e1",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "234149c1-f82d-4b9e-a911-a76897f9f4e1",
+          "source_entity_id": "7bb29537-2d03-5661-b1c9-f65f3323d4d2",
+          "source_revision_id": "9f77a0eb-64a9-5969-a958-845fac78fe5a",
+          "external_uri": null,
+          "locator": null,
+          "quote_text": null,
+          "note": "Вигаданий початковий набір прототипу",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "e03df8ee5c581ff4732f78491504c783976143683936a6837e79d050973625e2",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "7d3bbffb-dec1-490c-acb7-70d252f8a639",
+        "entity_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "revision_no": 2,
+        "previous_revision_id": "79f5bc95-ca33-439c-bff5-05f26f473b22",
+        "snapshot": {
+          "id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+          "target_entity_id": "7bb29537-2d03-5661-b1c9-f65f3323d4d2",
+          "target_revision_id": "9f77a0eb-64a9-5969-a958-845fac78fe5a",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [
+              {
+                "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+                "consent_id": null,
+                "consent_revision_id": null,
+                "evidence_id": "234149c1-f82d-4b9e-a911-a76897f9f4e1",
+                "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+              }
+            ],
+            "access_decision_field": [
+              {
+                "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+                "field_path": "title",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+                "field_path": "summary",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+                "field_path": "reference",
+                "effect": "allow",
+                "replacement_text": null
+              }
+            ],
+            "access_decision_resource": [],
+            "access_decision_use": [
+              {
+                "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+                "use_code": "view",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+                "use_code": "cite",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+                "use_code": "download",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+                "use_code": "museum",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+                "use_code": "deposit",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+                "use_code": "machine_process",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              }
+            ],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "62b9e625a036c7e655a23a4ac3605dcfb5d3944ef58e9fa30f781733474ce0dd",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "613f6c94-065c-4f2a-a6ed-55c8f0fc3c9b",
+        "entity_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+          "target_entity_id": "55edbceb-e59a-5612-b420-12d4dd853da2",
+          "target_revision_id": "f4d2f33b-e926-572e-a7f1-f6e68b1ed604",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [],
+            "access_decision_field": [],
+            "access_decision_resource": [],
+            "access_decision_use": [],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "f009f50823700f5e03e5cf4a09987c5b6adb569974bee516b80de51cad8b5ce7",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "32b6d7c9-9ff3-4cb7-8a00-8889f528eb97",
+        "entity_id": "a53dc3c3-27cf-43b4-9ab4-24cf248f74ee",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "a53dc3c3-27cf-43b4-9ab4-24cf248f74ee",
+          "source_entity_id": "55edbceb-e59a-5612-b420-12d4dd853da2",
+          "source_revision_id": "f4d2f33b-e926-572e-a7f1-f6e68b1ed604",
+          "external_uri": null,
+          "locator": null,
+          "quote_text": null,
+          "note": "Вигаданий початковий набір прототипу",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "b8e05b0c6e87318a883ac7f226fe1aa8c5bb894ca12c90d4ce119e367acf5b06",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "09a1557f-bd75-40dc-bfd8-bb4d03fe3c29",
+        "entity_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "revision_no": 2,
+        "previous_revision_id": "613f6c94-065c-4f2a-a6ed-55c8f0fc3c9b",
+        "snapshot": {
+          "id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+          "target_entity_id": "55edbceb-e59a-5612-b420-12d4dd853da2",
+          "target_revision_id": "f4d2f33b-e926-572e-a7f1-f6e68b1ed604",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [
+              {
+                "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+                "consent_id": null,
+                "consent_revision_id": null,
+                "evidence_id": "a53dc3c3-27cf-43b4-9ab4-24cf248f74ee",
+                "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+              }
+            ],
+            "access_decision_field": [
+              {
+                "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+                "field_path": "title",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+                "field_path": "summary",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+                "field_path": "reference",
+                "effect": "allow",
+                "replacement_text": null
+              }
+            ],
+            "access_decision_resource": [],
+            "access_decision_use": [
+              {
+                "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+                "use_code": "view",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+                "use_code": "cite",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+                "use_code": "download",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+                "use_code": "museum",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+                "use_code": "deposit",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+                "use_code": "machine_process",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              }
+            ],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "3b3896e4d086fc1e340c60c3f0dc9ccc5f36a99183259b73135a15e13deb870f",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "1c7a1992-e3bd-41ac-abad-8164987f206d",
+        "entity_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "5203f924-618a-446f-8b91-5ff581ede77a",
+          "target_entity_id": "f2f2a5a6-4fd5-57cd-9575-fdf3c89ac912",
+          "target_revision_id": "0cb5cf19-aa40-5680-8524-2cf133c41fb3",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [],
+            "access_decision_field": [],
+            "access_decision_resource": [],
+            "access_decision_use": [],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "abbc801eef0afcced48b6e64a989d805bb4106b071b964356c09028903aa0c02",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "1205a44d-1ea2-498e-aad2-d14aca15a765",
+        "entity_id": "b2660247-40d2-4ee5-b83e-0c72f6a8a0e0",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "b2660247-40d2-4ee5-b83e-0c72f6a8a0e0",
+          "source_entity_id": "f2f2a5a6-4fd5-57cd-9575-fdf3c89ac912",
+          "source_revision_id": "0cb5cf19-aa40-5680-8524-2cf133c41fb3",
+          "external_uri": null,
+          "locator": null,
+          "quote_text": null,
+          "note": "Вигаданий початковий набір прототипу",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "ca41a033fe74611968ddb68762b59716222bc39e6b6df35d6ceb7cf508ed1fcb",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "8770be82-5d6e-4cc7-a416-c8c692db0628",
+        "entity_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "revision_no": 2,
+        "previous_revision_id": "1c7a1992-e3bd-41ac-abad-8164987f206d",
+        "snapshot": {
+          "id": "5203f924-618a-446f-8b91-5ff581ede77a",
+          "target_entity_id": "f2f2a5a6-4fd5-57cd-9575-fdf3c89ac912",
+          "target_revision_id": "0cb5cf19-aa40-5680-8524-2cf133c41fb3",
+          "access_level": "controlled_research",
+          "purpose_code": "research",
+          "state": "effective",
+          "valid_from": "2026-09-20T09:00:00.000Z",
+          "valid_until": null,
+          "embargo_until": null,
+          "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+          "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+          "conditions": "Лише навчальні матеріали; без приватних даних і файлів",
+          "_relations": {
+            "access_decision_basis": [
+              {
+                "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+                "consent_id": null,
+                "consent_revision_id": null,
+                "evidence_id": "b2660247-40d2-4ee5-b83e-0c72f6a8a0e0",
+                "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+              }
+            ],
+            "access_decision_field": [
+              {
+                "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+                "field_path": "title",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+                "field_path": "summary",
+                "effect": "allow",
+                "replacement_text": null
+              },
+              {
+                "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+                "field_path": "reference",
+                "effect": "allow",
+                "replacement_text": null
+              }
+            ],
+            "access_decision_resource": [],
+            "access_decision_use": [
+              {
+                "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+                "use_code": "view",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+                "use_code": "cite",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+                "use_code": "download",
+                "effect": "allow",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+                "use_code": "museum",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+                "use_code": "deposit",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              },
+              {
+                "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+                "use_code": "machine_process",
+                "effect": "deny",
+                "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+              }
+            ],
+            "access_decision_attribution": []
+          }
+        },
+        "snapshot_hash": "90c9b76467d6810ec4a79e2b94173200396d7acfd234a36bc0090853d3985022",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
         "id": "19c70b86-9d76-4fe2-8e9e-4f9b3a735016",
         "entity_id": "935623af-494e-4f35-bbbb-a022f024ab09",
         "revision_no": 1,
@@ -5582,7 +7252,338 @@
         "position": null
       }
     ],
-    "audit_event": [],
+    "audit_event": [
+      {
+        "id": "ff59ac63-224c-4892-a886-1a1e5fe0a1ac",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "439e1c63-bc3b-4b19-a3df-91a8a1e6bf01",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "618f2d37-c900-40cd-af60-fe20df72ad81",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "44e53791-9ef4-4783-8445-cdba02ca2c47",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "80865b1e-8e06-4ae1-8c07-89c7ee5a6542",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "d7cfe6a2-6c8c-4242-bd12-30ab76f5aecc",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "action": "record.revise",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": "439e1c63-bc3b-4b19-a3df-91a8a1e6bf01",
+        "after_revision_id": "64543622-f5a4-4c1d-9ae6-4979b31d4bed",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "81b1acb2-78bb-448f-82b8-be515d477c66",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "6d98cdb2-3417-48a7-956d-099cc6003f64",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "75f41392-8278-4d68-b7fb-1b9892aa20fb",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "b403918a-eeb9-42f9-b9a2-902142616c5b",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "ccea8352-ba4b-4f1b-b2e7-75bad606229c",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "c46773f3-ce6b-417a-b39c-156f81ce88b6",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "action": "record.revise",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": "6d98cdb2-3417-48a7-956d-099cc6003f64",
+        "after_revision_id": "2a50e7ae-975e-4f2a-9317-e1c634cb65dc",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "23b6c53a-f511-461e-b591-d3b43a56ea18",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "b397b3af-78e4-4f98-bd04-992aac60218b",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "85956aec-c07a-40c3-9233-bdc75dbc0baf",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "f9c48739-02b9-43c2-b76c-9d9cb6585b06",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "d2f8a5bb-d5f6-4a40-b7a2-4e70962153a2",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "2e20115b-ba8b-44e3-b1b1-9b5a87f88c2e",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "action": "record.revise",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": "b397b3af-78e4-4f98-bd04-992aac60218b",
+        "after_revision_id": "8cfc43f4-afa0-4516-b3b1-122d99171433",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "adc9bd4c-5924-4147-b64c-4e1a0bd52dc3",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "4237a76b-6107-4995-92de-b3557a7ff7b0",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "370ce22b-2726-441c-b9fa-53340cee0a1d",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "d8b17d68-deb9-4d4f-9837-bf1c7ddc916e",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "0bc90f39-89be-4981-916c-c2d0f0196fb4",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "5c3993c4-3b8e-4b72-becd-4153f14486af",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "action": "record.revise",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": "4237a76b-6107-4995-92de-b3557a7ff7b0",
+        "after_revision_id": "9c40faef-1656-4be0-af8a-ec78154fa875",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "9e9650a4-b01f-42f2-b6de-5300b366949e",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "63e95f94-dc14-4511-8134-9c2fd6bf91e5",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "207b5219-49ca-4e4d-8c69-19e38c549f6c",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "80d1ab1f-da73-409d-9f9b-ec8ad941eab0",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "1302c134-9cba-422d-b583-7a9e01f1fffc",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "7887ff46-835c-4282-9272-2409d3a2c926",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "action": "record.revise",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": "63e95f94-dc14-4511-8134-9c2fd6bf91e5",
+        "after_revision_id": "0dfca4da-970d-4ff3-a9b2-14d20c7bddf5",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "a072a518-b919-48a4-b315-6c8f06fc2bae",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "293158a8-0184-46e1-abb9-0ebf680018e6",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "5d7a2a21-c7b2-4f2e-b780-d162d8b9d04f",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "e95e3f23-8226-4f32-8f23-5b379089c588",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "e214142e-03e8-47b5-85aa-9db919c8300c",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "fc9033b0-4803-41e0-b01a-782baee32232",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "action": "record.revise",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": "293158a8-0184-46e1-abb9-0ebf680018e6",
+        "after_revision_id": "49adf60b-cd3f-4b35-8631-6882f5a58e60",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "78e46a91-5b9c-4b5c-a9d4-b75391450eff",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "3d5367e4-c8d5-490f-823e-279abdc0251c",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "36018e3c-1dff-4401-83ee-9ce36ff25da6",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "91a62ef0-a86c-4262-ad17-12b7e1f57f8c",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "cccf7a9e-8ec2-4e90-b614-a68cc6017cae",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "e62996c5-079e-41a6-a22f-7188135ba5c6",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "action": "record.revise",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": "3d5367e4-c8d5-490f-823e-279abdc0251c",
+        "after_revision_id": "6fe6b139-a685-4762-a696-fa761599d0d3",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "72b218ee-c8da-49d1-94c7-5b4ead0f5e18",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "79f5bc95-ca33-439c-bff5-05f26f473b22",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "087800f0-c65b-4e0a-9d5d-55c675ee18e7",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "234149c1-f82d-4b9e-a911-a76897f9f4e1",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "b6ebf369-f076-404b-801a-cbc28f774f44",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "11497ff4-f95f-43c2-81c0-e3ce16b66822",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "action": "record.revise",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": "79f5bc95-ca33-439c-bff5-05f26f473b22",
+        "after_revision_id": "7d3bbffb-dec1-490c-acb7-70d252f8a639",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "e9155018-70a8-4e22-bcd9-6e7771795990",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "613f6c94-065c-4f2a-a6ed-55c8f0fc3c9b",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "6751bae9-78cf-4569-a08d-7a909a715fc9",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "a53dc3c3-27cf-43b4-9ab4-24cf248f74ee",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "32b6d7c9-9ff3-4cb7-8a00-8889f528eb97",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "de718285-a729-42a3-b5a5-51c6bf30c9b3",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "action": "record.revise",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": "613f6c94-065c-4f2a-a6ed-55c8f0fc3c9b",
+        "after_revision_id": "09a1557f-bd75-40dc-bfd8-bb4d03fe3c29",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "7355aeca-a0d9-4509-9a78-d90dbedce931",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "1c7a1992-e3bd-41ac-abad-8164987f206d",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "f1f8b3ae-54e5-4d5c-b955-b081809cd801",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "b2660247-40d2-4ee5-b83e-0c72f6a8a0e0",
+        "action": "rights.save",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": null,
+        "after_revision_id": "1205a44d-1ea2-498e-aad2-d14aca15a765",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      },
+      {
+        "id": "a7fa562c-ba2c-432c-8224-823b3df0dd59",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "entity_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "action": "record.revise",
+        "occurred_at": "2026-09-20T09:00:00.000Z",
+        "before_revision_id": "1c7a1992-e3bd-41ac-abad-8164987f206d",
+        "after_revision_id": "8770be82-5d6e-4cc7-a416-c8c692db0628",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу"
+      }
+    ],
     "archive": [
       {
         "id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
@@ -7005,6 +9006,106 @@
         "quote_text": null,
         "note": "Приватний синтетичний доказ згоди. Не включати у передання.",
         "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "44e53791-9ef4-4783-8445-cdba02ca2c47",
+        "source_entity_id": "9de99210-c452-5714-b203-ded9e95142b2",
+        "source_revision_id": "ca02e4ed-f0a9-5fed-97b3-8ac9365e7a95",
+        "external_uri": null,
+        "locator": null,
+        "quote_text": null,
+        "note": "Вигаданий початковий набір прототипу",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "b403918a-eeb9-42f9-b9a2-902142616c5b",
+        "source_entity_id": "9913474a-5726-52bc-8514-0128e7403de1",
+        "source_revision_id": "74f703ff-1d1d-5fab-a7df-407efad25ba3",
+        "external_uri": null,
+        "locator": null,
+        "quote_text": null,
+        "note": "Вигаданий початковий набір прототипу",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "f9c48739-02b9-43c2-b76c-9d9cb6585b06",
+        "source_entity_id": "04f13818-82bd-5a45-861a-a35d7244777a",
+        "source_revision_id": "d244ab2f-2dcf-528c-94a5-04239e763ef0",
+        "external_uri": null,
+        "locator": null,
+        "quote_text": null,
+        "note": "Вигаданий початковий набір прототипу",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "d8b17d68-deb9-4d4f-9837-bf1c7ddc916e",
+        "source_entity_id": "d9837599-cb0c-52ff-a02f-d9b3491555cd",
+        "source_revision_id": "a72b843a-33cf-5cb1-8c26-428f733eff7e",
+        "external_uri": null,
+        "locator": null,
+        "quote_text": null,
+        "note": "Вигаданий початковий набір прототипу",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "80d1ab1f-da73-409d-9f9b-ec8ad941eab0",
+        "source_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+        "source_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+        "external_uri": null,
+        "locator": null,
+        "quote_text": null,
+        "note": "Вигаданий початковий набір прототипу",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "e95e3f23-8226-4f32-8f23-5b379089c588",
+        "source_entity_id": "9d5f3f55-51b1-5469-8d61-0dd68730afce",
+        "source_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+        "external_uri": null,
+        "locator": null,
+        "quote_text": null,
+        "note": "Вигаданий початковий набір прототипу",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "91a62ef0-a86c-4262-ad17-12b7e1f57f8c",
+        "source_entity_id": "fb7c7fab-3699-587a-91aa-91b45e05cc92",
+        "source_revision_id": "03f1aff6-0ed1-5e0c-b729-b5cd3773acd7",
+        "external_uri": null,
+        "locator": null,
+        "quote_text": null,
+        "note": "Вигаданий початковий набір прототипу",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "234149c1-f82d-4b9e-a911-a76897f9f4e1",
+        "source_entity_id": "7bb29537-2d03-5661-b1c9-f65f3323d4d2",
+        "source_revision_id": "9f77a0eb-64a9-5969-a958-845fac78fe5a",
+        "external_uri": null,
+        "locator": null,
+        "quote_text": null,
+        "note": "Вигаданий початковий набір прототипу",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "a53dc3c3-27cf-43b4-9ab4-24cf248f74ee",
+        "source_entity_id": "55edbceb-e59a-5612-b420-12d4dd853da2",
+        "source_revision_id": "f4d2f33b-e926-572e-a7f1-f6e68b1ed604",
+        "external_uri": null,
+        "locator": null,
+        "quote_text": null,
+        "note": "Вигаданий початковий набір прототипу",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "b2660247-40d2-4ee5-b83e-0c72f6a8a0e0",
+        "source_entity_id": "f2f2a5a6-4fd5-57cd-9575-fdf3c89ac912",
+        "source_revision_id": "0cb5cf19-aa40-5680-8524-2cf133c41fb3",
+        "external_uri": null,
+        "locator": null,
+        "quote_text": null,
+        "note": "Вигаданий початковий набір прототипу",
+        "captured_at": "2026-09-20T09:00:00.000Z"
       }
     ],
     "evidence_link": [
@@ -7254,6 +9355,146 @@
         "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
         "reason": "Дозвіл на навчальний приклад",
         "conditions": "Лише зазначене використання"
+      },
+      {
+        "id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "target_entity_id": "9de99210-c452-5714-b203-ded9e95142b2",
+        "target_revision_id": "ca02e4ed-f0a9-5fed-97b3-8ac9365e7a95",
+        "access_level": "controlled_research",
+        "purpose_code": "research",
+        "state": "effective",
+        "valid_from": "2026-09-20T09:00:00.000Z",
+        "valid_until": null,
+        "embargo_until": null,
+        "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "target_entity_id": "9913474a-5726-52bc-8514-0128e7403de1",
+        "target_revision_id": "74f703ff-1d1d-5fab-a7df-407efad25ba3",
+        "access_level": "controlled_research",
+        "purpose_code": "research",
+        "state": "effective",
+        "valid_from": "2026-09-20T09:00:00.000Z",
+        "valid_until": null,
+        "embargo_until": null,
+        "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "target_entity_id": "04f13818-82bd-5a45-861a-a35d7244777a",
+        "target_revision_id": "d244ab2f-2dcf-528c-94a5-04239e763ef0",
+        "access_level": "controlled_research",
+        "purpose_code": "research",
+        "state": "effective",
+        "valid_from": "2026-09-20T09:00:00.000Z",
+        "valid_until": null,
+        "embargo_until": null,
+        "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "target_entity_id": "d9837599-cb0c-52ff-a02f-d9b3491555cd",
+        "target_revision_id": "a72b843a-33cf-5cb1-8c26-428f733eff7e",
+        "access_level": "controlled_research",
+        "purpose_code": "research",
+        "state": "effective",
+        "valid_from": "2026-09-20T09:00:00.000Z",
+        "valid_until": null,
+        "embargo_until": null,
+        "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "target_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+        "target_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+        "access_level": "controlled_research",
+        "purpose_code": "research",
+        "state": "effective",
+        "valid_from": "2026-09-20T09:00:00.000Z",
+        "valid_until": null,
+        "embargo_until": null,
+        "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "target_entity_id": "9d5f3f55-51b1-5469-8d61-0dd68730afce",
+        "target_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+        "access_level": "controlled_research",
+        "purpose_code": "research",
+        "state": "effective",
+        "valid_from": "2026-09-20T09:00:00.000Z",
+        "valid_until": null,
+        "embargo_until": null,
+        "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "target_entity_id": "fb7c7fab-3699-587a-91aa-91b45e05cc92",
+        "target_revision_id": "03f1aff6-0ed1-5e0c-b729-b5cd3773acd7",
+        "access_level": "controlled_research",
+        "purpose_code": "research",
+        "state": "effective",
+        "valid_from": "2026-09-20T09:00:00.000Z",
+        "valid_until": null,
+        "embargo_until": null,
+        "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "target_entity_id": "7bb29537-2d03-5661-b1c9-f65f3323d4d2",
+        "target_revision_id": "9f77a0eb-64a9-5969-a958-845fac78fe5a",
+        "access_level": "controlled_research",
+        "purpose_code": "research",
+        "state": "effective",
+        "valid_from": "2026-09-20T09:00:00.000Z",
+        "valid_until": null,
+        "embargo_until": null,
+        "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "target_entity_id": "55edbceb-e59a-5612-b420-12d4dd853da2",
+        "target_revision_id": "f4d2f33b-e926-572e-a7f1-f6e68b1ed604",
+        "access_level": "controlled_research",
+        "purpose_code": "research",
+        "state": "effective",
+        "valid_from": "2026-09-20T09:00:00.000Z",
+        "valid_until": null,
+        "embargo_until": null,
+        "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "target_entity_id": "f2f2a5a6-4fd5-57cd-9575-fdf3c89ac912",
+        "target_revision_id": "0cb5cf19-aa40-5680-8524-2cf133c41fb3",
+        "access_level": "controlled_research",
+        "purpose_code": "research",
+        "state": "effective",
+        "valid_from": "2026-09-20T09:00:00.000Z",
+        "valid_until": null,
+        "embargo_until": null,
+        "decided_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "reason": "Дослідницький доступ до синтетичного навчального прикладу",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
       }
     ],
     "access_decision_basis": [
@@ -7368,6 +9609,76 @@
         "consent_revision_id": null,
         "evidence_id": "23a9bf6c-2421-5927-b5dd-4c3d0944cc4e",
         "basis_note": "Дозволений синтетичний матеріал для локального прикладу."
+      },
+      {
+        "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "consent_id": null,
+        "consent_revision_id": null,
+        "evidence_id": "44e53791-9ef4-4783-8445-cdba02ca2c47",
+        "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+      },
+      {
+        "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "consent_id": null,
+        "consent_revision_id": null,
+        "evidence_id": "b403918a-eeb9-42f9-b9a2-902142616c5b",
+        "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+      },
+      {
+        "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "consent_id": null,
+        "consent_revision_id": null,
+        "evidence_id": "f9c48739-02b9-43c2-b76c-9d9cb6585b06",
+        "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+      },
+      {
+        "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "consent_id": null,
+        "consent_revision_id": null,
+        "evidence_id": "d8b17d68-deb9-4d4f-9837-bf1c7ddc916e",
+        "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+      },
+      {
+        "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "consent_id": null,
+        "consent_revision_id": null,
+        "evidence_id": "80d1ab1f-da73-409d-9f9b-ec8ad941eab0",
+        "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+      },
+      {
+        "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "consent_id": null,
+        "consent_revision_id": null,
+        "evidence_id": "e95e3f23-8226-4f32-8f23-5b379089c588",
+        "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+      },
+      {
+        "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "consent_id": null,
+        "consent_revision_id": null,
+        "evidence_id": "91a62ef0-a86c-4262-ad17-12b7e1f57f8c",
+        "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+      },
+      {
+        "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "consent_id": null,
+        "consent_revision_id": null,
+        "evidence_id": "234149c1-f82d-4b9e-a911-a76897f9f4e1",
+        "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+      },
+      {
+        "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "consent_id": null,
+        "consent_revision_id": null,
+        "evidence_id": "a53dc3c3-27cf-43b4-9ab4-24cf248f74ee",
+        "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
+      },
+      {
+        "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "consent_id": null,
+        "consent_revision_id": null,
+        "evidence_id": "b2660247-40d2-4ee5-b83e-0c72f6a8a0e0",
+        "basis_note": "Синтетичні дані, підготовлені для перевірки робочих сторінок"
       }
     ],
     "access_decision_field": [
@@ -8168,6 +10479,186 @@
         "field_path": "terms",
         "effect": "allow",
         "replacement_text": null
+      },
+      {
+        "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "field_path": "title",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "field_path": "summary",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "field_path": "reference",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "field_path": "title",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "field_path": "summary",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "field_path": "reference",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "field_path": "title",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "field_path": "summary",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "field_path": "reference",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "field_path": "title",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "field_path": "summary",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "field_path": "reference",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "field_path": "title",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "field_path": "summary",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "field_path": "reference",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "field_path": "title",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "field_path": "summary",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "field_path": "reference",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "field_path": "title",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "field_path": "summary",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "field_path": "reference",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "field_path": "title",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "field_path": "summary",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "field_path": "reference",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "field_path": "title",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "field_path": "summary",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "field_path": "reference",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "field_path": "title",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "field_path": "summary",
+        "effect": "allow",
+        "replacement_text": null
+      },
+      {
+        "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "field_path": "reference",
+        "effect": "allow",
+        "replacement_text": null
       }
     ],
     "access_decision_resource": [
@@ -8460,6 +10951,366 @@
         "use_code": "deposit",
         "effect": "allow",
         "conditions": null
+      },
+      {
+        "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "use_code": "view",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "use_code": "cite",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "use_code": "download",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "use_code": "museum",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "use_code": "deposit",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "73c53115-3b36-4be2-abdb-0783cbb2ea08",
+        "use_code": "machine_process",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "use_code": "view",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "use_code": "cite",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "use_code": "download",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "use_code": "museum",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "use_code": "deposit",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "0847d670-f782-4773-a539-00e1885a8af1",
+        "use_code": "machine_process",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "use_code": "view",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "use_code": "cite",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "use_code": "download",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "use_code": "museum",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "use_code": "deposit",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "febe677e-a611-48c9-99fb-3827cc5d66cc",
+        "use_code": "machine_process",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "use_code": "view",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "use_code": "cite",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "use_code": "download",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "use_code": "museum",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "use_code": "deposit",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "4a95c571-a293-46ca-900b-263cc97b5195",
+        "use_code": "machine_process",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "use_code": "view",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "use_code": "cite",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "use_code": "download",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "use_code": "museum",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "use_code": "deposit",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "61d131f2-6bb4-48c1-bd6c-afef14266ffa",
+        "use_code": "machine_process",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "use_code": "view",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "use_code": "cite",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "use_code": "download",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "use_code": "museum",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "use_code": "deposit",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "560e9370-4e7b-4c1a-a138-ac65d6248d97",
+        "use_code": "machine_process",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "use_code": "view",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "use_code": "cite",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "use_code": "download",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "use_code": "museum",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "use_code": "deposit",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "8a5d668d-a959-402b-b2f6-4ef61dac0ad4",
+        "use_code": "machine_process",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "use_code": "view",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "use_code": "cite",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "use_code": "download",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "use_code": "museum",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "use_code": "deposit",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "f7318552-8f7a-492a-b793-36c9740e4b29",
+        "use_code": "machine_process",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "use_code": "view",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "use_code": "cite",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "use_code": "download",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "use_code": "museum",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "use_code": "deposit",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "6646622a-b862-4afa-aa39-3d91e18afd9f",
+        "use_code": "machine_process",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "use_code": "view",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "use_code": "cite",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "use_code": "download",
+        "effect": "allow",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "use_code": "museum",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "use_code": "deposit",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
+      },
+      {
+        "decision_id": "5203f924-618a-446f-8b91-5ff581ede77a",
+        "use_code": "machine_process",
+        "effect": "deny",
+        "conditions": "Лише навчальні матеріали; без приватних даних і файлів"
       }
     ],
     "access_decision_attribution": [

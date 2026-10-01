@@ -34,7 +34,7 @@
     ],
     "view_model": "Private consent list, evidence wizard, scopes, partial/complete withdrawal and dependent-policy/publication invalidation",
     "completion": "partial",
-    "state_storage": "Shared normalized browser store v9; additive v1–8 migration without resetting user work or revoked grants",
+    "state_storage": "Normalized browser store v9; existing user state is preserved, new grants require explicit human review.",
     "permissions": [
       "Scoped text.read/write/review, consent.read/write, processing.run and deposit.manage are independent",
       "Consent evidence is not exposed by text/public/deposit views",
@@ -48,6 +48,7 @@
       "Consent create and partial/full withdrawal work. Separate replacement acts, broad multi-person policy authoring and rights renewal UI remain pending.",
       "Deposits use an explicit title/summary whitelist and a restricted no-public-display snapshot. Receiving is an acknowledgement simulation; production entity_origin projection, receiver policy creation and independent receiving installation remain pending.",
       "Demonstration processing records its real local tool name with no invented model or confidence; it does not perform recognition."
-    ]
+    ],
+    "research_scope": "Explicit public/research purpose for view/citation consent; proof remains private. Recording a consent does not grant operational access."
   }
 }

@@ -1,6 +1,6 @@
-import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20260930-wf08-final';
-import {wizard} from './wizard.mjs?v=20260930-wf08-final';
-import {hint} from './help.mjs?v=20260930-wf08-final';
+import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261001-wf09';
+import {wizard} from './wizard.mjs?v=20261001-wf09';
+import {hint} from './help.mjs?v=20261001-wf09';
 
 export function researchPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);
@@ -82,7 +82,7 @@ export function researchPages(ctx){
   act('assert',()=>assertionWizard(src,corpusId));act('cite',()=>cite(src));
   const notes=visible('annotation').filter(x=>x.target_entity_id===src.id&&x.target_revision_id===src.revision_id&&(!corpusId||x.corpus_id===corpusId));
   show((corpusId?link(44,'← До корпусу',{id:corpusId,revision:cr||rev(corpusId)}):link(41,'← До результатів пошуку',queryContext()))+
-   heading('Джерело',src.title,'Нотатки й докази прив’язуються до відкритої версії. Дослідницька робота не змінює архівний опис.',btn('Додати нотатку','note',enabled)+btn('Створити твердження','assert',enabled)+btn('Цитувати','cite',enabled))+
+   heading('Джерело',src.title,'Нотатки й докази прив’язуються до відкритої версії. Дослідницька робота не змінює архівний опис.',btn('Додати нотатку','note',enabled)+btn('Створити твердження','assert',enabled)+btn('Цитувати','cite',enabled&&!!sourceView(st,actor,src.id,src.revision_id,'cite')))+
    `<div class="media-status"><span>${kinds[src.type]}</span><span>Версія ${src.revision_no}</span>${src.revision_id!==rev(src.id)?'<span>У корпусі збережено попередню версію опису.</span>':''}</div>`+
    panel('Опис джерела',body(`<p class="source-text">${esc(src.text||'Опис ще не заповнено.')}</p>`))+
    panel('Мої нотатки до цієї версії',table(['Нотатка'],notes.map(x=>[esc(x.body)]),'Нотаток ще немає. Додайте спостереження або питання до джерела.')));

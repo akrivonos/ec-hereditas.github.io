@@ -1,15 +1,15 @@
-import {prepareSingleUser} from '../data/single-user.mjs?v=20260930-wf08-final';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20260930-wf08-final";
-import {fieldPages} from './field.mjs?v=20260930-wf08-final';
-import {mediaPages} from './media.mjs?v=20260930-wf08-final';
-import {researchPages} from './research.mjs?v=20260930-wf08-final';
-import {publicPages} from './public.mjs?v=20260930-wf08-final';
-import {archivePages} from './archive.mjs?v=20260930-wf08-final';
-import {workbenchPages} from './workbench.mjs?v=20260930-wf08-final';
-import {museumPages} from './museum.mjs?v=20260930-wf08-final';
-import {museumStamp} from '../data/museum.mjs?v=20260930-wf08-final';
-import {publicAccessStamp} from '../data/public.mjs?v=20260930-wf08-final';
-import {bindHelp} from './help.mjs?v=20260930-wf08-final';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20261001-wf09';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261001-wf09";
+import {fieldPages} from './field.mjs?v=20261001-wf09';
+import {mediaPages} from './media.mjs?v=20261001-wf09';
+import {researchPages} from './research.mjs?v=20261001-wf09';
+import {publicPages} from './public.mjs?v=20261001-wf09';
+import {archivePages} from './archive.mjs?v=20261001-wf09';
+import {workbenchPages} from './workbench.mjs?v=20261001-wf09';
+import {museumPages} from './museum.mjs?v=20261001-wf09';
+import {museumStamp} from '../data/museum.mjs?v=20261001-wf09';
+import {publicAccessStamp} from '../data/public.mjs?v=20261001-wf09';
+import {bindHelp} from './help.mjs?v=20261001-wf09';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;
@@ -216,6 +216,7 @@ function taskDetail(){
  const id=new URLSearchParams(location.search).get("id")||base.demo.ids["task-package"],st=s(),task=taskView(st,actor,id);
  if(!task){denied();return;}
  if(["museum_publication_request","museum_correction_request"].includes(task.kind)){shell(heading("Звернення до архіву",task.title,"",button("Відкрити звернення",pg(56,{role:can(st,actor,"task.assign",task.archive_id)?"R02":"R05-M",tab:"requests",id}))));return;}
+ if(task.kind==='rights_review'){const target=st.tables.work_item_target.find(x=>x.work_item_id===id),decisions=st.tables.access_decision.filter(d=>d.target_entity_id===target?.entity_id);shell(heading('Права й етика',task.title,'Зафіксуйте висновок під час поновлення рішення про доступ. Завдання не надає дозволів.',button('← До черги',pg(2),true))+panel('Питання та висновок','<div class="panel-body">'+task.events.map(e=>'<p>'+esc(e.reason)+'</p>').join('')+'<p>'+esc(task.resolution||'Висновок ще не зафіксовано')+'</p></div>')+panel('Рішення для перегляду','<div class="panel-body">'+(decisions.map(d=>'<p>'+button(({public:'Публічний показ',research:'Дослідницька робота',deposit:'Депонування',processing:'Машинне опрацювання'})[d.purpose_code]||'Переглянути рішення',pg(26,{role:'R02',id:d.id}),true)+'</p>').join('')||button('Ухвалити рішення',pg(26,{role:'R02',source:target?.entity_id}),true))+'</div>'));return;}
  if(task.kind==='text_review'){const target=st.tables.work_item_target.find(x=>x.work_item_id===id);shell(heading('Перевірка тексту',task.title,'',button('Відкрити текст',pg(14,{role:'R02',id:target?.entity_id}))));return;}
  if(['reconciliation_review','catalog_review'].includes(task.kind)){const target=st.tables.work_item_target.find(x=>x.work_item_id===id);const record=st.tables.catalog_record?.find(x=>x.id===target?.entity_id);shell(heading('Перевірка',task.title,'',button('Розглянути',pg(24,{role:'R02',id:target?.entity_id}))+(record?button('Відкрити матеріал',pg(17,{role:'R02',material:record.subject_entity_id,section:'review'}),true):'')));return;}
  if(task.kind==='archival_review'){const target=st.tables.work_item_target.find(x=>x.work_item_id===id&&st.tables.candidate.some(c=>c.id===x.entity_id));shell(heading('Перевірка',task.title,'',button('Відкрити пропозицію',pg(24,{role:'R02',id:target?.entity_id}))));return;}

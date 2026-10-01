@@ -32,11 +32,12 @@
     "commands": [
       "archive.verify",
       "archive.publication.publish",
-      "archive.publication.withdraw"
+      "archive.publication.withdraw",
+      "archive.publication.refresh"
     ],
     "view_model": "Exact source verification, policy-filtered public preview, explicit publish/withdraw and revision history",
     "completion": "partial",
-    "state_storage": "Normalized browser store v8; v1–7 migration preserves existing records, revoked grants and demo walkthroughs",
+    "state_storage": "Normalized browser store v9; existing user state is preserved, new grants require explicit human review.",
     "permissions": [
       "Separate scoped review.write, publication.write and access.manage grants",
       "Applying description changes also requires catalog.write",
@@ -44,10 +45,9 @@
     ],
     "atomicity": "Review, exact result revision, evidence, verification and application commit together. Deferred review retains a task. Source changes invalidate linked effective policies and withdraw affected publications. Revocation withdraws linked publications in the same transaction.",
     "limitations": [
-      "Local browser prototype only; no real publication server or network transport.",
-      "Existing decisions can be inspected/revoked; consent lifecycle, new access grants and rights renewal after source edits remain pending.",
-      "New publication preparation covers public metadata; configuring new media release permissions, translations and deposit transport remains pending.",
-      "Existing historical publications may be visible but require a separate exact-source verification before republishing."
+      "Local browser prototype only.",
+      "Material metadata refresh preserves publication ID/slug and history; explicit exact-source verification and publish are required.",
+      "Public resource reader currently serves permitted plain-text files; broader media playback remains separate."
     ]
   }
 }

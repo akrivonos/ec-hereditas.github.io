@@ -1,7 +1,8 @@
+import {accessPolicy,attributionNames} from './rights.mjs?v=20261001-wf09';
 // Public views use only an approved projection. Internal source rows never enter the public payload.
-import {activeAccount} from './model.mjs?v=20260930-wf08-final';
-import {rawHash} from './media.mjs?v=20260930-wf08-final';
-import {consentBasisValid} from './workbench.mjs?v=20260930-wf08-final';
+import {activeAccount} from './model.mjs?v=20261001-wf09';
+import {rawHash} from './media.mjs?v=20261001-wf09';
+import {consentBasisValid} from './workbench.mjs?v=20261001-wf09';
 export const publicTypes=['access_decision','publication_record','user_collection'];
 const publicFields=['title','summary','kind','category','place','period','attribution','terms','context_ids','resource_label'];
 export function publicAccessStamp(s){
@@ -18,13 +19,9 @@ function policy(s,p,use='view'){
  const t=s.tables,reg=id=>t.entity.find(x=>x.id===id),now=Date.parse(s.clock);
  if(!p||p.state!=='published'||p.channel_code!=='public'||p.projection_profile_version!=='public-reader-1'||reg(p.id)?.retired_at)return null;
  const bases=t.publication_basis.filter(x=>x.publication_id===p.id);if(!bases.length)return null;
- const decisions=bases.map(b=>t.access_decision.find(x=>x.id===b.decision_id));
- if(decisions.some((d,i)=>!d||reg(d.id)?.retired_at||d.state!=='effective'||d.access_level!=='public'||d.purpose_code!=='public'||d.target_entity_id!==p.source_entity_id||d.target_revision_id!==p.source_revision_id||reg(d.id)?.current_revision_id!==bases[i].decision_revision_id||Date.parse(d.valid_from)>now||d.valid_until&&Date.parse(d.valid_until)<=now||d.embargo_until&&Date.parse(d.embargo_until)>now))return null;
- // A consent basis must still be current and allow this exact purpose/use.
- if(decisions.some(d=>{const rows=t.access_decision_basis.filter(x=>x.decision_id===d.id);return !rows.length||rows.some(x=>x.consent_id?!consentBasisValid(s,x,p.source_entity_id,d.purpose_code,use):!x.basis_note?.trim());}))return null;
- const overlap=t.access_decision.filter(d=>d.target_entity_id===p.source_entity_id&&(!d.target_revision_id||d.target_revision_id===p.source_revision_id)&&d.purpose_code==='public'&&d.state==='effective'&&Date.parse(d.valid_from)<=now&&(!d.valid_until||Date.parse(d.valid_until)>now));
- if(overlap.some(d=>!decisions.some(x=>x.id===d.id)))return null;
- if(decisions.some(d=>{const rows=t.access_decision_use.filter(x=>x.decision_id===d.id&&x.use_code===use);return !rows.length||rows.some(x=>x.effect!=='allow');}))return null;
+ if(reg(p.source_entity_id)?.current_revision_id!==p.source_revision_id)return null;
+ const decisions=accessPolicy(s,p.source_entity_id,p.source_revision_id,'public',use);
+ if(!decisions||decisions.length!==bases.length||decisions.some(d=>!bases.some(b=>b.decision_id===d.id&&b.decision_revision_id===reg(d.id)?.current_revision_id)))return null;
  return decisions;
 }
 export function publicView(s,id,use='view',resolveContexts=true){
@@ -38,6 +35,7 @@ export function publicView(s,id,use='view',resolveContexts=true){
   else if(typeof p.safe_payload[key]==='string')out[key]=p.safe_payload[key];
  }
  if(!out.title||!['material','archive','place','person','institution'].includes(out.kind))return null;
+ const names=attributionNames(s,ds);if(names&&ds.every(d=>t.access_decision_field.some(f=>f.decision_id===d.id&&f.field_path==='attribution'&&f.effect==='allow')))out.attribution=names;
  if(out.kind==='person'){
   const at=t.access_decision_attribution.filter(x=>ds.some(d=>d.id===x.decision_id)&&x.person_id===p.source_entity_id);
   if(!at.length)return null;

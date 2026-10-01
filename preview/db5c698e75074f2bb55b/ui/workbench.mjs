@@ -1,6 +1,6 @@
-import {can,hash} from '../data/model.mjs?v=20260930-wf08-final';
-import {textList,textView,textKinds,kindCode,useNames,useDecision} from '../data/workbench.mjs?v=20260930-wf08-final';
-import {wizard} from './wizard.mjs?v=20260930-wf08-final';
+import {can,hash} from '../data/model.mjs?v=20261001-wf09';
+import {textList,textView,textKinds,kindCode,useNames,useDecision} from '../data/workbench.mjs?v=20261001-wf09';
+import {wizard} from './wizard.mjs?v=20261001-wf09';
 
 export function workbenchPages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search),role=p.get('role')||'R02';
@@ -65,13 +65,13 @@ export function workbenchPages(ctx){
  const consentState={active:'Чинна',partially_withdrawn:'Частково відкликана',withdrawn:'Відкликана',superseded:'Замінена'};
  function consentForm(){const rows=sources('consent.write');if(!rows.length)return;const d=wizard({dialog,esc},{title:'Задокументувати згоду',submit:'Зберегти згоду',steps:[
   {title:'Учасник і матеріал',body:select('subject_id','Матеріал',rows.map(x=>[x.id,label(x.id)]))+select('person_id','Учасник',people(rows[0].id))+input('effective_at','Дата набуття чинності',st.clock.slice(0,10),true,'date')},
-  {title:'Обсяг і підстава',body:checks('uses',Object.entries(useNames))+area('terms','Умови згоди')+input('locator','Де збережено доказ','',false)+area('evidence_note','Приватний опис доказу')}
+  {title:'Обсяг і підстава',body:select('purpose_code','Для кого дозволено перегляд і цитування',[['public','Публічне використання'],['research','Дослідницька робота']])+checks('uses',Object.entries(useNames))+area('terms','Умови згоди')+input('locator','Де збережено доказ','',false)+area('evidence_note','Приватний опис доказу')}
  ],summary:v=>details([['Учасник',label(v.person_id)],['Матеріал',label(v.subject_id)],['Дозволено',v.uses.map(u=>useNames[u]).join(', ')],['Умови',v.terms],['Результат','Згоду буде зафіксовано. Рішення про доступ ухвалюється окремо.']]),onSubmit:async v=>{const x=await dispatch({type:'workbench.consent.create',...v,expected_revision_id:rev(v.subject_id)});go(25,{id:x.id});}});d.querySelector('[name=subject_id]').onchange=e=>d.querySelector('[name=person_id]').innerHTML=options(people(e.target.value));}
  function consents(){if(!some('consent.read'))return denied();const rows=t.consent_record.filter(x=>allowed('consent.read',x.id)),x=rows.find(x=>x.id===p.get('id'));if(p.get('id')&&!x)return denied();act('add',consentForm);if(!x)return show(heading('Згоди','Згоди та умови','Доказ згоди приватний. Згода не публікує матеріал і не замінює рішення про доступ.',btn('Задокументувати згоду','add',sources('consent.write').length>0))+panel('Згоди',table(['Учасник','Умови','Стан'],rows.map(x=>[link(25,label(x.person_id),{id:x.id}),esc(x.terms_text),esc(consentState[x.state])]))));
   const scopes=t.consent_scope.filter(v=>v.consent_id===x.id),evidence=t.evidence_link.filter(v=>v.subject_entity_id===x.id&&v.evidence_role==='consent').map(v=>by('evidence',v.evidence_id));
   act('withdraw',()=>dialog('Відкликати згоду',select('use','Обсяг відкликання',[['all','Усі дозволи'],...scopes.filter(v=>v.permission==='allowed').map(v=>[v.use_code,useNames[v.use_code]])])+area('reason','Причина відкликання'),async fd=>{await dispatch({type:'workbench.consent.withdraw',id:x.id,expected_revision_id:rev(x.id),...Object.fromEntries(fd)});done('Відкликання збережено. Залежні рішення потребують перегляду.');},'Відкликати'));
   show(link(25,'← Згоди')+heading('Згода',label(x.person_id),'Часткове відкликання створює нову версію. Попередні умови та доказ залишаються в історії.',btn('Відкликати згоду','withdraw',allowed('consent.write',x.id)&&['active','partially_withdrawn'].includes(x.state)))+
-   body(details([['Стан',consentState[x.state]],['Умови',x.terms_text],['Чинна з',x.effective_at]]))+panel('Обсяг',table(['Матеріал','Використання','Дозвіл'],scopes.map(v=>[esc(label(v.target_entity_id)),esc(useNames[v.use_code]),v.permission==='allowed'?'Дозволено':'Відкликано'])))+
+   body(details([['Стан',consentState[x.state]],['Умови',x.terms_text],['Чинна з',x.effective_at]]))+panel('Обсяг',table(['Матеріал','Призначення','Використання','Дозвіл'],scopes.map(v=>[esc(label(v.target_entity_id)),esc(v.purpose_code==='research'?'Дослідницька робота':v.purpose_code==='public'?'Публічне використання':v.purpose_code),esc(useNames[v.use_code]),v.permission==='allowed'?'Дозволено':'Відкликано'])))+
    panel('Приватний доказ',body(evidence.map(v=>details([['Місце доказу',v.locator],['Опис',v.note]])).join('')))+
    panel('Історія умов',table(['Версія','Стан','Обсяг','Підстава зміни'],t.entity_revision.filter(v=>v.entity_id===x.id).map(v=>[String(v.revision_no),esc(consentState[v.snapshot.state]),esc((v.snapshot._relations?.consent_scope||[]).map(u=>useNames[u.use_code]+': '+(u.permission==='allowed'?'дозволено':'відкликано')).join('; ')),esc(v.change_reason)]))));
  }

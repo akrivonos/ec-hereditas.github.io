@@ -1,6 +1,6 @@
 // Human review and publication workbench; no transport or implicit access grants.
-import {can} from './model.mjs?v=20260930-wf08-final';
-import {publicView,publicResources} from './public.mjs?v=20260930-wf08-final';
+import {can} from './model.mjs?v=20261001-wf09';
+import {publicView,publicResources} from './public.mjs?v=20261001-wf09';
 export const archiveTypes=['verification_record'];
 export const descriptionFields={information_unit:{title:'Назва',summary:'Опис'},document:{title:'Назва',body_text:'Текст документа'},physical_object:{title:'Назва',inscriptions:'Написи'}};
 export const reviewStates={pending:'Очікує перевірки',deferred:'Відкладено',accepted:'Прийнято',corrected:'Прийнято з виправленням',rejected:'Відхилено',superseded:'Замінено'};
@@ -97,14 +97,18 @@ export async function archiveCommand(s,actor,c,ctx){
  if(c.type==='archive.access.revoke'){
   const d=by('access_decision',c.id);if(!d)fail('forbidden','Рішення недоступне.');need('access.manage',e(d.id).archive_id);fresh(d.id,c.expected_revision_id);text(c.reason);if(!['effective','needs_review'].includes(d.state))fail('invalid','Рішення вже не чинне.');d.state='revoked';await revise(d,c.reason);await hidePublications(t.publication_basis.filter(x=>x.decision_id===d.id).map(x=>x.publication_id));return d;
  }
- if(c.type==='archive.publication.prepare'){
+ if(['archive.publication.prepare','archive.publication.refresh'].includes(c.type)){
   const source=e(c.source_id),decision=by('access_decision',c.decision_id);
   if(!source||!descriptionFields[source.entity_type])fail('invalid','Оберіть архівний матеріал.');need('publication.write',source.archive_id);fresh(source.id,c.expected_source_revision_id);
   if(!decision||e(decision.id).archive_id!==source.archive_id)fail('invalid','Оберіть рішення цього архіву.');fresh(decision.id,c.expected_decision_revision_id);
-  if(t.publication_record.some(p=>p.source_entity_id===source.id&&p.channel_code==='public'))fail('invalid','Для матеріалу вже є публікація. Відкрийте її зі списку.');
+  const existing=c.type==='archive.publication.refresh'?by('publication_record',c.id):null;
+  if(c.type==='archive.publication.refresh'){if(!existing||existing.source_entity_id!==source.id)fail('invalid','Оберіть публікацію цього матеріалу.');fresh(existing.id,c.expected_revision_id);text(c.reason);}
+  if(!existing&&t.publication_record.some(p=>p.source_entity_id===source.id&&p.channel_code==='public'))fail('invalid','Для матеріалу вже є публікація. Відкрийте її зі списку.');
   const id=crypto.randomUUID(),payload={kind:'material',title:text(c.title),summary:text(c.summary),attribution:text(c.attribution),terms:text(c.terms),category:c.category?.trim()||'',place:c.place?.trim()||'',period:c.period?.trim()||'',context_ids:[]};
-  const row=await add('publication_record',{id,source_entity_id:source.id,source_revision_id:r(source.id),channel_code:'public',stable_slug:'material-'+id,state:'unpublished',published_at:null,unpublished_at:null,safe_payload:payload,projection_profile_version:'public-reader-1',deposit_item_id:null},source.archive_id);
-  t.publication_basis.push({publication_id:row.id,decision_id:decision.id,decision_revision_id:r(decision.id)});await revise(row,'Підготовлено публічний опис');
+  const row=existing||await add('publication_record',{id,source_entity_id:source.id,source_revision_id:r(source.id),channel_code:'public',stable_slug:'material-'+id,state:'unpublished',published_at:null,unpublished_at:null,safe_payload:payload,projection_profile_version:'public-reader-1',deposit_item_id:null},source.archive_id);
+  if(existing){row.source_revision_id=r(source.id);row.safe_payload=payload;row.state='unpublished';row.unpublished_at=s.clock;t.publication_basis=t.publication_basis.filter(b=>b.publication_id!==row.id);t.publication_resource=t.publication_resource.filter(b=>b.publication_id!==row.id);}
+  for(const id of c.resource_ids||[]){const grant=t.access_decision_resource.find(x=>x.decision_id===decision.id&&x.resource_entity_id===id&&x.effect==='allow');if(!grant||e(id)?.retired_at||r(id)!==grant.resource_revision_id)fail('invalid','Оберіть дозволену поточну версію ресурсу.');t.publication_resource.push({publication_id:row.id,resource_entity_id:id,resource_revision_id:grant.resource_revision_id,purpose_code:'public',use_code:'view'});}
+  t.publication_basis.push({publication_id:row.id,decision_id:decision.id,decision_revision_id:r(decision.id)});await revise(row,c.reason||'Підготовлено публічний опис');
   const preview=structuredClone(s);preview.tables.publication_record.find(p=>p.id===row.id).state='published';if(!publicView(preview,row.id))fail('invalid','Рішення не дозволяє публічний показ цієї версії.');
   return row;
  }
