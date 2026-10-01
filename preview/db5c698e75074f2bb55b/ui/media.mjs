@@ -1,13 +1,14 @@
-import {preparationUI} from './capture-preparation.mjs?v=20261001-wf10';
-import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261001-wf10';
-import {legacyPages} from './legacy.mjs?v=20261001-wf10';
-import {intakePages} from './intake.mjs?v=20261001-wf10';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf10';
-import {mediaPreview} from './session-media.mjs?v=20261001-wf10';
-import {can,hash} from '../data/model.mjs?v=20261001-wf10';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf10';
-import {hint} from './help.mjs?v=20261001-wf10';
-import {wizard} from './wizard.mjs?v=20261001-wf10';
+import {digitizationDialog} from './digitization.mjs?v=20261001-wf11';
+import {preparationUI} from './capture-preparation.mjs?v=20261001-wf11';
+import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261001-wf11';
+import {legacyPages} from './legacy.mjs?v=20261001-wf11';
+import {intakePages} from './intake.mjs?v=20261001-wf11';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf11';
+import {mediaPreview,download} from './session-media.mjs?v=20261001-wf11';
+import {can,hash} from '../data/model.mjs?v=20261001-wf11';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf11';
+import {hint} from './help.mjs?v=20261001-wf11';
+import {wizard} from './wizard.mjs?v=20261001-wf11';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;
@@ -94,7 +95,7 @@ export function mediaPages(ctx){
   const key='next-'+job.work_item_id;
   if(p.stage==='prepare')return button('Підготувати носій',workLink(job)+'#preparation',true);
   if(p.stage==='accepted')return button('Переглянути результат',pg(38,{id:p.rep.asset_id,representation:p.rep.id}),true);
-  const title={prepare:'Підготувати план',capture:'Зафіксувати матеріал',review:'Перевірити результат',repeat:'Повторити фіксацію'}[p.stage];
+  const title={prepare:'Підготувати план',capture:p.cap?'Повторити фіксацію':'Зафіксувати матеріал',review:'Перевірити результат',repeat:'Повторити фіксацію'}[p.stage];
   action(key,()=>p.stage==='prepare'?planWizard(job):p.stage==='review'?qcDialog(p.rep):captureDialog(job,p.cap));
   return btn(title,key,allowed(job.work_item_id,p.stage==='prepare'?'physical.write':'media.write')).replace('button secondary small','button small');
  }
@@ -182,6 +183,7 @@ export function mediaPages(ctx){
    `<details class="record-history"><summary>Носій та умови роботи</summary>${body(`<p>${link(32,obj.id)}</p>`+details([['Стан носія',labels[latestCondition(st,obj.id)?.condition_code||'unknown']],['Профіль',job.specification.profile],['Коли зупинити роботу',job.specification.stop_conditions||'Не зазначено']]))}</details>`+history(job.work_item_id));
  }
  function captureDialog(job,previous,session=null){
+  if(job)return digitizationDialog({st,t,rev,label,esc,dialog,input,select,options,choices,details,dispatch,done},job,previous);
   const parts=job?plannedOutputs(st,job.capture_plan_revision_id).map(x=>({part_label:x.label})):[{part_label:'Польовий запис'}],asset=previous?t.representation.find(x=>x.technical_metadata?.capture_event_id===previous.id)?.asset_id:null;
   wizard({dialog,esc},{title:previous?'Повторити фіксацію':'Зафіксувати матеріал',submit:'Зберегти фіксацію',steps:[
    {title:'Обсяг і пристрій',body:body(details([['Матеріал',label(job?.physical_object_id||session?.id)]]))+input('device_model','Пристрій',previous?.device_model||'')+select('count','Скільки частин зафіксовано',parts.map((x,i)=>`<option value="${i+1}" ${i===parts.length-1?'selected':''}>${i+1} із ${parts.length}</option>`).join(''))},
@@ -198,11 +200,13 @@ export function mediaPages(ctx){
   const row=chosen(visible('capture_event'));if(!row){denied();return;}
   const job=jobFor(row.digitization_job_id),rep=t.representation.find(x=>x.technical_metadata?.capture_event_id===row.id),outputs=t.capture_output.filter(x=>x.capture_event_id===row.id),parts=capturePlan(st,row),planrev=by('entity_revision',row.settings?.capture_plan_revision_id);
   action('repeat',()=>captureDialog(job,row,by('collecting_session',row.session_id)));
-  show(heading('Подія фіксації',job?label(job.physical_object_id):label(row.session_id),'Повторна фіксація створює нові подію, представлення й файли. Оригінали залишаються в історії.',btn('Повторити фіксацію','repeat',allowed(row.id,job?'media.write':'capture.field')))+chain(job?.physical_object_id,job?.work_item_id,row.id,rep?.id)+
+  action('capture-manifest',()=>download(JSON.stringify({capture:row,outputs:outputs.map(x=>({...x,file:by('file_object',x.file_id),origin:t.file_ingest_occurrence.find(o=>o.capture_event_id===row.id&&o.file_id===x.file_id)}))},null,2),'application/json','capture-manifest.json'));
+  const previous=row.settings?.previous_capture_revision_id&&by('entity_revision',row.settings.previous_capture_revision_id);
+  show(heading('Подія фіксації',job?label(job.physical_object_id):label(row.session_id),'Повторна фіксація створює нові подію, представлення й файли. Оригінали залишаються в історії.',btn('Повторити фіксацію','repeat',allowed(row.id,job?'media.write':'capture.field')))+chain(job?.physical_object_id,job?.work_item_id,row.id,rep?.id)+(previous?body(link(35,previous.entity_id,'Попередня фіксація')):'')+body(btn('Завантажити маніфест','capture-manifest'))+
    `<div class="two-col"><div>`+panel('Отримані файли',table(['Порядок','Частина','Файл','Розмір'],outputs.map(x=>[String(x.position),esc(x.notes),link(38,rep.asset_id,by('file_object',x.file_id).original_filename,{representation:rep.id}),`${by('file_object',x.file_id).byte_size} байт`])))+
    panel('Маніфест фіксації',table(['Частина','Файл','Контрольна сума'],t.manifest_entry.filter(x=>x.capture_event_id===row.id).map(x=>[esc(x.part_label),esc(by('file_object',x.file_id).original_filename),`<small class="hash-value">${esc(x.checksum)}</small>`])))+
    (row.session_id?body(link(8,row.session_id,'До сеансу')):'')+`</div><aside>`+
-   panel('Обставини фіксації',body(details([['Оператор',label(row.operator_person_id)],['Пристрій',row.device_model],['Дата',date(row.occurred_at)],['Зауваження',row.technical_incidents]])))+
+   panel('Обставини фіксації',body(details([['Оператор',label(row.operator_person_id)],['Пристрій',row.device_model],['Виробник',row.device_make],['Серійний номер',row.device_serial],['Програма',row.software_name],['Версія програми',row.software_version],['Дата',date(row.occurred_at)],['Фактичні параметри',row.settings?.actual_settings],['Відхилення',row.settings?.deviation_reason],['Причина повтору',row.settings?.recapture_reason],['Зауваження',row.technical_incidents]])))+
    panel('Використаний план',body(planrev?`<p>Версія ${planrev.revision_no}</p><ol>${parts.map(x=>`<li>${esc(x.part_label)}</li>`).join('')}</ol>`:'<p>Первісно цифровий запис сеансу.</p>'))+'</aside></div>');
  }
  function qc(){
@@ -228,10 +232,11 @@ export function mediaPages(ctx){
   action('derivative',()=>form('Створити копію для перегляду',input('filename','Назва нового файла','preview.txt','text',true)+input('content','Вміст файла прикладу','','textarea',true,'Новий вміст створить новий файл. Отриманий оригінал зберігається без змін.'),fd=>({type:'media.derivative',representation_id:rep.id,expected_revision_id:rev(rep.id),...Object.fromEntries(fd)}),r=>location.href=pg(38,{id:r.id,representation:r.representation_id})));
   action('link',()=>form('Пов’язати з матеріалом',select('subject_id','Матеріал',options(['physical_object','collecting_session','information_unit'].flatMap(visible))),fd=>({type:'media.asset.link',id:asset.id,expected_revision_id:rev(asset.id),subject_id:fd.get('subject_id')})));
   files.forEach(x=>action('view-'+x.file_id,()=>{if(!allowed(x.file_id)){denied();return;}dialog('Вміст файла',mediaPreview(st.demo.file_contents[x.file_id],by('file_object',x.file_id).mime_type,esc),null,'Закрити');}));
+  files.forEach(x=>action('download-'+x.file_id,()=>{if(allowed(x.file_id)){const f=by('file_object',x.file_id);download(st.demo.file_contents[f.id],f.mime_type,f.original_filename);}}));
   const source=t.representation_derivation.filter(x=>x.output_representation_id===rep.id);
   show(heading('Цифровий ресурс',asset.title,'Перемикання представлення не змінює оригінал. Перегляд доступний лише в межах наданих прав.',btn('Копія для перегляду','derivative',write))+chain(job?.physical_object_id,job?.work_item_id,facts.capture?.id,rep.id)+
    `<nav class="record-tabs" aria-label="Представлення">${reps.map(x=>`<a href="${pg(38,{id:asset.id,representation:x.id})}" ${x.id===rep.id?'aria-current="page"':''}>${esc(labels[x.role])} · ${x.representation_version}</a>`).join('')}</nav>`+
-   panel('Файли представлення',table(['№ / частина','Файл','Контрольна сума',''],files.map(x=>{const f=by('file_object',x.file_id);return [`${x.position} · ${esc(x.component_label)}`,esc(f.original_filename)+`<span class="sub">${f.byte_size} байт · ${esc(f.mime_type)}</span>`,`<small class="hash-value">${esc(f.sha256)}</small>`,btn('Переглянути','view-'+f.id,allowed(f.id))];})))+
+   panel('Файли представлення',table(['№ / частина','Файл','Контрольна сума',''],files.map(x=>{const f=by('file_object',x.file_id);return [`${x.position} · ${esc(x.component_label)}`,esc(f.original_filename)+`<span class="sub">${f.byte_size} байт · ${esc(f.mime_type)}</span>`,`<small class="hash-value">${esc(f.sha256)}</small>`,btn('Переглянути','view-'+f.id,allowed(f.id))+' '+btn('Завантажити','download-'+f.id,allowed(f.id))];})))+
    `<div class="two-col"><div>`+panel('Копії файлів',table(['Файл','Сховище','Стан','Незалежні сховища'],files.flatMap(x=>t.storage_copy.filter(c=>c.file_id===x.file_id).map(c=>[link(39,x.file_id,by('file_object',x.file_id).original_filename),esc(by('digital_storage_location',c.storage_location_id).name),badge(c.state),String(independentCopies(st,x.file_id))]))))+history(rep.id)+`</div><aside>`+
    panel('Пов’язані матеріали',body(t.media_asset_subject.filter(x=>x.asset_id===asset.id).map(x=>`<p>${entityLink(x.subject_entity_id)}</p>`).join('')||'<p>Ще не пов’язано.</p>'),btn('Пов’язати','link',write))+
    panel('Походження представлення',body(source.length?source.map(x=>{const r=by('entity_revision',x.input_representation_revision_id),inputRep=by('representation',r.entity_id);return `<p>${link(38,inputRep.asset_id,labels[inputRep.role]+' · '+inputRep.representation_version,{representation:inputRep.id})}</p><small>Версія опису ${r.revision_no}</small>`;}).join(''):'<p>Отриманий результат фіксації або надходження.</p>'))+'</aside></div>');

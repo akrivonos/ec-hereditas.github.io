@@ -1,15 +1,15 @@
-import {prepareSingleUser} from '../data/single-user.mjs?v=20261001-wf10';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261001-wf10";
-import {fieldPages} from './field.mjs?v=20261001-wf10';
-import {mediaPages} from './media.mjs?v=20261001-wf10';
-import {researchPages} from './research.mjs?v=20261001-wf10';
-import {publicPages} from './public.mjs?v=20261001-wf10';
-import {archivePages} from './archive.mjs?v=20261001-wf10';
-import {workbenchPages} from './workbench.mjs?v=20261001-wf10';
-import {museumPages} from './museum.mjs?v=20261001-wf10';
-import {museumStamp} from '../data/museum.mjs?v=20261001-wf10';
-import {publicAccessStamp} from '../data/public.mjs?v=20261001-wf10';
-import {bindHelp} from './help.mjs?v=20261001-wf10';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20261001-wf11';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261001-wf11";
+import {fieldPages} from './field.mjs?v=20261001-wf11';
+import {mediaPages} from './media.mjs?v=20261001-wf11';
+import {researchPages} from './research.mjs?v=20261001-wf11';
+import {publicPages} from './public.mjs?v=20261001-wf11';
+import {archivePages} from './archive.mjs?v=20261001-wf11';
+import {workbenchPages} from './workbench.mjs?v=20261001-wf11';
+import {museumPages} from './museum.mjs?v=20261001-wf11';
+import {museumStamp} from '../data/museum.mjs?v=20261001-wf11';
+import {publicAccessStamp} from '../data/public.mjs?v=20261001-wf11';
+import {bindHelp} from './help.mjs?v=20261001-wf11';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;

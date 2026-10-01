@@ -1,6 +1,6 @@
-import {contactStates,contactExpired,contactSession} from '../data/contacts.mjs?v=20261001-wf10';
-import {hint} from './help.mjs?v=20261001-wf10';
-import {wizard} from './wizard.mjs?v=20261001-wf10';
+import {contactStates,contactExpired,contactSession} from '../data/contacts.mjs?v=20261001-wf11';
+import {hint} from './help.mjs?v=20261001-wf11';
+import {wizard} from './wizard.mjs?v=20261001-wf11';
 
 export function contactsPage(c,r){
  const {st,t,actor,can,by,rev,label,visible,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,show,tabs,dispatch,render,flash,dialog}=c;

@@ -24,7 +24,7 @@ export function preparationFacts(s,job){
  if(condition&&!t.evidence_link.some(x=>x.subject_entity_id===condition.id&&x.evidence_role==='condition'&&t.evidence.some(e=>e.id===x.evidence_id&&e.source_entity_id===physical.id&&e.source_revision_id===rev(s,physical.id))))issues.push('Потрібен доказ огляду поточної версії носія.');
  if(!condition?.risk_notes?.trim()||!condition?.handling_instructions?.trim())issues.push('Зафіксуйте ризики та правила поводження.');
  if(!p?.transfer||p.transfer.custody_event_id!==custody?.id||!custody?.evidence_id||!custody.to_person_id)issues.push('Зафіксуйте чинне тимчасове передання й відповідального.');
- if(p?.transfer?.return_due_at&&Date.parse(p.transfer.return_due_at)<=Date.parse(s.clock))issues.push('Строк тимчасового передання минув.');
+ if(p?.transfer?.return_due_at&&Date.parse(p.transfer.return_due_at)<=Math.max(Date.parse(s.clock),Date.now()))issues.push('Строк тимчасового передання минув.');
  const confirmation=p?.confirmation;
  const current=confirmation&&confirmation.object_revision_id===rev(s,physical.id)&&confirmation.plan_revision_id===job.capture_plan_revision_id&&confirmation.condition_revision_id===rev(s,condition?.id)&&confirmation.custody_revision_id===rev(s,custody?.id);
  return {issues,condition,custody,current:!!current,ready:!issues.length&&p.readiness==='ready'&&!!current};

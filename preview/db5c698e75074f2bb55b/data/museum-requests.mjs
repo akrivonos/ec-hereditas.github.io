@@ -1,7 +1,7 @@
 // Museum handovers use the existing document, candidate and work-item graph.
-import {activeAccount,can} from './model.mjs?v=20261001-wf10';
-import {museumOwned} from './museum.mjs?v=20261001-wf10';
-import {publicView} from './public.mjs?v=20261001-wf10';
+import {activeAccount,can} from './model.mjs?v=20261001-wf11';
+import {museumOwned} from './museum.mjs?v=20261001-wf11';
+import {publicView} from './public.mjs?v=20261001-wf11';
 export const requestKinds={museum_publication_request:'Запит публікації',museum_correction_request:'Зауваження до опису'};
 export function validateMuseumRequests(s,require,fk){
  const t=s.tables,reg=id=>t.entity.find(x=>x.id===id);

@@ -1,7 +1,8 @@
-import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261001-wf10';
-import {reconciliationCommand} from './reconciliation.mjs?v=20261001-wf10';
-import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261001-wf10';
-import {fileBytes} from './binary.mjs?v=20261001-wf10';
+import {digitize,validateDigitization} from './digitization.mjs?v=20261001-wf11';
+import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261001-wf11';
+import {reconciliationCommand} from './reconciliation.mjs?v=20261001-wf11';
+import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261001-wf11';
+import {fileBytes} from './binary.mjs?v=20261001-wf11';
 // Internal, scoped prototype operations. Storage and capture actions explicitly simulate hardware.
 export const mediaTypes=['source_system','source_record','physical_object','storage_location','condition_assessment','custody_event','media_asset','representation','file_object','storage_copy','capture_event','qc_record','candidate','review_decision','evidence'];
 export const mediaRelations=(t,type,id)=>Object.fromEntries(({
@@ -22,7 +23,7 @@ export function qcFacts(s,rep){
  return {capture,plan,files,expected,complete:expected!==null&&files.length===expected,order:plan.length>0&&plannedOutputs(s,capture.settings.capture_plan_revision_id).every((p,i)=>files.some(f=>f.position===i+1&&f.component_label===p.label)),checksums:files.length>0&&files.every(f=>t.storage_copy.some(c=>c.file_id===f.file_id&&c.state==='verified'))};
 }
 export function validateMedia(s,require,fk,canonical){
- const t=s.tables;if(!t.physical_object)return;validatePreparation(s,require,canonical);
+ const t=s.tables;if(!t.physical_object)return;validatePreparation(s,require,canonical);validateDigitization(s,require);
  const by=(table,id)=>t[table]?.find(x=>x.id===id),reg=id=>by('entity',id),same=(a,b)=>require(reg(a)?.archive_id===reg(b)?.archive_id,'Зв’язок поза архівом');
  const revision=(id,type)=>{const r=by('entity_revision',id);require(!!r&&reg(r.entity_id)?.entity_type===type,'Неправильний тип версії');return r;};
  const unique=(rows,key,message)=>require(new Set(rows.map(key)).size===rows.length,message);
@@ -101,6 +102,7 @@ export async function mediaCommand(s,actor,c,ctx){
  }
  if(['media.job.create','media.plan'].includes(c.type)||c.type.startsWith('preparation.'))return capturePreparationCommand(s,actor,c,ctx);
  if(c.type==='media.capture'){
+  if(c.job_id&&!c.session_id)return digitize(s,actor,c,{get,fresh,newEntity,revise,run,task,copy,manifest,rawHash,fail});
   if(!!c.job_id===!!c.session_id)fail('invalid','Оберіть один контекст фіксації: сеанс або завдання.');
   let job,session,a,parts=[];
   if(c.job_id){get('work_item',c.job_id);job=t.digitization_job.find(x=>x.work_item_id===c.job_id);if(!job)fail('invalid','Оберіть завдання.');fresh(c.job_id,c.expected_revision_id);if(!preparationFacts(s,job).ready)fail('blocked','Носій і план мають бути готові до фіксації.');a=archive(c.job_id);parts=plannedOutputs(s,job.capture_plan_revision_id).map(x=>x.label);}

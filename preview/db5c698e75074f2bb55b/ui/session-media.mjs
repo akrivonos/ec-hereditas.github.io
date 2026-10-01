@@ -1,8 +1,8 @@
-import {MAX_MEDIA_BYTES,mediaMime,mediaUrl,fileBytes} from '../data/binary.mjs?v=20261001-wf10';
-import {recordingGaps} from '../data/session.mjs?v=20261001-wf10';
+import {MAX_MEDIA_BYTES,mediaMime,mediaUrl,fileBytes} from '../data/binary.mjs?v=20261001-wf11';
+import {recordingGaps} from '../data/session.mjs?v=20261001-wf11';
 export function mediaPreview(content,mime,esc,id=''){
- const url=mediaUrl(content,mime);if(!url)return `<pre class="source-text reading-text">${esc(typeof content==='string'?content:'Файл недоступний для перегляду.')}</pre>`;
- return mime.startsWith('image/')?`<img src="${url}" alt="Фото сеансу" style="max-width:100%;max-height:440px;object-fit:contain">`:`<${mime.startsWith('audio/')?'audio':'video'} ${id?`id="${esc(id)}"`:''} controls preload="metadata" src="${url}" style="width:100%;max-height:440px"></${mime.startsWith('audio/')?'audio':'video'}>`;
+ const url=mediaUrl(content,mime);if(!url)return `<pre class="source-text reading-text">${esc(typeof content==='string'?content:'Браузер не підтримує перегляд цього формату. Завантажте оригінал.')}</pre>`;
+ return mime.startsWith('image/')?`<img src="${url}" alt="Зображення" style="max-width:100%;max-height:440px;object-fit:contain">`:`<${mime.startsWith('audio/')?'audio':'video'} ${id?`id="${esc(id)}"`:''} controls preload="metadata" src="${url}" style="width:100%;max-height:440px"></${mime.startsWith('audio/')?'audio':'video'}>`;
 }
 export function download(content,mime,name){const u=URL.createObjectURL(new Blob([fileBytes(content)],{type:mime})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
 export async function encode(blob){const bytes=new Uint8Array(await blob.arrayBuffer());let raw='';for(let i=0;i<bytes.length;i+=8192)raw+=String.fromCharCode(...bytes.subarray(i,i+8192));return {encoding:'base64',data:btoa(raw)};}
