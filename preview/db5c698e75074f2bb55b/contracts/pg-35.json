@@ -40,11 +40,12 @@
       "Capture creates small text fixtures; no scanner, recorder or media hardware.",
       "capture_output.plan_item_id remains null because source schema declares a composite capture_plan_item key; matching uses pinned plan revision + ordered component labels."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "state_storage": "Normalized browser store v9; preserves existing user data. Older unstructured preparations require explicit review.",
     "permissions": [
       "domain.read",
       "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
     ],
-    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically.",
+    "preparation_gate": "A job capture requires current confirmed preparation, condition evidence and unexpired custody. Pins exact profile and preparation in settings; expands planned output counts."
   }
 }

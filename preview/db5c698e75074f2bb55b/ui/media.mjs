@@ -1,11 +1,13 @@
-import {legacyPages} from './legacy.mjs?v=20261001-wf09';
-import {intakePages} from './intake.mjs?v=20261001-wf09';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf09';
-import {mediaPreview} from './session-media.mjs?v=20261001-wf09';
-import {can,hash} from '../data/model.mjs?v=20261001-wf09';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf09';
-import {hint} from './help.mjs?v=20261001-wf09';
-import {wizard} from './wizard.mjs?v=20261001-wf09';
+import {preparationUI} from './capture-preparation.mjs?v=20261001-wf10';
+import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261001-wf10';
+import {legacyPages} from './legacy.mjs?v=20261001-wf10';
+import {intakePages} from './intake.mjs?v=20261001-wf10';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf10';
+import {mediaPreview} from './session-media.mjs?v=20261001-wf10';
+import {can,hash} from '../data/model.mjs?v=20261001-wf10';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf10';
+import {hint} from './help.mjs?v=20261001-wf10';
+import {wizard} from './wizard.mjs?v=20261001-wf10';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;
@@ -67,11 +69,12 @@ export function mediaPages(ctx){
   }});
  }
 
+ const preparation=preparationUI({st,t,by,entity,rev,label,visible,allowed,esc,pg,dialog,dispatch,render,flash,body,details,input,select,options,choices,panel,btn,action,table,history});
  const jobsVisible=()=>t.digitization_job.filter(j=>allowed(j.work_item_id)&&(!scope||entity(j.work_item_id).archive_id===scope));
  const jobProgress=job=>{
   const cap=t.capture_event.filter(x=>x.digitization_job_id===job.work_item_id).at(-1),rep=cap&&t.representation.find(x=>x.technical_metadata?.capture_event_id===cap.id);
   const qc=rep&&t.qc_record.filter(x=>x.representation_revision_id===rev(rep.id)).at(-1),facts=rep&&qcFacts(st,rep);
-  const ready=job.specification.readiness==='ready'&&latestCondition(st,job.physical_object_id)?.condition_code==='stable';
+  const ready=preparationFacts(st,job).ready;
   const planChanged=cap&&cap.settings.capture_plan_revision_id!==job.capture_plan_revision_id;
   const stage=planChanged?(ready?'capture':'prepare'):qc&&['pass','pass_with_note'].includes(qc.outcome)?'accepted':!ready?'prepare':!rep?'capture':qc&&['recapture_required','incomplete'].includes(qc.outcome)?'repeat':'review';
   return {cap,rep,qc,facts,stage};
@@ -80,15 +83,7 @@ export function mediaPages(ctx){
  const listQuery=()=>({role:'R03',q:params.get('q')||'',stage:params.get('stage')||''});
  const workLink=job=>pg(34,{...listQuery(),id:job.work_item_id});
  const done=message=>{flash(message);render();};
- function planWizard(job=null,physical=null){
-  const parts=job?t.capture_plan_item.filter(x=>x.plan_revision_id===job.capture_plan_revision_id).map(x=>x.part_label).join('\n'):'';
-  wizard({dialog,esc},{title:job?'Підготувати план':'Нове оцифрування',submit:job?'Зберегти план':'Створити роботу',steps:[
-   {title:'Носій і послідовність',body:job?body(details([['Носій',label(job.physical_object_id)]]))+input('parts','Частини — кожна з нового рядка',parts,'textarea',true):select('physical_object_id','Носій',options(visible('physical_object').filter(x=>allowed(x.id,'physical.write')),physical?.id))+input('parts','Частини — кожна з нового рядка','','textarea',true,'Перелічіть усі сторінки або частини в порядку фіксації.')},
-   {title:'Умови роботи',body:input('profile','Профіль',job?.specification.profile||'Сканування сторінок','text',true)+input('stop_conditions','Коли зупинити роботу',job?.specification.stop_conditions||'','textarea')+select('readiness','Готовність',choices({ready:'Почати фіксацію після підготовки',postponed:'Зберегти та підготувати пізніше'},job?.specification.readiness||'ready'),'Розпочати можна лише після оцінки придатності носія. Огляд і ризики — у картці носія.')}
-  ],summary:v=>details([['Носій',label(job?.physical_object_id||v.physical_object_id)],['Послідовність',v.parts],['Профіль',v.profile],['Коли зупинитися',v.stop_conditions||'Не зазначено'],['Готовність',v.readiness==='ready'?'Готово до фіксації':'Підготувати пізніше']]),onSubmit:async v=>{
-   await dispatch(job?{type:'media.plan',id:job.work_item_id,expected_revision_id:rev(job.work_item_id),plan_revision_id:rev(by('entity_revision',job.capture_plan_revision_id).entity_id),...v}:{type:'media.job.create',...v});done(job?'План збережено.':'Роботу додано до списку.');
-  }});
- }
+ const planWizard=(job=null,physical=null)=>preparation.planWizard(job,physical);
  function qcDialog(rep){
   const facts=qcFacts(st,rep);
   form('Перевірити результат',body(details([['Матеріал',label(rep.asset_id)],['Комплектність',`${facts.files.length} із ${facts.expected??'невідомої кількості'} частин`],['Порядок',facts.order?'За планом':'Потребує звірки'],['Контрольні суми',facts.checksums?'Збігаються':'Потребують перевірки']]))+
@@ -97,6 +92,7 @@ export function mediaPages(ctx){
  }
  function nextAction(job,p){
   const key='next-'+job.work_item_id;
+  if(p.stage==='prepare')return button('Підготувати носій',workLink(job)+'#preparation',true);
   if(p.stage==='accepted')return button('Переглянути результат',pg(38,{id:p.rep.asset_id,representation:p.rep.id}),true);
   const title={prepare:'Підготувати план',capture:'Зафіксувати матеріал',review:'Перевірити результат',repeat:'Повторити фіксацію'}[p.stage];
   action(key,()=>p.stage==='prepare'?planWizard(job):p.stage==='review'?qcDialog(p.rep):captureDialog(job,p.cap));
@@ -181,12 +177,12 @@ export function mediaPages(ctx){
   action('plan',()=>planWizard(job));
   show(heading('Оцифрування',obj.title,'Основна дія залежить від останнього результату перевірки. Попередні фіксації та їхні плани зберігаються в історії.',button('← До списку оцифрування',pg(34,listQuery()),true))+
    `<div class="job-current"><div><span class="eyebrow">Поточний етап</span><h2>${esc(stageNames[p.stage])}</h2>${p.rep?`<p>${p.facts.files.length} із ${p.facts.expected??'?'} частин · ${p.qc?esc(p.qc.notes||'Перевірено'):'Результат ще не перевірено'}</p>`:''}</div>${nextAction(job,p)}</div>`+
-   panel('План роботи',table(['Порядок','Частина'],parts.map(x=>[String(x.position),esc(x.part_label)])),btn('Редагувати план','plan',allowed(job.work_item_id,'physical.write')))+
+   '<div id="preparation">'+preparation.preparationPanel(job)+'</div>'+panel('План роботи',table(['Порядок','Частина','Вид','Кількість'],parts.map(x=>[String(x.position),esc(x.part_label),esc(({image:'Зображення',audio:'Аудіо',video:'Відео'})[x.expected_kind]||x.expected_kind),x.expected_count])),btn('Редагувати план','plan',allowed(job.work_item_id,'physical.write')))+
    panel('Результати фіксацій',table(['Дата','Частини','Висновок',''],caps.slice().reverse().map(cap=>{const rep=t.representation.find(r=>r.technical_metadata?.capture_event_id===cap.id),qc=rep&&t.qc_record.filter(r=>r.representation_revision_id===rev(rep.id)).at(-1);return [esc(date(cap.occurred_at)),String(t.capture_output.filter(x=>x.capture_event_id===cap.id).length),qc?badge(qc.outcome):'Ще не перевірено',link(35,cap.id,'Обставини фіксації')+' · '+link(38,rep.asset_id,'Переглянути файли',{representation:rep.id})];})))+
    `<details class="record-history"><summary>Носій та умови роботи</summary>${body(`<p>${link(32,obj.id)}</p>`+details([['Стан носія',labels[latestCondition(st,obj.id)?.condition_code||'unknown']],['Профіль',job.specification.profile],['Коли зупинити роботу',job.specification.stop_conditions||'Не зазначено']]))}</details>`+history(job.work_item_id));
  }
  function captureDialog(job,previous,session=null){
-  const parts=job?t.capture_plan_item.filter(x=>x.plan_revision_id===job.capture_plan_revision_id):[{part_label:'Польовий запис'}],asset=previous?t.representation.find(x=>x.technical_metadata?.capture_event_id===previous.id)?.asset_id:null;
+  const parts=job?plannedOutputs(st,job.capture_plan_revision_id).map(x=>({part_label:x.label})):[{part_label:'Польовий запис'}],asset=previous?t.representation.find(x=>x.technical_metadata?.capture_event_id===previous.id)?.asset_id:null;
   wizard({dialog,esc},{title:previous?'Повторити фіксацію':'Зафіксувати матеріал',submit:'Зберегти фіксацію',steps:[
    {title:'Обсяг і пристрій',body:body(details([['Матеріал',label(job?.physical_object_id||session?.id)]]))+input('device_model','Пристрій',previous?.device_model||'')+select('count','Скільки частин зафіксовано',parts.map((x,i)=>`<option value="${i+1}" ${i===parts.length-1?'selected':''}>${i+1} із ${parts.length}</option>`).join(''))},
    {title:'Результат фіксації',body:input('content','Вміст файла прикладу','Навчальний результат.','textarea',true,'У цьому макеті створюються текстові файли прикладу. Сканер або рекордер не запускається.')+input('notes','Зауваження','','textarea')}

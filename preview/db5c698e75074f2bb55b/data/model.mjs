@@ -1,19 +1,19 @@
-import {rightsCommand} from './rights.mjs?v=20261001-wf09';
-import {validateReconciliation,reconciliationCommand} from './reconciliation.mjs?v=20261001-wf09';
-import {catalogTypes,validateCatalog,catalogCommand} from './catalog.mjs?v=20261001-wf09';
-import {legacyTypes,validateLegacy,legacyCommand} from './legacy.mjs?v=20261001-wf09';
-import {intakeTypes,validateIntake,intakeCommand} from './intake.mjs?v=20261001-wf09';
-import {fileBytes} from './binary.mjs?v=20261001-wf09';
+import {rightsCommand} from './rights.mjs?v=20261001-wf10';
+import {validateReconciliation,reconciliationCommand} from './reconciliation.mjs?v=20261001-wf10';
+import {catalogTypes,validateCatalog,catalogCommand} from './catalog.mjs?v=20261001-wf10';
+import {legacyTypes,validateLegacy,legacyCommand} from './legacy.mjs?v=20261001-wf10';
+import {intakeTypes,validateIntake,intakeCommand} from './intake.mjs?v=20261001-wf10';
+import {fileBytes} from './binary.mjs?v=20261001-wf10';
 // Shared mock adapter. Domain rows use the names/fields of schema Г.
 // Permissions below are a provisional demo profile, not the professional R-codes.
-import {fieldTypes,snapshot,addMembers,upgrade,validateField,fieldCommand} from './field.mjs?v=20261001-wf09';
-import {mediaTypes,validateMedia,mediaCommand,rawHash,manifestPayload} from './media.mjs?v=20261001-wf09';
-import {researchTypes,validateResearch,researchCommand} from './research.mjs?v=20261001-wf09';
-import {publicTypes,validatePublic,publicCommand} from './public.mjs?v=20261001-wf09';
-import {museumTypes,validateMuseum,museumCommand} from './museum.mjs?v=20261001-wf09';
-import {archiveTypes,validateArchive,archiveCommand} from './archive.mjs?v=20261001-wf09';
-import {workbenchTypes,validateWorkbench,workbenchCommand,verifyWorkbenchHashes} from './workbench.mjs?v=20261001-wf09';
-import {prepareMuseumDemo} from './demo-museum.mjs?v=20261001-wf09';
+import {fieldTypes,snapshot,addMembers,upgrade,validateField,fieldCommand} from './field.mjs?v=20261001-wf10';
+import {mediaTypes,validateMedia,mediaCommand,rawHash,manifestPayload} from './media.mjs?v=20261001-wf10';
+import {researchTypes,validateResearch,researchCommand} from './research.mjs?v=20261001-wf10';
+import {publicTypes,validatePublic,publicCommand} from './public.mjs?v=20261001-wf10';
+import {museumTypes,validateMuseum,museumCommand} from './museum.mjs?v=20261001-wf10';
+import {archiveTypes,validateArchive,archiveCommand} from './archive.mjs?v=20261001-wf10';
+import {workbenchTypes,validateWorkbench,workbenchCommand,verifyWorkbenchHashes} from './workbench.mjs?v=20261001-wf10';
+import {prepareMuseumDemo} from './demo-museum.mjs?v=20261001-wf10';
 export class ModelError extends Error {
   constructor(code,message){super(message);this.code=code;}
 }
@@ -205,7 +205,7 @@ export function createStore(base,persistence=null){
       else if(c.type.startsWith('museum.'))result=await museumCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
       else if(c.type.startsWith('public.'))result=await publicCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
       else if(c.type.startsWith('research.'))result=await researchCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
-      else if(c.type.startsWith('media.'))result=await mediaCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
+      else if(c.type.startsWith('media.')||c.type.startsWith('preparation.'))result=await mediaCommand(next,actor,c,{need,can,fail,revise,audit,hash,snapshot});
       else if(c.type.startsWith('field.'))result=await fieldCommand(next,actor,c,{need,can,fail,revise,audit,hash});
       else if(c.type==="task.create"){
         need("task.create",c.archive_id);
@@ -223,7 +223,7 @@ export function createStore(base,persistence=null){
       }else if(c.type==="task.transition"||c.type==="task.assign"){
         const task=t.work_item.find(w=>w.id===c.id),entity=t.entity.find(e=>e.id===c.id);
         if(!task||!can(next,actor,"task.read",entity.archive_id))fail("forbidden","Завдання недоступне.");
-        if(['archival_review','reconciliation_review','catalog_review','rights_review'].includes(task.kind))fail('invalid','Опрацьовуйте завдання на сторінці розгляду пропозиції.');
+        if(['archival_review','reconciliation_review','catalog_review','rights_review','capture_preparation_review'].includes(task.kind))fail('invalid','Опрацьовуйте завдання на сторінці розгляду пропозиції.');
         if(task.kind==='text_review')fail('invalid','Ухваліть рішення на сторінці перевірки тексту.');
         if(['museum_publication_request','museum_correction_request'].includes(task.kind))fail('invalid','Опрацьовуйте це звернення на сторінці «Запити музею».');
         if(c.expected_revision_id!==entity.current_revision_id)fail("stale","Версію завдання змінено. Оновіть сторінку перед збереженням.");

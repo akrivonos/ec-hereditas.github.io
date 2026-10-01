@@ -1,8 +1,8 @@
-import {can} from '../data/model.mjs?v=20261001-wf09';
-import {museumOwned} from '../data/museum.mjs?v=20261001-wf09';
-import {publicSearch} from '../data/public.mjs?v=20261001-wf09';
-import {museumRequests,requestKinds} from '../data/museum-requests.mjs?v=20261001-wf09';
-import {wizard} from './wizard.mjs?v=20261001-wf09';
+import {can} from '../data/model.mjs?v=20261001-wf10';
+import {museumOwned} from '../data/museum.mjs?v=20261001-wf10';
+import {publicSearch} from '../data/public.mjs?v=20261001-wf10';
+import {museumRequests,requestKinds} from '../data/museum-requests.mjs?v=20261001-wf10';
+import {wizard} from './wizard.mjs?v=20261001-wf10';
 
 export function museumRequestUI(ctx,h){
  const {s,actor,scope,pg,esc,dialog,dispatch,flash,render,heading,panel}=ctx,{body,details,input,textarea,select,table,act,btn,show}=h;

@@ -1,7 +1,7 @@
-import {accessPolicy,projectFields,attributionNames} from './rights.mjs?v=20261001-wf09';
+import {accessPolicy,projectFields,attributionNames} from './rights.mjs?v=20261001-wf10';
 // Private research objects reference exact archival revisions. Access is checked on every projection.
-import {can} from './model.mjs?v=20261001-wf09';
-import {rawHash} from './media.mjs?v=20261001-wf09';
+import {can} from './model.mjs?v=20261001-wf10';
+import {rawHash} from './media.mjs?v=20261001-wf10';
 export const researchTypes=['saved_query','research_corpus','annotation','assertion','citation','bibliographic_export'];
 export const sourceTypes=['information_unit','document','physical_object'];
 export const researchEnabled=(s,a)=>s.tables.archive.some(x=>can(s,a,'research.write',x.id));

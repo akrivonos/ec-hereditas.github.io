@@ -1,6 +1,6 @@
-import {activeAccount} from '../data/model.mjs?v=20261001-wf09';
-import {publicView,publicSearch,publicResources,publicDownload,collectionView,collectionOwned,publicCitationVisible,publicExportDownload} from '../data/public.mjs?v=20261001-wf09';
-import {wizard} from './wizard.mjs?v=20261001-wf09';
+import {activeAccount} from '../data/model.mjs?v=20261001-wf10';
+import {publicView,publicSearch,publicResources,publicDownload,collectionView,collectionOwned,publicCitationVisible,publicExportDownload} from '../data/public.mjs?v=20261001-wf10';
+import {wizard} from './wizard.mjs?v=20261001-wf10';
 
 export function publicPages(ctx){
  const {s,actor,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search),signed=!!activeAccount(st,actor);

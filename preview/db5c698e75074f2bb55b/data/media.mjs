@@ -1,6 +1,7 @@
-import {reconciliationCommand} from './reconciliation.mjs?v=20261001-wf09';
-import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261001-wf09';
-import {fileBytes} from './binary.mjs?v=20261001-wf09';
+import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261001-wf10';
+import {reconciliationCommand} from './reconciliation.mjs?v=20261001-wf10';
+import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261001-wf10';
+import {fileBytes} from './binary.mjs?v=20261001-wf10';
 // Internal, scoped prototype operations. Storage and capture actions explicitly simulate hardware.
 export const mediaTypes=['source_system','source_record','physical_object','storage_location','condition_assessment','custody_event','media_asset','representation','file_object','storage_copy','capture_event','qc_record','candidate','review_decision','evidence'];
 export const mediaRelations=(t,type,id)=>Object.fromEntries(({
@@ -18,10 +19,10 @@ export function capturePlan(s,capture){return capture?.settings?.capture_plan_re
 export function qcFacts(s,rep){
  const t=s.tables,capture=t.capture_event.find(x=>x.id===rep.technical_metadata?.capture_event_id),plan=capturePlan(s,capture),files=t.representation_file.filter(x=>x.representation_id===rep.id).sort((a,b)=>a.position-b.position);
  const expected=plan.length?plan.reduce((sum,p)=>sum+(p.expected_count??1),0):null;
- return {capture,plan,files,expected,complete:expected!==null&&files.length===expected,order:plan.length>0&&plan.every(p=>files.some(f=>f.position===p.position&&f.component_label===p.part_label)),checksums:files.length>0&&files.every(f=>t.storage_copy.some(c=>c.file_id===f.file_id&&c.state==='verified'))};
+ return {capture,plan,files,expected,complete:expected!==null&&files.length===expected,order:plan.length>0&&plannedOutputs(s,capture.settings.capture_plan_revision_id).every((p,i)=>files.some(f=>f.position===i+1&&f.component_label===p.label)),checksums:files.length>0&&files.every(f=>t.storage_copy.some(c=>c.file_id===f.file_id&&c.state==='verified'))};
 }
 export function validateMedia(s,require,fk,canonical){
- const t=s.tables;if(!t.physical_object)return;
+ const t=s.tables;if(!t.physical_object)return;validatePreparation(s,require,canonical);
  const by=(table,id)=>t[table]?.find(x=>x.id===id),reg=id=>by('entity',id),same=(a,b)=>require(reg(a)?.archive_id===reg(b)?.archive_id,'Зв’язок поза архівом');
  const revision=(id,type)=>{const r=by('entity_revision',id);require(!!r&&reg(r.entity_id)?.entity_type===type,'Неправильний тип версії');return r;};
  const unique=(rows,key,message)=>require(new Set(rows.map(key)).size===rows.length,message);
@@ -98,27 +99,14 @@ export async function mediaCommand(s,actor,c,ctx){
   if(c.id){const row=get('storage_location',c.id,'physical.write');fresh(row.id,c.expected_revision_id);Object.assign(row,values);await revise(row,'Оновлено місце зберігання');return row;}
   return newEntity('storage_location',values,c.archive_id);
  }
- if(c.type==='media.job.create'){
-  const obj=get('physical_object',c.physical_object_id,'physical.write');
-  if(c.readiness==='ready'&&latestCondition(s,obj.id)?.condition_code!=='stable')fail('blocked','Потрібна чинна оцінка придатності носія.');
-  const plan=await newEntity('document',{kind:'capture_plan',title:'План: '+obj.title,body_text:text(c.parts),language_tag:'uk',media_asset_id:null,physical_object_id:obj.id},archive(obj.id));
-  c.parts.split('\n').map(x=>x.trim()).filter(Boolean).forEach((part,i)=>t.capture_plan_item.push({plan_revision_id:rev(plan.id),position:i+1,part_label:part,expected_kind:'image',expected_count:1}));
-  const w=run('WF-11',obj.id),job=await task('Оцифрувати: '+obj.title,obj.id,w.id);job.kind='digitization';t.digitization_job.push({work_item_id:job.id,physical_object_id:obj.id,source_part:null,condition_assessment_id:latestCondition(s,obj.id)?.id||null,capture_plan_revision_id:rev(plan.id),specification:{profile:c.profile||'Сканування сторінок',readiness:c.readiness==='ready'?'ready':'postponed',stop_conditions:c.stop_conditions||''}});await revise(job,'Створено план оцифрування');return job;
- }
- if(c.type==='media.plan'){
-  const row=get('work_item',c.id,'physical.write'),job=t.digitization_job.find(x=>x.work_item_id===row.id);if(!job)fail('invalid','Потрібне завдання оцифрування.');fresh(row.id,c.expected_revision_id);
-  const condition=latestCondition(s,job.physical_object_id);if(c.readiness==='ready'&&condition?.condition_code!=='stable')fail('blocked','Потрібна чинна оцінка придатності носія.');
-  const old=by('entity_revision',job.capture_plan_revision_id),doc=by('document',old.entity_id);fresh(doc.id,c.plan_revision_id);doc.body_text=text(c.parts);await revise(doc,'Оновлено план оцифрування');job.capture_plan_revision_id=rev(doc.id);
-  c.parts.split('\n').map(x=>x.trim()).filter(Boolean).forEach((part,i)=>t.capture_plan_item.push({plan_revision_id:rev(doc.id),position:i+1,part_label:part,expected_kind:'image',expected_count:1}));
-  job.specification={...job.specification,profile:text(c.profile),stop_conditions:c.stop_conditions||'',readiness:c.readiness==='ready'?'ready':'postponed'};job.condition_assessment_id=condition?.id||null;await revise(row,'Оновлено готовність і план');return row;
- }
+ if(['media.job.create','media.plan'].includes(c.type)||c.type.startsWith('preparation.'))return capturePreparationCommand(s,actor,c,ctx);
  if(c.type==='media.capture'){
   if(!!c.job_id===!!c.session_id)fail('invalid','Оберіть один контекст фіксації: сеанс або завдання.');
   let job,session,a,parts=[];
-  if(c.job_id){get('work_item',c.job_id);job=t.digitization_job.find(x=>x.work_item_id===c.job_id);if(!job)fail('invalid','Оберіть завдання.');fresh(c.job_id,c.expected_revision_id);if(job.specification.readiness!=='ready'||latestCondition(s,job.physical_object_id)?.condition_code!=='stable')fail('blocked','Носій і план мають бути готові до фіксації.');a=archive(c.job_id);parts=t.capture_plan_item.filter(x=>x.plan_revision_id===job.capture_plan_revision_id).map(x=>x.part_label);}
+  if(c.job_id){get('work_item',c.job_id);job=t.digitization_job.find(x=>x.work_item_id===c.job_id);if(!job)fail('invalid','Оберіть завдання.');fresh(c.job_id,c.expected_revision_id);if(!preparationFacts(s,job).ready)fail('blocked','Носій і план мають бути готові до фіксації.');a=archive(c.job_id);parts=plannedOutputs(s,job.capture_plan_revision_id).map(x=>x.label);}
   else{session=get('collecting_session',c.session_id,'capture.field');fresh(session.id,c.expected_revision_id);a=archive(session.id);parts=['Польовий запис'];}
   const count=Number(c.count);if(!Number.isInteger(count)||count<1||count>parts.length)fail('invalid','Оберіть кількість частин у межах плану.');
-  const cap=await newEntity('capture_event',{session_id:session?.id||null,digitization_job_id:job?.work_item_id||null,operator_person_id:person(),occurred_at:s.clock,recording_form:session?'verbal':'graphic',recorder_type_term_id:null,device_make:null,device_model:c.device_model||null,device_serial:null,device_year:null,software_name:'Приклад фіксації',software_version:null,settings:{capture_plan_revision_id:job?.capture_plan_revision_id||null,profile:job?.specification.profile||null},technical_incidents:c.notes||null},a);
+  const cap=await newEntity('capture_event',{session_id:session?.id||null,digitization_job_id:job?.work_item_id||null,operator_person_id:person(),occurred_at:s.clock,recording_form:session?'verbal':'graphic',recorder_type_term_id:null,device_make:null,device_model:c.device_model||null,device_serial:null,device_year:null,software_name:'Приклад фіксації',software_version:null,settings:{capture_plan_revision_id:job?.capture_plan_revision_id||null,profile:job?.specification.profile||null,capture_profile:job?.specification.capture_profile||null,preparation:job?.specification.confirmation||null},technical_incidents:c.notes||null},a);
   const asset=c.asset_id?get('media_asset',c.asset_id,session?'capture.field':'media.write'):await newEntity('media_asset',{title:session?'Запис: '+session.title:'Цифрові сторінки: '+by('physical_object',job.physical_object_id).title,media_kind:'document',description:null},a);
   if(c.asset_id&&!t.media_asset_subject.some(x=>x.asset_id===asset.id&&x.subject_entity_id===(session?.id||job.physical_object_id)))fail('invalid','Ресурс належить іншому матеріалу.');
   if(!t.media_asset_subject.some(x=>x.asset_id===asset.id)){t.media_asset_subject.push({asset_id:asset.id,subject_entity_id:session?.id||job.physical_object_id,relation_role:'capture',evidence_id:null});await revise(asset,'Пов’язано з джерелом');}

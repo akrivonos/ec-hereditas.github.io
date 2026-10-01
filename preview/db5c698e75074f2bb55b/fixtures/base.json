@@ -1579,6 +1579,33 @@
         "retired_at": null
       },
       {
+        "id": "07343797-5b96-48f9-b3dc-6bffdca8a78f",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "a95ecc2a-23c4-40f9-b24d-630e39713b4b",
+        "retired_at": null
+      },
+      {
+        "id": "59282818-aeb2-481b-97f9-6c5b85c6b592",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "cb174391-c9f1-478e-a671-62c73d718a6e",
+        "retired_at": null
+      },
+      {
+        "id": "47116802-6317-4787-806e-07720150f42a",
+        "entity_type": "evidence",
+        "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
+        "archive_id": "549e069e-6d7f-52c1-ab90-767a98c103a9",
+        "owner_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "current_revision_id": "73bd51d2-3e11-440a-b2d8-77cc5472f5dd",
+        "retired_at": null
+      },
+      {
         "id": "935623af-494e-4f35-bbbb-a022f024ab09",
         "entity_type": "person",
         "owner_installation_id": "6d24c3f6-81da-5328-9747-362a4641d094",
@@ -2577,14 +2604,14 @@
           "from_location_id": null,
           "to_location_id": "47283d56-ef75-5643-af43-31c705b08896",
           "from_person_id": null,
-          "to_person_id": null,
+          "to_person_id": "3e81759e-d158-50a1-95ea-5988959d05c9",
           "from_institution_id": null,
           "to_institution_id": "e0eb224d-2768-5a4c-b373-4e0d3b28f5ee",
           "occurred_at": "2026-09-20T09:00:00.000Z",
           "reason": "Приймання до сховища",
-          "evidence_id": null
+          "evidence_id": "47116802-6317-4787-806e-07720150f42a"
         },
-        "snapshot_hash": "42e49f9a09d2703c2e1b287df7002e78f0f44320f21cacc8a131b58eb690cc7c",
+        "snapshot_hash": "54f84443679656b90438d792237ca88428235344ffc8e33a5dbdc12bb66d9d8e",
         "recorded_at": "2026-09-20T09:00:00.000Z",
         "actor_account_id": null,
         "process_run_id": null,
@@ -2703,13 +2730,61 @@
                 "specification": {
                   "profile": "Сканування сторінок",
                   "stop_conditions": "Зупинитися при пошкодженні паперу",
-                  "readiness": "ready"
+                  "readiness": "ready",
+                  "preparation_version": 1,
+                  "capture_profile": {
+                    "kind": "image",
+                    "format": "TIFF",
+                    "resolution_ppi": 400,
+                    "bit_depth": 24,
+                    "color_mode": "RGB",
+                    "device": "Навчальний сканер"
+                  },
+                  "plan_items": [
+                    {
+                      "plan_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+                      "position": 1,
+                      "part_label": "Сторінка 1",
+                      "expected_kind": "image",
+                      "expected_count": 1
+                    },
+                    {
+                      "plan_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+                      "position": 2,
+                      "part_label": "Сторінка 2",
+                      "expected_kind": "image",
+                      "expected_count": 1
+                    }
+                  ],
+                  "object_check": {
+                    "object_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+                    "identifier": "ЛГ-1986/03",
+                    "result": "matched",
+                    "evidence_id": "07343797-5b96-48f9-b3dc-6bffdca8a78f",
+                    "checked_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+                    "checked_at": "2026-09-20T09:00:00.000Z"
+                  },
+                  "transfer": {
+                    "custody_event_id": "a9fc2719-8fb2-5310-b400-77be14361cf4",
+                    "return_location_id": "8814ae78-faaa-5eb0-a1e5-3d430d9c71ec",
+                    "return_person_id": null,
+                    "return_due_at": "2030-01-01T23:59:59.000Z"
+                  },
+                  "confirmation": {
+                    "object_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+                    "plan_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+                    "condition_revision_id": "fc8a90ae-a92d-5974-8436-78093faaf58c",
+                    "custody_revision_id": "ae726c4f-4884-5fa6-945d-6bf8551de84a",
+                    "confirmed_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+                    "confirmed_at": "2026-09-20T09:00:00.000Z",
+                    "reason": "Навчальний приклад підтвердженої готовності"
+                  }
                 }
               }
             ]
           }
         },
-        "snapshot_hash": "d6c930d8882aa62ffe8122a6382a7d6b6f794f4345d12b01fe7cbeaa8afdd951",
+        "snapshot_hash": "8378a6eb90fd115c556c471bf8b1f11d89bee41636b6588127166cd1b8658cb1",
         "recorded_at": "2026-09-20T09:00:00.000Z",
         "actor_account_id": null,
         "process_run_id": null,
@@ -7175,6 +7250,69 @@
         "change_reason": "Дослідницький доступ до синтетичного навчального прикладу"
       },
       {
+        "id": "a95ecc2a-23c4-40f9-b24d-630e39713b4b",
+        "entity_id": "07343797-5b96-48f9-b3dc-6bffdca8a78f",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "07343797-5b96-48f9-b3dc-6bffdca8a78f",
+          "source_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+          "source_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+          "external_uri": null,
+          "locator": "Навчальний набір",
+          "quote_text": null,
+          "note": "Синтетичний приклад звіреного шифру й написів",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "ad1844efba83e22a9bf8dd761f6cb3303d9b7d80b5478ed4a916496a9f765daf",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Синтетичний приклад підготовки носія"
+      },
+      {
+        "id": "cb174391-c9f1-478e-a671-62c73d718a6e",
+        "entity_id": "59282818-aeb2-481b-97f9-6c5b85c6b592",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "59282818-aeb2-481b-97f9-6c5b85c6b592",
+          "source_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+          "source_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+          "external_uri": null,
+          "locator": "Навчальний набір",
+          "quote_text": null,
+          "note": "Синтетичний приклад огляду: працювати на опорі, не притискати згин",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "70e0004d63952747d7cf0fb49a600cdb7cc69faa331f7294bed490e615b2e3a3",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Синтетичний приклад підготовки носія"
+      },
+      {
+        "id": "73bd51d2-3e11-440a-b2d8-77cc5472f5dd",
+        "entity_id": "47116802-6317-4787-806e-07720150f42a",
+        "revision_no": 1,
+        "previous_revision_id": null,
+        "snapshot": {
+          "id": "47116802-6317-4787-806e-07720150f42a",
+          "source_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+          "source_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+          "external_uri": null,
+          "locator": "Навчальний набір",
+          "quote_text": null,
+          "note": "Синтетичний приклад тимчасового відповідального зберігання на час роботи",
+          "captured_at": "2026-09-20T09:00:00.000Z"
+        },
+        "snapshot_hash": "8affd3185ab4b24527780b030d35d7cf358831cb5e8356d684a4e65994ff906e",
+        "recorded_at": "2026-09-20T09:00:00.000Z",
+        "actor_account_id": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+        "process_run_id": null,
+        "change_reason": "Синтетичний приклад підготовки носія"
+      },
+      {
         "id": "19c70b86-9d76-4fe2-8e9e-4f9b3a735016",
         "entity_id": "935623af-494e-4f35-bbbb-a022f024ab09",
         "revision_no": 1,
@@ -8721,12 +8859,12 @@
         "from_location_id": null,
         "to_location_id": "47283d56-ef75-5643-af43-31c705b08896",
         "from_person_id": null,
-        "to_person_id": null,
+        "to_person_id": "3e81759e-d158-50a1-95ea-5988959d05c9",
         "from_institution_id": null,
         "to_institution_id": "e0eb224d-2768-5a4c-b373-4e0d3b28f5ee",
         "occurred_at": "2026-09-20T09:00:00.000Z",
         "reason": "Приймання до сховища",
-        "evidence_id": null
+        "evidence_id": "47116802-6317-4787-806e-07720150f42a"
       }
     ],
     "media_asset": [
@@ -8839,7 +8977,55 @@
         "specification": {
           "profile": "Сканування сторінок",
           "stop_conditions": "Зупинитися при пошкодженні паперу",
-          "readiness": "ready"
+          "readiness": "ready",
+          "preparation_version": 1,
+          "capture_profile": {
+            "kind": "image",
+            "format": "TIFF",
+            "resolution_ppi": 400,
+            "bit_depth": 24,
+            "color_mode": "RGB",
+            "device": "Навчальний сканер"
+          },
+          "plan_items": [
+            {
+              "plan_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+              "position": 1,
+              "part_label": "Сторінка 1",
+              "expected_kind": "image",
+              "expected_count": 1
+            },
+            {
+              "plan_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+              "position": 2,
+              "part_label": "Сторінка 2",
+              "expected_kind": "image",
+              "expected_count": 1
+            }
+          ],
+          "object_check": {
+            "object_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+            "identifier": "ЛГ-1986/03",
+            "result": "matched",
+            "evidence_id": "07343797-5b96-48f9-b3dc-6bffdca8a78f",
+            "checked_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+            "checked_at": "2026-09-20T09:00:00.000Z"
+          },
+          "transfer": {
+            "custody_event_id": "a9fc2719-8fb2-5310-b400-77be14361cf4",
+            "return_location_id": "8814ae78-faaa-5eb0-a1e5-3d430d9c71ec",
+            "return_person_id": null,
+            "return_due_at": "2030-01-01T23:59:59.000Z"
+          },
+          "confirmation": {
+            "object_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+            "plan_revision_id": "8ba1e847-78d3-5bae-a382-deb936e1f0c6",
+            "condition_revision_id": "fc8a90ae-a92d-5974-8436-78093faaf58c",
+            "custody_revision_id": "ae726c4f-4884-5fa6-945d-6bf8551de84a",
+            "confirmed_by": "b9788a30-a613-5adb-b68e-8a960c313bd1",
+            "confirmed_at": "2026-09-20T09:00:00.000Z",
+            "reason": "Навчальний приклад підтвердженої готовності"
+          }
         }
       }
     ],
@@ -9106,6 +9292,36 @@
         "quote_text": null,
         "note": "Вигаданий початковий набір прототипу",
         "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "07343797-5b96-48f9-b3dc-6bffdca8a78f",
+        "source_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+        "source_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+        "external_uri": null,
+        "locator": "Навчальний набір",
+        "quote_text": null,
+        "note": "Синтетичний приклад звіреного шифру й написів",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "59282818-aeb2-481b-97f9-6c5b85c6b592",
+        "source_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+        "source_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+        "external_uri": null,
+        "locator": "Навчальний набір",
+        "quote_text": null,
+        "note": "Синтетичний приклад огляду: працювати на опорі, не притискати згин",
+        "captured_at": "2026-09-20T09:00:00.000Z"
+      },
+      {
+        "id": "47116802-6317-4787-806e-07720150f42a",
+        "source_entity_id": "6cff17be-efe0-5958-a190-13e39b25a50f",
+        "source_revision_id": "79308822-fd4a-55ce-b795-0c7a1d546fbf",
+        "external_uri": null,
+        "locator": "Навчальний набір",
+        "quote_text": null,
+        "note": "Синтетичний приклад тимчасового відповідального зберігання на час роботи",
+        "captured_at": "2026-09-20T09:00:00.000Z"
       }
     ],
     "evidence_link": [
@@ -9120,6 +9336,12 @@
         "subject_revision_id": "951e0af8-abdb-5a02-adb2-993c72e64143",
         "evidence_id": "23a9bf6c-2421-5927-b5dd-4c3d0944cc4e",
         "evidence_role": "consent"
+      },
+      {
+        "subject_entity_id": "ea89e8ff-0dcf-58d2-baeb-eaa3c0155686",
+        "subject_revision_id": "fc8a90ae-a92d-5974-8436-78093faaf58c",
+        "evidence_id": "59282818-aeb2-481b-97f9-6c5b85c6b592",
+        "evidence_role": "condition"
       }
     ],
     "saved_query": [],

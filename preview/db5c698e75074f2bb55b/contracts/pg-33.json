@@ -34,11 +34,12 @@
     "view_model": "Physical storage hierarchy, derived contents, explicit-owner/cycle validation",
     "completion": "core-interactive",
     "limitations": [],
-    "state_storage": "Shared normalized browser store, fixture version 3; incremental migration preserves prior user changes",
+    "state_storage": "Normalized browser store v9; preserves existing user data. Older unstructured preparations require explicit review.",
     "permissions": [
       "domain.read",
       "media.write / physical.write / intake.send / intake.receive / legacy.write / legacy.review / capture.field, explicit archive grants"
     ],
-    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically."
+    "atomicity": "Authorize and compare expected revision/package state; mutate clone; validate FK/type/version/hash; commit atomically.",
+    "wf10_custody": "Temporary custody/return with proof is recorded through the digitization job; regular movement invalidates previous readiness."
   }
 }
