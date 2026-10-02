@@ -1,16 +1,17 @@
-import {prepareDiscovery} from '../data/discovery-demo.mjs?v=20261002-wf16';
-import {prepareSingleUser} from '../data/single-user.mjs?v=20261002-wf16';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261002-wf16";
-import {fieldPages} from './field.mjs?v=20261002-wf16';
-import {mediaPages} from './media.mjs?v=20261002-wf16';
-import {researchPages} from './research.mjs?v=20261002-wf16';
-import {publicPages} from './public.mjs?v=20261002-wf16';
-import {archivePages} from './archive.mjs?v=20261002-wf16';
-import {workbenchPages} from './workbench.mjs?v=20261002-wf16';
-import {museumPages} from './museum.mjs?v=20261002-wf16';
-import {museumStamp} from '../data/museum.mjs?v=20261002-wf16';
-import {publicAccessStamp} from '../data/public.mjs?v=20261002-wf16';
-import {bindHelp} from './help.mjs?v=20261002-wf16';
+import {prepareReader} from '../data/reader-demo.mjs?v=20261002-wf17';
+import {prepareDiscovery} from '../data/discovery-demo.mjs?v=20261002-wf17';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20261002-wf17';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261002-wf17";
+import {fieldPages} from './field.mjs?v=20261002-wf17';
+import {mediaPages} from './media.mjs?v=20261002-wf17';
+import {researchPages} from './research.mjs?v=20261002-wf17';
+import {publicPages} from './public.mjs?v=20261002-wf17';
+import {archivePages} from './archive.mjs?v=20261002-wf17';
+import {workbenchPages} from './workbench.mjs?v=20261002-wf17';
+import {museumPages} from './museum.mjs?v=20261002-wf17';
+import {museumStamp} from '../data/museum.mjs?v=20261002-wf17';
+import {publicAccessStamp} from '../data/public.mjs?v=20261002-wf17';
+import {bindHelp} from './help.mjs?v=20261002-wf17';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;
@@ -390,7 +391,7 @@ function render(){
 }
 async function start(){
  [manifest,base]=await Promise.all([getJSON("manifest.json"),getJSON("fixtures/base.json")]);
- const existing=localStorage.getItem(storageKey),prepared=await prepareDiscovery(await prepareSingleUser(base,existing?JSON.parse(existing):null));
+ const existing=localStorage.getItem(storageKey),prepared=await prepareReader(await prepareDiscovery(await prepareSingleUser(base,existing?JSON.parse(existing):null)));
  base=prepared.base;
  if(prepared.changed){
   if(existing&&!localStorage.getItem(storageKey+'.before-single-user'))localStorage.setItem(storageKey+'.before-single-user',existing);

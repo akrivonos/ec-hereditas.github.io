@@ -1,6 +1,6 @@
-import {parseInventory,inventoryRows,exampleInventory} from '../data/legacy-import.mjs?v=20261002-wf16';
-import {download,encode,mediaPreview} from './session-media.mjs?v=20261002-wf16';
-import {wizard} from './wizard.mjs?v=20261002-wf16';
+import {parseInventory,inventoryRows,exampleInventory} from '../data/legacy-import.mjs?v=20261002-wf17';
+import {download,encode,mediaPreview} from './session-media.mjs?v=20261002-wf17';
+import {wizard} from './wizard.mjs?v=20261002-wf17';
 const priorities={none:'Не визначено',normal:'Планово',urgent:'Терміново'};
 export function legacyPages(c){
  const {st,actor,archive,scope,params,t,by,rev,can,visible,allowed,label,action,dialog,input,select,options,choices,dispatch,render,flash,panel,body,table,details,btn,button,pg,esc,show,heading,form}=c;

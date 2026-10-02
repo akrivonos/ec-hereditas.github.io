@@ -28,7 +28,14 @@
     "access_decision_resource",
     "corpus_item",
     "research_corpus",
-    "representation"
+    "representation",
+    "assertion",
+    "semantic_relation",
+    "relation_type_rule",
+    "relation_type_endpoint",
+    "entity_revision",
+    "person",
+    "place"
   ],
   "fields_and_relations": "Дозволені тексти/медіа й локатори, паралельні версії, власні примітки.",
   "required_interaction": "Анотувати range/segment; джерело не змінюється, offset прив’язаний до revision.",
@@ -47,17 +54,18 @@
   "implementation": {
     "commands": [
       "research.annotation",
+      "research.annotation.update",
+      "research.segment.annotation",
+      "research.relation",
       "research.assertion",
       "research.citation"
     ],
-    "view_model": "Permitted exact source, notes/assertions/citations; corpus resource and segment preview uses the exact target, source and layer revisions from the selected corpus revision",
-    "completion": "partial",
+    "view_model": "Tabbed exact-source workspace: side-by-side scan/AV/transcript/translation, seek and private intervals, provenance, revision-pinned range/segment annotations, tags, doubt/alternative, proposed private D13 relations and annotation-to-assertion handoff",
+    "completion": "complete-for-local-WF-17",
     "limitations": [
-      "Local synchronous discovery over permitted browser data; no server search index or vector embeddings.",
-      "Context matching uses explicit active-term aliases and one-hop broader/narrower/reviewed related mappings, with visible reasons.",
-      "Map uses bundled Natural Earth land and only explicitly allowed, finite coordinates; no address geocoder or external map requests.",
-      "Candidate basket belongs to this browser tab and is rechecked before handover; reproducible archival membership is recorded by the WF-16 corpus wizard.",
-      "Parallel transcription/media editing, segment annotations and multiple evidence workflows remain WF-17/18."
+      "Browser-supported local files and known representation timeline offsets; no media server or continuous cross-component streaming.",
+      "Side-by-side comparison; no automatic text alignment or shared editing.",
+      "Research relations remain private hypotheses; archival acceptance is separate WF-08, multiple evidence analysis remains WF-18."
     ],
     "state_storage": "Normalized browser store v9; existing user state is preserved, new grants require explicit human review.",
     "permissions": [

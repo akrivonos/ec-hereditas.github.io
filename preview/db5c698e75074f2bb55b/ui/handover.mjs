@@ -1,7 +1,7 @@
-import {transferFiles,transferProblems,verifyTransferBundle} from '../data/handover.mjs?v=20261002-wf16';
-import {handoverState} from '../data/media.mjs?v=20261002-wf16';
-import {hash} from '../data/model.mjs?v=20261002-wf16';
-import {download} from './session-media.mjs?v=20261002-wf16';
+import {transferFiles,transferProblems,verifyTransferBundle} from '../data/handover.mjs?v=20261002-wf17';
+import {handoverState} from '../data/media.mjs?v=20261002-wf17';
+import {hash} from '../data/model.mjs?v=20261002-wf17';
+import {download} from './session-media.mjs?v=20261002-wf17';
 
 async function readBundle(file){if(!file?.size||file.size>32*1024*1024)throw Error('Оберіть файл пакета до 32 МБ.');let bundle;try{bundle=JSON.parse(await file.text());}catch{throw Error('Не вдалося прочитати файл пакета.');}await verifyTransferBundle(bundle);return bundle;}
 export function inspectTransfer({dialog,esc,table,body}){

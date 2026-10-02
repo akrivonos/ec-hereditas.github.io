@@ -53,3 +53,5 @@
 .corpus-options .check-label{flex-wrap:wrap}.corpus-options small{flex-basis:100%;margin-left:28px;overflow-wrap:anywhere;color:var(--muted)}
 
 .corpus-card .panel-body{padding:16px}.corpus-card h3{margin-top:0}
+
+.reader-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;align-items:start}.reader-grid section{min-width:0}.reader-text{width:100%;min-height:340px;line-height:1.8;resize:vertical;background:#fff;white-space:pre-wrap}.reader-file{max-width:100%;max-height:550px;overflow:auto}.reader-grid h3{overflow-wrap:anywhere}.reader-grid details{margin-top:14px}[data-reader-segment][aria-current=true]{background:var(--accent,#245143);color:white}@media(max-width:600px){.reader-grid{grid-template-columns:minmax(0,1fr)}.reader-text{min-height:240px}}

@@ -1,7 +1,7 @@
-import {sourceView,sourceTypes} from './research.mjs?v=20261002-wf16';
-import {discoverySource} from './discovery.mjs?v=20261002-wf16';
-import {accessPolicy} from './rights.mjs?v=20261002-wf16';
-import {can} from './model.mjs?v=20261002-wf16';
+import {sourceView,sourceTypes} from './research.mjs?v=20261002-wf17';
+import {discoverySource} from './discovery.mjs?v=20261002-wf17';
+import {accessPolicy} from './rights.mjs?v=20261002-wf17';
+import {can} from './model.mjs?v=20261002-wf17';
 export const corpusTypes=['information_unit','document','physical_object','textual_representation','representation','timed_layer','media_segment'];
 export const corpusKind={information_unit:'Джерело',document:'Документ',physical_object:'Носій',textual_representation:'Текст',representation:'Медіа',timed_layer:'Часовий шар',media_segment:'Фрагмент'};
 export const corpusAnchor=x=>({id:x.source_entity_id||x.target_entity_id,revision_id:x.source_revision_id||x.target_revision_id});
@@ -10,7 +10,7 @@ export const corpusKey=x=>[x.source_entity_id||x.target_entity_id,x.source_revis
 export function corpusTarget(state,actor,item){
  const s={...state,clock:new Date().toISOString()},t=s.tables,by=(k,id)=>t[k]?.find(x=>x.id===id),reg=id=>by('entity',id),exact=(id,rid)=>{const r=by('entity_revision',rid);return r?.entity_id===id?r:null;};
  const anchor=corpusAnchor(item),src=sourceView(s,actor,anchor.id,anchor.revision_id),e=reg(item.target_entity_id),r=exact(item.target_entity_id,item.target_revision_id);
- if(!src||!r||!e||e.retired_at||!corpusTypes.includes(e.entity_type)||!can(s,actor,'domain.read',e.archive_id))return null;
+ if(!src||!r||!e||e.retired_at||!corpusTypes.includes(e.entity_type)||!(e.entity_type==='media_segment'&&e.owner_account_id===actor&&e.archive_id===null||can(s,actor,'domain.read',e.archive_id)))return null;
  const ds=accessPolicy(s,src.id,src.revision_id,'research','view');
  const readable=id=>reg(id)&&!reg(id).retired_at&&can(s,actor,'domain.read',reg(id).archive_id);
  const denied=id=>ds.some(d=>t.access_decision_resource.some(x=>x.decision_id===d.id&&x.resource_entity_id===id&&x.effect==='deny'));
@@ -24,7 +24,7 @@ export function corpusTarget(state,actor,item){
    if(layer.snapshot.representation_id!==x.representation_id||layer.snapshot.representation_revision_id!==x.representation_revision_id)return null;
    const entry=layer.snapshot._relations.timed_layer_entry.find(v=>v.segment_revision_id===r.id);
    text=entry.text_value||by('text_part',entry.text_part_id)?.text||'';
-  }else if(!allowed(e.id,r.id))return null;
+  }else if(!allowed(e.id,r.id)&&!(e.owner_account_id===actor&&e.archive_id===null&&x.scope==='research'&&x.source_entity_id===src.id&&x.source_revision_id===src.revision_id&&!denied(e.id)))return null;
   segments=[{id:e.id,start_ms:x.start_ms,end_ms:x.end_ms,text}];rep=exact(x.representation_id,x.representation_revision_id);
  }else{
   if(!allowed(e.id,r.id))return null;
