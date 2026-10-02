@@ -1,13 +1,13 @@
 // Human review and publication workbench; no transport or implicit access grants.
-import {can} from './model.mjs?v=20261002-wf17';
-import {publicView,publicResources} from './public.mjs?v=20261002-wf17';
+import {can} from './model.mjs?v=20261002-wf18';
+import {publicView,publicResources} from './public.mjs?v=20261002-wf18';
 export const archiveTypes=['verification_record'];
 export const descriptionFields={information_unit:{title:'Назва',summary:'Опис'},document:{title:'Назва',body_text:'Текст документа'},physical_object:{title:'Назва',inscriptions:'Написи'}};
 export const reviewStates={pending:'Очікує перевірки',deferred:'Відкладено',accepted:'Прийнято',corrected:'Прийнято з виправленням',rejected:'Відхилено',superseded:'Замінено'};
 const reg=(s,id)=>s.tables.entity.find(x=>x.id===id),rev=(s,id)=>reg(s,id)?.current_revision_id;
 export function archiveCandidate(s,actor,id){
  const t=s.tables,c=t.candidate.find(x=>x.id===id),target=c&&reg(s,c.target_entity_id);
- if(!c||!target||!can(s,actor,'review.write',target.archive_id))return null;
+ if(!c||c.payload_schema_version==='research-analysis/1'||!target||!can(s,actor,'review.write',target.archive_id))return null;
  const basis=t.entity_revision.find(x=>x.id===c.base_revision_id)?.snapshot;
  const source=target.entity_type==='publication_record'?reg(s,basis?.source_entity_id):target;
  const sourceRevision=target.entity_type==='publication_record'?basis?.source_revision_id:c.base_revision_id;

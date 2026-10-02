@@ -1,11 +1,13 @@
-import {readerWorkspace} from './reader.mjs?v=20261002-wf17';
-import {annotationView} from '../data/reader.mjs?v=20261002-wf17';
-import {corpusWizard as editCorpus,corpusPreview} from './corpus.mjs?v=20261002-wf17';
-import {corpusTarget,corpusAnchor,corpusKey,corpusKind} from '../data/corpus.mjs?v=20261002-wf17';
-import {discoveryContext,discoverySearchPage,discoverySourcePanels} from './discovery.mjs?v=20261002-wf17';
-import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261002-wf17';
-import {wizard} from './wizard.mjs?v=20261002-wf17';
-import {hint} from './help.mjs?v=20261002-wf17';
+import {analysisUI,researchStates} from './analysis.mjs?v=20261002-wf18';
+import {assertionEvidence} from '../data/analysis.mjs?v=20261002-wf18';
+import {readerWorkspace} from './reader.mjs?v=20261002-wf18';
+import {annotationView} from '../data/reader.mjs?v=20261002-wf18';
+import {corpusWizard as editCorpus,corpusPreview} from './corpus.mjs?v=20261002-wf18';
+import {corpusTarget,corpusAnchor,corpusKey,corpusKind} from '../data/corpus.mjs?v=20261002-wf18';
+import {discoveryContext,discoverySearchPage,discoverySourcePanels} from './discovery.mjs?v=20261002-wf18';
+import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261002-wf18';
+import {wizard} from './wizard.mjs?v=20261002-wf18';
+import {hint} from './help.mjs?v=20261002-wf18';
 
 export function researchPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);
@@ -31,6 +33,7 @@ export function researchPages(ctx){
  const sourceOptions=()=>'<option value="">Оберіть джерело</option>'+sources().map(x=>`<option value="${x.id}">${esc(x.title)}</option>`).join('');
 
  function corpusWizard(selected=[],old=null){return editCorpus({...discoveryCtx(),sources,rev,dispatch,queryContext},selected,old);}
+ const analysis=()=>analysisUI({...discoveryCtx(),dispatch,rev,sources});
  const discoveryCtx=()=>({st,actor,scope,p,esc,pg,show,heading,panel,body,table,input,details,btn,act,link,form,go,enabled,corpusWizard,dialog});
  function search(){return discoverySearchPage(discoveryCtx());}
  function queries(){
@@ -48,9 +51,10 @@ export function researchPages(ctx){
   if(!p.has('id'))return corpora();const row=own('research_corpus').find(x=>x.id===p.get('id'));if(!row)return denied();
   const r=by('entity_revision',p.get('revision')||rev(row.id));if(!r||r.entity_id!==row.id)return denied();
   const x=r.snapshot,items=corpusItems(st,r.id),current=r.id===rev(row.id),versions=t.entity_revision.filter(v=>v.entity_id===row.id),spec=x.selection_context?.query_spec||(x.saved_query_revision_id?by('entity_revision',x.saved_query_revision_id).snapshot.query_spec:null);
+  if(p.get('view')==='analysis')return analysis().corpus({...row,title:x.title},r.id);
   const filterLabel=(key,id)=>sources().flatMap(v=>v[key]||[]).find(v=>v.id===id)?.label||'Збережений фільтр';
   act('edit',()=>corpusWizard([],row));act('freeze',()=>dialog('Зафіксувати склад',details([['Корпус',x.title],['Елементів',String(items.length)]])+'<p>Цей склад залишиться в історії. Подальший добір можна продовжити в новій версії.</p>',async()=>{await dispatch({type:'research.corpus.freeze',id:row.id,expected_revision_id:r.id});done('Склад корпусу зафіксовано.');},'Зафіксувати'));
-  show(link(43,'← Мої корпуси')+heading('Корпус',x.title,'Відкрийте джерело для нотатки, твердження або цитування. Історія версій зберігає попередній склад; обмеження доступу до джерел продовжують діяти.',current?btn('Нова версія','edit')+(!x.frozen_at?btn('Зафіксувати склад','freeze'):''):'')+
+  show(link(43,'← Мої корпуси')+heading('Корпус',x.title,'Відкрийте джерело для нотатки, твердження або цитування. Історія версій зберігає попередній склад; обмеження доступу до джерел продовжують діяти.',button('Аналіз корпусу',pg(44,{role:'R04',id:row.id,revision:r.id,view:'analysis'}))+(current?btn('Нова версія','edit')+(!x.frozen_at?btn('Зафіксувати склад','freeze'):''):''))+
    `<nav class="record-tabs" aria-label="Версії корпусу">${versions.map(v=>`<a href="${pg(44,{role:'R04',id:row.id,revision:v.id})}" ${r.id===v.id?'aria-current="page"':''}>Версія ${v.revision_no}${v.snapshot.frozen_at?' · зафіксована':''}</a>`).join('')}</nav>`+
    panel('Питання та добір',body(details([['Дослідницьке питання',x.research_question],['Критерії включення',x.inclusion_criteria],['Критерії виключення',x.exclusion_criteria],['Методичні нотатки',x.method_notes]])))+
    panel('Склад корпусу',table(['№','Елемент','Тип','Версія','Група','Підстава добору','Дії'],items.map(i=>{
@@ -86,7 +90,7 @@ export function researchPages(ctx){
    (selectedItem?body(btn('Відкрити збережену версію','corpus-preview')):'')+reader.workspace));reader.bind();
  }
  function propose(a){
-  const evidence=t.evidence_link.filter(x=>x.subject_entity_id===a.id).map(x=>by('evidence',x.evidence_id));
+  const evidence=assertionEvidence(st,a);
   wizard({dialog,esc},{title:'Подати пропозицію архіву',submit:'Подати пропозицію',steps:[
    {title:'Твердження та докази',body:details([['Твердження',a.statement_text],['Обґрунтування',evidence.map(x=>x.note).join('\n')]])},
    {title:'Пропоноване уточнення',body:input('description','Що пропонуєте змінити','',true,true)}
@@ -94,14 +98,14 @@ export function researchPages(ctx){
  }
  function assertions(){
   const rows=visible('assertion');if(p.has('id')){
-   const a=rows.find(x=>x.id===p.get('id'));if(!a)return denied();const ev=t.evidence_link.filter(x=>x.subject_entity_id===a.id).map(x=>by('evidence',x.evidence_id));
+   const a=rows.find(x=>x.id===p.get('id'));if(!a)return denied();const ev=assertionEvidence(st,a),analysisView=analysis().assertion(a);
    const proposed=own('candidate').some(x=>x.kind==='change_proposal'&&x.state==='pending'&&t.candidate_source.some(y=>y.candidate_id===x.id&&y.source_entity_id===a.id));
-   act('propose',()=>propose(a));show(link(46,'← Мої твердження')+heading('Дослідницька робота','Дослідницьке твердження','Порівняйте висновок із доказом. Подайте обґрунтовану пропозицію, якщо в архівному описі потрібне уточнення.',a.assertion_kind==='relation'?'':proposed?button('Переглянути пропозиції',pg(47,{role:'R04'})):btn('Подати пропозицію архіву','propose'))+
+   act('propose',()=>propose(a));show(link(46,'← Мої твердження')+heading('Дослідницька робота','Дослідницьке твердження','',analysisView.actions+(a.assertion_kind==='relation'?'':proposed?button('Переглянути пропозиції',pg(47,{role:'R04'})):btn('Подати пропозицію архіву','propose')))+
     panel('Твердження',body(`<p class="source-text">${esc(a.statement_text)}</p>`+(a.assertion_kind==='relation'?'<p>Запропонований дослідницький зв’язок. Архівом не прийнято.</p>':'')+(a.annotation_revision_id?'<p>Підстава — збережена версія нотатки: '+esc(by('entity_revision',a.annotation_revision_id).snapshot.body)+'</p>':'')))+
-    panel('Докази',table(['Джерело','Місце','Обґрунтування'],ev.map(x=>{const item=a.corpus_id&&t.corpus_item.find(i=>by('entity_revision',i.corpus_revision_id)?.entity_id===a.corpus_id&&corpusAnchor(i).id===x.source_entity_id&&corpusAnchor(i).revision_id===x.source_revision_id&&corpusTarget(st,actor,i));return [sourceLink(sourceView(st,actor,x.source_entity_id,x.source_revision_id),item?{corpus:a.corpus_id,corpus_revision:item.corpus_revision_id}:{}),esc(x.locator||'—'),esc(x.note)];}))));return;
+    analysisView.content);return;
   }
   act('new',()=>assertionWizard());show(heading('Дослідницька робота','Мої твердження','Кожне твердження має джерело й обґрунтування. Відкрийте запис, щоб переглянути докази або подати пропозицію архіву.',btn('Створити твердження','new',enabled))+
-   panel('Твердження',table(['Висновок','Джерело','Стан'],rows.map(x=>[link(46,x.statement_text,{id:x.id}),esc(sourceView(st,actor,x.subject_entity_id,x.subject_revision_id).title),'Дослідницький висновок']),'Створіть твердження під час роботи з джерелом.')));
+   panel('Твердження',table(['Висновок','Джерело','Стан'],rows.map(x=>[link(46,x.statement_text,{id:x.id}),esc(sourceView(st,actor,x.subject_entity_id,x.subject_revision_id).title),researchStates[x.research_status||'open']]),'Створіть твердження під час роботи з джерелом.')));
  }
  function proposals(){
   const states={pending:'Очікує розгляду',accepted:'Прийнято',rejected:'Відхилено',corrected:'Уточнено',deferred:'Відкладено',superseded:'Замінено'},rows=visible('candidate').filter(x=>x.kind==='change_proposal');

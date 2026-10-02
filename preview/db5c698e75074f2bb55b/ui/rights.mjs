@@ -1,6 +1,6 @@
-import {can} from '../data/model.mjs?v=20261002-wf17';
-import {rightsFields,rightsPurposes,rightsUses,accessPolicy,projectFields,attributionNames} from '../data/rights.mjs?v=20261002-wf17';
-import {wizard} from './wizard.mjs?v=20261002-wf17';
+import {can} from '../data/model.mjs?v=20261002-wf18';
+import {rightsFields,rightsPurposes,rightsUses,accessPolicy,projectFields,attributionNames} from '../data/rights.mjs?v=20261002-wf18';
+import {wizard} from './wizard.mjs?v=20261002-wf18';
 export function rightsUI(ctx){
  const {st,t,actor,scope,by,reg,rev,esc,heading,panel,dialog,dispatch,render,flash,denied,body,input,area,select,details,table,btn,link,go,action,show,label}=ctx;
  const p=new URLSearchParams(location.search),states={effective:'Чинне',needs_review:'Потрібна перевірка',revoked:'Відкликане',superseded:'Замінене'},levels={public:'Публічний',controlled_research:'Дослідницький',closed:'Закритий'};

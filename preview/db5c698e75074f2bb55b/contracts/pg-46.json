@@ -31,14 +31,17 @@
   "implementation": {
     "commands": [
       "research.assertion",
+      "research.assertion.revise",
+      "research.analysis.run",
+      "research.analysis.review",
       "research.proposal"
     ],
-    "view_model": "Private assertion list and detail, exact supporting evidence, proposal wizard",
-    "completion": "partial",
+    "view_model": "Private versioned assertions, exact multiple supports/contradicts/context evidence, quotes and annotation anchors, concept relations, immutable history and separate human review of computational candidates",
+    "completion": "complete-for-local-WF-18",
     "limitations": [
-      "Multiple evidence inputs, contradiction roles and collaborative revision are pending."
+      "Local descriptive counts and manual comparison; no inferential statistics, external AI model or shared editing. Research interpretations are not accepted archival descriptions or vocabulary mappings."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "state_storage": "Shared normalized browser store v9; additive synthetic analysis example and preserved existing grants/data",
     "permissions": [
       "research.write in an explicit archive grant",
       "owner_account_id for private objects",

@@ -1,7 +1,7 @@
-import {intakeFacts,intakePackage} from '../data/intake.mjs?v=20261002-wf17';
-import {verifyTransferBundle} from '../data/handover.mjs?v=20261002-wf17';
-import {download,mediaPreview} from './session-media.mjs?v=20261002-wf17';
-import {wizard} from './wizard.mjs?v=20261002-wf17';
+import {intakeFacts,intakePackage} from '../data/intake.mjs?v=20261002-wf18';
+import {verifyTransferBundle} from '../data/handover.mjs?v=20261002-wf18';
+import {download,mediaPreview} from './session-media.mjs?v=20261002-wf18';
+import {wizard} from './wizard.mjs?v=20261002-wf18';
 const states={reviewing:'Очікує розгляду',partial:'Прийнято частково',accepted:'Прийнято',returned:'На доопрацюванні'};
 const decisions={pending:'Не розглянуто',accept:'Прийняти',restricted:'Прийняти з обмеженням',defer:'Відкласти',return:'Повернути'};
 const docStates={missing:'Відсутнє / не перевірено',verified:'Перевірено',not_applicable:'Не потрібне — з поясненням'};

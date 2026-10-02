@@ -1,9 +1,9 @@
-import {hash,validate,verifyHashes} from './model.mjs?v=20261002-wf17';
-import {snapshot,addMembers} from './field.mjs?v=20261002-wf17';
-import {rawHash} from './media.mjs?v=20261002-wf17';
-import {fileBytes} from './binary.mjs?v=20261002-wf17';
-import {demoWav,encode} from '../ui/session-media.mjs?v=20261002-wf17';
-import {readerAssets} from './reader-assets.mjs?v=20261002-wf17';
+import {hash,validate,verifyHashes} from './model.mjs?v=20261002-wf18';
+import {snapshot,addMembers} from './field.mjs?v=20261002-wf18';
+import {rawHash} from './media.mjs?v=20261002-wf18';
+import {fileBytes} from './binary.mjs?v=20261002-wf18';
+import {demoWav,encode} from '../ui/session-media.mjs?v=20261002-wf18';
+import {readerAssets} from './reader-assets.mjs?v=20261002-wf18';
 export async function readerDemo(source){
  if(source.demo.reader_v1)return structuredClone(source);
  const s=structuredClone(source),t=s.tables,actor=s.demo.ids.admin,archive=s.demo.ids['archive-a'],ids={},made=[];

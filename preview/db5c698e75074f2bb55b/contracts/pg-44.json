@@ -39,12 +39,14 @@
   "implementation": {
     "commands": [
       "research.corpus.revise",
-      "research.corpus.freeze"
+      "research.corpus.freeze",
+      "research.analysis.run",
+      "research.analysis.review"
     ],
-    "view_model": "Exact source/text/media/layer/segment targets with source and optional layer anchors, independent group/reason/order, selection context, immutable history, freeze, redacted unavailable items and exact source handoff",
-    "completion": "complete-for-local-WF-16",
+    "view_model": "Exact source/text/media/layer/segment targets with source and optional layer anchors, independent group/reason/order, selection context, immutable history, freeze, redacted unavailable items and exact source handoff; corpus comparison by sources, places/periods, attributed people/repertoires, classifications and annotation tags; generated counts await human review",
+    "completion": "complete-for-local-WF-16-and-WF-18",
     "limitations": [
-      "Shared editing/server ACL are outside the local prototype. Range/segment annotation and exact source reading are provided by WF-17; multiple evidence analysis remains WF-18 and corpus byte export remains WF-19."
+      "Local descriptive comparison; no shared editing, inferential statistics or external AI. Corpus byte export remains WF-19."
     ],
     "state_storage": "Shared normalized browser store v9; existing data and historical source-only corpora preserved",
     "permissions": [

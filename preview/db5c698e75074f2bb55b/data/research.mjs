@@ -1,11 +1,12 @@
-import {annotationView,validateAnnotation,readerTags,noteTypes} from './reader.mjs?v=20261002-wf17';
-import {relationPredicates} from './reconciliation.mjs?v=20261002-wf17';
-import {corpusTarget,corpusTypes,corpusAnchor,corpusKey} from './corpus.mjs?v=20261002-wf17';
-import {discoverySearch,discoverySpec} from './discovery.mjs?v=20261002-wf17';
-import {accessPolicy,projectFields,attributionNames} from './rights.mjs?v=20261002-wf17';
+import {analysisCommand,analysisCandidateVisible,assertionEvidence,evidenceView,analysisTerms} from './analysis.mjs?v=20261002-wf18';
+import {annotationView,validateAnnotation,readerTags,noteTypes} from './reader.mjs?v=20261002-wf18';
+import {relationPredicates} from './reconciliation.mjs?v=20261002-wf18';
+import {corpusTarget,corpusTypes,corpusAnchor,corpusKey} from './corpus.mjs?v=20261002-wf18';
+import {discoverySearch,discoverySpec} from './discovery.mjs?v=20261002-wf18';
+import {accessPolicy,projectFields,attributionNames} from './rights.mjs?v=20261002-wf18';
 // Private research objects reference exact archival revisions. Access is checked on every projection.
-import {can} from './model.mjs?v=20261002-wf17';
-import {rawHash} from './media.mjs?v=20261002-wf17';
+import {can} from './model.mjs?v=20261002-wf18';
+import {rawHash} from './media.mjs?v=20261002-wf18';
 export const researchTypes=['saved_query','research_corpus','annotation','assertion','citation','bibliographic_export'];
 export const sourceTypes=['information_unit','document','physical_object'];
 export const researchEnabled=(s,a)=>s.tables.archive.some(x=>can(s,a,'research.write',x.id));
@@ -22,15 +23,14 @@ export function sourceView(s,a,id,rid=null,use='view'){
 }
 export function searchSources(s,a,query={}){return discoverySearch(s,a,query);}
 export const corpusItems=(s,rid)=>s.tables.corpus_item.filter(x=>x.corpus_revision_id===rid).sort((a,b)=>a.position-b.position);
-export const researchRelations=(t,type,id)=>type==='assertion'&&t.assertion.find(x=>x.id===id)?.scope==='research'&&(t.semantic_relation||[]).some(x=>x.assertion_id===id)?{semantic_relation:structuredClone((t.semantic_relation||[]).filter(x=>x.assertion_id===id))}:type==='research_corpus'?{corpus_item:structuredClone(t.corpus_item.filter(x=>x.corpus_revision_id===t.entity.find(e=>e.id===id)?.current_revision_id))}:{};
+export const researchRelations=(t,type,id)=>type==='assertion'&&t.assertion.find(x=>x.id===id)?.scope==='research'?{...((t.semantic_relation||[]).some(x=>x.assertion_id===id)?{semantic_relation:structuredClone(t.semantic_relation.filter(x=>x.assertion_id===id))}:{}),...(t.assertion.find(x=>x.id===id)?.evidence_profile==='analysis/1'?{evidence_link:structuredClone(t.evidence_link.filter(x=>x.subject_entity_id===id&&x.subject_revision_id===t.entity.find(e=>e.id===id)?.current_revision_id))}:{} )}:type==='research_corpus'?{corpus_item:structuredClone(t.corpus_item.filter(x=>x.corpus_revision_id===t.entity.find(e=>e.id===id)?.current_revision_id))}:{};
 export function researchVisible(s,a,row,type){
  s={...s,clock:new Date().toISOString()};
  if(!owns(s,a,row.id))return false;
  if(type==='annotation')return !!annotationView(s,a,row);
  if(type==='citation'){const v=sourceView(s,a,row.target_entity_id,row.target_revision_id,'cite');return !!v&&v.title===row.structured_data?.title;}
- if(type==='assertion')return row.scope==='research'&&(!row.annotation_revision_id||!!annotationView(s,a,s.tables.entity_revision.find(x=>x.id===row.annotation_revision_id)?.snapshot||{}))&&(!row.object_revision_id||!!sourceView(s,a,s.tables.semantic_relation.find(x=>x.assertion_id===row.id)?.object_entity_id,row.object_revision_id))&&!!sourceView(s,a,row.subject_entity_id,row.subject_revision_id)&&s.tables.evidence_link.filter(x=>x.subject_entity_id===row.id).every(x=>{
-  const e=s.tables.evidence.find(e=>e.id===x.evidence_id);return e&&!!sourceView(s,a,e.source_entity_id,e.source_revision_id);
- });
+ if(type==='assertion')return row.scope==='research'&&(!row.annotation_revision_id||!!annotationView(s,a,s.tables.entity_revision.find(x=>x.id===row.annotation_revision_id)?.snapshot||{}))&&(!row.object_revision_id||!!sourceView(s,a,s.tables.semantic_relation.find(x=>x.assertion_id===row.id)?.object_entity_id,row.object_revision_id))&&!!sourceView(s,a,row.subject_entity_id,row.subject_revision_id)&&assertionEvidence(s,row).every(e=>!!evidenceView(s,a,e))&&(!row.analytical_terms?.length||row.analytical_terms.every(id=>analysisTerms(s,a,assertionEvidence(s,row).map(e=>evidenceView(s,a,e)).filter(Boolean)).some(x=>x.id===id)));
+ if(type==='candidate'&&row.payload_schema_version==='research-analysis/1')return analysisCandidateVisible(s,a,row);
  if(type==='candidate')return !!sourceView(s,a,row.target_entity_id,row.base_revision_id)&&s.tables.candidate_source.filter(x=>x.candidate_id===row.id).every(x=>{
   const e=s.tables.entity.find(e=>e.id===x.source_entity_id),v=e&&s.tables[e.entity_type].find(v=>v.id===e.id);
   return v&&researchVisible(s,a,v,e.entity_type);
@@ -62,6 +62,11 @@ export function validateResearch(s,require,fk,canonical){
  for(const r of t.entity_revision.filter(r=>reg(r.entity_id)?.entity_type==='research_corpus'))require(canonical(r.snapshot._relations?.corpus_item)===canonical(t.corpus_item.filter(x=>x.corpus_revision_id===r.id)),'Змінено склад версії корпусу');
  for(const x of t.annotation){validateAnnotation(s,x,require);fk('person',x.author_person_id);if(x.corpus_id)fk('research_corpus',x.corpus_id);}
  for(const x of t.assertion.filter(x=>x.scope==='research')){fk('entity',x.subject_entity_id);require(x.scope==='research'&&['research','relation'].includes(x.assertion_kind)&&x.acceptance_state==='draft'&&!!x.statement_text.trim(),'Дослідницьке твердження');if(x.corpus_id)fk('research_corpus',x.corpus_id);require(t.evidence_link.some(e=>e.subject_entity_id===x.id),'Потрібен доказ твердження');if(x.annotation_revision_id)require(reg(by('entity_revision',x.annotation_revision_id)?.entity_id)?.entity_type==='annotation','Версія нотатки');if(x.assertion_kind==='relation'){const rel=(t.semantic_relation||[]).filter(r=>r.assertion_id===x.id);require(rel.length===1&&x.subject_entity_id!==rel[0].object_entity_id,'Дослідницький зв’язок');exact(x.subject_entity_id,x.subject_revision_id);exact(rel[0].object_entity_id,x.object_revision_id);require(['related_to','variant_of'].includes(by('vocabulary_term',rel[0].relation_type_term_id)?.code),'Тип зв’язку');}}
+ for(const r of t.entity_revision.filter(r=>r.snapshot.evidence_profile==='analysis/1'&&reg(r.entity_id)?.entity_type==='assertion')){
+  const links=t.evidence_link.filter(x=>x.subject_entity_id===r.entity_id&&x.subject_revision_id===r.id);require(links.length>0&&canonical(links)===canonical(r.snapshot._relations?.evidence_link),'Змінено докази версії твердження');
+  for(const l of links){const ev=by('evidence',l.evidence_id);require(!!ev&&['supports','contradicts','review'].includes(l.evidence_role)&&!!ev.locator?.trim()&&!!ev.note?.trim(),'Доказ висновку');exact(ev.source_entity_id,ev.source_revision_id);if(ev.target_entity_id)exact(ev.target_entity_id,ev.target_revision_id);if(ev.annotation_revision_id)require(reg(by('entity_revision',ev.annotation_revision_id)?.entity_id)?.entity_type==='annotation','Нотатка доказу');}
+ }
+ for(const x of t.candidate.filter(x=>x.payload_schema_version==='research-analysis/1')){require(x.kind==='assertion'&&reg(x.id).archive_id===null&&x.proposed_by===reg(x.id).owner_account_id,'Приватний кандидат аналізу');fk('process_run',x.process_run_id);exact(x.proposed_payload.corpus_id,x.proposed_payload.corpus_revision_id);require(t.candidate_source.some(y=>y.candidate_id===x.id),'Входи аналізу');}
  for(const x of t.candidate_source){fk('candidate',x.candidate_id);exact(x.source_entity_id,x.source_revision_id);}
  for(const x of t.candidate.filter(x=>x.kind==='change_proposal'&&x.payload_schema_version!=='museum-proposal-1')){fk('account',x.proposed_by);require(x.proposed_by===reg(x.id).owner_account_id&&x.payload_schema_version==='research-proposal-1'&&typeof x.proposed_payload.description==='string'&&!!x.proposed_payload.description.trim(),'Пропозиція архіву');require(t.candidate_source.some(y=>y.candidate_id===x.id&&reg(y.source_entity_id)?.entity_type==='assertion'),'Підстава пропозиції');}
  for(const x of t.citation){exact(x.target_entity_id,x.target_revision_id);require(by('identifier',x.stable_identifier_id)?.entity_id===x.target_entity_id,'Ідентифікатор цитування');}
@@ -83,6 +88,7 @@ export async function researchCommand(s,actor,c,{fail,hash,audit,snapshot}){
   audit(c.type,row.id,before,rid);return row;
  };
  const corpusContext=(id,src)=>{if(!id)return null;own('research_corpus',id);if(!t.corpus_item.some(x=>by('entity_revision',x.corpus_revision_id)?.entity_id===id&&corpusAnchor(x).id===src.id&&corpusAnchor(x).revision_id===src.revision_id&&corpusTarget(s,actor,x)))fail('invalid','Джерело не входить до корпусу.');return id;};
+ if(c.type.startsWith('research.analysis.')||c.type==='research.assertion.revise')return analysisCommand(s,actor,c,{fail,append,fresh,own,text,hash,snapshot});
  if(c.type==='research.query')return append('saved_query',{owner_account_id:actor,name:text(c.name),query_spec:discoverySpec(c.spec||c),query_schema_version:'2',index_profile_version:'local-discovery-2',access_context:{account_id:actor},description:null});
  if(['research.corpus.create','research.corpus.revise','research.corpus.freeze'].includes(c.type)){
   const old=c.type==='research.corpus.create'?null:own('research_corpus',c.id);if(old)fresh(old.id);
@@ -141,7 +147,7 @@ export async function researchCommand(s,actor,c,{fail,hash,audit,snapshot}){
  if(c.type==='research.proposal'){
   const a=own('assertion',c.id);fresh(a.id);if(a.assertion_kind==='relation')fail('invalid','Дослідницький зв’язок ще не передається як уточнення опису.');if(!researchVisible(s,actor,a,'assertion'))fail('forbidden','Джерело недоступне.');
   if(t.candidate.some(x=>x.kind==='change_proposal'&&x.proposed_by===actor&&x.state==='pending'&&t.candidate_source.some(y=>y.candidate_id===x.id&&y.source_entity_id===a.id)))fail('invalid','Це твердження вже подано.');
-  const ev=by('evidence',t.evidence_link.find(x=>x.subject_entity_id===a.id).evidence_id),src=source(a.subject_entity_id,ev.source_revision_id);
+  const src=source(a.subject_entity_id,a.subject_revision_id);
   const row=await append('candidate',{kind:'change_proposal',target_entity_id:src.id,base_revision_id:src.revision_id,proposed_payload:{description:text(c.description)},payload_schema_version:'research-proposal-1',proposed_entity_id:null,process_run_id:null,proposed_by:actor,confidence:null,state:'pending'});
   t.candidate_source.push({candidate_id:row.id,source_entity_id:a.id,source_revision_id:rev(a.id),source_role:'research_assertion'});return row;
  }
