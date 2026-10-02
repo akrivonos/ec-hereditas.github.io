@@ -1,4 +1,4 @@
-import {unitPeople} from '../data/participants.mjs?v=20261002-programmes';
+import {unitPeople} from '../data/participants.mjs?v=20261002-programmes2';
 export function sessionRecords(c,r,units){
  const {t,label,params,pg,esc,btn,button,panel,table,body,action,unitDialog,writable}=c,text=params.get('view')==='text',base={id:r.id,role:params.get('role')||'R01',section:'records'},url=v=>pg(8,{...base,view:v});
  units.forEach(u=>action('edit-unit-'+u.id,()=>unitDialog(r,u)));

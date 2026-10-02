@@ -1,5 +1,5 @@
-import {fileBytes,MAX_MEDIA_BYTES,mediaMime} from './binary.mjs?v=20261002-programmes';
-import {rawHash} from './media.mjs?v=20261002-programmes';
+import {fileBytes,MAX_MEDIA_BYTES,mediaMime} from './binary.mjs?v=20261002-programmes2';
+import {rawHash} from './media.mjs?v=20261002-programmes2';
 export function consentMedia(s,id){
  const t=s.tables,reg=t.entity.find(x=>x.id===id),row=reg&&t[reg.entity_type]?.find(x=>x.id===id);if(!row)return false;
  if(reg.entity_type==='file_object')return !!row.technical_metadata?.consent_evidence||t.evidence.some(ev=>t.evidence_link.some(l=>l.evidence_id===ev.id&&l.evidence_role==='consent')&&(()=>{if(ev.source_entity_id===id)return true;const src=t.entity_revision.find(r=>r.id===ev.source_revision_id)?.snapshot;if(!src?.representation_revision_id)return false;const rep=t.entity_revision.find(r=>r.id===src.representation_revision_id)?.snapshot;return rep?._relations?.representation_file?.some(f=>f.file_id===id);})());

@@ -1,6 +1,6 @@
-import {participantCodes} from '../data/participants.mjs?v=20261002-programmes';
-import {catalogRoles,geoRoles,catalogSchemes,classificationFits} from '../data/catalog.mjs?v=20261002-programmes';
-import {mediaPreview} from './session-media.mjs?v=20261002-programmes';
+import {participantCodes} from '../data/participants.mjs?v=20261002-programmes2';
+import {catalogRoles,geoRoles,catalogSchemes,classificationFits} from '../data/catalog.mjs?v=20261002-programmes2';
+import {mediaPreview} from './session-media.mjs?v=20261002-programmes2';
 export function catalogPage(c){
  const {st,t,actor,scope,params,by,entity,rev,label,allowed,visible,writable,action,show,heading,panel,body,table,details,btn,button,pg,esc,input,select,opts,choices,dialog,form,dispatch,render,denied}=c;
  const id=params.get('material')||params.get('id'),e=entity(id),row=e&&by(e.entity_type,id);if(!row||!allowed(id)||e.entity_type==='document'&&row.kind==='received_consent'&&!allowed(id,'consent.read')||(scope&&e.archive_id!==scope)){denied();return;}

@@ -1,17 +1,17 @@
-import {programmeEditor} from './programmes.mjs?v=20261002-programmes';
-import {programmeVersions} from '../data/programmes.mjs?v=20261002-programmes';
-import {consentMedia} from '../data/consent-media.mjs?v=20261002-programmes';
-import {collectorCode,isCollector,participantCodes,unitPeople} from '../data/participants.mjs?v=20261002-programmes';
-import {catalogPage} from './catalog.mjs?v=20261002-programmes';
-import {mediaPreview} from './session-media.mjs?v=20261002-programmes';
-import {sessionPage} from './session.mjs?v=20261002-programmes';
-import {contactsPage} from './contacts.mjs?v=20261002-programmes';
-import {preparationPage} from './preparation.mjs?v=20261002-programmes';
-import {preparationStatus} from '../data/preparation.mjs?v=20261002-programmes';
-import {can,hash} from '../data/model.mjs?v=20261002-programmes';
-import {hint} from './help.mjs?v=20261002-programmes';
-import {wizard} from './wizard.mjs?v=20261002-programmes';
-import {mediaPages} from './media.mjs?v=20261002-programmes';
+import {programmeEditor} from './programmes.mjs?v=20261002-programmes2';
+import {programmeVersions} from '../data/programmes.mjs?v=20261002-programmes2';
+import {consentMedia} from '../data/consent-media.mjs?v=20261002-programmes2';
+import {collectorCode,isCollector,participantCodes,unitPeople} from '../data/participants.mjs?v=20261002-programmes2';
+import {catalogPage} from './catalog.mjs?v=20261002-programmes2';
+import {mediaPreview} from './session-media.mjs?v=20261002-programmes2';
+import {sessionPage} from './session.mjs?v=20261002-programmes2';
+import {contactsPage} from './contacts.mjs?v=20261002-programmes2';
+import {preparationPage} from './preparation.mjs?v=20261002-programmes2';
+import {preparationStatus} from '../data/preparation.mjs?v=20261002-programmes2';
+import {can,hash} from '../data/model.mjs?v=20261002-programmes2';
+import {hint} from './help.mjs?v=20261002-programmes2';
+import {wizard} from './wizard.mjs?v=20261002-programmes2';
+import {mediaPages} from './media.mjs?v=20261002-programmes2';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;
@@ -40,7 +40,7 @@ export function fieldPages(ctx){
  const save=async c=>{const result=await dispatch(c);flash('Зміни збережено.');render();return result;};
  const form=(title,html,makeCommand,after)=>dialog(title,html,async fd=>{const result=await dispatch(await makeCommand(fd));flash('Зміни збережено.');if(after)after(result);else render();});
  const revisionHistory=id=>`<details class="record-history"><summary>Історія змін</summary>${table(['Версія','Дата','Зміна'],t.entity_revision.filter(x=>x.entity_id===id).slice().reverse().map(r=>[String(r.revision_no),esc(date(r.recorded_at)),esc(r.change_reason)]))}</details>`;
- const tabs=r=>`<nav class="record-tabs" aria-label="Дослідження">${[[5,'Підготовка',''],[5,'Програма (питальники) дослідження','programmes'],[6,'Контакти та зустрічі',''],[7,'Сеанси',''],[9,'Польовий зошит','']].map(([n,title,section])=>`<a href="${pg(n,{[n===5?'id':'research']:r.id,section,role:params.get('role')||'R01'})}" ${document.body.dataset.page==='PG-'+String(n).padStart(2,'0')&&(n!==5||((params.get('section')==='programmes')===(section==='programmes')))?'aria-current="page"':''}>${title}</a>`).join('')}</nav>`;
+ const tabs=r=>`<nav class="record-tabs" aria-label="Дослідження">${[[5,'Підготовка',''],[5,'Програми та питальники','programmes'],[6,'Контакти та зустрічі',''],[7,'Сеанси',''],[9,'Польовий зошит','']].map(([n,title,section])=>`<a href="${pg(n,{[n===5?'id':'research']:r.id,section,role:params.get('role')||'R01'})}" ${document.body.dataset.page==='PG-'+String(n).padStart(2,'0')&&(n!==5||((params.get('section')==='programmes')===(section==='programmes')))?'aria-current="page"':''}>${title}</a>`).join('')}</nav>`;
  const research=()=>visible('field_research').find(x=>x.id===params.get('research'));
  const kinds=[['recorded_work','Твір'],['fei','Фольклорно-етнографічна інформація']];
  const participantRole=code=>({performer:'Респондент',collector:'Збирач',observer:'Присутній'})[code]||code;

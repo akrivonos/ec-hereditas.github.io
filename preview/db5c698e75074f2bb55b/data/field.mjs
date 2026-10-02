@@ -1,16 +1,16 @@
-import {programmeRefs,programmeCommand,validateProgrammes} from './programmes.mjs?v=20261002-programmes';
-import {collectorCode,nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261002-programmes';
-import {catalogRelations} from './catalog.mjs?v=20261002-programmes';
-import {intakeRelations} from './intake.mjs?v=20261002-programmes';
-import {sessionCommand,validateSession} from './session.mjs?v=20261002-programmes';
-import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-programmes';
-import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-programmes';
+import {programmeRefs,programmeCommand,validateProgrammes} from './programmes.mjs?v=20261002-programmes2';
+import {collectorCode,nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261002-programmes2';
+import {catalogRelations} from './catalog.mjs?v=20261002-programmes2';
+import {intakeRelations} from './intake.mjs?v=20261002-programmes2';
+import {sessionCommand,validateSession} from './session.mjs?v=20261002-programmes2';
+import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-programmes2';
+import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-programmes2';
 // Domain operations for the fieldwork and archive prototype. No backend persistence.
-import {mediaRelations} from './media.mjs?v=20261002-programmes';
-import {researchRelations} from './research.mjs?v=20261002-programmes';
-import {publicRelations} from './public.mjs?v=20261002-programmes';
-import {museumRelations} from './museum.mjs?v=20261002-programmes';
-import {workbenchRelations} from './workbench.mjs?v=20261002-programmes';
+import {mediaRelations} from './media.mjs?v=20261002-programmes2';
+import {researchRelations} from './research.mjs?v=20261002-programmes2';
+import {publicRelations} from './public.mjs?v=20261002-programmes2';
+import {museumRelations} from './museum.mjs?v=20261002-programmes2';
+import {workbenchRelations} from './workbench.mjs?v=20261002-programmes2';
 export const fieldTypes=['field_research','work_group','participation','collecting_session','geographic_context','potential_respondent','document','information_unit','archive_node','place','institution','timed_layer'];
 const fields={
  field_research:['title','purpose','research_questions','date_from','date_to','preparation_notes','backup_plan'],

@@ -1,8 +1,8 @@
-import {captureFormats} from '../data/digitization.mjs?v=20261002-programmes';
-import {plannedOutputs} from '../data/capture-preparation.mjs?v=20261002-programmes';
-import {MAX_MEDIA_BYTES} from '../data/binary.mjs?v=20261002-programmes';
-import {encode,download} from './session-media.mjs?v=20261002-programmes';
-import {wizard} from './wizard.mjs?v=20261002-programmes';
+import {captureFormats} from '../data/digitization.mjs?v=20261002-programmes2';
+import {plannedOutputs} from '../data/capture-preparation.mjs?v=20261002-programmes2';
+import {MAX_MEDIA_BYTES} from '../data/binary.mjs?v=20261002-programmes2';
+import {encode,download} from './session-media.mjs?v=20261002-programmes2';
+import {wizard} from './wizard.mjs?v=20261002-programmes2';
 export function digitizationDialog(ctx,job,previous){
  const {st,t,rev,label,esc,dialog,input,select,options,choices,details,dispatch,done}=ctx;
  const profile=job.specification.capture_profile,parts=plannedOutputs(st,job.capture_plan_revision_id);let files=[],stream=null,recorder=null,chunks=[],timer=null,closed=false,pending=false,blob=null,previewUrl=null,recordingMetadata=null;

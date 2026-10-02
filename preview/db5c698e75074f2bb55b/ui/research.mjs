@@ -1,14 +1,14 @@
-import {deliveryUI} from './delivery.mjs?v=20261002-programmes';
-import {analysisUI,researchStates} from './analysis.mjs?v=20261002-programmes';
-import {assertionEvidence} from '../data/analysis.mjs?v=20261002-programmes';
-import {readerWorkspace} from './reader.mjs?v=20261002-programmes';
-import {annotationView} from '../data/reader.mjs?v=20261002-programmes';
-import {corpusWizard as editCorpus,corpusPreview} from './corpus.mjs?v=20261002-programmes';
-import {corpusTarget,corpusAnchor,corpusKey,corpusKind} from '../data/corpus.mjs?v=20261002-programmes';
-import {discoveryContext,discoverySearchPage,discoverySourcePanels} from './discovery.mjs?v=20261002-programmes';
-import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261002-programmes';
-import {wizard} from './wizard.mjs?v=20261002-programmes';
-import {hint} from './help.mjs?v=20261002-programmes';
+import {deliveryUI} from './delivery.mjs?v=20261002-programmes2';
+import {analysisUI,researchStates} from './analysis.mjs?v=20261002-programmes2';
+import {assertionEvidence} from '../data/analysis.mjs?v=20261002-programmes2';
+import {readerWorkspace} from './reader.mjs?v=20261002-programmes2';
+import {annotationView} from '../data/reader.mjs?v=20261002-programmes2';
+import {corpusWizard as editCorpus,corpusPreview} from './corpus.mjs?v=20261002-programmes2';
+import {corpusTarget,corpusAnchor,corpusKey,corpusKind} from '../data/corpus.mjs?v=20261002-programmes2';
+import {discoveryContext,discoverySearchPage,discoverySourcePanels} from './discovery.mjs?v=20261002-programmes2';
+import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261002-programmes2';
+import {wizard} from './wizard.mjs?v=20261002-programmes2';
+import {hint} from './help.mjs?v=20261002-programmes2';
 
 export function researchPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);

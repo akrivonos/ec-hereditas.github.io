@@ -1,9 +1,9 @@
 // Museum editors own their workspace; visitors receive a freshly checked public projection.
-import {can} from './model.mjs?v=20261002-programmes';
-import {publicView,publicResources,publicCommand} from './public.mjs?v=20261002-programmes';
-import {rawHash} from './media.mjs?v=20261002-programmes';
-import {qrcodegen} from '../vendor/qrcodegen.mjs?v=20261002-programmes';
-import {museumRequestCommand,validateMuseumRequests} from './museum-requests.mjs?v=20261002-programmes';
+import {can} from './model.mjs?v=20261002-programmes2';
+import {publicView,publicResources,publicCommand} from './public.mjs?v=20261002-programmes2';
+import {rawHash} from './media.mjs?v=20261002-programmes2';
+import {qrcodegen} from '../vendor/qrcodegen.mjs?v=20261002-programmes2';
+import {museumRequestCommand,validateMuseumRequests} from './museum-requests.mjs?v=20261002-programmes2';
 export const museumTypes=['museum_exhibition','exhibit_set','access_point'];
 export const museumReasons={same_ritual:'Спільний обряд',same_object_in_work:'Предмет згадано у творі',same_ethnographic_region:'Спільний етнографічний регіон',same_performer:'Спільний виконавець'};
 export const museumEnabled=(s,a)=>s.tables.archive.some(x=>can(s,a,'museum.write',x.id));
