@@ -1,6 +1,6 @@
-import {reviewCase,reviewReadable,reviewLabel,reviewSourceTypes,relationPredicates,pairFits} from '../data/reconciliation.mjs?v=20261002-feedback';
-import {classificationFits,catalogSchemes} from '../data/catalog.mjs?v=20261002-feedback';
-import {mediaPreview} from './session-media.mjs?v=20261002-feedback';
+import {reviewCase,reviewReadable,reviewLabel,reviewSourceTypes,relationPredicates,pairFits} from '../data/reconciliation.mjs?v=20261002-feedback2';
+import {classificationFits,catalogSchemes} from '../data/catalog.mjs?v=20261002-feedback2';
+import {mediaPreview} from './session-media.mjs?v=20261002-feedback2';
 export const caseKinds={identity:'Відповідність ресурсу',authority:'Особа, місце або установа',relation:'Зв’язок',classification:'Класифікація',generic:'Висновок про відповідність',catalog:'Архівний опис'};
 export const caseStates={pending:'Очікує перевірки',deferred:'Відкладено',unresolved:'Недостатньо доказів',disputed:'Спірний випадок',accepted:'Прийнято',corrected:'Виправлено й прийнято',rejected:'Відхилено',superseded:'Замінено'};
 export function reconciliationUI(c){

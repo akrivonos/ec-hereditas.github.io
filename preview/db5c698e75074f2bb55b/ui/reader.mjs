@@ -1,8 +1,8 @@
-import {readerResources,readerTags,annotationView,noteTypes} from '../data/reader.mjs?v=20261002-feedback';
-import {corpusAnchor,corpusTarget,corpusKey} from '../data/corpus.mjs?v=20261002-feedback';
-import {researchVisible,sourceView} from '../data/research.mjs?v=20261002-feedback';
-import {mediaPreview} from './session-media.mjs?v=20261002-feedback';
-import {hint} from './help.mjs?v=20261002-feedback';
+import {readerResources,readerTags,annotationView,noteTypes} from '../data/reader.mjs?v=20261002-feedback2';
+import {corpusAnchor,corpusTarget,corpusKey} from '../data/corpus.mjs?v=20261002-feedback2';
+import {researchVisible,sourceView} from '../data/research.mjs?v=20261002-feedback2';
+import {mediaPreview} from './session-media.mjs?v=20261002-feedback2';
+import {hint} from './help.mjs?v=20261002-feedback2';
 export function readerWorkspace(c,src,selectedItem,corpusId,corpusRevision){
  const {st,actor,p,esc,dialog,input,details,table,panel,body,btn,act,dispatch,go,rev,sources,assertionWizard}=c,t=st.tables;
  const resources=readerResources(st,actor,src),anchor={source_entity_id:src.id,source_revision_id:src.revision_id},sourceItem={...anchor,target_entity_id:src.id,target_revision_id:src.revision_id};

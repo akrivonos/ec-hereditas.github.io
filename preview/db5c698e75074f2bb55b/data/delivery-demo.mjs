@@ -1,6 +1,6 @@
-import {createStore} from './model.mjs?v=20261002-feedback';
-import {sourceView,researchEnabled} from './research.mjs?v=20261002-feedback';
-import {readerResources} from './reader.mjs?v=20261002-feedback';
+import {createStore} from './model.mjs?v=20261002-feedback2';
+import {sourceView,researchEnabled} from './research.mjs?v=20261002-feedback2';
+import {readerResources} from './reader.mjs?v=20261002-feedback2';
 export async function deliveryDemo(source){
  if(source.demo.delivery_v1)return structuredClone(source);const store=createStore(source),a=source.demo.ids.admin,ids=source.demo.reader_ids,src=sourceView(source,a,ids.unit);
  if(src&&sourceView(source,a,src.id,src.revision_id,'cite')&&researchEnabled(source,a)){

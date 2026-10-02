@@ -1,15 +1,15 @@
-import {consentMedia} from '../data/consent-media.mjs?v=20261002-feedback';
-import {participantCodes,unitPeople} from '../data/participants.mjs?v=20261002-feedback';
-import {catalogPage} from './catalog.mjs?v=20261002-feedback';
-import {mediaPreview} from './session-media.mjs?v=20261002-feedback';
-import {sessionPage} from './session.mjs?v=20261002-feedback';
-import {contactsPage} from './contacts.mjs?v=20261002-feedback';
-import {preparationPage} from './preparation.mjs?v=20261002-feedback';
-import {preparationStatus} from '../data/preparation.mjs?v=20261002-feedback';
-import {can,hash} from '../data/model.mjs?v=20261002-feedback';
-import {hint} from './help.mjs?v=20261002-feedback';
-import {wizard} from './wizard.mjs?v=20261002-feedback';
-import {mediaPages} from './media.mjs?v=20261002-feedback';
+import {consentMedia} from '../data/consent-media.mjs?v=20261002-feedback2';
+import {participantCodes,unitPeople} from '../data/participants.mjs?v=20261002-feedback2';
+import {catalogPage} from './catalog.mjs?v=20261002-feedback2';
+import {mediaPreview} from './session-media.mjs?v=20261002-feedback2';
+import {sessionPage} from './session.mjs?v=20261002-feedback2';
+import {contactsPage} from './contacts.mjs?v=20261002-feedback2';
+import {preparationPage} from './preparation.mjs?v=20261002-feedback2';
+import {preparationStatus} from '../data/preparation.mjs?v=20261002-feedback2';
+import {can,hash} from '../data/model.mjs?v=20261002-feedback2';
+import {hint} from './help.mjs?v=20261002-feedback2';
+import {wizard} from './wizard.mjs?v=20261002-feedback2';
+import {mediaPages} from './media.mjs?v=20261002-feedback2';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;

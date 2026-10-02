@@ -1,18 +1,18 @@
-import {consentMedia} from '../data/consent-media.mjs?v=20261002-feedback';
-import {preservationUI} from './preservation.mjs?v=20261002-feedback';
-import {preservationStatus} from '../data/preservation.mjs?v=20261002-feedback';
-import {qualityDialog,qualityHistory} from './quality.mjs?v=20261002-feedback';
-import {digitizationDialog} from './digitization.mjs?v=20261002-feedback';
-import {preparationUI} from './capture-preparation.mjs?v=20261002-feedback';
-import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261002-feedback';
-import {legacyPages} from './legacy.mjs?v=20261002-feedback';
-import {intakePages} from './intake.mjs?v=20261002-feedback';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261002-feedback';
-import {mediaPreview,download} from './session-media.mjs?v=20261002-feedback';
-import {can,hash} from '../data/model.mjs?v=20261002-feedback';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261002-feedback';
-import {hint} from './help.mjs?v=20261002-feedback';
-import {wizard} from './wizard.mjs?v=20261002-feedback';
+import {consentMedia} from '../data/consent-media.mjs?v=20261002-feedback2';
+import {preservationUI} from './preservation.mjs?v=20261002-feedback2';
+import {preservationStatus} from '../data/preservation.mjs?v=20261002-feedback2';
+import {qualityDialog,qualityHistory} from './quality.mjs?v=20261002-feedback2';
+import {digitizationDialog} from './digitization.mjs?v=20261002-feedback2';
+import {preparationUI} from './capture-preparation.mjs?v=20261002-feedback2';
+import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261002-feedback2';
+import {legacyPages} from './legacy.mjs?v=20261002-feedback2';
+import {intakePages} from './intake.mjs?v=20261002-feedback2';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261002-feedback2';
+import {mediaPreview,download} from './session-media.mjs?v=20261002-feedback2';
+import {can,hash} from '../data/model.mjs?v=20261002-feedback2';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261002-feedback2';
+import {hint} from './help.mjs?v=20261002-feedback2';
+import {wizard} from './wizard.mjs?v=20261002-feedback2';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;

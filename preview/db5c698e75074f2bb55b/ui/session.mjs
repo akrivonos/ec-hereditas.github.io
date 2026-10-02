@@ -1,11 +1,11 @@
-import {consentEvidenceFields,bindConsentEvidence} from './consent-evidence.mjs?v=20261002-feedback';
-import {consentMedia} from '../data/consent-media.mjs?v=20261002-feedback';
-import {sessionRecords,bindSessionText} from './session-records.mjs?v=20261002-feedback';
-import {participantCodes} from '../data/participants.mjs?v=20261002-feedback';
-import {eventKinds,sessionRepresentations,markerEntries} from '../data/session.mjs?v=20261002-feedback';
-import {useNames} from '../data/workbench.mjs?v=20261002-feedback';
-import {hint} from './help.mjs?v=20261002-feedback';
-import {mediaPreview,download,sessionMediaDialogs} from './session-media.mjs?v=20261002-feedback';
+import {consentEvidenceFields,bindConsentEvidence} from './consent-evidence.mjs?v=20261002-feedback2';
+import {consentMedia} from '../data/consent-media.mjs?v=20261002-feedback2';
+import {sessionRecords,bindSessionText} from './session-records.mjs?v=20261002-feedback2';
+import {participantCodes} from '../data/participants.mjs?v=20261002-feedback2';
+import {eventKinds,sessionRepresentations,markerEntries} from '../data/session.mjs?v=20261002-feedback2';
+import {useNames} from '../data/workbench.mjs?v=20261002-feedback2';
+import {hint} from './help.mjs?v=20261002-feedback2';
+import {mediaPreview,download,sessionMediaDialogs} from './session-media.mjs?v=20261002-feedback2';
 export function sessionPage(c,r){
  const {st,t,actor,by,rev,label,visible,writable,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,save,show,revisionHistory,dialog,unitDialog,prepareHandover}=c;
  const write=writable(r.id),expected=rev(r.id),command=(type,v={})=>({type,id:r.id,expected_revision_id:expected,...v});

@@ -1,6 +1,6 @@
-import {fileBytes} from './binary.mjs?v=20261002-feedback';
-import {plannedOutputs} from './capture-preparation.mjs?v=20261002-feedback';
-import {captureFormats,captureFileProblem} from './digitization.mjs?v=20261002-feedback';
+import {fileBytes} from './binary.mjs?v=20261002-feedback2';
+import {plannedOutputs} from './capture-preparation.mjs?v=20261002-feedback2';
+import {captureFormats,captureFileProblem} from './digitization.mjs?v=20261002-feedback2';
 const digest=async bytes=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(x=>x.toString(16).padStart(2,'0')).join('');
 export const qualityDigest=r=>digest(new TextEncoder().encode(JSON.stringify(r)));
 export function measureFile(bytes,mime){

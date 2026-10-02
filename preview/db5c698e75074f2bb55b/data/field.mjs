@@ -1,15 +1,15 @@
-import {nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261002-feedback';
-import {catalogRelations} from './catalog.mjs?v=20261002-feedback';
-import {intakeRelations} from './intake.mjs?v=20261002-feedback';
-import {sessionCommand,validateSession} from './session.mjs?v=20261002-feedback';
-import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-feedback';
-import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-feedback';
+import {nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261002-feedback2';
+import {catalogRelations} from './catalog.mjs?v=20261002-feedback2';
+import {intakeRelations} from './intake.mjs?v=20261002-feedback2';
+import {sessionCommand,validateSession} from './session.mjs?v=20261002-feedback2';
+import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-feedback2';
+import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-feedback2';
 // Domain operations for the fieldwork and archive prototype. No backend persistence.
-import {mediaRelations} from './media.mjs?v=20261002-feedback';
-import {researchRelations} from './research.mjs?v=20261002-feedback';
-import {publicRelations} from './public.mjs?v=20261002-feedback';
-import {museumRelations} from './museum.mjs?v=20261002-feedback';
-import {workbenchRelations} from './workbench.mjs?v=20261002-feedback';
+import {mediaRelations} from './media.mjs?v=20261002-feedback2';
+import {researchRelations} from './research.mjs?v=20261002-feedback2';
+import {publicRelations} from './public.mjs?v=20261002-feedback2';
+import {museumRelations} from './museum.mjs?v=20261002-feedback2';
+import {workbenchRelations} from './workbench.mjs?v=20261002-feedback2';
 export const fieldTypes=['field_research','work_group','participation','collecting_session','geographic_context','potential_respondent','document','information_unit','archive_node','place','institution','timed_layer'];
 const fields={
  field_research:['title','purpose','research_questions','date_from','date_to','preparation_notes','backup_plan'],
