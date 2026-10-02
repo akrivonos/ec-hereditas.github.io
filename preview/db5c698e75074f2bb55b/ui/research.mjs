@@ -1,6 +1,7 @@
-import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261001-wf14';
-import {wizard} from './wizard.mjs?v=20261001-wf14';
-import {hint} from './help.mjs?v=20261001-wf14';
+import {discoveryContext,discoverySearchPage,discoverySourcePanels} from './discovery.mjs?v=20261002-wf15';
+import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261002-wf15';
+import {wizard} from './wizard.mjs?v=20261002-wf15';
+import {hint} from './help.mjs?v=20261002-wf15';
 
 export function researchPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);
@@ -22,7 +23,7 @@ export function researchPages(ctx){
  const form=(title,html,command,after)=>dialog(title,html,async fd=>{const result=await dispatch(command(Object.fromEntries(fd)));if(after)after(result);else done('Збережено.');});
  const sources=()=>searchSources(st,actor,{archive_id:scope});
  const sourceLink=(src,extra={})=>link(45,src.title,{id:src.id,revision:src.revision_id,...extra});
- const queryContext=()=>({q:p.get('q')||'',kind:p.get('kind')||'',query:p.get('query')||'',archive:p.get('archive')||''});
+ const queryContext=()=>discoveryContext(p);
  const sourceOptions=()=>'<option value="">Оберіть джерело</option>'+sources().map(x=>`<option value="${x.id}">${esc(x.title)}</option>`).join('');
 
  function corpusWizard(selected=[],old=null){
@@ -30,25 +31,18 @@ export function researchPages(ctx){
   existing.forEach(x=>{const src=sourceView(st,actor,x.target_entity_id,x.target_revision_id);if(src)pool.set(src.id,src);});
   selected.forEach(x=>pool.set(x.id,x));const candidates=[...pool.values()],chosen=new Set(old?existing.map(x=>x.target_entity_id):selected.map(x=>x.id));
   wizard({dialog,esc},{title:old?'Нова версія корпусу':'Створити корпус',submit:old?'Зберегти версію':'Створити корпус',steps:[
-   {title:'Питання та критерії',body:input('title','Назва корпусу',old?.title||'',false,true)+input('research_question','Дослідницьке питання',old?.research_question||'',true)+input('inclusion_criteria','Критерії включення',old?.inclusion_criteria||'',true,true)+input('exclusion_criteria','Критерії виключення',old?.exclusion_criteria||'',true)},
+   {title:'Питання та критерії',body:input('title','Назва корпусу',old?.title||'',false,true)+input('research_question','Дослідницьке питання',old?.research_question||p.get('question')||'',true)+input('inclusion_criteria','Критерії включення',old?.inclusion_criteria||'',true,true)+input('exclusion_criteria','Критерії виключення',old?.exclusion_criteria||'',true)},
    {title:'Оберіть джерела',body:`<fieldset><legend>Склад корпусу</legend>${candidates.map(x=>check('items',x.id,x.title+' · версія '+x.revision_no,chosen.has(x.id))).join('')||'<p>Доступних джерел немає.</p>'}</fieldset>`+hint('Склад корпусу','Зберігаються саме показані версії. Зміни архівного опису не замінять їх. Попередні версії корпусу залишаються в історії.')},
    {title:'Підстава добору',body:input('selection_reason','Чому ці джерела включено',existing[0]?.selection_reason||'',true,true)+input('group_label','Група джерел',existing[0]?.group_label||'')+input('method_notes','Методичні нотатки',old?.method_notes||'',true)}
   ],summary:v=>details([['Назва',v.title],['Питання',v.research_question],['Критерії включення',v.inclusion_criteria],['Критерії виключення',v.exclusion_criteria],['Джерела',(v.items||[]).map(id=>pool.get(id)?.title).join('\n')||'Нічого не обрано'],['Підстава добору',v.selection_reason],['Група',v.group_label]])+(old?'<p>Попередня версія залишиться незмінною.</p>':''),onSubmit:async v=>{
    const row=await dispatch({type:old?'research.corpus.revise':'research.corpus.create',id:old?.id,expected_revision_id:old?rev(old.id):null,...v,saved_query_id:!old&&p.get('query')||null,items:(v.items||[]).map(id=>({target_entity_id:id,target_revision_id:pool.get(id).revision_id,selection_reason:v.selection_reason,group_label:v.group_label}))});go(44,{id:row.id});
   }});
  }
- function search(){
-  const q=queryContext(),rows=searchSources(st,actor,{q:q.q,kind:q.kind,archive_id:q.archive||scope});
-  act('save-query',()=>form('Зберегти пошук',input('name','Назва пошуку','',false,true)+details([['Текст',q.q||'Усі матеріали'],['Тип',kinds[q.kind]||'Усі типи']]),v=>({type:'research.query',...v,q:q.q,kind:q.kind,archive_id:q.archive||scope}),()=>go(42)));
-  act('create-corpus',()=>{const ids=[...document.querySelectorAll('[name="source-selection"]:checked')].map(x=>x.value);if(!ids.length){done('Оберіть джерела у списку.');return;}corpusWizard(rows.filter(x=>ids.includes(x.id)));});
-  show(heading('Дослідницька робота','Пошук джерел','Знайдіть матеріали, відкрийте опис і позначте потрібні рядки. Збережіть критерії пошуку або створіть корпус із вибраних джерел.')+
-   `<form class="filters"><input type="hidden" name="role" value="R04"><input type="hidden" name="query" value="${esc(q.query)}"><input type="hidden" name="archive" value="${esc(q.archive)}">${input('q','Знайти джерело',q.q)}<label>Тип джерела<select name="kind"><option value="">Усі типи</option>${Object.entries(kinds).map(([key,title])=>`<option value="${key}" ${q.kind===key?'selected':''}>${title}</option>`).join('')}</select></label><button class="button">Знайти</button></form>`+
-   `<div class="research-toolbar">${btn('Створити корпус із вибраного','create-corpus',enabled&&rows.length>0)}${btn('Зберегти пошук','save-query',enabled)}</div>`+
-   panel('Результати пошуку',table(['Обрати','Джерело','Тип','Версія'],rows.map(x=>[`<input type="checkbox" name="source-selection" value="${x.id}" aria-label="${esc('Обрати: '+x.title)}">`,sourceLink(x,{...q,from:'search'}),kinds[x.type],String(x.revision_no)]),'За цими умовами доступних джерел немає. Змініть пошуковий запит.')));
- }
+ const discoveryCtx=()=>({st,actor,scope,p,esc,pg,show,heading,panel,body,table,input,details,btn,act,link,form,go,enabled,corpusWizard,dialog});
+ function search(){return discoverySearchPage(discoveryCtx());}
  function queries(){
   show(heading('Дослідницька робота','Збережені пошуки','Повторіть пошук за збереженими умовами. Результати можуть змінитися після уточнення опису або зміни доступу.',button('Новий пошук',pg(41,{role:'R04'})))+
-   panel('Мої пошуки',table(['Назва','Умови','Дія'],own('saved_query').map(x=>[esc(x.name),esc([x.query_spec.q||'Усі матеріали',kinds[x.query_spec.kind]||'Усі типи'].join(' · ')),link(41,'Виконати пошук',{query:x.id,q:x.query_spec.q,kind:x.query_spec.kind,archive:x.query_spec.archive_id||''})]),'Збережіть потрібні умови зі сторінки пошуку.')));
+   panel('Мої пошуки',table(['Назва','Умови','Дія'],own('saved_query').map(x=>[esc(x.name),esc([x.query_spec.q||'Усі матеріали',kinds[x.query_spec.kind]||'Усі типи',x.query_spec.question||'',x.index_profile_version==='local-discovery-2'?'Збережено всі фільтри':''].filter(Boolean).join(' · ')),link(41,'Виконати пошук',{...x.query_spec,query:x.id})]),'Збережіть потрібні умови зі сторінки пошуку.')));
  }
  function corpora(){
   act('new',()=>corpusWizard());const state=p.get('state')||'',q=p.get('q')||'',rows=own('research_corpus').filter(x=>(!state||(state==='frozen'?!!x.frozen_at:!x.frozen_at))&&x.title.toLocaleLowerCase('uk').includes(q.toLocaleLowerCase('uk')));
@@ -85,6 +79,7 @@ export function researchPages(ctx){
    heading('Джерело',src.title,'Нотатки й докази прив’язуються до відкритої версії. Дослідницька робота не змінює архівний опис.',btn('Додати нотатку','note',enabled)+btn('Створити твердження','assert',enabled)+btn('Цитувати','cite',enabled&&!!sourceView(st,actor,src.id,src.revision_id,'cite')))+
    `<div class="media-status"><span>${kinds[src.type]}</span><span>Версія ${src.revision_no}</span>${src.revision_id!==rev(src.id)?'<span>У корпусі збережено попередню версію опису.</span>':''}</div>`+
    panel('Опис джерела',body(`<p class="source-text">${esc(src.text||'Опис ще не заповнено.')}</p>`))+
+   discoverySourcePanels(discoveryCtx(),src)+
    panel('Мої нотатки до цієї версії',table(['Нотатка'],notes.map(x=>[esc(x.body)]),'Нотаток ще немає. Додайте спостереження або питання до джерела.')));
  }
  function propose(a){

@@ -1,8 +1,8 @@
-import {mediaPreview} from './session-media.mjs?v=20261001-wf14';
-import {processingPage} from './processing.mjs?v=20261001-wf14';
-import {can,hash} from '../data/model.mjs?v=20261001-wf14';
-import {textList,textView,textKinds,kindCode,useNames,useDecision} from '../data/workbench.mjs?v=20261001-wf14';
-import {wizard} from './wizard.mjs?v=20261001-wf14';
+import {mediaPreview} from './session-media.mjs?v=20261002-wf15';
+import {processingPage} from './processing.mjs?v=20261002-wf15';
+import {can,hash} from '../data/model.mjs?v=20261002-wf15';
+import {textList,textView,textKinds,kindCode,useNames,useDecision} from '../data/workbench.mjs?v=20261002-wf15';
+import {wizard} from './wizard.mjs?v=20261002-wf15';
 
 export function workbenchPages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search),role=p.get('role')||'R02';

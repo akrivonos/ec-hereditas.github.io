@@ -1,7 +1,7 @@
-import {eventKinds,sessionRepresentations,markerEntries} from '../data/session.mjs?v=20261001-wf14';
-import {useNames} from '../data/workbench.mjs?v=20261001-wf14';
-import {hint} from './help.mjs?v=20261001-wf14';
-import {mediaPreview,download,sessionMediaDialogs} from './session-media.mjs?v=20261001-wf14';
+import {eventKinds,sessionRepresentations,markerEntries} from '../data/session.mjs?v=20261002-wf15';
+import {useNames} from '../data/workbench.mjs?v=20261002-wf15';
+import {hint} from './help.mjs?v=20261002-wf15';
+import {mediaPreview,download,sessionMediaDialogs} from './session-media.mjs?v=20261002-wf15';
 export function sessionPage(c,r){
  const {st,t,by,rev,label,visible,writable,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,save,show,revisionHistory,dialog,unitDialog,prepareHandover}=c;
  const write=writable(r.id),expected=rev(r.id),command=(type,v={})=>({type,id:r.id,expected_revision_id:expected,...v});

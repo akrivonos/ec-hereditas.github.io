@@ -8,7 +8,20 @@
   ],
   "phase": "M6",
   "tables": [
-    "saved_query"
+    "saved_query",
+    "textual_representation",
+    "timed_layer",
+    "timed_layer_entry",
+    "media_segment",
+    "vocabulary_term",
+    "term_label",
+    "term_mapping",
+    "classification",
+    "geographic_context",
+    "institution_context",
+    "verification_record",
+    "evidence",
+    "access_decision_resource"
   ],
   "fields_and_relations": "query_spec, schema/index profile version, access context.",
   "required_interaction": "Повторити запит; результат може змінитися, запит не є замороженим корпусом.",
@@ -28,15 +41,21 @@
     "commands": [
       "research.query"
     ],
-    "view_model": "Private saved queries and rerun with current access; corpus creation links exact saved query revision",
-    "completion": "core-interactive",
-    "limitations": [],
+    "view_model": "Private versioned criteria, research question and access context; rerun under current rights",
+    "completion": "implemented-local",
+    "limitations": [
+      "Local synchronous discovery over permitted browser data; no server search index or vector embeddings.",
+      "Context matching uses explicit active-term aliases and one-hop broader/narrower/reviewed related mappings, with visible reasons.",
+      "Map uses bundled Natural Earth land and only explicitly allowed, finite coordinates; no address geocoder or external map requests.",
+      "Candidate basket belongs to this browser tab and is rechecked before handover; reproducible archival membership is recorded by the WF-16 corpus wizard."
+    ],
     "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
     "permissions": [
       "research.write in an explicit archive grant",
       "owner_account_id for private objects",
       "domain.read rechecked for every source, note, assertion, citation and download"
     ],
-    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once.",
+    "subject_access": "Before search, counts, facets, snippets and playback: scoped domain.read, exact O47 research/view, time/embargo/consent checks, unmasked context fields and exact resource grants. Revoked resources disappear. Cite/download remain separate."
   }
 }

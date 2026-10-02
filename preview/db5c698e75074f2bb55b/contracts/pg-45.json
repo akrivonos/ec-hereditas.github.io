@@ -14,7 +14,18 @@
     "media_segment",
     "text_part",
     "text_alignment",
-    "evidence"
+    "evidence",
+    "textual_representation",
+    "timed_layer",
+    "timed_layer_entry",
+    "vocabulary_term",
+    "term_label",
+    "term_mapping",
+    "classification",
+    "geographic_context",
+    "institution_context",
+    "verification_record",
+    "access_decision_resource"
   ],
   "fields_and_relations": "Дозволені тексти/медіа й локатори, паралельні версії, власні примітки.",
   "required_interaction": "Анотувати range/segment; джерело не змінюється, offset прив’язаний до revision.",
@@ -36,10 +47,14 @@
       "research.assertion",
       "research.citation"
     ],
-    "view_model": "Explicit source reader, exact-version notes, evidence-backed assertion wizard and citation dialog",
+    "view_model": "Exact source reader, authorized transcript/media/timed hit, context traversal and provenance/verification before selection",
     "completion": "partial",
     "limitations": [
-      "Reader shows source description; parallel transcripts, media playback, text-part ranges and segment annotations remain pending."
+      "Local synchronous discovery over permitted browser data; no server search index or vector embeddings.",
+      "Context matching uses explicit active-term aliases and one-hop broader/narrower/reviewed related mappings, with visible reasons.",
+      "Map uses bundled Natural Earth land and only explicitly allowed, finite coordinates; no address geocoder or external map requests.",
+      "Candidate basket belongs to this browser tab and is rechecked before handover; reproducible archival membership is recorded by the WF-16 corpus wizard.",
+      "Parallel transcription/media editing, segment annotations and multiple evidence workflows remain WF-17/18."
     ],
     "state_storage": "Normalized browser store v9; existing user state is preserved, new grants require explicit human review.",
     "permissions": [
@@ -48,6 +63,6 @@
       "domain.read rechecked for every source, note, assertion, citation and download"
     ],
     "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once.",
-    "subject_access": "Requires scoped domain.read and exact-version O47 research; all known relevant consent bases, state, time, embargo, field projection and separate cite/download use are evaluated. Existing exports recheck access and approved title."
+    "subject_access": "Before search, counts, facets, snippets and playback: scoped domain.read, exact O47 research/view, time/embargo/consent checks, unmasked context fields and exact resource grants. Revoked resources disappear. Cite/download remain separate."
   }
 }
