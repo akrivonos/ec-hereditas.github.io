@@ -1,15 +1,16 @@
-import {collectorCode,nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261002-annotations';
-import {catalogRelations} from './catalog.mjs?v=20261002-annotations';
-import {intakeRelations} from './intake.mjs?v=20261002-annotations';
-import {sessionCommand,validateSession} from './session.mjs?v=20261002-annotations';
-import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-annotations';
-import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-annotations';
+import {programmeRefs,programmeCommand,validateProgrammes} from './programmes.mjs?v=20261002-programmes';
+import {collectorCode,nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261002-programmes';
+import {catalogRelations} from './catalog.mjs?v=20261002-programmes';
+import {intakeRelations} from './intake.mjs?v=20261002-programmes';
+import {sessionCommand,validateSession} from './session.mjs?v=20261002-programmes';
+import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-programmes';
+import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-programmes';
 // Domain operations for the fieldwork and archive prototype. No backend persistence.
-import {mediaRelations} from './media.mjs?v=20261002-annotations';
-import {researchRelations} from './research.mjs?v=20261002-annotations';
-import {publicRelations} from './public.mjs?v=20261002-annotations';
-import {museumRelations} from './museum.mjs?v=20261002-annotations';
-import {workbenchRelations} from './workbench.mjs?v=20261002-annotations';
+import {mediaRelations} from './media.mjs?v=20261002-programmes';
+import {researchRelations} from './research.mjs?v=20261002-programmes';
+import {publicRelations} from './public.mjs?v=20261002-programmes';
+import {museumRelations} from './museum.mjs?v=20261002-programmes';
+import {workbenchRelations} from './workbench.mjs?v=20261002-programmes';
 export const fieldTypes=['field_research','work_group','participation','collecting_session','geographic_context','potential_respondent','document','information_unit','archive_node','place','institution','timed_layer'];
 const fields={
  field_research:['title','purpose','research_questions','date_from','date_to','preparation_notes','backup_plan'],
@@ -25,6 +26,7 @@ export function relations(t,type,id){
 }
 export function snapshot(t,type,row){const rel=relations(t,type,row.id);return {...structuredClone(row),...(Object.keys(rel).length?{_relations:rel}:{})};}
 export function addMembers(t,type,id,revision){
+ if(['field_research','collecting_session'].includes(type)){const row=t[type].find(r=>r.id===id);if(row.programme_revision_ids)for(const [position,rid] of row.programme_revision_ids.entries())t.entity_revision_member.push({aggregate_revision_id:revision,member_entity_id:t.entity_revision.find(v=>v.id===rid).entity_id,member_revision_id:rid,relation_role:'programme',position:position+1});}
  if(type==='field_research'){
   const ids=[...t.work_group.filter(x=>x.research_id===id).map(x=>x.id),...t.participation.filter(x=>x.research_id===id).map(x=>x.id),...t.research_preparation_item.filter(x=>x.research_id===id&&x.related_entity_id).map(x=>x.related_entity_id)];
   for(const member of new Set(ids))t.entity_revision_member.push({aggregate_revision_id:revision,member_entity_id:member,member_revision_id:t.entity.find(x=>x.id===member).current_revision_id,relation_role:'preparation',position:null});
@@ -74,7 +76,7 @@ export function validateField(s,require,fk,canonical){
  for(const x of t.document_context){fk('document',x.document_id);fk('entity',x.target_entity_id);same(x.document_id,x.target_entity_id);if(x.target_revision_id)require(by('entity_revision',x.target_revision_id)?.entity_id===x.target_entity_id,'Чужа версія контексту');}
  for(const x of t.potential_respondent){fk('field_research',x.research_id);same(x.id,x.research_id);if(x.confirmed_person_id){fk('person',x.confirmed_person_id);same(x.id,x.confirmed_person_id);}}
  for(const table of ['respondent_contact','respondent_referral'])for(const x of t[table])fk('potential_respondent',x.respondent_id);
- validateContacts(s,require,fk);validateSession(s,require,fk);
+ validateContacts(s,require,fk);validateSession(s,require,fk);validateProgrammes(s,require);
  for(const x of t.place){if(x.place_type_term_id)term(x.place_type_term_id,'D15');require(x.latitude===null||Number.isFinite(x.latitude)&&Math.abs(x.latitude)<=90,'Широта');require(x.longitude===null||Number.isFinite(x.longitude)&&Math.abs(x.longitude)<=180,'Довгота');}
  for(const x of t.vocabulary_term){fk('vocabulary_scheme',x.scheme_id);if(x.parent_id)require(by('vocabulary_term',x.parent_id)?.scheme_id===x.scheme_id,'Батьківський термін іншої схеми');}
  for(const x of t.term_label)fk('vocabulary_term',x.term_id);
@@ -107,6 +109,7 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
  const expectedTypes={'field.programme':['id','field_research'],'field.preparation':['id','field_research'],'field.route':['id','field_research'],'field.session.create':['research_id','field_research'],'field.notebook':['research_id','field_research']};
  if(expectedTypes[c.type]){const [key,kind]=expectedTypes[c.type];if(reg(c[key])?.entity_type!==kind)fail('invalid','Оберіть відповідний запис.');}
  if(c.type.startsWith('field.session.')&&c.type!=='field.session.create')return sessionCommand(s,actor,c,{lookup,fresh,required,newEntity,revise,fail,reg,arch,need,hash});
+ if(c.type==='field.programme.item')return programmeCommand(s,c,{lookup,fresh,required,newEntity,revise,fail,reg,arch});
  if(c.type.startsWith('field.plan.'))return preparationCommand(s,actor,c,{lookup,fresh,required,newEntity,revise,fail,reg,arch});
  if(c.type==='field.save'){
   const e=reg(c.id),kind=e?.entity_type;
@@ -135,7 +138,7 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
   const r=lookup(c.id);fresh(c.id,c.expected_revision_id);let doc=r.programme_revision_id?by('document',by('entity_revision',r.programme_revision_id).entity_id):null;
   if(doc){lookup(doc.id);fresh(doc.id,c.document_revision_id);doc.body_text=required(c.body_text);await revise(doc,'Оновлено програму дослідження');}
   else doc=await newEntity('document',{kind:'research_programme',title:'Програма: '+r.title,body_text:required(c.body_text),language_tag:'uk',media_asset_id:null,physical_object_id:null},arch(r.id));
-  r.programme_revision_id=reg(doc.id).current_revision_id;await revise(r,'Обрано програму дослідження');return {id:r.id};
+  r.programme_revision_ids=[reg(doc.id).current_revision_id,...programmeRefs(r).slice(1)];r.programme_revision_id=reg(doc.id).current_revision_id;await revise(r,'Обрано програму дослідження');return {id:r.id};
  }
  if(c.type==='field.preparation'||c.type==='field.route'){
   const r=lookup(c.id);fresh(c.id,c.expected_revision_id);
@@ -159,7 +162,7 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
   const r=lookup(c.research_id);if(c.expected_revision_id)fresh(r.id,c.expected_revision_id);
   if(c.work_group_id&&reg(c.work_group_id)?.retired_at)fail('invalid','Група завершила роботу.');
   if(c.require_prepared&&!preparationStatus(s,r.id).confirmed)fail('invalid','Спочатку підтвердьте готовність дослідження.');
-  const session=await newEntity('collecting_session',{research_id:r.id,work_group_id:c.work_group_id||null,programme_revision_id:r.programme_revision_id,title:required(c.title),date_from:c.date_from||null,date_to:c.date_to||null,date_label:c.date_label||null,date_precision:c.date_precision||'unknown',started_at:null,ended_at:null,recording_context:null,location_environment:'unknown',location_description:c.location_description||null,context_notes:c.context_notes||null,processing_notes:null},arch(r.id));
+  const session=await newEntity('collecting_session',{research_id:r.id,work_group_id:c.work_group_id||null,programme_revision_id:r.programme_revision_id,programme_revision_ids:[...programmeRefs(r)],title:required(c.title),date_from:c.date_from||null,date_to:c.date_to||null,date_label:c.date_label||null,date_precision:c.date_precision||'unknown',started_at:null,ended_at:null,recording_context:null,location_environment:'unknown',location_description:c.location_description||null,context_notes:c.context_notes||null,processing_notes:null},arch(r.id));
   if(c.person_id){
    const person=lookup(c.person_id);if(reg(person.id).entity_type!=='person')fail('invalid','Оберіть особу.');
    if(!['performer','collector','observer'].includes(c.role_code))fail('invalid','Оберіть функцію.');

@@ -1,5 +1,5 @@
-import {consentMedia} from './consent-media.mjs?v=20261002-annotations';
-export const layerKinds=[['index','Зміст'],['transcript','Транскрипція'],['translation','Переклад'],['speakers','Інформанти / виконавці'],['genre','Жанри'],['note','Примітки'],['captions','Субтитри']];
+import {consentMedia} from './consent-media.mjs?v=20261002-programmes';
+export const layerKinds=[['index','Зміст'],['transcript','Транскрипція'],['translation','Переклад'],['speakers','Респонденти / виконавці'],['genre','Жанри'],['note','Примітки'],['captions','Субтитри']];
 export const layerEntries=(t,l)=>t.timed_layer_entry.filter(x=>x.layer_revision_id===t.entity.find(e=>e.id===l.id)?.current_revision_id).sort((a,b)=>a.position-b.position);
 export function validateImport(tiers,duration){
  const fail=m=>{throw Error(m);};if(!Array.isArray(tiers)||!tiers.length||tiers.length>100)fail('Оберіть від 1 до 100 шарів.');
@@ -40,7 +40,7 @@ export async function annotationCommand(s,c,r,h){
   const start=Number(c.start_ms),end=Number(c.end_ms),text=required(c.text_value);if(!Number.isInteger(start)||!Number.isInteger(end)||start<0||end<=start||end>rep.duration_ms)fail('invalid','Кінець має бути після початку й у межах запису.');
   if(layer?.elan?.parent_name&&!old)fail('invalid','Додавання залежних анотацій виконуйте в ELAN; тут можна редагувати їхній текст.');
   if(old&&(old.reference_key||children)){const before=by('entity_revision',old.segment_revision_id).snapshot;if(start!==before.start_ms||end!==before.end_ms)fail('invalid','Межі пов’язаних анотацій змінюйте в ELAN разом із залежними шарами.');}
-  const people=c.person_ids===undefined?old?.person_ids||[]:c.person_ids;if(!Array.isArray(people)||people.some(id=>!t.participation.some(p=>p.session_id===r.id&&p.person_id===id&&p.role_code==='performer')))fail('invalid','Оберіть інформантів цього сеансу.');
+  const people=c.person_ids===undefined?old?.person_ids||[]:c.person_ids;if(!Array.isArray(people)||people.some(id=>!t.participation.some(p=>p.session_id===r.id&&p.person_id===id&&p.role_code==='performer')))fail('invalid','Оберіть респондентів цього сеансу.');
   const seg=await newEntity('media_segment',{representation_id:rep.id,representation_revision_id:revision(rep.id),start_ms:start,end_ms:end,channel:null},arch(r.id));const entry={...old,segment_revision_id:revision(seg.id),text_part_id:null,text_value:text,title:c.title?.trim()||null,note:c.note?.trim()||null,person_ids:[...new Set(people)],annotation_key:old?.annotation_key||crypto.randomUUID(),position:old?.position||entries.length+1};if(old)Object.assign(old,entry);else entries.push(entry);
  }
  if(!layer)layer=await newEntity('timed_layer',{representation_id:rep.id,representation_revision_id:revision(rep.id),kind:'index',name:'Зміст',language_tag:'uk',text_revision_id:null},arch(r.id));await commit(layer,entries);await revise(r,'Оновлено розмітку сеансу');return layer;

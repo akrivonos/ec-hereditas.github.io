@@ -1,6 +1,8 @@
-import {collectorCode} from '../data/participants.mjs?v=20261002-annotations';
-import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20261002-annotations';
-import {hint} from './help.mjs?v=20261002-annotations';
+import {programmePanel} from './programmes.mjs?v=20261002-programmes';
+import {programmeRefs} from '../data/programmes.mjs?v=20261002-programmes';
+import {collectorCode} from '../data/participants.mjs?v=20261002-programmes';
+import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20261002-programmes';
+import {hint} from './help.mjs?v=20261002-programmes';
 
 export function preparationPage(c,r){
  const {st,t,by,rev,label,visible,writable,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,save,show,edit,tabs,revisionHistory,programmeDialog,sessionWizard,dialog}=c;
@@ -12,12 +14,13 @@ export function preparationPage(c,r){
  action('programme',()=>programmeDialog(r));
  action('confirm',()=>form('Підтвердити готовність',input('note','Що перевірено і ким','','textarea',true,'Підтвердіть фактичну перевірку обладнання, носіїв, бланків і розподілу обов’язків. Зміни підготовки потребуватимуть нової перевірки.'),fd=>command('field.plan.confirm',{note:fd.get('note')})));
  action('session',()=>sessionWizard(r,true));
+ if(params.get('section')==='programmes'){show(heading('Дослідження',r.title,'',button('← Дослідження',pg(4,{role:'R01'}),true))+tabs(r)+programmePanel(c,r));return;}
  let content='';
  if(section==='overview'){
   const program=by('entity_revision',r.programme_revision_id),confirmation=status.confirmation&&by('document',status.confirmation.document_id);
   content=panel('Готовність до виїзду',body(`<p><strong>${status.confirmed?'Готовність підтверджено':status.ready?'Можна перевірити й підтвердити':'Підготовка триває'}</strong></p>`+(status.missing.length?`<ul>${status.missing.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'')+(confirmation?`<p>${esc(confirmation.body_text)}</p>`:'')+hint('Як визначається готовність','Потрібні мета, межі, програма, маршрут, функції команди, завершений комплект і резервне копіювання. Перевірку виконує відповідальна людина. Чернетки сеансів можна вести окремо.')),btn('Підтвердити готовність','confirm',write&&status.ready&&!status.confirmed)+(status.confirmed?' '+btn('Створити сеанс','session',write):'')+' '+button('Контакти та зустрічі',pg(6,{research:r.id,role:'R01'}),true))+
    panel('Мета та організація',body(details([['Мета',r.purpose],['Питання',r.research_questions],['Межі дослідження',r.preparation_notes],['Період',[r.date_from,r.date_to].filter(Boolean).join(' — ')],['Резервне копіювання',r.backup_plan]])),btn('Редагувати','edit',write))+
-   panel('Програма дослідження',body(`<div class="reading-text">${esc(program?.snapshot.body_text||'Програму ще не додано.')}</div>${program?`<small>Версія ${program.revision_no}</small>`:''}`),btn(program?'Оновити програму':'Додати програму','programme',write))+revisionHistory(r.id);
+   panel('Програма (питальники) дослідження',body('<p>Документів: '+programmeRefs(r).length+'</p>'),button('Відкрити програму та питальники',url('programmes'),true))+revisionHistory(r.id);
  }else if(section==='team'){
   const groupForm=g=>form(g?'Редагувати групу':'Нова група',input('name','Назва групи',g?.name||'','text',true)+input('notes','Завдання групи',g?.notes||'','textarea'),fd=>command('field.plan.group',{group_id:g?.id,...Object.fromEntries(fd)}));
   const memberForm=(g,m)=>form(m?'Редагувати участь':'Додати до команди',select('person_id','Особа','<option value="">Нова особа</option>'+opts(visible('person'),m?.person_id))+input('person_name','Ім’я нової особи')+select('group_id','Група',opts(groups,g.id,x=>x.name))+select('role_code','Функція',choices(roles,m?.role_code||'collector'))+input('function_text','Конкретні обов’язки',m?.function_text||'','textarea',true),fd=>command('field.plan.member',{member_id:m?.id,...Object.fromEntries(fd)}));

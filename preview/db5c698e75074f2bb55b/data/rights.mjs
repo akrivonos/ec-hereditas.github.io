@@ -1,6 +1,6 @@
-import {consentMedia} from './consent-media.mjs?v=20261002-annotations';
-import {can} from './model.mjs?v=20261002-annotations';
-import {consentBasisValid} from './workbench.mjs?v=20261002-annotations';
+import {consentMedia} from './consent-media.mjs?v=20261002-programmes';
+import {can} from './model.mjs?v=20261002-programmes';
+import {consentBasisValid} from './workbench.mjs?v=20261002-programmes';
 export const rightsFields={title:'Назва',summary:'Опис / текст',kind:'Вид',category:'Тема',place:'Місце',period:'Період',attribution:'Джерело й авторство',terms:'Умови',context_ids:'Пов’язані записи',resource_label:'Назва ресурсу',reference:'Архівний шифр'};
 export const rightsPurposes={public:'Публічний показ',research:'Дослідницька робота',deposit:'Депонування',processing:'Машинне опрацювання'};
 export const rightsUses={view:'Перегляд',cite:'Цитування',download:'Завантаження',museum:'Музейний показ',deposit:'Депонування',machine_process:'Машинне опрацювання'};

@@ -1,21 +1,22 @@
-import {prepareAnnotationDemo} from '../data/annotation-demo.mjs?v=20261002-annotations';
-import {prepareSessionFeedback} from '../data/session-feedback-demo.mjs?v=20261002-annotations';
-import {prepareDelivery} from '../data/delivery-demo.mjs?v=20261002-annotations';
-import {prepareAnalysis} from '../data/analysis-demo.mjs?v=20261002-annotations';
-import {prepareReader} from '../data/reader-demo.mjs?v=20261002-annotations';
-import {prepareDiscovery} from '../data/discovery-demo.mjs?v=20261002-annotations';
-import {prepareSingleUser} from '../data/single-user.mjs?v=20261002-annotations';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261002-annotations";
-import {fieldPages} from './field.mjs?v=20261002-annotations';
-import {mediaPages} from './media.mjs?v=20261002-annotations';
-import {researchPages} from './research.mjs?v=20261002-annotations';
-import {publicPages} from './public.mjs?v=20261002-annotations';
-import {archivePages} from './archive.mjs?v=20261002-annotations';
-import {workbenchPages} from './workbench.mjs?v=20261002-annotations';
-import {museumPages} from './museum.mjs?v=20261002-annotations';
-import {museumStamp} from '../data/museum.mjs?v=20261002-annotations';
-import {publicAccessStamp} from '../data/public.mjs?v=20261002-annotations';
-import {bindHelp} from './help.mjs?v=20261002-annotations';
+import {prepareProgrammesDemo} from '../data/programmes-demo.mjs?v=20261002-programmes';
+import {prepareAnnotationDemo} from '../data/annotation-demo.mjs?v=20261002-programmes';
+import {prepareSessionFeedback} from '../data/session-feedback-demo.mjs?v=20261002-programmes';
+import {prepareDelivery} from '../data/delivery-demo.mjs?v=20261002-programmes';
+import {prepareAnalysis} from '../data/analysis-demo.mjs?v=20261002-programmes';
+import {prepareReader} from '../data/reader-demo.mjs?v=20261002-programmes';
+import {prepareDiscovery} from '../data/discovery-demo.mjs?v=20261002-programmes';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20261002-programmes';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261002-programmes";
+import {fieldPages} from './field.mjs?v=20261002-programmes';
+import {mediaPages} from './media.mjs?v=20261002-programmes';
+import {researchPages} from './research.mjs?v=20261002-programmes';
+import {publicPages} from './public.mjs?v=20261002-programmes';
+import {archivePages} from './archive.mjs?v=20261002-programmes';
+import {workbenchPages} from './workbench.mjs?v=20261002-programmes';
+import {museumPages} from './museum.mjs?v=20261002-programmes';
+import {museumStamp} from '../data/museum.mjs?v=20261002-programmes';
+import {publicAccessStamp} from '../data/public.mjs?v=20261002-programmes';
+import {bindHelp} from './help.mjs?v=20261002-programmes';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;
@@ -393,10 +394,10 @@ function render(){
  ...researchPages({s,actor,scope:currentScope(),esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch:c=>store.dispatch(actor,c),denied,date})};
  views[pageId]?.();
 }
-async function prepareDemo(initial,saved){return prepareAnnotationDemo(await prepareSessionFeedback(await prepareDelivery(await prepareAnalysis(await prepareReader(await prepareDiscovery(await prepareSingleUser(initial,saved)))))));}
+async function prepareDemo(initial,saved){return prepareProgrammesDemo(await prepareAnnotationDemo(await prepareSessionFeedback(await prepareDelivery(await prepareAnalysis(await prepareReader(await prepareDiscovery(await prepareSingleUser(initial,saved))))))));}
 async function start(){
  [manifest,rawFixture]=await Promise.all([getJSON("manifest.json"),getJSON("fixtures/base.json")]);
- const existing=localStorage.getItem(storageKey),saved=existing?JSON.parse(existing):null,ready=saved?.state.version===rawFixture.version&&saved.state.demo.single_user===1&&saved.state.demo.session_feedback_v1===1&&saved.state.demo.annotation_workspace_v1===1,prepared=ready?{base:saved.state,saved,changed:false}:await prepareDemo(rawFixture,saved);
+ const existing=localStorage.getItem(storageKey),saved=existing?JSON.parse(existing):null,ready=saved?.state.version===rawFixture.version&&saved.state.demo.single_user===1&&saved.state.demo.session_feedback_v1===1&&saved.state.demo.annotation_workspace_v1===1&&saved.state.demo.programmes_v1===1,prepared=ready?{base:saved.state,saved,changed:false}:await prepareDemo(rawFixture,saved);
  base=prepared.base;
  if(prepared.changed){
   if(existing&&!localStorage.getItem(storageKey+'.before-single-user'))localStorage.setItem(storageKey+'.before-single-user',existing);

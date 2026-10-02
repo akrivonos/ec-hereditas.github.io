@@ -1,9 +1,9 @@
-import {owns,sourceView} from './research.mjs?v=20261002-annotations';
-import {assertionResult} from './delivery.mjs?v=20261002-annotations';
-import {can,canonical} from './model.mjs?v=20261002-annotations';
-import {classificationFits} from './catalog.mjs?v=20261002-annotations';
-import {pairFits,relationPredicates} from './reconciliation.mjs?v=20261002-annotations';
-import {termLabel} from './discovery.mjs?v=20261002-annotations';
+import {owns,sourceView} from './research.mjs?v=20261002-programmes';
+import {assertionResult} from './delivery.mjs?v=20261002-programmes';
+import {can,canonical} from './model.mjs?v=20261002-programmes';
+import {classificationFits} from './catalog.mjs?v=20261002-programmes';
+import {pairFits,relationPredicates} from './reconciliation.mjs?v=20261002-programmes';
+import {termLabel} from './discovery.mjs?v=20261002-programmes';
 export const feedbackKinds={description:'Уточнення опису',classification:'Класифікація',relation:'Зв’язок джерел'};
 export const feedbackFields={information_unit:{title:'Назва',summary:'Опис'},document:{title:'Назва',body_text:'Текст'},physical_object:{title:'Назва',inscriptions:'Написи'}};
 const by=(s,k,id)=>s.tables[k]?.find(x=>x.id===id),reg=(s,id)=>by(s,'entity',id),rev=(s,id)=>reg(s,id)?.current_revision_id;

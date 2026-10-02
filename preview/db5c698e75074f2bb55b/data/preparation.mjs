@@ -1,3 +1,4 @@
+import {programmeVersions,programmePdf} from './programmes.mjs?v=20261002-programmes';
 // WF-01 uses the canonical preparation checklist, documents and contextual participation.
 export const preparationKinds=[['equipment','Обладнання'],['carrier','Носії'],['consent_template','Бланки згод'],['recording_method','Способи фіксації'],['ethics','Організація та етика'],['reference','Джерела й попередні матеріали'],['other','Інше']];
 export const preparationStates=[['planned','Заплановано'],['ready','Готово'],['blocked','Є перешкода'],['not_applicable','Не потрібно']];
@@ -7,7 +8,7 @@ export function preparationStatus(s,id){
  if(!r)return {ready:false,missing:['Оберіть дослідження'],confirmed:false};
  if(!r.purpose?.trim()||!r.research_questions?.trim())missing.push('Уточніть мету й дослідницькі питання');
  if(!r.preparation_notes?.trim())missing.push('Опишіть територіальні й тематичні межі');
- if(!t.entity_revision.find(x=>x.id===r.programme_revision_id)?.snapshot.body_text?.trim())missing.push('Підготуйте програму');
+ if(!programmeVersions(s,r).some(v=>v.snapshot.body_text?.trim()||programmePdf(s,v.snapshot)))missing.push('Підготуйте програму або питальник');
  if(!t.research_route_stop.some(x=>x.research_id===id))missing.push('Додайте місця до маршруту');
  if(!groups.length||groups.some(g=>!members.some(m=>m.work_group_id===g.id&&m.function_text?.trim())))missing.push('Призначте учасників і функції кожної групи');
  if(members.some(m=>!m.function_text?.trim()))missing.push('Уточніть обов’язки всіх учасників');

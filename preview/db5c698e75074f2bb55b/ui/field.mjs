@@ -1,15 +1,17 @@
-import {consentMedia} from '../data/consent-media.mjs?v=20261002-annotations';
-import {collectorCode,isCollector,participantCodes,unitPeople} from '../data/participants.mjs?v=20261002-annotations';
-import {catalogPage} from './catalog.mjs?v=20261002-annotations';
-import {mediaPreview} from './session-media.mjs?v=20261002-annotations';
-import {sessionPage} from './session.mjs?v=20261002-annotations';
-import {contactsPage} from './contacts.mjs?v=20261002-annotations';
-import {preparationPage} from './preparation.mjs?v=20261002-annotations';
-import {preparationStatus} from '../data/preparation.mjs?v=20261002-annotations';
-import {can,hash} from '../data/model.mjs?v=20261002-annotations';
-import {hint} from './help.mjs?v=20261002-annotations';
-import {wizard} from './wizard.mjs?v=20261002-annotations';
-import {mediaPages} from './media.mjs?v=20261002-annotations';
+import {programmeEditor} from './programmes.mjs?v=20261002-programmes';
+import {programmeVersions} from '../data/programmes.mjs?v=20261002-programmes';
+import {consentMedia} from '../data/consent-media.mjs?v=20261002-programmes';
+import {collectorCode,isCollector,participantCodes,unitPeople} from '../data/participants.mjs?v=20261002-programmes';
+import {catalogPage} from './catalog.mjs?v=20261002-programmes';
+import {mediaPreview} from './session-media.mjs?v=20261002-programmes';
+import {sessionPage} from './session.mjs?v=20261002-programmes';
+import {contactsPage} from './contacts.mjs?v=20261002-programmes';
+import {preparationPage} from './preparation.mjs?v=20261002-programmes';
+import {preparationStatus} from '../data/preparation.mjs?v=20261002-programmes';
+import {can,hash} from '../data/model.mjs?v=20261002-programmes';
+import {hint} from './help.mjs?v=20261002-programmes';
+import {wizard} from './wizard.mjs?v=20261002-programmes';
+import {mediaPages} from './media.mjs?v=20261002-programmes';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;
@@ -38,10 +40,10 @@ export function fieldPages(ctx){
  const save=async c=>{const result=await dispatch(c);flash('Зміни збережено.');render();return result;};
  const form=(title,html,makeCommand,after)=>dialog(title,html,async fd=>{const result=await dispatch(await makeCommand(fd));flash('Зміни збережено.');if(after)after(result);else render();});
  const revisionHistory=id=>`<details class="record-history"><summary>Історія змін</summary>${table(['Версія','Дата','Зміна'],t.entity_revision.filter(x=>x.entity_id===id).slice().reverse().map(r=>[String(r.revision_no),esc(date(r.recorded_at)),esc(r.change_reason)]))}</details>`;
- const tabs=r=>`<nav class="record-tabs" aria-label="Дослідження"><a href="${pg(5,{id:r.id})}">Підготовка</a><a href="${pg(6,{research:r.id})}">Контакти та зустрічі</a><a href="${pg(7,{research:r.id})}">Сеанси</a><a href="${pg(9,{research:r.id})}">Польовий зошит</a></nav>`;
+ const tabs=r=>`<nav class="record-tabs" aria-label="Дослідження">${[[5,'Підготовка',''],[5,'Програма (питальники) дослідження','programmes'],[6,'Контакти та зустрічі',''],[7,'Сеанси',''],[9,'Польовий зошит','']].map(([n,title,section])=>`<a href="${pg(n,{[n===5?'id':'research']:r.id,section,role:params.get('role')||'R01'})}" ${document.body.dataset.page==='PG-'+String(n).padStart(2,'0')&&(n!==5||((params.get('section')==='programmes')===(section==='programmes')))?'aria-current="page"':''}>${title}</a>`).join('')}</nav>`;
  const research=()=>visible('field_research').find(x=>x.id===params.get('research'));
  const kinds=[['recorded_work','Твір'],['fei','Фольклорно-етнографічна інформація']];
- const participantRole=code=>({performer:'Інформант',collector:'Збирач',observer:'Присутній'})[code]||code;
+ const participantRole=code=>({performer:'Респондент',collector:'Збирач',observer:'Присутній'})[code]||code;
  const listContext=()=>({role:params.get('role')||sessionStorage.getItem('hereditas.preview.role')||'R01',research:params.get('research')||'',q:params.get('q')||''});
  const primary=(title,key,enabled)=>btn(title,key,enabled).replace('button secondary small','button small');
  const done=message=>{flash(message);render();};
@@ -51,26 +53,23 @@ export function fieldPages(ctx){
    {title:'Підготовка',body:input('programme','Теми та питання','','textarea',false,'Програму можна додати пізніше. Кожен сеанс збереже версію, з якою його створено.')+input('backup_plan','Резервне копіювання','','textarea')+input('date_from','Початок','','date')+input('date_to','Завершення','','date')}
   ],summary:v=>details([['Дослідження',v.title],['Мета',v.purpose],['Програма',v.programme||'Додати пізніше'],['Резервне копіювання',v.backup_plan]]),onSubmit:async v=>{await dispatch({type:'field.research.create',archive_id:archive,...v});done('Дослідження додано до списку.');}});
  }
- function programmeDialog(r){
-  const programme=by('entity_revision',r.programme_revision_id);
-  form('Програма дослідження',input('body_text','Теми та питання',programme?.snapshot.body_text||'','textarea',true,'Оновлення діятиме для нових сеансів. Проведені сеанси зберігають свою програму.'),fd=>({type:'field.programme',id:r.id,expected_revision_id:rev(r.id),document_revision_id:programme?rev(programme.entity_id):null,body_text:fd.get('body_text')}));
- }
+ function programmeDialog(r){return programmeEditor({st,rev,form,input,select,choices,esc},r,programmeVersions(st,r)[0]);}
  function sessionWizard(r=null,requirePrepared=false){
   const researchRows=visible('field_research').filter(x=>writable(x.id));
   wizard({dialog,esc},{title:'Новий сеанс',submit:'Створити сеанс',steps:[
    {title:'Дослідження і назва',body:(r?body(details([['Дослідження',r.title]])):select('research_id','Дослідження',opts(researchRows)))+input('title','Назва','','text',true)+(r?select('work_group_id','Робоча група','<option value="">Без групи</option>'+opts(t.work_group.filter(x=>x.research_id===r.id&&!entity(x.id)?.retired_at),'',x=>x.name)):'' )},
    {title:'Дата й обставини',body:select('date_precision','Точність дати',choices([['unknown','Невідомо'],['exact','Точна дата'],['approximate','Приблизно']],'unknown'))+input('date_from','Дата','','date',false,'Для приблизної або невідомої дати залиште поле порожнім і запишіть відому частину словами.')+input('date_label','Дата словами')+input('location_description','Місце та умови','','textarea')},
-   {title:'Перша особа в сеансі',body:select('person_id','Особа','<option value="">Додати пізніше</option>'+opts(visible('person')))+select('role_code','Функція',choices([['performer','Інформант'],['collector','Збирач'],['observer','Присутній']],'performer'),'Контакт для домовленості не стає інформантом сеансу автоматично. Згоду потрібно зафіксувати окремо.')}
+   {title:'Перша особа в сеансі',body:select('person_id','Особа','<option value="">Додати пізніше</option>'+opts(visible('person')))+select('role_code','Функція',choices([['performer','Респондент'],['collector','Збирач'],['observer','Присутній']],'performer'),'Контакт для домовленості не стає респондентом сеансу автоматично. Згоду потрібно зафіксувати окремо.')}
   ],summary:v=>{const selected=r||by('field_research',v.research_id);return details([['Дослідження',selected?.title],['Сеанс',v.title],['Дата',v.date_label||v.date_from||'Невідомо'],['Місце та умови',v.location_description],['Особа',v.person_id?label(v.person_id)+' · '+participantRole(v.role_code):'Додати пізніше'],['Програма',selected?.programme_revision_id?'Поточна програма дослідження':'Не додана']]);},onSubmit:async v=>{const id=r?.id||v.research_id;await dispatch({type:'field.session.create',...v,require_prepared:requirePrepared,research_id:id,expected_revision_id:rev(id),date_to:v.date_precision==='exact'?v.date_from:null});done('Сеанс створено. У списку сеансів можна додати записи.');}});
  }
  function unitDialog(session,unit=null){
   const codes=participantCodes(t,session.id),selected=new Set(t.unit_participant.filter(p=>p.unit_id===unit?.id).map(p=>p.session_participation_id||t.participation.find(x=>x.session_id===session.id&&x.person_id===p.person_id&&x.role_code===p.role_code)?.id)),participants=t.participation.filter(p=>p.session_id===session.id&&['performer','collector'].includes(p.role_code));
-  const choicesHtml=['performer','collector'].map(role=>'<fieldset><legend>'+(role==='performer'?'Інформанти':'Збирачі')+'</legend>'+(role==='performer'?'<button type="button" class="button secondary small" data-all-performers>Усі інформанти</button>':'')+participants.filter(p=>p.role_code===role).map(p=>'<label class="check-label"><input type="checkbox" name="participant_ids" data-participant-role="'+role+'" value="'+p.id+'" '+(selected.has(p.id)?'checked':'')+'>'+esc(codes.get(p.id)+' · '+label(p.person_id))+'</label>').join('')+'</fieldset>').join('');
+  const choicesHtml=['performer','collector'].map(role=>'<fieldset><legend>'+(role==='performer'?'Респонденти':'Збирачі')+'</legend>'+(role==='performer'?'<button type="button" class="button secondary small" data-all-performers>Усі респонденти</button>':'')+participants.filter(p=>p.role_code===role).map(p=>'<label class="check-label"><input type="checkbox" name="participant_ids" data-participant-role="'+role+'" value="'+p.id+'" '+(selected.has(p.id)?'checked':'')+'>'+esc(codes.get(p.id)+' · '+label(p.person_id))+'</label>').join('')+'</fieldset>').join('');
   const scroll=window.scrollY,d=form(unit?'Редагувати запис':'Додати запис',body(details([['Сеанс',session.title]]))+(unit?'':select('unit_kind','Тип запису',choices(kinds,'recorded_work')))+input('title','Назва',unit?.title||'','text',true)+input('summary','Зміст',unit?.summary||'','textarea')+choicesHtml,fd=>unit?{type:'field.save',id:unit.id,expected_revision_id:rev(unit.id),session_revision_id:rev(session.id),values:{title:fd.get('title'),summary:fd.get('summary')},participant_ids:fd.getAll('participant_ids')}:{type:'field.unit.create',id:session.id,expected_revision_id:rev(session.id),...Object.fromEntries(fd),participant_ids:fd.getAll('participant_ids')},()=>{render();requestAnimationFrame(()=>window.scrollTo(0,scroll));});
   d.querySelector('[data-all-performers]')?.addEventListener('click',()=>d.querySelectorAll('[data-participant-role="performer"]').forEach(x=>x.checked=true));return d;
  }
  function participantDialog(session){
-  form('Додати інформанта',select('person_id','Особа',opts(visible('person')))+select('role_code','Функція',choices([['performer','Інформант'],['collector','Збирач'],['observer','Присутній']],'performer')),fd=>({type:'field.participant',id:session.id,expected_revision_id:rev(session.id),...Object.fromEntries(fd)}));
+  form('Додати респондента',select('person_id','Особа',opts(visible('person')))+select('role_code','Функція',choices([['performer','Респондент'],['collector','Збирач'],['observer','Присутній']],'performer')),fd=>({type:'field.participant',id:session.id,expected_revision_id:rev(session.id),...Object.fromEntries(fd)}));
  }
  const transferFor=session=>{const h=t.handover.filter(h=>t.handover_item.some(i=>i.handover_id===h.id&&i.entity_id===session.id)).at(-1);return h?{h,current:t.handover_item.filter(i=>i.handover_id===h.id).every(i=>i.revision_id===rev(i.entity_id))}:null;};
  function researchPicker(number,title,permission=null){
@@ -133,7 +132,7 @@ export function fieldPages(ctx){
   action('create',()=>sessionWizard(r));rows.forEach(x=>{action('unit-'+x.id,()=>unitDialog(x));action('participant-'+x.id,()=>participantDialog(x));action('handover-'+x.id,()=>mediaPages(ctx).prepareHandover(x));});
   show(heading(r?.title||'Робочий список','Сеанси','Додавайте записи з рядка сеансу. Аудіо, відео та фото додавайте до відповідного сеансу. ',primary('Новий сеанс','create',r?writable(r.id):visible('field_research').some(x=>writable(x.id))))+
    `<form class="filters"><input type="hidden" name="role" value="${esc(listContext().role)}">${select('research','Дослідження','<option value="">Усі дослідження</option>'+opts(visible('field_research'),r?.id))}${input('q','Знайти сеанс',params.get('q')||'')}<button class="button">Знайти</button></form>`+
-   panel('Сеанси',table(['Сеанс','Інформанти та збирачі','Передання','Наступна дія'],rows.map(x=>{const units=t.information_unit.filter(u=>u.session_id===x.id),people=t.participation.filter(p=>p.session_id===x.id).length,transfer=transferFor(x);return [`<a href="${pg(8,{...listContext(),id:x.id})}">${esc(x.title)}</a><span class="sub">${esc(label(x.research_id))} · ${esc(x.date_label||date(x.date_from))}</span>`,`<strong>Інформанти:</strong> ${esc(t.participation.filter(p=>p.session_id===x.id&&p.role_code==='performer').map(p=>participantCodes(t,x.id).get(p.id)+' · '+label(p.person_id)).join(', ')||'Не зазначено')}<span class="sub"><strong>Збирачі:</strong> ${esc(t.participation.filter(p=>p.session_id===x.id&&p.role_code==='collector').map(p=>collectorCode(t,p.person_id)+' · '+label(p.person_id)).join(', ')||'Не зазначено')}</span>Записи: ${units.length}<span class="sub">${button('Аудіо, відео та фото',pg(8,{...listContext(),id:x.id,section:'media'}),true)}</span>`,transfer?`<a href="${pg(11,{id:transfer.h.id,tab:'outgoing'})}">${esc(({prepared:'Пакет підготовлено',sent:'Надіслано',accepted:'Прийнято',returned:'Повернуто на уточнення'})[transfer.h.state])}</a>${!transfer.current?'<span class="sub">Матеріали змінено після підготовки пакета</span>':''}`:'Пакет ще не підготовлено',primary(people?'Додати запис':'Додати інформанта',(people?'unit-':'participant-')+x.id,writable(x.id))+(units.length&&(!transfer||!transfer.current||transfer.h.state==='returned')?' '+btn('Підготувати передання','handover-'+x.id,writable(x.id,'intake.send')):'')];}))));
+   panel('Сеанси',table(['Сеанс','Респонденти та збирачі','Передання','Наступна дія'],rows.map(x=>{const units=t.information_unit.filter(u=>u.session_id===x.id),people=t.participation.filter(p=>p.session_id===x.id).length,transfer=transferFor(x);return [`<a href="${pg(8,{...listContext(),id:x.id})}">${esc(x.title)}</a><span class="sub">${esc(label(x.research_id))} · ${esc(x.date_label||date(x.date_from))}</span>`,`<strong>Респонденти:</strong> ${esc(t.participation.filter(p=>p.session_id===x.id&&p.role_code==='performer').map(p=>participantCodes(t,x.id).get(p.id)+' · '+label(p.person_id)).join(', ')||'Не зазначено')}<span class="sub"><strong>Збирачі:</strong> ${esc(t.participation.filter(p=>p.session_id===x.id&&p.role_code==='collector').map(p=>collectorCode(t,p.person_id)+' · '+label(p.person_id)).join(', ')||'Не зазначено')}</span>Записи: ${units.length}<span class="sub">${button('Аудіо, відео та фото',pg(8,{...listContext(),id:x.id,section:'media'}),true)}</span>`,transfer?`<a href="${pg(11,{id:transfer.h.id,tab:'outgoing'})}">${esc(({prepared:'Пакет підготовлено',sent:'Надіслано',accepted:'Прийнято',returned:'Повернуто на уточнення'})[transfer.h.state])}</a>${!transfer.current?'<span class="sub">Матеріали змінено після підготовки пакета</span>':''}`:'Пакет ще не підготовлено',primary(people?'Додати запис':'Додати респондента',(people?'unit-':'participant-')+x.id,writable(x.id))+(units.length&&(!transfer||!transfer.current||transfer.h.state==='returned')?' '+btn('Підготувати передання','handover-'+x.id,writable(x.id,'intake.send')):'')];}))));
 
  }
  function sessionDetail(){
@@ -190,7 +189,7 @@ export function fieldPages(ctx){
   show(heading('Архів','Структура архіву','Розділи та матеріали зберігаються окремо: матеріал можна розмістити в потрібному розділі.',btn('Новий розділ','add',can(st,actor,'catalog.write',nodeArchive)))+`<div class="archive-layout"><nav class="archive-tree" aria-label="Дерево архіву">${branch(null)}</nav><div>`+(selected?panel(selected.title,(nodes.some(x=>x.parent_id===selected.id)?body('<div class="sub-sections">'+nodes.filter(x=>x.parent_id===selected.id).map(x=>'<p>'+link(16,x)+' <small>('+t.archival_placement.filter(p=>p.archive_node_id===x.id&&allowed(p.entity_id)).length+')</small></p>').join('')+'</div>'):'')+table(['Матеріал','Розміщення'],materials.map(x=>[`<a href="${pg(targetPage(x.entity_id),{id:x.entity_id})}">${esc(label(x.entity_id))}</a>`,x.placement_role==='primary'?'Основне':'Посилання'])),btn('Редагувати розділ','edit',writable(selected.id,'catalog.write'))):panel('Розділи архіву',body(nodes.length?'<p>Оберіть розділ у дереві, щоб переглянути його матеріали.</p>':'<p>Розділів ще немає. Створіть перший розділ.</p>')))+`</div></div>`);
  }
  function unitDetail(){
-  if(params.get('role')==='R01'&&params.has('id')){const unit=visible('information_unit').find(x=>x.id===params.get('id'));if(!unit){denied();return;}const session=by('collecting_session',unit.session_id);action('unit-edit',()=>unitDialog(session,unit));show(heading('Запис сеансу',unit.title,'',button('← Сеанс',pg(8,{id:session.id,role:'R01'}),true))+panel('Зміст',body('<div class="reading-text" style="white-space:pre-wrap">'+esc(unit.summary||'Текст ще не додано')+'</div>'),btn('Редагувати запис','unit-edit',writable(unit.id)))+panel('Інформанти',body('<p>'+esc(unitPeople(t,unit,label,'performer'))+'</p>'))+panel('Збирачі',body('<p>'+esc(unitPeople(t,unit,label,'collector'))+'</p>'))+revisionHistory(unit.id));return;}
+  if(params.get('role')==='R01'&&params.has('id')){const unit=visible('information_unit').find(x=>x.id===params.get('id'));if(!unit){denied();return;}const session=by('collecting_session',unit.session_id);action('unit-edit',()=>unitDialog(session,unit));show(heading('Запис сеансу',unit.title,'',button('← Сеанс',pg(8,{id:session.id,role:'R01'}),true))+panel('Зміст',body('<div class="reading-text" style="white-space:pre-wrap">'+esc(unit.summary||'Текст ще не додано')+'</div>'),btn('Редагувати запис','unit-edit',writable(unit.id)))+panel('Респонденти',body('<p>'+esc(unitPeople(t,unit,label,'performer'))+'</p>'))+panel('Збирачі',body('<p>'+esc(unitPeople(t,unit,label,'collector'))+'</p>'))+revisionHistory(unit.id));return;}
   if(!params.has('id')&&!params.has('material')){if(curatorRole)materials();else sessions();return;}
   catalogPage({st,t,actor,scope,params,by,entity,rev,label,allowed,visible,writable,action,show,heading,panel,body,table,details,btn,button,pg,esc,input,select,opts,choices,dialog,form,dispatch,render,denied});
  }

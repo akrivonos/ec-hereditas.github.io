@@ -1,9 +1,9 @@
-import {layerKinds,layerEntries} from '../data/annotations.mjs?v=20261002-annotations';
-import {parseEaf,exportEaf} from '../data/elan.mjs?v=20261002-annotations';
-import {consentMedia} from '../data/consent-media.mjs?v=20261002-annotations';
-import {fileBytes} from '../data/binary.mjs?v=20261002-annotations';
-import {mediaPreview,download} from './session-media.mjs?v=20261002-annotations';
-import {participantCodes} from '../data/participants.mjs?v=20261002-annotations';
+import {layerKinds,layerEntries} from '../data/annotations.mjs?v=20261002-programmes';
+import {parseEaf,exportEaf} from '../data/elan.mjs?v=20261002-programmes';
+import {consentMedia} from '../data/consent-media.mjs?v=20261002-programmes';
+import {fileBytes} from '../data/binary.mjs?v=20261002-programmes';
+import {mediaPreview,download} from './session-media.mjs?v=20261002-programmes';
+import {participantCodes} from '../data/participants.mjs?v=20261002-programmes';
 export function formatTime(ms){const v=Math.max(0,Math.round(ms||0)),h=Math.floor(v/3600000),m=Math.floor(v/60000)%60,s=Math.floor(v/1000)%60;return [h,m,s].map(x=>String(x).padStart(2,'0')).join(':')+(v%1000?'.'+String(v%1000).padStart(3,'0'):'');}
 export function parseTime(value){const s=String(value).trim().replace(',','.');if(!/^\d+(?::[0-5]\d){0,2}(?:\.\d{1,3})?$/.test(s))throw Error('Вкажіть час як гг:хх:сс або хх:сс.');return Math.round(s.split(':').reduce((n,p)=>n*60+Number(p),0)*1000);}
 export function annotationWorkspace(c,r,rep){
@@ -15,7 +15,7 @@ export function annotationWorkspace(c,r,rep){
  const title=l=>l.name||layerKinds.find(([k])=>k===l.kind)?.[1]||'Анотації',url=(e,mode='clip')=>pg(8,{role:params.get('role')||'R01',id:r.id,section:'media',media:rep.id,segment:e.segment_revision_id,play:mode}),command=(type,v={})=>({type,id:r.id,expected_revision_id:expected,representation_id:rep.id,representation_revision_id:rev(rep.id),...v});
  const preferenceKey='hereditas.media.view.'+rep.id;let view=params.get('annotation_view')||sessionStorage.getItem(preferenceKey)||'index',selectedLayer=sessionStorage.getItem(preferenceKey+'.layer')||'',begin=fragment?.snapshot.start_ms||0,end=fragment?.snapshot.end_ms||Math.min(1000,duration),api=null;
  const editor=(e=null)=>{const layer=e?.layer||(view==='index'?index:layers.find(l=>l.id===selectedLayer)),start=e?.start_ms??begin,finish=e?.end_ms??end;
-  const d=form(e?'Редагувати анотацію':'Додати анотацію',(!e&&view==='layers'?select('layer_id','Шар',opts(layers,layer?.id,title)):`<input type="hidden" name="layer_id" value="${layer?.id||''}">`)+input('title','Назва фрагмента',e?.title||'')+input('start','Початок',formatTime(start),'text',true)+input('end','Кінець',formatTime(finish),'text',true)+input('text_value','Зміст фрагмента',e?.text_value||'','textarea',true)+input('note','Примітка',e?.note||'','textarea')+'<fieldset><legend>Інформанти / виконавці</legend>'+people.map(p=>'<label class="check-label"><input type="checkbox" name="person_ids" value="'+p.person_id+'" '+(e?.person_ids?.includes(p.person_id)?'checked':'')+'>'+esc(codes.get(p.id)+' · '+label(p.person_id))+'</label>').join('')+'</fieldset>',fd=>{const l=layers.find(l=>l.id===fd.get('layer_id'));return command('field.session.marker',{layer_id:l?.id,layer_revision_id:l?rev(l.id):undefined,position:e?.position,start_ms:parseTime(fd.get('start')),end_ms:parseTime(fd.get('end')),title:fd.get('title'),text_value:fd.get('text_value'),note:fd.get('note'),person_ids:fd.getAll('person_ids')});});
+  const d=form(e?'Редагувати анотацію':'Додати анотацію',(!e&&view==='layers'?select('layer_id','Шар',opts(layers,layer?.id,title)):`<input type="hidden" name="layer_id" value="${layer?.id||''}">`)+input('title','Назва фрагмента',e?.title||'')+input('start','Початок',formatTime(start),'text',true)+input('end','Кінець',formatTime(finish),'text',true)+input('text_value','Зміст фрагмента',e?.text_value||'','textarea',true)+input('note','Примітка',e?.note||'','textarea')+'<fieldset><legend>Респонденти / виконавці</legend>'+people.map(p=>'<label class="check-label"><input type="checkbox" name="person_ids" value="'+p.person_id+'" '+(e?.person_ids?.includes(p.person_id)?'checked':'')+'>'+esc(codes.get(p.id)+' · '+label(p.person_id))+'</label>').join('')+'</fieldset>',fd=>{const l=layers.find(l=>l.id===fd.get('layer_id'));return command('field.session.marker',{layer_id:l?.id,layer_revision_id:l?rev(l.id):undefined,position:e?.position,start_ms:parseTime(fd.get('start')),end_ms:parseTime(fd.get('end')),title:fd.get('title'),text_value:fd.get('text_value'),note:fd.get('note'),person_ids:fd.getAll('person_ids')});});
   if(e?.reference_key){d.querySelector('[name=start]').readOnly=true;d.querySelector('[name=end]').readOnly=true;}
  };
  action('marker',()=>editor());

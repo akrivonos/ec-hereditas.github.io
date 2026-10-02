@@ -1,4 +1,4 @@
-import {validateImport} from './annotations.mjs?v=20261002-annotations';
+import {validateImport} from './annotations.mjs?v=20261002-programmes';
 const xml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
 // XML parsing is browser-native. External entities and media URLs are never resolved.
 export function parseEaf(text,duration,Parser=globalThis.DOMParser){

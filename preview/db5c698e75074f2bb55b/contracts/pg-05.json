@@ -20,7 +20,12 @@
     "place",
     "document_context",
     "entity_revision",
-    "entity_revision_member"
+    "entity_revision_member",
+    "media_asset",
+    "media_asset_subject",
+    "representation",
+    "representation_file",
+    "file_object"
   ],
   "fields_and_relations": "Програма з revision, маршрут із position, групи, мета, checklist.",
   "required_interaction": "Зміна програми не змінює використану версію старого сеансу; перестановка маршруту.",
@@ -47,11 +52,13 @@
       "field.plan.member",
       "field.plan.document",
       "field.plan.confirm",
-      "field.session.create"
+      "field.session.create",
+      "field.programme.item"
     ],
-    "view_model": "WF-01: scope, programme, route CRUD, team/functions, source notes and consent templates, typed checklist, exact-revision human readiness confirmation and contextual handoff",
+    "view_model": "WF-01: scope, programme, route CRUD, team/functions, source notes and consent templates, typed checklist, exact-revision human readiness confirmation and contextual handoff Separate programme/questionnaire list with text and original PDF, exact ordered revisions, session-specific pinned list and explicit refresh. Session form optionally appends selected questionnaire text; default lists titles only. Respondent terminology throughout UI.",
     "limitations": [
-      "Local browser prototype; equipment checks are human-attested; no hardware diagnostics or shared backend."
+      "Local browser prototype; equipment checks are human-attested; no hardware diagnostics or shared backend.",
+      "PDF up to 2 MiB in local browser storage; PDF originals available separately, not embedded into TXT session forms. Session refresh copies the whole current research questionnaire set."
     ],
     "completion": "core-interactive",
     "state_storage": "Shared normalized browser store; fixture version 9",

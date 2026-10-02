@@ -1,6 +1,6 @@
-import {contactStates,contactExpired,contactSession} from '../data/contacts.mjs?v=20261002-annotations';
-import {hint} from './help.mjs?v=20261002-annotations';
-import {wizard} from './wizard.mjs?v=20261002-annotations';
+import {contactStates,contactExpired,contactSession} from '../data/contacts.mjs?v=20261002-programmes';
+import {hint} from './help.mjs?v=20261002-programmes';
+import {wizard} from './wizard.mjs?v=20261002-programmes';
 
 export function contactsPage(c,r){
  const {st,t,actor,can,by,rev,label,visible,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,show,tabs,dispatch,render,flash,dialog}=c;
@@ -19,7 +19,7 @@ export function contactsPage(c,r){
  const startSession=row=>{
   const expected=rev(row.id),researchRevision=rev(r.id);
   wizard({dialog,esc},{title:'Почати сеанс',submit:'Створити й відкрити сеанс',steps:[
-   {title:'Підтвердження інформанта',body:body(details([['Робочий контакт',row.display_hint]]))+select('person_id','Особа','<option value="">Створити підтверджену особу</option>'+opts(people,row.confirmed_person_id))+input('person_name','Ім’я підтвердженої особи')+`<label class="check-label"><input type="checkbox" name="identity_confirmed" value="yes" required>Особу інформанта підтверджено</label>`+body(help('Робочі відомості','До особи потрапить лише вибране або явно введене ім’я. Нотатки, спосіб зв’язку й рекомендації залишаться в робочих контактах. Згоду потрібно отримати й задокументувати окремо.'))},
+   {title:'Підтвердження респондента',body:body(details([['Робочий контакт',row.display_hint]]))+select('person_id','Особа','<option value="">Створити підтверджену особу</option>'+opts(people,row.confirmed_person_id))+input('person_name','Ім’я підтвердженої особи')+`<label class="check-label"><input type="checkbox" name="identity_confirmed" value="yes" required>Особу респондента підтверджено</label>`+body(help('Робочі відомості','До особи потрапить лише вибране або явно введене ім’я. Нотатки, спосіб зв’язку й рекомендації залишаться в робочих контактах. Згоду потрібно отримати й задокументувати окремо.'))},
    {title:'Обставини сеансу',body:input('title','Назва сеансу','','text',true)+input('date_from','Дата сеансу',row.planned_meeting_at?.slice(0,10)||'','date')+input('location_description','Місце та умови','','textarea')+body(details([['Група',row.work_group_id?label(row.work_group_id):'Не призначено'],['Плановане місце',row.place_id?label(row.place_id):'Не визначено'],['Програма',r.programme_revision_id?'Поточна програма дослідження':'Не додана']]))+(row.place_id?`<label class="check-label"><input type="checkbox" name="place_confirmed" value="yes">Сеанс відбувається в цьому місці</label>`:'')}
   ],summary:v=>details([['Сеанс',v.title],['Особа',v.person_id?label(v.person_id):v.person_name],['Дата',v.date_from],['Місце',v.place_confirmed?.length?label(row.place_id):'Потребує уточнення'],['Згода','Потрібно задокументувати окремо']]),onSubmit:async v=>{const result=await dispatch(command('field.contact.session',row,{...v,identity_confirmed:!!v.identity_confirmed?.length,place_confirmed:!!v.place_confirmed?.length,expected_revision_id:expected,research_revision_id:researchRevision}));location.href=pg(8,{role:'R01',id:result.id});}});
  };
@@ -50,7 +50,7 @@ export function contactsPage(c,r){
   }))),selected?btn('Додати рекомендацію','ref-add-'+selected.id,write&&!contactExpired(st,selected)):'' )+(!selected?panel('Додати рекомендацію',table(['Контакт','Дія'],rows.map(row=>[esc(row.display_hint),btn('Хто порадив','ref-add-'+row.id,write&&!contactExpired(st,row))]))):button('Усі рекомендації',url({contact:''}),true));
  }else{
   const list=tab==='meetings'?rows.filter(x=>x.planned_meeting_at&&!['declined','unreachable'].includes(x.state)).sort((a,b)=>a.planned_meeting_at.localeCompare(b.planned_meeting_at)):tab==='expired'?rows.filter(x=>contactExpired(st,x)):rows;
-  content=panel(tab==='meetings'?'Заплановані зустрічі':tab==='expired'?'Потребують перегляду строку':'Потенційні інформанти',table(['Контакт і теми','Місце та група','Домовленість','Дії'],list.map(row=>[
+  content=panel(tab==='meetings'?'Заплановані зустрічі':tab==='expired'?'Потребують перегляду строку':'Потенційні респонденти',table(['Контакт і теми','Місце та група','Домовленість','Дії'],list.map(row=>[
    `<button type="button" class="link-button" data-action="view-${row.id}">${esc(row.display_hint)}</button><span class="sub">${esc(row.potential_topics||'Теми ще не визначено')}</span>`+(row.confirmed_person_id?`<span class="sub">Підтверджена особа: ${esc(label(row.confirmed_person_id))}</span>`:''),esc(row.place_id?label(row.place_id):'Місце не визначено')+`<span class="sub">${esc(row.work_group_id?label(row.work_group_id):'Групу не призначено')}</span>`,esc(status(row))+`<span class="sub">${esc(when(row))}</span><span class="sub">${row.retention_until?'Зберігати до: '+esc(row.retention_until):'Строк не визначено'}${contactExpired(st,row)?' · Строк минув':''}</span>`,btn('Редагувати','edit-'+row.id,write)+' '+btn('Домовитися','schedule-'+row.id,write&&!contactExpired(st,row))+' '+button('Рекомендації',url({tab:'referrals',contact:row.id}),true)+' '+next(row)+(tab==='expired'?' '+btn('Очистити дані','clear-'+row.id,write):'')
   ])));
  }
