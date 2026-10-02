@@ -1,10 +1,10 @@
-import {preservationCommand,validatePreservation} from './preservation.mjs?v=20261002-wf18';
-import {qualityCommand,validateQuality} from './quality.mjs?v=20261002-wf18';
-import {digitize,validateDigitization} from './digitization.mjs?v=20261002-wf18';
-import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261002-wf18';
-import {reconciliationCommand} from './reconciliation.mjs?v=20261002-wf18';
-import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261002-wf18';
-import {fileBytes} from './binary.mjs?v=20261002-wf18';
+import {preservationCommand,validatePreservation} from './preservation.mjs?v=20261002-wf19';
+import {qualityCommand,validateQuality} from './quality.mjs?v=20261002-wf19';
+import {digitize,validateDigitization} from './digitization.mjs?v=20261002-wf19';
+import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261002-wf19';
+import {reconciliationCommand} from './reconciliation.mjs?v=20261002-wf19';
+import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261002-wf19';
+import {fileBytes} from './binary.mjs?v=20261002-wf19';
 // Internal, scoped prototype operations. Storage and capture actions explicitly simulate hardware.
 export const mediaTypes=['source_system','source_record','physical_object','storage_location','condition_assessment','custody_event','media_asset','representation','file_object','storage_copy','capture_event','qc_record','candidate','review_decision','evidence'];
 export const mediaRelations=(t,type,id)=>Object.fromEntries(({
@@ -59,7 +59,7 @@ export function validateMedia(s,require,fk,canonical){
  for(const x of t.qc_record){revision(x.representation_revision_id,'representation');fk('person',x.reviewer_person_id);require(['pass','pass_with_note','recapture_required','incomplete'].includes(x.outcome),'Висновок перевірки');}
  for(const x of t.qc_check_item){fk('qc_record',x.qc_record_id);require(['pass','fail','not_applicable','unknown'].includes(x.result),'Результат перевірки');}
  for(const x of t.handover){fk('workflow_run',x.from_workflow_run_id);if(x.to_workflow_run_id)fk('workflow_run',x.to_workflow_run_id);require(['prepared','sent','accepted','returned'].includes(x.state),'Стан передання');if(x.state==='accepted'){fk('account',x.accepted_by);require(!!x.accepted_at&&t.handover_item.filter(i=>i.handover_id===x.id).every(i=>i.item_state==='present'),'Приймання невирішеного пакета');}}
- for(const x of t.handover_item){fk('handover',x.handover_id);const r=by('entity_revision',x.revision_id);require(r?.entity_id===x.entity_id,'Чужа версія елемента');positive(x.position);require(['present','missing','unresolved'].includes(x.item_state),'Стан елемента');const h=by('handover',x.handover_id),run=by('workflow_run',h.from_workflow_run_id),primary=reg(run.primary_entity_id);require(reg(x.entity_id).archive_id===(primary.archive_id||primary.id),'Елемент з іншого архіву');}
+ for(const x of t.handover_item){fk('handover',x.handover_id);const r=by('entity_revision',x.revision_id);require(r?.entity_id===x.entity_id,'Чужа версія елемента');positive(x.position);require(['present','missing','unresolved'].includes(x.item_state),'Стан елемента');const h=by('handover',x.handover_id),run=by('workflow_run',h.from_workflow_run_id),primary=reg(run.primary_entity_id);require(h.profile==='research-dataset/1'?run.workflow_code==='WF-19'&&run.started_by===h.owner_account_id&&reg(h.manifest_file_id)?.owner_account_id===h.owner_account_id:reg(x.entity_id).archive_id===(primary.archive_id||primary.id),'Елемент з іншого архіву');}
  unique(t.handover_item,x=>x.handover_id+':'+x.position,'Порядок пакета');
  for(const x of t.candidate){fk('entity',x.target_entity_id);require(by('entity_revision',x.base_revision_id)?.entity_id===x.target_entity_id,'Основа кандидата');if(x.proposed_entity_id){fk('entity',x.proposed_entity_id);same(x.id,x.proposed_entity_id);}}
  for(const x of t.review_decision){require(by('entity_revision',x.target_revision_id)?.entity_id===x.target_entity_id,'Ціль рішення');fk('account',x.reviewer_account_id);}
@@ -80,6 +80,7 @@ export async function mediaCommand(s,actor,c,ctx){
  const file=async(name,content,a,workflow,capture=null)=>{text(name);if(!content||content.length>100000)fail('invalid','Додайте вміст прикладу до 100 000 символів.');const row=await newEntity('file_object',{sha256:await rawHash(content),byte_size:new TextEncoder().encode(content).length,mime_type:'text/plain',pronom_id:null,original_filename:name,received_at:s.clock,technical_metadata:{demo:true}},a);s.demo.file_contents[row.id]=content;t.file_ingest_occurrence.push({file_id:row.id,workflow_run_id:workflow,received_filename:name,source_path:null,received_at:s.clock,capture_event_id:capture});return row;};
  const copy=async(f,location)=>{if(!by('digital_storage_location',location))fail('invalid','Оберіть цифрове сховище.');const row=await newEntity('storage_copy',{file_id:f.id,storage_location_id:location,storage_key:f.id+'/'+f.original_filename,state:'pending',created_at:s.clock},archive(f.id));t.fixity_check.push({copy_id:row.id,checked_at:s.clock,algorithm:'SHA-256',observed_hash:await rawHash(s.demo.file_contents[f.id]),result:'match',process_run_id:null});row.state='verified';await revise(row,'Контрольна сума збігається');return row;};
  const manifest=async(capture,outputs)=>{if(!capture.digitization_job_id)return;const j=t.digitization_job.find(x=>x.work_item_id===capture.digitization_job_id);const doc=await newEntity('document',{kind:'digitization_manifest',title:'Опис отриманих файлів',body_text:outputs.map(o=>o.notes).join('\n'),language_tag:'uk',media_asset_id:null,physical_object_id:j.physical_object_id},archive(capture.id));for(const o of outputs)t.manifest_entry.push({manifest_revision_id:rev(doc.id),physical_object_id:j.physical_object_id,digitization_job_id:j.work_item_id,capture_event_id:capture.id,file_id:o.file_id,position:o.position,checksum:by('file_object',o.file_id).sha256,part_label:o.notes});};
+ if(c.type.startsWith('media.handover')||c.type.startsWith('media.transfer')){if(t.handover.some(h=>h.id===c.id&&h.profile==='research-dataset/1'))fail('invalid','Дослідницький експорт відкривається на сторінці експорту.');}
  if(['media.ingest','media.derivative','media.copy','media.fixity','media.restore','media.storage.location','media.preservation.plan'].includes(c.type))return preservationCommand(s,actor,c,{get,fresh,newEntity,revise,run,task,rawHash,fail,need});
  if(c.type.startsWith('media.transfer.'))return transferCommand(s,actor,c,{...ctx,task});
  if(c.type==='media.physical.create'){

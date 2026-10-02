@@ -1,8 +1,9 @@
-import {rightsUI} from './rights.mjs?v=20261002-wf18';
-import {reconciliationUI,caseKinds,caseStates} from './reconciliation.mjs?v=20261002-wf18';
-import {can} from '../data/model.mjs?v=20261002-wf18';
-import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20261002-wf18';
-import {wizard} from './wizard.mjs?v=20261002-wf18';
+import {feedbackReviewUI} from './delivery.mjs?v=20261002-wf19';
+import {rightsUI} from './rights.mjs?v=20261002-wf19';
+import {reconciliationUI,caseKinds,caseStates} from './reconciliation.mjs?v=20261002-wf19';
+import {can} from '../data/model.mjs?v=20261002-wf19';
+import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20261002-wf19';
+import {wizard} from './wizard.mjs?v=20261002-wf19';
 
 export function archivePages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);
@@ -42,6 +43,7 @@ export function archivePages(ctx){
   dialog(names[decision]+' пропозицію',(apply?(!description?select('field','Поле опису',Object.entries(descriptionFields[view.source_type])):'')+((!description||decision==='correct')?area('value','Нове значення',proposed):body(details([['Поле',descriptionFields[view.source_type][field]],['Буде записано',proposed]])))+proof():'')+area('reason',decision==='defer'?'Що потрібно перевірити далі':'Обґрунтування рішення'),async fd=>{await dispatch({type:'archive.review',id:view.id,expected_revision_id:view.revision_id,decision,...Object.fromEntries(fd),confirm:fd.has('confirm')});done(apply?'Опис оновлено. Пов’язана публікація потребує повторної перевірки доступу.':'Рішення збережено.');},names[decision]);
  }
  function candidate(){
+  if(t.candidate.some(x=>x.id===p.get('id')&&x.payload_schema_version==='research-feedback/1'))return feedbackReviewUI({st,actor,esc,pg,show,heading,panel,body,table,details,btn,action,link,dialog,dispatch,render,denied,input,area,select},p.get('id'));
   const processing=t.candidate.find(x=>x.id===p.get('id')&&x.payload_schema_version==='processing/1');if(processing){if(!permitted('review.write',processing.id))return denied();return show(heading('Перевірка','Машинна пропозиція','Звірте результат із джерелом і ухваліть окреме рішення.')+body(link(40,'Перевірити машинний результат',{role:'R03',id:processing.process_run_id,candidate:processing.id})));}
   if(!p.get('id'))return queue();if(reconciliation.handles(p.get('id')))return reconciliation.detail(p.get('id'));const v=archiveCandidate(st,actor,p.get('id'));if(!v||scope&&v.archive_id!==scope)return denied();
   const terminal=!['pending','deferred'].includes(v.state);for(const key of ['accept','correct','reject','defer'])action(key,()=>reviewDialog(v,key));

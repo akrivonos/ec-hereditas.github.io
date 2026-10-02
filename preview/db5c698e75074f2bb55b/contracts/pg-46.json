@@ -47,6 +47,7 @@
       "owner_account_id for private objects",
       "domain.read rechecked for every source, note, assertion, citation and download"
     ],
-    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once.",
+    "feedback": "Current owned assertion and every exact evidence source form a typed description/classification/relation proposal; researcher never edits archival data directly."
   }
 }

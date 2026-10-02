@@ -1,11 +1,13 @@
+import {feedbackView,feedbackReview} from './feedback.mjs?v=20261002-wf19';
 // Human review and publication workbench; no transport or implicit access grants.
-import {can} from './model.mjs?v=20261002-wf18';
-import {publicView,publicResources} from './public.mjs?v=20261002-wf18';
+import {can} from './model.mjs?v=20261002-wf19';
+import {publicView,publicResources} from './public.mjs?v=20261002-wf19';
 export const archiveTypes=['verification_record'];
 export const descriptionFields={information_unit:{title:'Назва',summary:'Опис'},document:{title:'Назва',body_text:'Текст документа'},physical_object:{title:'Назва',inscriptions:'Написи'}};
 export const reviewStates={pending:'Очікує перевірки',deferred:'Відкладено',accepted:'Прийнято',corrected:'Прийнято з виправленням',rejected:'Відхилено',superseded:'Замінено'};
 const reg=(s,id)=>s.tables.entity.find(x=>x.id===id),rev=(s,id)=>reg(s,id)?.current_revision_id;
 export function archiveCandidate(s,actor,id){
+ const feedback=feedbackView(s,actor,id);if(feedback)return feedback.reviewer?feedback:null;
  const t=s.tables,c=t.candidate.find(x=>x.id===id),target=c&&reg(s,c.target_entity_id);
  if(!c||c.payload_schema_version==='research-analysis/1'||!target||!can(s,actor,'review.write',target.archive_id))return null;
  const basis=t.entity_revision.find(x=>x.id===c.base_revision_id)?.snapshot;
@@ -51,6 +53,7 @@ export async function archiveCommand(s,actor,c,ctx){
   t.evidence_link.push({subject_entity_id:v.id,subject_revision_id:r(v.id),evidence_id:evidence.id,evidence_role:'review'});if(decision)t.evidence_link.push({subject_entity_id:decision,subject_revision_id:r(decision),evidence_id:evidence.id,evidence_role:'review_basis'});return v;
  };
  const hidePublications=async ids=>{for(const p of t.publication_record.filter(p=>ids.includes(p.id)&&p.state==='published')){p.state='unpublished';p.unpublished_at=s.clock;await revise(p,c.reason||'Потрібна повторна перевірка');}};
+ if(c.type==='archive.feedback.review')return feedbackReview(s,actor,c,ctx);
  if(c.type==='archive.propose'){
   const target=e(c.id);if(!target||!descriptionFields[target.entity_type]?.[c.field])fail('invalid','Оберіть поле архівного опису.');need('review.write',target.archive_id);fresh(c.id,c.expected_revision_id);text(c.value);text(c.reason);
   const evidence=await add('evidence',{source_entity_id:c.id,source_revision_id:r(c.id),external_uri:null,locator:c.locator?.trim()||null,quote_text:null,note:text(c.evidence_note),captured_at:s.clock},target.archive_id);
@@ -58,7 +61,7 @@ export async function archiveCommand(s,actor,c,ctx){
   t.candidate_source.push({candidate_id:row.id,source_entity_id:evidence.id,source_revision_id:r(evidence.id),source_role:'review'});return row;
  }
  if(c.type==='archive.review'){
-  if(by('candidate',c.id)?.payload_schema_version==='processing/1')fail('invalid','Перевірте машинний результат на сторінці обробки.');
+  if(['processing/1','research-feedback/1'].includes(by('candidate',c.id)?.payload_schema_version))fail('invalid','Перевірте машинний результат на сторінці обробки.');
   const view=archiveCandidate(s,actor,c.id);if(!view)fail('forbidden','Пропозиція недоступна.');const candidate=by('candidate',c.id);fresh(candidate.id,c.expected_revision_id);
   if(!view.editable)fail('invalid','Цей тип пропозиції розглядається у відповідному робочому процесі.');
   if(!['pending','deferred'].includes(candidate.state))fail('invalid','Рішення вже ухвалено.');

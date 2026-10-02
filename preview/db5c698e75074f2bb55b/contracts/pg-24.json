@@ -54,7 +54,8 @@
       "reconcile.reopen",
       "reconcile.review",
       "archive.propose",
-      "archive.review"
+      "archive.review",
+      "archive.feedback.review"
     ],
     "view_model": "WF-08 unified queue for identities, authority matches, typed relations, classifications, description proposals and exact catalog handoffs; evidence/counterevidence, accept/correct/reject/unresolved/disputed, stale comparison, repeated review and immutable applications",
     "completion": "core-interactive",
@@ -69,6 +70,7 @@
       "Browser-local prototype; no automatic entity merge, remote authority service or external evidence retrieval.",
       "Controlled D13 predicate subset; specialist folklore relations and conflicting typed person facts still need dedicated domain work.",
       "Rights approval and publication readiness remain WF-09; machine text review uses the existing dedicated text workflow."
-    ]
+    ],
+    "research_feedback": "research-feedback/1: exact frozen assertion/evidence, before/after, reasoned accept/correct/reject/defer, explicit confirmation; O43/O44/application; catalog.write required for changes; stale or unavailable basis blocks application."
   }
 }

@@ -14,7 +14,13 @@
     "bibliographic_export",
     "export_citation",
     "handover",
-    "handover_item"
+    "handover_item",
+    "workflow_run",
+    "file_object",
+    "research_corpus",
+    "corpus_item",
+    "annotation",
+    "assertion"
   ],
   "fields_and_relations": "Exact targets/versions, склад, формат, allowed attribution і результат.",
   "required_interaction": "Copy/download/failed/retry; бібліографія окремо від пакета джерел; повторна перевірка прав.",
@@ -35,13 +41,17 @@
       "research.citation",
       "research.export",
       "public.citation",
-      "public.export"
+      "public.export",
+      "research.citation.material",
+      "research.citations",
+      "research.dataset"
     ],
-    "view_model": "Copy citation; export wizard; real text/CSL JSON file bytes, hashes and guarded download",
-    "completion": "partial",
+    "view_model": "Exact source/material citations; TXT/CSL bibliography; selected corpus and owned results as a private research handover JSON with real file bytes, manifest and guarded downloads.",
+    "completion": "local-WF19-complete",
     "limitations": [
-      "Local versioned citation style and URN; public identifier resolver, BibTeX/RIS, additional styles and source handover packages remain pending.",
-      "Public citation/export uses current safe publication; advanced styles and formats remain pending."
+      "Browser-local JSON package up to 8 MiB subject to storage quota; no ZIP or remote transfer.",
+      "Local stable URN without public resolver; BibTeX/RIS and additional styles remain pending.",
+      "Public citation/export still uses current safe publication."
     ],
     "state_storage": "Normalized browser store v9; existing user state is preserved, new grants require explicit human review.",
     "permissions": [

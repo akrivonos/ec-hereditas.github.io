@@ -41,7 +41,9 @@
       "research.corpus.revise",
       "research.corpus.freeze",
       "research.analysis.run",
-      "research.analysis.review"
+      "research.analysis.review",
+      "research.dataset",
+      "research.citations"
     ],
     "view_model": "Exact source/text/media/layer/segment targets with source and optional layer anchors, independent group/reason/order, selection context, immutable history, freeze, redacted unavailable items and exact source handoff; corpus comparison by sources, places/periods, attributed people/repertoires, classifications and annotation tags; generated counts await human review",
     "completion": "complete-for-local-WF-16-and-WF-18",
@@ -54,6 +56,7 @@
       "owner_account_id for private objects",
       "domain.read rechecked for every source, note, assertion, citation and download"
     ],
-    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once."
+    "atomicity": "Authorize, compare expected corpus/assertion revision, mutate clone, validate exact FK/versions and immutable corpus membership hashes, commit once.",
+    "delivery": "Exact selected corpus revision exported or cited through wizard; source permissions rechecked."
   }
 }

@@ -1,5 +1,5 @@
-import {can} from './model.mjs?v=20261002-wf18';
-import {consentBasisValid} from './workbench.mjs?v=20261002-wf18';
+import {can} from './model.mjs?v=20261002-wf19';
+import {consentBasisValid} from './workbench.mjs?v=20261002-wf19';
 export const rightsFields={title:'Назва',summary:'Опис / текст',kind:'Вид',category:'Тема',place:'Місце',period:'Період',attribution:'Джерело й авторство',terms:'Умови',context_ids:'Пов’язані записи',resource_label:'Назва ресурсу',reference:'Архівний шифр'};
 export const rightsPurposes={public:'Публічний показ',research:'Дослідницька робота',deposit:'Депонування',processing:'Машинне опрацювання'};
 export const rightsUses={view:'Перегляд',cite:'Цитування',download:'Завантаження',museum:'Музейний показ',deposit:'Депонування',machine_process:'Машинне опрацювання'};

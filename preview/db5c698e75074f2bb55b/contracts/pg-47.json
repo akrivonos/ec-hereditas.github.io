@@ -10,7 +10,11 @@
   "tables": [
     "candidate",
     "candidate_source",
-    "review_decision"
+    "review_decision",
+    "review_application",
+    "assertion",
+    "evidence",
+    "evidence_link"
   ],
   "fields_and_relations": "kind=change_proposal, ціль/версія, автор, відповідь і стан.",
   "required_interaction": "Подати/доопрацювати/читати рішення; author-view PG-24 без accept-повноваження.",
@@ -28,14 +32,14 @@
   "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
   "implementation": {
     "commands": [
-      "research.proposal"
+      "research.feedback"
     ],
-    "view_model": "Owned proposals with pending state and available review decisions; source unchanged",
-    "completion": "partial",
+    "view_model": "Owned typed description/classification/relation proposals; immutable evidence basis, rationale, reviewer response, defer/rework/replacement history; source unchanged on submission.",
+    "completion": "local-WF19-complete",
     "limitations": [
-      "Archival acceptance and proposal correction require future WF-08 review pages; there is no fabricated acceptance or delivery."
+      "Browser-local workflow; controlled related_to/variant_of relations, no automatic acceptance."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "state_storage": "Normalized browser store v9; existing state and legacy proposals preserved.",
     "permissions": [
       "research.write in an explicit archive grant",
       "owner_account_id for private objects",

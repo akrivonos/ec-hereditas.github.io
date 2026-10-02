@@ -1,17 +1,17 @@
-import {preservationUI} from './preservation.mjs?v=20261002-wf18';
-import {preservationStatus} from '../data/preservation.mjs?v=20261002-wf18';
-import {qualityDialog,qualityHistory} from './quality.mjs?v=20261002-wf18';
-import {digitizationDialog} from './digitization.mjs?v=20261002-wf18';
-import {preparationUI} from './capture-preparation.mjs?v=20261002-wf18';
-import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261002-wf18';
-import {legacyPages} from './legacy.mjs?v=20261002-wf18';
-import {intakePages} from './intake.mjs?v=20261002-wf18';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261002-wf18';
-import {mediaPreview,download} from './session-media.mjs?v=20261002-wf18';
-import {can,hash} from '../data/model.mjs?v=20261002-wf18';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261002-wf18';
-import {hint} from './help.mjs?v=20261002-wf18';
-import {wizard} from './wizard.mjs?v=20261002-wf18';
+import {preservationUI} from './preservation.mjs?v=20261002-wf19';
+import {preservationStatus} from '../data/preservation.mjs?v=20261002-wf19';
+import {qualityDialog,qualityHistory} from './quality.mjs?v=20261002-wf19';
+import {digitizationDialog} from './digitization.mjs?v=20261002-wf19';
+import {preparationUI} from './capture-preparation.mjs?v=20261002-wf19';
+import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261002-wf19';
+import {legacyPages} from './legacy.mjs?v=20261002-wf19';
+import {intakePages} from './intake.mjs?v=20261002-wf19';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261002-wf19';
+import {mediaPreview,download} from './session-media.mjs?v=20261002-wf19';
+import {can,hash} from '../data/model.mjs?v=20261002-wf19';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261002-wf19';
+import {hint} from './help.mjs?v=20261002-wf19';
+import {wizard} from './wizard.mjs?v=20261002-wf19';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;
@@ -47,7 +47,7 @@ export function mediaPages(ctx){
  const intake=()=>intakePages({st,actor,archive,can,scope,params,by,rev,action,dialog,input,select,choices,options,dispatch,render,flash,panel,body,table,details,btn,button,pg,esc,show,heading,label});
  function reviewHandover(h){intake().receive(h);}
  function inbox(){
-  const state=params.get('state')||'',q=(params.get('q')||'').toLocaleLowerCase('uk'),all=t.handover.filter(h=>!h.intake_record_id).filter(h=>['sent','accepted','returned'].includes(h.state)&&can(st,actor,'domain.read',scopeForH(h))&&(!scope||scopeForH(h)===scope)&&by('workflow_run',h.to_workflow_run_id)?.started_by===actor),rows=all.filter(h=>(!state||h.state===state)&&label(by('workflow_run',h.from_workflow_run_id).primary_entity_id).toLocaleLowerCase('uk').includes(q));
+  const state=params.get('state')||'',q=(params.get('q')||'').toLocaleLowerCase('uk'),all=t.handover.filter(h=>h.profile!=='research-dataset/1').filter(h=>!h.intake_record_id).filter(h=>['sent','accepted','returned'].includes(h.state)&&can(st,actor,'domain.read',scopeForH(h))&&(!scope||scopeForH(h)===scope)&&by('workflow_run',h.to_workflow_run_id)?.started_by===actor),rows=all.filter(h=>(!state||h.state===state)&&label(by('workflow_run',h.from_workflow_run_id).primary_entity_id).toLocaleLowerCase('uk').includes(q));
   rows.forEach(h=>action('review-'+h.id,()=>reviewHandover(h)));
   show(heading('Робочий список','Надходження','Звірте склад конкретного пакета, зафіксуйте розбіжності та ухваліть рішення. Перевірки й рішення покрокової форми записуються разом після підтвердження.')+
    `<nav class="journey-filters" aria-label="Стан надходжень">${Object.entries({'':'Усі',sent:'Очікують звірки',returned:'На уточненні',accepted:'Прийняті',partial:'Прийняті частково'}).map(([key,title])=>`<a href="${pg(10,{...inboxQuery(),state:key})}" ${key===state?'aria-current="page"':''}>${title}<span>${all.filter(h=>!key||h.state===key).length+(t.intake_record||[]).filter(r=>can(st,actor,'domain.read',r.archive_id)&&(!scope||r.archive_id===scope)&&(!key||r.state===(key==='sent'?'reviewing':key))).length}</span></a>`).join('')}</nav>`+
@@ -110,7 +110,7 @@ export function mediaPages(ctx){
   action('inspect-transfer',()=>inspectTransfer({dialog,esc,table,body}));
   if(curatorRole&&!params.has('tab')){inbox();return;}
   const tab=params.get('tab')||(fieldRole?'outgoing':'incoming'),q=(params.get('q')||'').toLocaleLowerCase('uk');
-  const rows=t.handover.filter(h=>can(st,actor,'domain.read',scopeForH(h))&&(!scope||scopeForH(h)===scope)).filter(h=>tab==='all'||by('workflow_run',tab==='incoming'?h.to_workflow_run_id:h.from_workflow_run_id)?.started_by===actor).filter(h=>!q||label(by('workflow_run',h.from_workflow_run_id).primary_entity_id).toLocaleLowerCase('uk').includes(q));
+  const rows=t.handover.filter(h=>h.profile!=='research-dataset/1').filter(h=>can(st,actor,'domain.read',scopeForH(h))&&(!scope||scopeForH(h)===scope)).filter(h=>tab==='all'||by('workflow_run',tab==='incoming'?h.to_workflow_run_id:h.from_workflow_run_id)?.started_by===actor).filter(h=>!q||label(by('workflow_run',h.from_workflow_run_id).primary_entity_id).toLocaleLowerCase('uk').includes(q));
   action('create',()=>form('Підготувати передання',select('receiver','Приймач',options(t.account.filter(a=>can(st,a.id,'intake.receive',archive)),'',a=>actorLabel(a.id)))+`<fieldset><legend>Матеріали пакета</legend>${['collecting_session','physical_object','file_object'].flatMap(visible).map(x=>`<label class="check-label"><input type="checkbox" name="items" value="${x.id}">${esc(label(x.id))}</label>`).join('')}</fieldset>`+input('notes','Примітка','','textarea'),fd=>({type:'media.handover.create',archive_id:archive,receiver_id:fd.get('receiver'),entity_ids:fd.getAll('items'),notes:fd.get('notes')}),r=>location.href=pg(11,{id:r.id})));
   rows.forEach(h=>action('send-'+h.id,()=>dialog('Надіслати пакет',`<p>Передати підготовлений пакет «${esc(label(by('workflow_run',h.from_workflow_run_id).primary_entity_id))}» отримувачу ${esc(actorLabel(by('workflow_run',h.to_workflow_run_id).started_by))}?</p>`,async()=>{await dispatch({type:'media.handover',id:h.id,expected_hash:await hash(handoverState(st,h)),action:'send'});done('Пакет надіслано. Очікуємо звірки та рішення отримувача.');},'Надіслати')));
   show(heading('Робочий список','Передання та надходження','Підготуйте пакет із конкретного сеансу. Збережіть файл пакета, передайте отримувачу й зафіксуйте передання. Рішення про приймання видно в цьому списку.',fieldRole?button('Обрати сеанс',pg(7,{role:'R01'})):btn('Підготувати передання','create',can(st,actor,'intake.send',archive)))+`<nav class="record-tabs" aria-label="Напрям передання">${Object.entries({incoming:'Вхідні',outgoing:'Вихідні',all:'Усі доступні'}).map(([v,l])=>`<a href="${pg(10,{tab:v})}" ${tab===v?'aria-current="page"':''}>${l}</a>`).join('')}</nav><form class="filters"><input type="hidden" name="tab" value="${esc(tab)}"><label>Пошук<input name="q" value="${esc(params.get('q')||'')}"></label><button class="button">Знайти</button></form>`+body(btn('Перевірити отриманий пакет','inspect-transfer'))+panel('Пакети',table(['Матеріали','Відправник → приймач','Стан','Звірено','Дія'],rows.map(h=>{const items=t.handover_item.filter(i=>i.handover_id===h.id);return [link(11,h.id,label(by('workflow_run',h.from_workflow_run_id).primary_entity_id),{tab,q:params.get('q')}),esc(actorLabel(by('workflow_run',h.from_workflow_run_id).started_by))+' → '+esc(actorLabel(by('workflow_run',h.to_workflow_run_id)?.started_by)),badge(h.state),`${items.filter(i=>i.item_state==='present').length} / ${items.length}`,['prepared','returned'].includes(h.state)?(h.preflight?link(11,h.id,'Звірити та передати',{role:'R01'}):btn('Надіслати','send-'+h.id,can(st,actor,'intake.send',scopeForH(h)))):link(11,h.id,'Переглянути',{tab,q:params.get('q')})];}))));
@@ -119,7 +119,7 @@ export function mediaPages(ctx){
  function transferDetail(){
   if(params.has('intake')){intake().detail();return;}
   if(!params.has('id')){transfers();return;}
-  const h=chosen(t.handover.filter(h=>can(st,actor,'domain.read',scopeForH(h))&&(!scope||scopeForH(h)===scope)));if(!h){denied();return;}
+  const h=chosen(t.handover.filter(h=>h.profile!=='research-dataset/1').filter(h=>can(st,actor,'domain.read',scopeForH(h))&&(!scope||scopeForH(h)===scope)));if(!h){denied();return;}
   const a=scopeForH(h),items=t.handover_item.filter(x=>x.handover_id===h.id),receive=can(st,actor,'intake.receive',a),send=can(st,actor,'intake.send',a),primary=by('workflow_run',h.from_workflow_run_id).primary_entity_id;
   const cmd=async(values)=>save({type:'media.handover',id:h.id,expected_hash:await hash(handoverState(st,h)),...values});
   action('send',()=>h.preflight?dialog('Зафіксувати передання','<p>Спочатку збережіть файл пакета та передайте його отримувачу обраним способом.</p><label class="check-label"><input type="checkbox" name="delivered" required>Файл пакета передано отримувачу</label>',fd=>cmd({action:'send',delivery_confirmed:fd.has('delivered')}),'Підтвердити передання'):cmd({action:'send'}));action('accept',()=>h.intake_record_id?location.href=pg(11,{role:'R02',intake:h.intake_record_id}):intake().receive(h));
