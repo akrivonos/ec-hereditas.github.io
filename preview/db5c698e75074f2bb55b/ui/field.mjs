@@ -1,13 +1,13 @@
-import {catalogPage} from './catalog.mjs?v=20261001-wf13';
-import {mediaPreview} from './session-media.mjs?v=20261001-wf13';
-import {sessionPage} from './session.mjs?v=20261001-wf13';
-import {contactsPage} from './contacts.mjs?v=20261001-wf13';
-import {preparationPage} from './preparation.mjs?v=20261001-wf13';
-import {preparationStatus} from '../data/preparation.mjs?v=20261001-wf13';
-import {can,hash} from '../data/model.mjs?v=20261001-wf13';
-import {hint} from './help.mjs?v=20261001-wf13';
-import {wizard} from './wizard.mjs?v=20261001-wf13';
-import {mediaPages} from './media.mjs?v=20261001-wf13';
+import {catalogPage} from './catalog.mjs?v=20261001-wf14';
+import {mediaPreview} from './session-media.mjs?v=20261001-wf14';
+import {sessionPage} from './session.mjs?v=20261001-wf14';
+import {contactsPage} from './contacts.mjs?v=20261001-wf14';
+import {preparationPage} from './preparation.mjs?v=20261001-wf14';
+import {preparationStatus} from '../data/preparation.mjs?v=20261001-wf14';
+import {can,hash} from '../data/model.mjs?v=20261001-wf14';
+import {hint} from './help.mjs?v=20261001-wf14';
+import {wizard} from './wizard.mjs?v=20261001-wf14';
+import {mediaPages} from './media.mjs?v=20261001-wf14';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;

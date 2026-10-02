@@ -1,6 +1,6 @@
 // Human review and publication workbench; no transport or implicit access grants.
-import {can} from './model.mjs?v=20261001-wf13';
-import {publicView,publicResources} from './public.mjs?v=20261001-wf13';
+import {can} from './model.mjs?v=20261001-wf14';
+import {publicView,publicResources} from './public.mjs?v=20261001-wf14';
 export const archiveTypes=['verification_record'];
 export const descriptionFields={information_unit:{title:'Назва',summary:'Опис'},document:{title:'Назва',body_text:'Текст документа'},physical_object:{title:'Назва',inscriptions:'Написи'}};
 export const reviewStates={pending:'Очікує перевірки',deferred:'Відкладено',accepted:'Прийнято',corrected:'Прийнято з виправленням',rejected:'Відхилено',superseded:'Замінено'};
@@ -58,6 +58,7 @@ export async function archiveCommand(s,actor,c,ctx){
   t.candidate_source.push({candidate_id:row.id,source_entity_id:evidence.id,source_revision_id:r(evidence.id),source_role:'review'});return row;
  }
  if(c.type==='archive.review'){
+  if(by('candidate',c.id)?.payload_schema_version==='processing/1')fail('invalid','Перевірте машинний результат на сторінці обробки.');
   const view=archiveCandidate(s,actor,c.id);if(!view)fail('forbidden','Пропозиція недоступна.');const candidate=by('candidate',c.id);fresh(candidate.id,c.expected_revision_id);
   if(!view.editable)fail('invalid','Цей тип пропозиції розглядається у відповідному робочому процесі.');
   if(!['pending','deferred'].includes(candidate.state))fail('invalid','Рішення вже ухвалено.');

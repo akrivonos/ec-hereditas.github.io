@@ -1,10 +1,12 @@
-import {can,hash} from '../data/model.mjs?v=20261001-wf13';
-import {textList,textView,textKinds,kindCode,useNames,useDecision} from '../data/workbench.mjs?v=20261001-wf13';
-import {wizard} from './wizard.mjs?v=20261001-wf13';
+import {mediaPreview} from './session-media.mjs?v=20261001-wf14';
+import {processingPage} from './processing.mjs?v=20261001-wf14';
+import {can,hash} from '../data/model.mjs?v=20261001-wf14';
+import {textList,textView,textKinds,kindCode,useNames,useDecision} from '../data/workbench.mjs?v=20261001-wf14';
+import {wizard} from './wizard.mjs?v=20261001-wf14';
 
 export function workbenchPages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search),role=p.get('role')||'R02';
- const by=(k,id)=>t[k]?.find(x=>x.id===id),reg=id=>by('entity',id),rev=id=>reg(id)?.current_revision_id,label=id=>{const e=reg(id),x=e&&by(e.entity_type,id);return x?.title||x?.preferred_name||x?.name||'Матеріал';};
+ const by=(k,id)=>t[k]?.find(x=>x.id===id),reg=id=>by('entity',id),rev=id=>reg(id)?.current_revision_id,label=id=>{const e=reg(id),x=e&&by(e.entity_type,id);return x?.title||x?.preferred_name||x?.name||(x?.asset_id?by('media_asset',x.asset_id)?.title:null)||'Матеріал';};
  const allowed=(permission,id)=>can(st,actor,permission,reg(id)?.archive_id)&&(!scope||scope===reg(id)?.archive_id),some=permission=>t.archive.some(a=>(!scope||scope===a.id)&&can(st,actor,permission,a.id));
  const btn=(title,key,enabled=true)=>`<button type="button" class="button secondary" data-workbench="${key}" ${enabled?'':'disabled'}>${esc(title)}</button>`,actions={},act=(k,f)=>actions[k]=f;
  const link=(n,title,q={})=>`<a href="${pg(n,{role,...q})}">${esc(title)}</a>`,go=(n,q={})=>location.assign(pg(n,{role,...q})),done=text=>{flash(text);render();};
@@ -31,9 +33,10 @@ export function workbenchPages(ctx){
   act('create',createText);if(!x)return show(heading('Опрацювання','Тексти','Відкрийте джерело або створіть транскрипцію. Редагування зберігає попередні версії.',btn('Створити транскрипцію','create',sources('text.write').length>0))+search()+panel('Тексти',table(['Матеріал','Вид','Стан'],filtered(texts()).map(x=>[link(12,label(x.subject_entity_id),{id:x.id}),esc(textKinds[kindCode(st,x)]),esc(state(x))]))));
   act('edit',()=>edit(x));act('segment',()=>segment(x));for(const d of ['accept','reject','defer'])act(d,()=>review(x,d));
   const src=by('entity_revision',x.subject_revision_id)?.snapshot,segs=t.unit_segment.filter(u=>u.unit_id===x.subject_entity_id).map(u=>by('media_segment',u.segment_id));
+  const run=x.process_run_id&&by('process_run',x.process_run_id),sourceHTML=run?.job?`<p>${esc(label(x.subject_entity_id))} · ${link(40,'Результати обробки',{id:run.id})}</p>`+run.job.inputs.filter(f=>allowed('domain.read',f.id)).map(f=>`<details><summary>${esc(f.filename)}</summary>${st.demo.file_contents[f.id]?mediaPreview(st.demo.file_contents[f.id],f.mime_type,esc):'<pre>'+esc(by('entity_revision',f.revision_id)?.snapshot.body_text||'')+'</pre>'}</details>`).join(''):`<p class="source-text">${esc(src?.summary||src?.body_text||src?.title||label(x.subject_entity_id))}</p>`;
   show(link(12,'← Тексти')+heading('Транскрипція',label(x.subject_entity_id),'Один рядок — одна репліка. Сумніви зберігаються окремо й не перетворюються на остаточне прочитання.',btn('Редагувати текст','edit',allowed('text.write',x.id)))+
    body(`<nav class="record-tabs">${link(13,'Нормалізація та переклад',{id:x.id})}${link(14,'Версії та перевірка',{id:x.id})}${link(15,'Глосарій')}</nav>`+details([['Вид',textKinds[kindCode(st,x)]],['Стан',state(x)],['Версія',x.revision_no]]))+
-   panel('Джерело',body(`<p class="source-text">${esc(src?.summary||src?.body_text||src?.title)}</p>`))+
+   panel('Джерело',body(sourceHTML))+
    panel('Текст',table(['Репліка','Мовець','Текст'],x.parts.map(v=>[String(v.position),esc(v.speaker_participation_id?label(by('participation',v.speaker_participation_id)?.person_id):'Не зазначено'),esc(v.text)])))+
    panel('Сумнівні місця',body(x.notes.map(v=>`<p>${esc(v.body)}</p>`).join('')||'<p>Не позначено.</p>'))+
    (by('information_unit',x.subject_entity_id)?panel('Часові фрагменти',body(btn('Позначити фрагмент','segment',allowed('text.write',x.id)))+table(['Початок','Кінець'],segs.map(v=>[v.start_ms/1000+' с',v.end_ms/1000+' с']))):''));
@@ -75,20 +78,7 @@ export function workbenchPages(ctx){
    panel('Приватний доказ',body(evidence.map(v=>details([['Місце доказу',v.locator],['Опис',v.note]])).join('')))+
    panel('Історія умов',table(['Версія','Стан','Обсяг','Підстава зміни'],t.entity_revision.filter(v=>v.entity_id===x.id).map(v=>[String(v.revision_no),esc(consentState[v.snapshot.state]),esc((v.snapshot._relations?.consent_scope||[]).map(u=>useNames[u.use_code]+': '+(u.permission==='allowed'?'дозволено':'відкликано')).join('; ')),esc(v.change_reason)]))));
  }
- const operations={ocr:'Розпізнавання друкованого тексту',htr:'Розпізнавання рукопису',stt:'Розпізнавання мовлення',normalize:'Нормалізація',translate:'Переклад'};
- function processingForm(previous=null){const rows=t.entity.filter(e=>['document','information_unit','textual_representation'].includes(e.entity_type)&&allowed('processing.run',e.id)&&useDecision(st,e.id,'processing','machine_process'));if(!rows.length)return;const prev=previous&&t.process_input.find(x=>x.process_run_id===previous.id),selected=rows.find(x=>x.id===prev?.entity_id)||rows[0];
-  const kinds=id=>reg(id).entity_type==='textual_representation'?(kindCode(st,by('textual_representation',id))==='diplomatic'?[['normalize',operations.normalize]]:[['translate',operations.translate]]):Object.entries(operations).filter(([k])=>['ocr','htr','stt'].includes(k));
-  const d=wizard({dialog,esc},{title:previous?'Повторити на прикладі':'Опрацювати приклад',submit:'Запустити приклад',steps:[
-   {title:'Джерело й операція',body:'<p>Локальна демонстрація: зовнішній сервіс не викликається. Результат нижче можна змінити для перевірки подальшого розгляду.</p>'+select('source_id','Матеріал',rows.map(e=>[e.id,e.entity_type==='textual_representation'?title(by('textual_representation',e.id)):label(e.id)]),selected.id)+select('operation','Операція',kinds(selected.id))+select('outcome','Результат прикладу',[['succeeded','Виконано'],['failed','Помилка обробки']])},
-   {title:'Чернетка результату',body:area('body_text','Результат для перевірки','Ми ходили на вечорниці.\nТам співали разом.')}
-  ],summary:v=>details([['Операція',operations[v.operation]],['Результат',v.outcome==='failed'?'Помилка, можна повторити':'Неперевірена чернетка'],['Зовнішня обробка','Не виконується']]),onSubmit:async v=>{const x=await dispatch({type:'workbench.process',...v,expected_revision_id:rev(v.source_id),retry_of:previous?.id});go(40,{id:x.id});}});d.querySelector('[name=source_id]').onchange=e=>d.querySelector('[name=operation]').innerHTML=options(kinds(e.target.value));
- }
- function processing(){if(!some('processing.run'))return denied();const rows=t.process_run.filter(x=>t.process_input.some(v=>v.process_run_id===x.id&&allowed('processing.run',v.entity_id))),x=rows.find(x=>x.id===p.get('id'));if(p.get('id')&&!x)return denied();act('start',()=>processingForm());const canStart=t.entity.some(e=>allowed('processing.run',e.id)&&useDecision(st,e.id,'processing','machine_process'));
-  if(!x)return show(heading('Опрацювання','Машинне опрацювання','Обробка потребує окремого дозволу. Результати надходять на людську перевірку. У локальному прикладі зовнішні сервіси не запускаються.',btn('Опрацювати приклад','start',canStart))+panel('Запуски',table(['Операція','Матеріал','Стан'],rows.map(x=>{const v=t.process_input.find(v=>v.process_run_id===x.id);return [link(40,operations[x.operation]||x.operation,{id:x.id}),esc(label(v.entity_id)),x.state==='failed'?'Помилка':'Виконано'];}))));
-  const v=t.process_input.find(v=>v.process_run_id===x.id),candidates=t.candidate.filter(c=>c.process_run_id===x.id);act('retry',()=>processingForm(x));show(link(40,'← Машинне опрацювання')+heading('Запуск',operations[x.operation]||x.operation,'Кожен повтор має власні вхідні версії й історію. Успішна обробка не означає людського прийняття.',btn('Повторити на прикладі','retry',canStart))+
-   body(details([['Стан',x.state==='failed'?'Помилка обробки':'Виконано'],['Джерело',label(v.entity_id)],['Версія джерела',by('entity_revision',v.revision_id)?.revision_no],['Інструмент',x.tool_name],['Модель',x.model_name||'Не використовується'],['Початок',x.started_at]]))+
-   panel('Результати для перевірки',table(['Текст','Стан','Дія'],candidates.map(c=>[link(12,'Відкрити чернетку',{id:c.proposed_entity_id}),esc(textView(st,actor,c.proposed_entity_id)?state(textView(st,actor,c.proposed_entity_id)):'Недоступно'),link(14,'Перейти до перевірки',{id:c.proposed_entity_id})]))));
- }
+ function processing(){return processingPage({st,t,p,actor,scope,esc,pg,dialog,dispatch,done,denied,by,reg,rev,allowed,some,btn,act,link,go,body,input,area,options,select,checks,details,table,show,heading,panel});}
  const depositStates={prepared:'Підготовлено',sent:'Надіслано',received:'Отримано',accepted:'Прийнято',rejected:'Відхилено'};
  function depositForm(action='upsert',existing=null){const a=existing?.archive_id||scope||t.archive.find(a=>can(st,actor,'deposit.manage',a.id))?.id;const rows=sources('deposit.manage').filter(e=>reg(e.id).archive_id===a&&(action==='withdraw'?t.deposit_item.some(i=>i.source_entity_uuid===e.id&&i.action==='upsert'&&['sent','accepted'].includes(by('deposit_record',i.deposit_record_id)?.state)):useDecision(st,e.id,'deposit','deposit')));const receivers=t.installation.filter(x=>x.id!==st.demo.ids.installation);wizard({dialog,esc},{title:action==='withdraw'?'Підготувати вилучення':'Підготувати депонування',submit:'Зберегти пакет',steps:[
   {title:'Приймач і склад',body:select('receiver_id','Приймальна інсталяція',receivers.map(x=>[x.id,x.name]),existing?.receiver_installation_id)+checks('source_ids',rows.map(e=>[e.id,label(e.id)]))}

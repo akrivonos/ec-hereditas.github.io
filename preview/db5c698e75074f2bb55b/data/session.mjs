@@ -1,6 +1,6 @@
-import {fileBytes,mediaMime,MAX_MEDIA_BYTES} from './binary.mjs?v=20261001-wf13';
-import {rawHash} from './media.mjs?v=20261001-wf13';
-import {consentBasisValid,useNames} from './workbench.mjs?v=20261001-wf13';
+import {fileBytes,mediaMime,MAX_MEDIA_BYTES} from './binary.mjs?v=20261001-wf14';
+import {rawHash} from './media.mjs?v=20261001-wf14';
+import {consentBasisValid,useNames} from './workbench.mjs?v=20261001-wf14';
 export const eventKinds=[['participant_joined','Приєднання учасника'],['participant_left','Вихід учасника'],['interruption','Перерва'],['technical_incident','Технічна проблема'],['other','Інша подія']];
 export function recordingGaps(s,id,kind){
  const t=s.tables,use='record_'+kind,people=[...new Set(t.participation.filter(x=>x.session_id===id&&x.role_code==='performer').map(x=>x.person_id))];
@@ -11,7 +11,7 @@ export function markerEntries(s,layer,rid=null){return (s.tables.timed_layer_ent
 export function validateSession(s,ok,fk){
  const t=s.tables,by=(k,id)=>t[k]?.find(x=>x.id===id);
  for(const r of t.collecting_session){ok(!r.started_at||Number.isFinite(Date.parse(r.started_at)),'Час початку');ok(!r.ended_at||r.started_at&&Date.parse(r.ended_at)>=Date.parse(r.started_at),'Завершення перед початком');}
- for(const l of t.timed_layer||[]){ok(by('entity_revision',l.representation_revision_id)?.entity_id===l.representation_id,'Версія запису позначок');ok(l.kind==='index','Тип первинного часового шару');}
+ for(const l of t.timed_layer||[]){ok(by('entity_revision',l.representation_revision_id)?.entity_id===l.representation_id,'Версія запису позначок');ok(['index','transcript','captions','translation'].includes(l.kind),'Тип часового шару');}
  const positions=new Set();for(const x of t.timed_layer_entry||[]){
   const l=by('entity_revision',x.layer_revision_id),seg=by('entity_revision',x.segment_revision_id);ok(by('entity',l?.entity_id)?.entity_type==='timed_layer'&&by('entity',seg?.entity_id)?.entity_type==='media_segment','Версії позначки');
   ok(l.snapshot.representation_revision_id===seg.snapshot.representation_revision_id,'Позначка іншого запису');ok(!!x.text_value?.trim(),'Текст позначки');

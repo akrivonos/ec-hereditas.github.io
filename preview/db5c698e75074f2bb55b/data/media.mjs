@@ -1,10 +1,10 @@
-import {preservationCommand,validatePreservation} from './preservation.mjs?v=20261001-wf13';
-import {qualityCommand,validateQuality} from './quality.mjs?v=20261001-wf13';
-import {digitize,validateDigitization} from './digitization.mjs?v=20261001-wf13';
-import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261001-wf13';
-import {reconciliationCommand} from './reconciliation.mjs?v=20261001-wf13';
-import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261001-wf13';
-import {fileBytes} from './binary.mjs?v=20261001-wf13';
+import {preservationCommand,validatePreservation} from './preservation.mjs?v=20261001-wf14';
+import {qualityCommand,validateQuality} from './quality.mjs?v=20261001-wf14';
+import {digitize,validateDigitization} from './digitization.mjs?v=20261001-wf14';
+import {capturePreparationCommand,preparationFacts,plannedOutputs,validatePreparation} from './capture-preparation.mjs?v=20261001-wf14';
+import {reconciliationCommand} from './reconciliation.mjs?v=20261001-wf14';
+import {transferCommand,transferProblems,transferBundle,transferContext} from './handover.mjs?v=20261001-wf14';
+import {fileBytes} from './binary.mjs?v=20261001-wf14';
 // Internal, scoped prototype operations. Storage and capture actions explicitly simulate hardware.
 export const mediaTypes=['source_system','source_record','physical_object','storage_location','condition_assessment','custody_event','media_asset','representation','file_object','storage_copy','capture_event','qc_record','candidate','review_decision','evidence'];
 export const mediaRelations=(t,type,id)=>Object.fromEntries(({

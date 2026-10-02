@@ -1,17 +1,17 @@
-import {preservationUI} from './preservation.mjs?v=20261001-wf13';
-import {preservationStatus} from '../data/preservation.mjs?v=20261001-wf13';
-import {qualityDialog,qualityHistory} from './quality.mjs?v=20261001-wf13';
-import {digitizationDialog} from './digitization.mjs?v=20261001-wf13';
-import {preparationUI} from './capture-preparation.mjs?v=20261001-wf13';
-import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261001-wf13';
-import {legacyPages} from './legacy.mjs?v=20261001-wf13';
-import {intakePages} from './intake.mjs?v=20261001-wf13';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf13';
-import {mediaPreview,download} from './session-media.mjs?v=20261001-wf13';
-import {can,hash} from '../data/model.mjs?v=20261001-wf13';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf13';
-import {hint} from './help.mjs?v=20261001-wf13';
-import {wizard} from './wizard.mjs?v=20261001-wf13';
+import {preservationUI} from './preservation.mjs?v=20261001-wf14';
+import {preservationStatus} from '../data/preservation.mjs?v=20261001-wf14';
+import {qualityDialog,qualityHistory} from './quality.mjs?v=20261001-wf14';
+import {digitizationDialog} from './digitization.mjs?v=20261001-wf14';
+import {preparationUI} from './capture-preparation.mjs?v=20261001-wf14';
+import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261001-wf14';
+import {legacyPages} from './legacy.mjs?v=20261001-wf14';
+import {intakePages} from './intake.mjs?v=20261001-wf14';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261001-wf14';
+import {mediaPreview,download} from './session-media.mjs?v=20261001-wf14';
+import {can,hash} from '../data/model.mjs?v=20261001-wf14';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261001-wf14';
+import {hint} from './help.mjs?v=20261001-wf14';
+import {wizard} from './wizard.mjs?v=20261001-wf14';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;
@@ -240,7 +240,7 @@ export function mediaPages(ctx){
   show(heading('Цифровий ресурс',asset.title,'Перемикання представлення не змінює оригінал. Перегляд доступний лише в межах наданих прав.',btn('Додати похідну копію','derivative',write)+' '+btn('Створити мініатюру','thumbnail',write&&files.some(x=>/^image\/(png|jpeg|webp)$/.test(by('file_object',x.file_id).mime_type))))+chain(job?.physical_object_id,job?.work_item_id,facts.capture?.id,rep.id)+
    `<nav class="record-tabs" aria-label="Представлення">${reps.map(x=>`<a href="${pg(38,{id:asset.id,representation:x.id})}" ${x.id===rep.id?'aria-current="page"':''}>${esc(labels[x.role])} · ${x.representation_version}</a>`).join('')}</nav>`+
    panel('Файли представлення',table(['№ / частина','Файл','Контрольна сума',''],files.map(x=>{const f=by('file_object',x.file_id);return [`${x.position} · ${esc(x.component_label)}`,esc(f.original_filename)+`<span class="sub">${f.byte_size} байт · ${esc(f.mime_type)}</span>`,`<small class="hash-value">${esc(f.sha256)}</small>`,btn('Переглянути','view-'+f.id,allowed(f.id))+' '+btn('Завантажити','download-'+f.id,allowed(f.id))];})))+
-   body(button('Збереження файлів',pg(39,{id:files[0]?.file_id}),true)+' '+button('До архівного опису',pg(17,{role:'R02'}),true)+' '+button('Машинне опрацювання',pg(40,{role:'R03'}),true))+
+   body(button('Збереження файлів',pg(39,{id:files[0]?.file_id}),true)+' '+button('До архівного опису',pg(17,{role:'R02'}),true)+' '+button('Машинне опрацювання',pg(40,{role:'R03',source:rep.id}),true))+
    `<div class="two-col"><div>`+panel('Копії файлів',table(['Файл','Сховище','Стан','Незалежні сховища'],files.flatMap(x=>t.storage_copy.filter(c=>c.file_id===x.file_id).map(c=>[link(39,x.file_id,by('file_object',x.file_id).original_filename),esc(by('digital_storage_location',c.storage_location_id).name),badge(c.state),String(preservationStatus(st,x.file_id).independent)]))))+history(rep.id)+`</div><aside>`+
    panel('Пов’язані матеріали',body(t.media_asset_subject.filter(x=>x.asset_id===asset.id).map(x=>`<p>${entityLink(x.subject_entity_id)}</p>`).join('')||'<p>Ще не пов’язано.</p>'),btn('Пов’язати','link',write))+
    panel('Походження представлення',body(source.length?source.map(x=>{const r=by('entity_revision',x.input_representation_revision_id),inputRep=by('representation',r.entity_id);return `<p>${link(38,inputRep.asset_id,labels[inputRep.role]+' · '+inputRep.representation_version,{representation:inputRep.id})}</p><small>Версія опису ${r.revision_no}</small><p>${esc(x.operation)}</p>`;}).join(''):'<p>Отриманий результат фіксації або надходження.</p>'))+'</aside></div>');

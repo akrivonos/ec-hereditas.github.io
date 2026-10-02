@@ -1,5 +1,5 @@
-import {can,canonical} from './model.mjs?v=20261001-wf13';
-import {classificationFits} from './catalog.mjs?v=20261001-wf13';
+import {can,canonical} from './model.mjs?v=20261001-wf14';
+import {classificationFits} from './catalog.mjs?v=20261001-wf14';
 export const reviewSourceTypes=['source_record','document','physical_object','media_asset','representation','file_object','information_unit','collecting_session','field_research','person','place','institution','textual_representation'];
 export const relationPredicates={
  represented_by:{label:'Представлено цифровим матеріалом',domain:['physical_object','information_unit','collecting_session','document'],range:['media_asset','representation','file_object'],symmetric:false},
@@ -20,7 +20,7 @@ export function pairFits(s,operation,left,right,predicate){const a=reg(s,left),b
 export function reviewCase(s,actor,id){const e=reg(s,id),row=e&&by(s,e.entity_type,id);if(!row||!can(s,actor,'review.write',e.archive_id)||!reviewReadable(s,actor,id))return null;
  let kind,subject,object=null,basis,objectBasis=null,state;
  if(e.entity_type==='candidate'&&(row.payload_schema_version==='reconciliation/1'||row.kind==='identity_match')){kind=row.proposed_payload.operation||'identity';subject=row.target_entity_id;object=row.proposed_entity_id;basis=row.base_revision_id;objectBasis=row.proposed_payload.entity_revision_id;state=row.state;}
- else if(e.entity_type==='assertion'&&row.scope==='archival'&&['classification','relation','generic'].includes(row.assertion_kind)){kind=row.assertion_kind;subject=row.subject_entity_id;basis=row.subject_revision_id||rev(s,subject);object=s.tables.identity_resolution?.find(x=>x.assertion_id===id)?.object_entity_id||s.tables.semantic_relation?.find(x=>x.assertion_id===id)?.object_entity_id;objectBasis=row.object_revision_id;state={draft:'pending',accepted:'accepted',rejected:'rejected',superseded:'superseded'}[row.acceptance_state];}
+ else if(e.entity_type==='assertion'&&!row.processing_candidate_id&&row.scope==='archival'&&['classification','relation','generic'].includes(row.assertion_kind)){kind=row.assertion_kind;subject=row.subject_entity_id;basis=row.subject_revision_id||rev(s,subject);object=s.tables.identity_resolution?.find(x=>x.assertion_id===id)?.object_entity_id||s.tables.semantic_relation?.find(x=>x.assertion_id===id)?.object_entity_id;objectBasis=row.object_revision_id;state={draft:'pending',accepted:'accepted',rejected:'rejected',superseded:'superseded'}[row.acceptance_state];}
  else if(e.entity_type==='catalog_record'&&row.review_task_id){kind='catalog';subject=row.subject_entity_id;basis=row.subject_revision_id;state=row.state==='verified'?'accepted':row.state==='draft'?'rejected':'pending';}
  else return null;
  if(!reviewReadable(s,actor,subject)||object&&!reviewReadable(s,actor,object))return null;

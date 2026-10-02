@@ -1,6 +1,7 @@
-import {accessPolicy} from './rights.mjs?v=20261001-wf13';
+import {processingCommand,validateProcessing,verifyProcessingHashes} from './processing.mjs?v=20261001-wf14';
+import {accessPolicy} from './rights.mjs?v=20261001-wf14';
 // Texts, private consents and explicit local processing/transport demonstrations.
-import {can} from './model.mjs?v=20261001-wf13';
+import {can} from './model.mjs?v=20261001-wf14';
 export const workbenchTypes=['textual_representation','media_segment','consent_record','deposit_record'];
 export const textKinds={diplomatic:'Дослівна транскрипція',normalized:'Нормалізований текст',translation:'Переклад',notation:'Нотна транскрипція'};
 export const useNames={record_audio:'Аудіозапис',record_video:'Відеозапис',record_photo:'Фотографування',field_notes:'Польові нотатки',view:'Перегляд',cite:'Цитування',museum:'Музейне використання',download:'Завантаження',machine_process:'Машинне опрацювання',deposit:'Депонування'};
@@ -20,13 +21,13 @@ export function textView(s,actor,id,rid=null){
  const t=s.tables,e=entity(s,id),row=t.textual_representation?.find(x=>x.id===id);
  if(!row||e.retired_at||!can(s,actor,'text.read',e.archive_id))return null;
  const r=t.entity_revision.find(x=>x.id===(rid||e.current_revision_id)&&x.entity_id===id);if(!r)return null;
- const decisions=t.review_decision.filter(d=>d.target_entity_id===id&&d.target_revision_id===r.id),last=decisions.at(-1);
+ const applied=new Set(t.review_application.filter(x=>x.result_entity_id===id&&x.result_revision_id===r.id).map(x=>x.review_decision_id)),decisions=t.review_decision.filter(d=>d.target_entity_id===id&&d.target_revision_id===r.id||applied.has(d.id)),last=decisions.at(-1);
  return {...structuredClone(r.snapshot),revision_id:r.id,revision_no:r.revision_no,archive_id:e.archive_id,reviewed:['accept','correct'].includes(last?.decision),review:last,
  parts:structuredClone((t.text_part||[]).filter(x=>x.text_revision_id===r.id).sort((a,b)=>a.position-b.position)),notes:structuredClone((t.textual_note||[]).filter(x=>x.text_revision_id===r.id))};
 }
 export const textList=(s,a)=>s.tables.textual_representation.map(x=>textView(s,a,x.id)).filter(Boolean);
 export function validateWorkbench(s,ok,fk){
- const t=s.tables;if(!t.textual_representation)return;const by=(k,id)=>t[k]?.find(x=>x.id===id),exact=(id,rid)=>ok(by('entity_revision',rid)?.entity_id===id,'Невідповідна точна версія');
+ validateProcessing(s,ok,fk);const t=s.tables;if(!t.textual_representation)return;const by=(k,id)=>t[k]?.find(x=>x.id===id),exact=(id,rid)=>ok(by('entity_revision',rid)?.entity_id===id,'Невідповідна точна версія');
  for(const x of t.textual_representation){fk('entity',x.subject_entity_id);exact(x.subject_entity_id,x.subject_revision_id);ok(entity(s,x.subject_entity_id)?.archive_id===entity(s,x.id)?.archive_id,'Текст іншого архіву');ok(by('vocabulary_scheme',by('vocabulary_term',x.kind_term_id)?.scheme_id)?.d_code==='D21','Вид тексту');ok(/^[a-z]{2,3}(-[A-Za-z0-9]+)*$/.test(x.language_tag),'Мова тексту');ok(!x.is_dialectal||!!x.dialect_term_id||!!x.dialect_label_raw?.trim(),'Зазначте говір');if(x.derived_from_revision_id){const p=by('entity_revision',x.derived_from_revision_id);ok(entity(s,p?.entity_id)?.entity_type==='textual_representation'&&p.snapshot.subject_entity_id===x.subject_entity_id,'Основа похідного тексту');}}
  for(const r of t.entity_revision.filter(x=>entity(s,x.entity_id)?.entity_type==='textual_representation')){const parts=t.text_part.filter(x=>x.text_revision_id===r.id).sort((a,b)=>a.position-b.position);ok(parts.length>0&&parts.every((x,i)=>x.position===i+1)&&parts.map(x=>x.text).join('\n')===r.snapshot.body_text,'Частини не відповідають тексту');for(const p of parts)if(p.speaker_participation_id){const subject=by('information_unit',r.snapshot.subject_entity_id);ok(by('participation',p.speaker_participation_id)?.session_id===subject?.session_id,'Мовець іншого сеансу');}}
  for(const x of t.media_segment){exact(x.representation_id,x.representation_revision_id);const duration=by('entity_revision',x.representation_revision_id)?.snapshot.duration_ms;ok(Number.isInteger(x.start_ms)&&Number.isInteger(x.end_ms)&&x.start_ms>=0&&x.end_ms>x.start_ms&&(duration==null||x.end_ms<=duration),'Межі фрагмента виходять за тривалість');}
@@ -39,6 +40,7 @@ export function validateWorkbench(s,ok,fk){
  for(const x of t.deposit_item){fk('deposit_record',x.deposit_record_id);ok(Number.isInteger(x.source_transfer_version)&&x.source_transfer_version>0,'Версія передання');if(x.action==='withdraw')ok(x.exported_payload===null,'Вилучення не містить опису');else ok(x.exported_payload&&Object.keys(x.exported_payload).every(k=>['title','summary'].includes(k)),'Недозволене поле пакета');}
 }
 export async function verifyWorkbenchHashes(s,hash){
+ await verifyProcessingHashes(s);
  for(const d of s.tables.deposit_record||[]){const items=s.tables.deposit_item.filter(x=>x.deposit_record_id===d.id).map(({id,deposit_record_id,receiver_entity_id,...x})=>x);for(const item of items){const {item_checksum,...payload}=item;if(await hash(payload)!==item_checksum)throw new Error('Контрольна сума елемента пакета не збігається');}if(await hash(items)!==d.package_checksum)throw new Error('Контрольна сума пакета не збігається');}
 }
 export async function workbenchCommand(s,actor,c,ctx){
@@ -65,6 +67,7 @@ export async function workbenchCommand(s,actor,c,ctx){
   const term=t.vocabulary_term.find(x=>x.code===code&&t.vocabulary_scheme.some(v=>v.id===x.scheme_id&&v.d_code==='D21'));if(!term)fail('invalid','Не налаштовано вид тексту');
   const row=await add('textual_representation',{subject_entity_id:subject,subject_revision_id:source?.subject_revision_id||r(subject),kind_term_id:term.id,language_tag:code==='translation'?'en':'uk',is_dialectal:code==='diplomatic',dialect_term_id:null,dialect_label_raw:code==='diplomatic'?required(values.dialect):null,derived_from_revision_id:source?r(source.id):null,process_run_id:values.process_run_id||null,body_text:required(values.body_text)},archive(subject));await parts(row,values);return row;
  };
+ if(c.type.startsWith('workbench.processing.'))return processingCommand(s,actor,c,{access,fresh,add,revise,fail,task});
  if(c.type==='workbench.text.create'||c.type==='workbench.text.derive')return createText(c);
  if(c.type==='workbench.text.edit'){access(c.id,'text.write');fresh(c.id,c.expected_revision_id);const row=by('textual_representation',c.id);if(!row)fail('invalid','Оберіть текст');row.body_text=required(c.body_text);await revise(row,required(c.reason));await parts(row,c);return row;}
  if(c.type==='workbench.text.review'){access(c.id,'text.review');fresh(c.id,c.expected_revision_id);if(c.confirm!==true||!['accept','reject','defer'].includes(c.decision))fail('invalid','Підтвердьте рішення');const previous=t.review_decision.filter(x=>x.target_entity_id===c.id&&x.target_revision_id===r(c.id)).at(-1);const d=await add('review_decision',{target_entity_id:c.id,target_revision_id:r(c.id),decision:c.decision,reviewer_account_id:actor,decided_at:s.clock,reason:required(c.reason),supersedes_decision_id:previous?.id||null},archive(c.id));
@@ -82,10 +85,7 @@ export async function workbenchCommand(s,actor,c,ctx){
   const affected=new Set(t.access_decision_basis.filter(v=>v.consent_id===x.id).map(v=>v.decision_id));for(const d of t.access_decision.filter(v=>affected.has(v.id)&&v.state==='effective')){d.state='needs_review';await revise(d,'Змінено згоду');await task(d.target_entity_id,'rights_review','Переглянути умови використання після зміни згоди');}
   for(const p of t.publication_record.filter(v=>v.state==='published'&&t.publication_basis.some(b=>b.publication_id===v.id&&affected.has(b.decision_id)))){p.state='unpublished';p.unpublished_at=s.clock;await revise(p,'Змінено згоду');}return x;
  }
- if(c.type==='workbench.process'){access(c.source_id,'processing.run');fresh(c.source_id,c.expected_revision_id);if(!['document','information_unit','textual_representation'].includes(e(c.source_id).entity_type)||!['ocr','htr','stt','normalize','translate'].includes(c.operation))fail('invalid','Оберіть джерело й операцію');if(c.retry_of&&!t.process_input.some(x=>x.process_run_id===c.retry_of&&x.entity_id===c.source_id))fail('invalid','Повтор стосується іншого джерела');if(!useDecision(s,c.source_id,'processing','machine_process'))fail('forbidden','Немає чинного дозволу на машинне опрацювання');const row={id:crypto.randomUUID(),operation:c.operation,producer_kind:'automated',provider:'local-demonstration',tool_name:'Навчальний приклад',model_name:null,model_version:null,parameters:{demonstration:true,retry_of:c.retry_of||null},started_at:s.clock,finished_at:s.clock,state:c.outcome==='failed'?'failed':'succeeded',initiated_by:actor};t.process_run.push(row);t.process_input.push({process_run_id:row.id,entity_id:c.source_id,revision_id:r(c.source_id),input_role:'source'});
-  if(row.state==='succeeded'){const sourceText=by('textual_representation',c.source_id),text=await createText({...c,subject_id:c.source_id,source_text_id:sourceText?.id,kind:c.operation==='normalize'?'normalized':c.operation==='translate'?'translation':'diplomatic',dialect:c.dialect||'Говір не уточнено',process_run_id:row.id});const candidate=await add('candidate',{kind:'text',target_entity_id:c.source_id,base_revision_id:c.expected_revision_id,proposed_payload:{text_revision_id:r(text.id),description:'Результат демонстраційного опрацювання потребує людської перевірки'},payload_schema_version:'text-workbench-1',proposed_entity_id:text.id,process_run_id:row.id,proposed_by:null,confidence:null,state:'pending'},archive(c.source_id));t.candidate_source.push({candidate_id:candidate.id,source_entity_id:c.source_id,source_revision_id:c.expected_revision_id,source_role:'processing'});}
-  audit(c.type,c.source_id,null,null,row.state);return row;
- }
+ if(c.type==='workbench.process'){access(c.source_id,'processing.run');if(!useDecision(s,c.source_id,'processing','machine_process'))fail('forbidden','Немає дозволу на обробку.');fail('invalid','Підготуйте завдання та додайте фактичний результат обробки.');}
  const depositItems=id=>t.deposit_item.filter(x=>x.deposit_record_id===id);
  const packagePayload=items=>items.map(({id,deposit_record_id,receiver_entity_id,...x})=>x);
  if(c.type==='workbench.deposit.prepare'){

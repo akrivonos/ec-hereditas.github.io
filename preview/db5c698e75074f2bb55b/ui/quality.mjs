@@ -1,7 +1,7 @@
-import {qualityReport,qualityDigest} from '../data/quality.mjs?v=20261001-wf13';
-import {fileBytes,mediaMime} from '../data/binary.mjs?v=20261001-wf13';
-import {mediaPreview,download} from './session-media.mjs?v=20261001-wf13';
-import {wizard} from './wizard.mjs?v=20261001-wf13';
+import {qualityReport,qualityDigest} from '../data/quality.mjs?v=20261001-wf14';
+import {fileBytes,mediaMime} from '../data/binary.mjs?v=20261001-wf14';
+import {mediaPreview,download} from './session-media.mjs?v=20261001-wf14';
+import {wizard} from './wizard.mjs?v=20261001-wf14';
 export async function browserProbe(content,mime){
  if(!content||!mediaMime(mime))return {result:'unsupported',method:'browser',note:'Браузерний аналіз недоступний для цього формату.'};
  const url=URL.createObjectURL(new Blob([fileBytes(content)],{type:mime})),image=mime.startsWith('image/'),element=document.createElement(image?'img':mime.startsWith('audio/')?'audio':'video');

@@ -17,6 +17,7 @@ export function validateCatalog(s,ok,fk){
   const cls=(t.classification||[]).filter(x=>x.assertion_id===a.id),rels=(t.semantic_relation||[]).filter(x=>x.assertion_id===a.id);
   if(a.assertion_kind==='classification'){ok(cls.length===1&&!rels.length,'Деталі класифікації');const term=by('vocabulary_term',cls[0].term_id),scheme=by('vocabulary_scheme',cls[0].scheme_id),e=reg(a.subject_entity_id);ok(term?.scheme_id===scheme?.id,'Довідник терміна');if(!['superseded','rejected'].includes(a.acceptance_state))ok(classificationFits(e.entity_type,by(e.entity_type,e.id),scheme?.d_code),'Класифікація не відповідає типу матеріалу');}
   else if(a.assertion_kind==='relation'){ok(rels.length===1&&!cls.length,'Деталі зв’язку');same(a.subject_entity_id,rels[0].object_entity_id);ok(a.subject_entity_id!==rels[0].object_entity_id,'Зв’язок із собою');}
+  else if(a.processing_candidate_id){const c=by('candidate',a.processing_candidate_id);ok(!cls.length&&!rels.length&&c?.payload_schema_version==='processing/1'&&c.proposed_payload.type==='metadata'&&c.proposed_entity_id===a.id,'Деталі перевірених метаданих');}
   else ok(!cls.length&&!rels.length&&(t.identity_resolution||[]).filter(x=>x.assertion_id===a.id).length===1,'Деталі відповідності');
  }
  for(const x of t.unit_segment||[]){fk('information_unit',x.unit_id);fk('media_segment',x.segment_id);same(x.unit_id,x.segment_id);}

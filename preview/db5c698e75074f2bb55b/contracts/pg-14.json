@@ -44,12 +44,12 @@
     ],
     "atomicity": "Command validates scope, expected version, exact relationships and immutable hashes before one commit; forms hold drafts until confirmation",
     "limitations": [
-      "Local browser prototype; actual media playback, OCR/HTR/STT services and network transport are not connected.",
+      "Local browser prototype: source media playback and file-based local recognition are available; hosted inference and receiving transport are not connected.",
       "Text parts use one line per utterance; derivation aligns equal line counts. Arbitrary many-to-many alignment, timed-layer editor and graphical music notation remain pending.",
       "Human text review supports accept/reject/defer; correction is an explicit new content revision followed by review.",
       "Consent create and partial/full withdrawal work. Separate replacement acts, broad multi-person policy authoring and rights renewal UI remain pending.",
       "Deposits use an explicit title/summary whitelist and a restricted no-public-display snapshot. Receiving is an acknowledgement simulation; production entity_origin projection, receiver policy creation and independent receiving installation remain pending.",
-      "Demonstration processing records its real local tool name with no invented model or confidence; it does not perform recognition."
+      "WF-14 uses a separate local recognition runner and portable results; PG-40 reviews each candidate before creating archival data."
     ]
   }
 }

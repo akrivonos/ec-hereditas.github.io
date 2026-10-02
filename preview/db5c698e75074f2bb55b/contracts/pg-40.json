@@ -11,9 +11,19 @@
     "process_run",
     "process_input",
     "candidate",
-    "textual_representation"
+    "textual_representation",
+    "candidate_source",
+    "evidence",
+    "evidence_link",
+    "review_decision",
+    "review_application",
+    "timed_layer",
+    "timed_layer_entry",
+    "media_segment",
+    "assertion",
+    "work_item"
   ],
-  "fields_and_relations": "Точні inputs, tool/model/version/parameters, state, outputs і provenance.",
+  "fields_and_relations": "Exact source/file revisions and SHA-256; immutable job/result digests; tool/model/version/parameters; evidenced text, language, metadata and segmentation candidates; human decisions and applied result revisions.",
   "required_interaction": "Запустити/failed/retry; заборонена обробка не стартує; результат не приймається автоматично.",
   "fixtures": [
     "FX-04"
@@ -29,10 +39,13 @@
   "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
   "implementation": {
     "commands": [
-      "workbench.process"
+      "workbench.processing.start",
+      "workbench.processing.finish",
+      "workbench.processing.cancel",
+      "workbench.processing.review"
     ],
-    "view_model": "Explicit local processing example with exact input versions, failure/retry, provenance and unreviewed text candidate",
-    "completion": "partial",
+    "view_model": "List → preparation wizard → portable local job → import actual tool result → candidate-specific human review; text handoff and timed playback",
+    "completion": "implemented-local",
     "state_storage": "Shared normalized browser store v9; additive v1–8 migration without resetting user work or revoked grants",
     "permissions": [
       "Scoped text.read/write/review, consent.read/write, processing.run and deposit.manage are independent",
@@ -41,12 +54,11 @@
     ],
     "atomicity": "Command validates scope, expected version, exact relationships and immutable hashes before one commit; forms hold drafts until confirmation",
     "limitations": [
-      "Local browser prototype; actual media playback, OCR/HTR/STT services and network transport are not connected.",
-      "Text parts use one line per utterance; derivation aligns equal line counts. Arbitrary many-to-many alignment, timed-layer editor and graphical music notation remain pending.",
-      "Human text review supports accept/reject/defer; correction is an explicit new content revision followed by review.",
-      "Consent create and partial/full withdrawal work. Separate replacement acts, broad multi-person policy authoring and rights renewal UI remain pending.",
-      "Deposits use an explicit title/summary whitelist and a restricted no-public-display snapshot. Receiving is an acknowledgement simulation; production entity_origin projection, receiver policy creation and independent receiving installation remain pending.",
-      "Demonstration processing records its real local tool name with no invented model or confidence; it does not perform recognition."
+      "Static hosted UI exchanges job/result files with tools/process_master_job.py; no hosted inference service or background queue.",
+      "Local GLM-OCR handles printed/handwritten recognition, Whisper tiny audio/video speech, Qwen3.5 language and grounded metadata. Synthetic samples verify execution, not archival recognition quality.",
+      "At most 20 files / 2 MiB total; bundled speech runner accepts up to 120 seconds. No calibrated confidence is fabricated.",
+      "Bundled runner does not diarize speakers; externally supplied bounded speaker labels can be reviewed, never automatically identified as people.",
+      "Reviewed metadata is an evidenced archival statement, not an automatic authority match, merge or publication."
     ]
   }
 }
