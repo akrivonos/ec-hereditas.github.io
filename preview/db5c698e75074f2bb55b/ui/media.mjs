@@ -1,17 +1,17 @@
-import {preservationUI} from './preservation.mjs?v=20261002-wf15';
-import {preservationStatus} from '../data/preservation.mjs?v=20261002-wf15';
-import {qualityDialog,qualityHistory} from './quality.mjs?v=20261002-wf15';
-import {digitizationDialog} from './digitization.mjs?v=20261002-wf15';
-import {preparationUI} from './capture-preparation.mjs?v=20261002-wf15';
-import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261002-wf15';
-import {legacyPages} from './legacy.mjs?v=20261002-wf15';
-import {intakePages} from './intake.mjs?v=20261002-wf15';
-import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261002-wf15';
-import {mediaPreview,download} from './session-media.mjs?v=20261002-wf15';
-import {can,hash} from '../data/model.mjs?v=20261002-wf15';
-import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261002-wf15';
-import {hint} from './help.mjs?v=20261002-wf15';
-import {wizard} from './wizard.mjs?v=20261002-wf15';
+import {preservationUI} from './preservation.mjs?v=20261002-wf16';
+import {preservationStatus} from '../data/preservation.mjs?v=20261002-wf16';
+import {qualityDialog,qualityHistory} from './quality.mjs?v=20261002-wf16';
+import {digitizationDialog} from './digitization.mjs?v=20261002-wf16';
+import {preparationUI} from './capture-preparation.mjs?v=20261002-wf16';
+import {preparationFacts,plannedOutputs} from '../data/capture-preparation.mjs?v=20261002-wf16';
+import {legacyPages} from './legacy.mjs?v=20261002-wf16';
+import {intakePages} from './intake.mjs?v=20261002-wf16';
+import {transferPreflight,inspectTransfer} from './handover.mjs?v=20261002-wf16';
+import {mediaPreview,download} from './session-media.mjs?v=20261002-wf16';
+import {can,hash} from '../data/model.mjs?v=20261002-wf16';
+import {currentCustody,latestCondition,independentCopies,capturePlan,qcFacts,handoverState} from '../data/media.mjs?v=20261002-wf16';
+import {hint} from './help.mjs?v=20261002-wf16';
+import {wizard} from './wizard.mjs?v=20261002-wf16';
 
 export function mediaPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx,st=s(),t=st.tables;

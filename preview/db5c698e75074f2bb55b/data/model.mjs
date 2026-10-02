@@ -1,19 +1,19 @@
-import {rightsCommand} from './rights.mjs?v=20261002-wf15';
-import {validateReconciliation,reconciliationCommand} from './reconciliation.mjs?v=20261002-wf15';
-import {catalogTypes,validateCatalog,catalogCommand} from './catalog.mjs?v=20261002-wf15';
-import {legacyTypes,validateLegacy,legacyCommand} from './legacy.mjs?v=20261002-wf15';
-import {intakeTypes,validateIntake,intakeCommand} from './intake.mjs?v=20261002-wf15';
-import {fileBytes} from './binary.mjs?v=20261002-wf15';
+import {rightsCommand} from './rights.mjs?v=20261002-wf16';
+import {validateReconciliation,reconciliationCommand} from './reconciliation.mjs?v=20261002-wf16';
+import {catalogTypes,validateCatalog,catalogCommand} from './catalog.mjs?v=20261002-wf16';
+import {legacyTypes,validateLegacy,legacyCommand} from './legacy.mjs?v=20261002-wf16';
+import {intakeTypes,validateIntake,intakeCommand} from './intake.mjs?v=20261002-wf16';
+import {fileBytes} from './binary.mjs?v=20261002-wf16';
 // Shared mock adapter. Domain rows use the names/fields of schema Г.
 // Permissions below are a provisional demo profile, not the professional R-codes.
-import {fieldTypes,snapshot,addMembers,upgrade,validateField,fieldCommand} from './field.mjs?v=20261002-wf15';
-import {mediaTypes,validateMedia,mediaCommand,rawHash,manifestPayload} from './media.mjs?v=20261002-wf15';
-import {researchTypes,validateResearch,researchCommand} from './research.mjs?v=20261002-wf15';
-import {publicTypes,validatePublic,publicCommand} from './public.mjs?v=20261002-wf15';
-import {museumTypes,validateMuseum,museumCommand} from './museum.mjs?v=20261002-wf15';
-import {archiveTypes,validateArchive,archiveCommand} from './archive.mjs?v=20261002-wf15';
-import {workbenchTypes,validateWorkbench,workbenchCommand,verifyWorkbenchHashes} from './workbench.mjs?v=20261002-wf15';
-import {prepareMuseumDemo} from './demo-museum.mjs?v=20261002-wf15';
+import {fieldTypes,snapshot,addMembers,upgrade,validateField,fieldCommand} from './field.mjs?v=20261002-wf16';
+import {mediaTypes,validateMedia,mediaCommand,rawHash,manifestPayload} from './media.mjs?v=20261002-wf16';
+import {researchTypes,validateResearch,researchCommand} from './research.mjs?v=20261002-wf16';
+import {publicTypes,validatePublic,publicCommand} from './public.mjs?v=20261002-wf16';
+import {museumTypes,validateMuseum,museumCommand} from './museum.mjs?v=20261002-wf16';
+import {archiveTypes,validateArchive,archiveCommand} from './archive.mjs?v=20261002-wf16';
+import {workbenchTypes,validateWorkbench,workbenchCommand,verifyWorkbenchHashes} from './workbench.mjs?v=20261002-wf16';
+import {prepareMuseumDemo} from './demo-museum.mjs?v=20261002-wf16';
 export class ModelError extends Error {
   constructor(code,message){super(message);this.code=code;}
 }

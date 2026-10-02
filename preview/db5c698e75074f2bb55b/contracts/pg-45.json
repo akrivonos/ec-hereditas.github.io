@@ -25,7 +25,10 @@
     "geographic_context",
     "institution_context",
     "verification_record",
-    "access_decision_resource"
+    "access_decision_resource",
+    "corpus_item",
+    "research_corpus",
+    "representation"
   ],
   "fields_and_relations": "Дозволені тексти/медіа й локатори, паралельні версії, власні примітки.",
   "required_interaction": "Анотувати range/segment; джерело не змінюється, offset прив’язаний до revision.",
@@ -47,7 +50,7 @@
       "research.assertion",
       "research.citation"
     ],
-    "view_model": "Exact source reader, authorized transcript/media/timed hit, context traversal and provenance/verification before selection",
+    "view_model": "Permitted exact source, notes/assertions/citations; corpus resource and segment preview uses the exact target, source and layer revisions from the selected corpus revision",
     "completion": "partial",
     "limitations": [
       "Local synchronous discovery over permitted browser data; no server search index or vector embeddings.",

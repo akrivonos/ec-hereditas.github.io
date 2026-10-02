@@ -13,7 +13,14 @@
     "research_corpus",
     "corpus_item",
     "entity_revision",
-    "corpus_collaborator"
+    "corpus_collaborator",
+    "saved_query",
+    "entity",
+    "textual_representation",
+    "representation",
+    "media_segment",
+    "timed_layer",
+    "access_decision_resource"
   ],
   "fields_and_relations": "Критерії, group/reason, ordered exact target revisions, access snapshot.",
   "required_interaction": "Freeze/new version; відкликаний елемент лишає дозволене посилання, не старі bytes.",
@@ -34,12 +41,12 @@
       "research.corpus.revise",
       "research.corpus.freeze"
     ],
-    "view_model": "Ordered exact source versions, criteria/reason/group, immutable history and explicit next version",
-    "completion": "partial",
+    "view_model": "Exact source/text/media/layer/segment targets with source and optional layer anchors, independent group/reason/order, selection context, immutable history, freeze, redacted unavailable items and exact source handoff",
+    "completion": "complete-for-local-WF-16",
     "limitations": [
-      "UI applies a shared reason/group to the selected batch; per-item reordering and grouping are pending."
+      "Shared editing/server ACL are outside the local prototype. Source-level notes and assertions remain WF-17/18; corpus byte export remains WF-19."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "state_storage": "Shared normalized browser store v9; existing data and historical source-only corpora preserved",
     "permissions": [
       "research.write in an explicit archive grant",
       "owner_account_id for private objects",

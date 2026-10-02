@@ -47,3 +47,9 @@
 
 /* Discovery keeps filters and map outside the result list. */
 .discovery-search{display:grid;gap:16px;margin:20px 0}.discovery-facets{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;padding:18px 0}.discovery-map{max-width:900px;border:1px solid var(--line,#ccd8c8);border-radius:12px;overflow:hidden}.discovery-map svg{display:block;width:100%;height:auto}.discovery-map a:focus circle{stroke:#c2671c;stroke-width:5}mark{background:#efe3a8;color:inherit}.discovery-search>button{justify-self:start}
+
+.corpus-options{max-height:45vh;overflow:auto;margin:16px 0}.corpus-options [hidden]{display:none}.corpus-card h3{overflow-wrap:anywhere}.corpus-card label{display:block;margin:12px 0}
+
+.corpus-options .check-label{flex-wrap:wrap}.corpus-options small{flex-basis:100%;margin-left:28px;overflow-wrap:anywhere;color:var(--muted)}
+
+.corpus-card .panel-body{padding:16px}.corpus-card h3{margin-top:0}

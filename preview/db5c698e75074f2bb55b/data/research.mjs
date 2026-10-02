@@ -1,8 +1,9 @@
-import {discoverySearch,discoverySpec} from './discovery.mjs?v=20261002-wf15';
-import {accessPolicy,projectFields,attributionNames} from './rights.mjs?v=20261002-wf15';
+import {corpusTarget,corpusTypes,corpusAnchor,corpusKey} from './corpus.mjs?v=20261002-wf16';
+import {discoverySearch,discoverySpec} from './discovery.mjs?v=20261002-wf16';
+import {accessPolicy,projectFields,attributionNames} from './rights.mjs?v=20261002-wf16';
 // Private research objects reference exact archival revisions. Access is checked on every projection.
-import {can} from './model.mjs?v=20261002-wf15';
-import {rawHash} from './media.mjs?v=20261002-wf15';
+import {can} from './model.mjs?v=20261002-wf16';
+import {rawHash} from './media.mjs?v=20261002-wf16';
 export const researchTypes=['saved_query','research_corpus','annotation','assertion','citation','bibliographic_export'];
 export const sourceTypes=['information_unit','document','physical_object'];
 export const researchEnabled=(s,a)=>s.tables.archive.some(x=>can(s,a,'research.write',x.id));
@@ -48,7 +49,13 @@ export function validateResearch(s,require,fk,canonical){
  for(const type of researchTypes)for(const x of t[type].filter(x=>type!=='assertion'||x.scope==='research')){fk('account',reg(x.id).owner_account_id);require(reg(x.id).archive_id===null,'Приватна дослідницька область');}
  for(const x of t.saved_query){require(x.owner_account_id===reg(x.id).owner_account_id&&!!x.name.trim(),'Власник або назва запиту');require((x.query_schema_version==='1'&&x.index_profile_version==='local-reader-1'||x.query_schema_version==='2'&&x.index_profile_version==='local-discovery-2'),'Профіль пошуку');}
  for(const x of t.research_corpus){require(x.owner_account_id===reg(x.id).owner_account_id&&!!x.title.trim()&&!!x.inclusion_criteria.trim(),'Назва, власник і критерії корпусу');if(x.saved_query_revision_id){const r=by('entity_revision',x.saved_query_revision_id);require(reg(r?.entity_id)?.entity_type==='saved_query'&&reg(r.entity_id).owner_account_id===x.owner_account_id,'Запит іншого власника');}}
- const positions=new Set();for(const x of t.corpus_item){require(reg(by('entity_revision',x.corpus_revision_id)?.entity_id)?.entity_type==='research_corpus','Потрібна версія корпусу');exact(x.target_entity_id,x.target_revision_id);require(sourceTypes.includes(reg(x.target_entity_id)?.entity_type),'Тип джерела корпусу');const key=x.corpus_revision_id+':'+x.position;require(Number.isInteger(x.position)&&x.position>0&&!positions.has(key),'Порядок корпусу');positions.add(key);}
+ const positions=new Set(),members=new Set();for(const x of t.corpus_item){
+  require(reg(by('entity_revision',x.corpus_revision_id)?.entity_id)?.entity_type==='research_corpus','Потрібна версія корпусу');exact(x.target_entity_id,x.target_revision_id);
+  const kind=reg(x.target_entity_id)?.entity_type,anchor=corpusAnchor(x);require(corpusTypes.includes(kind),'Тип джерела корпусу');exact(anchor.id,anchor.revision_id);require(sourceTypes.includes(reg(anchor.id)?.entity_type),'Архівне джерело корпусу');
+  if(sourceTypes.includes(kind))require(anchor.id===x.target_entity_id&&anchor.revision_id===x.target_revision_id,'Джерело не відповідає елементу корпусу');
+  if(x.layer_entity_id||x.layer_revision_id){exact(x.layer_entity_id,x.layer_revision_id);require(kind==='media_segment'&&reg(x.layer_entity_id)?.entity_type==='timed_layer'&&by('entity_revision',x.layer_revision_id).snapshot._relations?.timed_layer_entry?.some(e=>e.segment_revision_id===x.target_revision_id),'Фрагмент не входить до версії шару');}
+  const key=x.corpus_revision_id+':'+x.position,member=x.corpus_revision_id+':'+corpusKey(x);require(Number.isInteger(x.position)&&x.position>0&&!positions.has(key),'Порядок корпусу');require(!members.has(member),'Повторений елемент корпусу');positions.add(key);members.add(member);
+ }
  for(const r of t.entity_revision.filter(r=>reg(r.entity_id)?.entity_type==='research_corpus'))require(canonical(r.snapshot._relations?.corpus_item)===canonical(t.corpus_item.filter(x=>x.corpus_revision_id===r.id)),'Змінено склад версії корпусу');
  for(const x of t.annotation){exact(x.target_entity_id,x.target_revision_id);fk('person',x.author_person_id);require(x.kind==='research'&&!!x.body.trim()&&x.range_start===null&&x.range_end===null&&x.text_part_id===null,'Дослідницька анотація');if(x.corpus_id)fk('research_corpus',x.corpus_id);}
  for(const x of t.assertion.filter(x=>x.scope==='research')){fk('entity',x.subject_entity_id);require(x.scope==='research'&&x.assertion_kind==='research'&&x.acceptance_state==='draft'&&!!x.statement_text.trim(),'Дослідницьке твердження');if(x.corpus_id)fk('research_corpus',x.corpus_id);require(t.evidence_link.some(e=>e.subject_entity_id===x.id),'Потрібен доказ твердження');}
@@ -72,17 +79,21 @@ export async function researchCommand(s,actor,c,{fail,hash,audit,snapshot}){
   const snap=snapshot(t,type,row);t.entity_revision.push({id:rid,entity_id:row.id,revision_no:before?by('entity_revision',before).revision_no+1:1,previous_revision_id:before,snapshot:snap,snapshot_hash:await hash(snap),recorded_at:s.clock,actor_account_id:actor,process_run_id:null,change_reason:before?'Оновлено дослідницький запис':'Створено дослідницький запис'});
   audit(c.type,row.id,before,rid);return row;
  };
- const corpusContext=(id,src)=>{if(!id)return null;own('research_corpus',id);if(!t.corpus_item.some(x=>by('entity_revision',x.corpus_revision_id)?.entity_id===id&&x.target_entity_id===src.id&&x.target_revision_id===src.revision_id))fail('invalid','Джерело не входить до корпусу.');return id;};
+ const corpusContext=(id,src)=>{if(!id)return null;own('research_corpus',id);if(!t.corpus_item.some(x=>by('entity_revision',x.corpus_revision_id)?.entity_id===id&&corpusAnchor(x).id===src.id&&corpusAnchor(x).revision_id===src.revision_id&&corpusTarget(s,actor,x)))fail('invalid','Джерело не входить до корпусу.');return id;};
  if(c.type==='research.query')return append('saved_query',{owner_account_id:actor,name:text(c.name),query_spec:discoverySpec(c.spec||c),query_schema_version:'2',index_profile_version:'local-discovery-2',access_context:{account_id:actor},description:null});
  if(['research.corpus.create','research.corpus.revise','research.corpus.freeze'].includes(c.type)){
   const old=c.type==='research.corpus.create'?null:own('research_corpus',c.id);if(old)fresh(old.id);
   if(c.type==='research.corpus.freeze'&&old.frozen_at)fail('invalid','Склад уже зафіксовано.');
   let items;
-  if(c.type==='research.corpus.freeze'){items=corpusItems(s,rev(old.id));if(!items.length)fail('invalid','Додайте джерела до корпусу.');items.forEach(x=>source(x.target_entity_id,x.target_revision_id));old.frozen_at=s.clock;return append('research_corpus',old,items);}
+  if(c.type==='research.corpus.freeze'){items=corpusItems(s,rev(old.id));if(!items.length)fail('invalid','Додайте джерела до корпусу.');items.forEach(x=>{if(!corpusTarget(s,actor,x))fail('forbidden','Елемент корпусу недоступний. Перегляньте склад перед фіксацією.');});old.frozen_at=s.clock;return append('research_corpus',old,items);}
   if(!Array.isArray(c.items)||!c.items.length)fail('invalid','Оберіть хоча б одне джерело.');
-  const seen=new Set();items=c.items.map(x=>{if(seen.has(x.target_entity_id))fail('invalid','Джерело вже додано.');seen.add(x.target_entity_id);const src=source(x.target_entity_id,x.target_revision_id);return {target_entity_id:src.id,target_revision_id:src.revision_id,group_label:x.group_label?.trim()||null,selection_reason:text(x.selection_reason),access_snapshot:{account_id:actor,checked_at:s.clock}};});
+  const seen=new Set();items=c.items.map(x=>{
+   const key=corpusKey(x);if(seen.has(key))fail('invalid','Цю версію елемента вже додано.');seen.add(key);
+   const target=corpusTarget(s,actor,x);if(!target)fail('forbidden','Елемент або його точна версія недоступні.');
+   return {target_entity_id:target.id,target_revision_id:target.revision_id,source_entity_id:target.source.id,source_revision_id:target.source.revision_id,...(target.type==='media_segment'&&x.layer_entity_id?{layer_entity_id:x.layer_entity_id,layer_revision_id:x.layer_revision_id}:{}),group_label:x.group_label?.trim()||null,selection_reason:x.selection_reason?.trim()||null,access_snapshot:{account_id:actor,checked_at:s.clock,decision_revisions:accessPolicy(s,target.source.id,target.source.revision_id,'research','view').map(d=>rev(d.id))}};
+  });
   let query=null;if(c.saved_query_id){own('saved_query',c.saved_query_id);query=rev(c.saved_query_id);}
-  const values={owner_account_id:actor,title:text(c.title),research_question:c.research_question?.trim()||null,saved_query_revision_id:old?.saved_query_revision_id||query,inclusion_criteria:text(c.inclusion_criteria),exclusion_criteria:c.exclusion_criteria?.trim()||null,method_notes:c.method_notes?.trim()||null,frozen_at:null};
+  const values={owner_account_id:actor,title:text(c.title),research_question:c.research_question?.trim()||null,saved_query_revision_id:old?.saved_query_revision_id||query,inclusion_criteria:text(c.inclusion_criteria),exclusion_criteria:c.exclusion_criteria?.trim()||null,method_notes:c.method_notes?.trim()||null,selection_context:old?.selection_context||{selected_at:s.clock,account_id:actor,query_spec:c.selection_spec?discoverySpec(c.selection_spec):query?structuredClone(by('entity_revision',query).snapshot.query_spec):null,profile:'corpus-1'},frozen_at:null};
   return append('research_corpus',old?Object.assign(old,values):values,items);
  }
  if(['research.annotation','research.assertion','research.citation'].includes(c.type)){

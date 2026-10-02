@@ -1,6 +1,6 @@
-import {can} from './model.mjs?v=20261002-wf15';
-import {sourceView,sourceTypes} from './research.mjs?v=20261002-wf15';
-import {accessPolicy} from './rights.mjs?v=20261002-wf15';
+import {can} from './model.mjs?v=20261002-wf16';
+import {sourceView,sourceTypes} from './research.mjs?v=20261002-wf16';
+import {accessPolicy} from './rights.mjs?v=20261002-wf16';
 const by=(s,k,id)=>s.tables[k]?.find(x=>x.id===id),reg=(s,id)=>by(s,'entity',id),rev=(s,id)=>reg(s,id)?.current_revision_id;
 const norm=x=>String(x||'').normalize('NFKC').toLocaleLowerCase('uk').replace(/[’`ʼ]/g,"'");
 export const discoveryKeys=['q','kind','archive_id','person','place','institution','term','language','media','verified','date_from','date_to','mode','question','bounds'];

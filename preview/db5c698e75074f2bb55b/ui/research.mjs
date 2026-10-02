@@ -1,7 +1,9 @@
-import {discoveryContext,discoverySearchPage,discoverySourcePanels} from './discovery.mjs?v=20261002-wf15';
-import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261002-wf15';
-import {wizard} from './wizard.mjs?v=20261002-wf15';
-import {hint} from './help.mjs?v=20261002-wf15';
+import {corpusWizard as editCorpus,corpusPreview} from './corpus.mjs?v=20261002-wf16';
+import {corpusTarget,corpusAnchor,corpusKey,corpusKind} from '../data/corpus.mjs?v=20261002-wf16';
+import {discoveryContext,discoverySearchPage,discoverySourcePanels} from './discovery.mjs?v=20261002-wf16';
+import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261002-wf16';
+import {wizard} from './wizard.mjs?v=20261002-wf16';
+import {hint} from './help.mjs?v=20261002-wf16';
 
 export function researchPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);
@@ -26,18 +28,7 @@ export function researchPages(ctx){
  const queryContext=()=>discoveryContext(p);
  const sourceOptions=()=>'<option value="">Оберіть джерело</option>'+sources().map(x=>`<option value="${x.id}">${esc(x.title)}</option>`).join('');
 
- function corpusWizard(selected=[],old=null){
-  const existing=old?corpusItems(st,rev(old.id)):[],current=sources(),pool=new Map(current.map(x=>[x.id,x]));
-  existing.forEach(x=>{const src=sourceView(st,actor,x.target_entity_id,x.target_revision_id);if(src)pool.set(src.id,src);});
-  selected.forEach(x=>pool.set(x.id,x));const candidates=[...pool.values()],chosen=new Set(old?existing.map(x=>x.target_entity_id):selected.map(x=>x.id));
-  wizard({dialog,esc},{title:old?'Нова версія корпусу':'Створити корпус',submit:old?'Зберегти версію':'Створити корпус',steps:[
-   {title:'Питання та критерії',body:input('title','Назва корпусу',old?.title||'',false,true)+input('research_question','Дослідницьке питання',old?.research_question||p.get('question')||'',true)+input('inclusion_criteria','Критерії включення',old?.inclusion_criteria||'',true,true)+input('exclusion_criteria','Критерії виключення',old?.exclusion_criteria||'',true)},
-   {title:'Оберіть джерела',body:`<fieldset><legend>Склад корпусу</legend>${candidates.map(x=>check('items',x.id,x.title+' · версія '+x.revision_no,chosen.has(x.id))).join('')||'<p>Доступних джерел немає.</p>'}</fieldset>`+hint('Склад корпусу','Зберігаються саме показані версії. Зміни архівного опису не замінять їх. Попередні версії корпусу залишаються в історії.')},
-   {title:'Підстава добору',body:input('selection_reason','Чому ці джерела включено',existing[0]?.selection_reason||'',true,true)+input('group_label','Група джерел',existing[0]?.group_label||'')+input('method_notes','Методичні нотатки',old?.method_notes||'',true)}
-  ],summary:v=>details([['Назва',v.title],['Питання',v.research_question],['Критерії включення',v.inclusion_criteria],['Критерії виключення',v.exclusion_criteria],['Джерела',(v.items||[]).map(id=>pool.get(id)?.title).join('\n')||'Нічого не обрано'],['Підстава добору',v.selection_reason],['Група',v.group_label]])+(old?'<p>Попередня версія залишиться незмінною.</p>':''),onSubmit:async v=>{
-   const row=await dispatch({type:old?'research.corpus.revise':'research.corpus.create',id:old?.id,expected_revision_id:old?rev(old.id):null,...v,saved_query_id:!old&&p.get('query')||null,items:(v.items||[]).map(id=>({target_entity_id:id,target_revision_id:pool.get(id).revision_id,selection_reason:v.selection_reason,group_label:v.group_label}))});go(44,{id:row.id});
-  }});
- }
+ function corpusWizard(selected=[],old=null){return editCorpus({...discoveryCtx(),sources,rev,dispatch,queryContext},selected,old);}
  const discoveryCtx=()=>({st,actor,scope,p,esc,pg,show,heading,panel,body,table,input,details,btn,act,link,form,go,enabled,corpusWizard,dialog});
  function search(){return discoverySearchPage(discoveryCtx());}
  function queries(){
@@ -54,12 +45,19 @@ export function researchPages(ctx){
  function corpus(){
   if(!p.has('id'))return corpora();const row=own('research_corpus').find(x=>x.id===p.get('id'));if(!row)return denied();
   const r=by('entity_revision',p.get('revision')||rev(row.id));if(!r||r.entity_id!==row.id)return denied();
-  const x=r.snapshot,items=corpusItems(st,r.id),current=r.id===rev(row.id),versions=t.entity_revision.filter(v=>v.entity_id===row.id);
-  act('edit',()=>corpusWizard([],row));act('freeze',()=>dialog('Зафіксувати склад',details([['Корпус',x.title],['Джерел',String(items.length)]])+'<p>Цей склад залишиться в історії. Подальший добір можна продовжити в новій версії.</p>',async()=>{await dispatch({type:'research.corpus.freeze',id:row.id,expected_revision_id:r.id});done('Склад корпусу зафіксовано.');},'Зафіксувати'));
+  const x=r.snapshot,items=corpusItems(st,r.id),current=r.id===rev(row.id),versions=t.entity_revision.filter(v=>v.entity_id===row.id),spec=x.selection_context?.query_spec||(x.saved_query_revision_id?by('entity_revision',x.saved_query_revision_id).snapshot.query_spec:null);
+  const filterLabel=(key,id)=>sources().flatMap(v=>v[key]||[]).find(v=>v.id===id)?.label||'Збережений фільтр';
+  act('edit',()=>corpusWizard([],row));act('freeze',()=>dialog('Зафіксувати склад',details([['Корпус',x.title],['Елементів',String(items.length)]])+'<p>Цей склад залишиться в історії. Подальший добір можна продовжити в новій версії.</p>',async()=>{await dispatch({type:'research.corpus.freeze',id:row.id,expected_revision_id:r.id});done('Склад корпусу зафіксовано.');},'Зафіксувати'));
   show(link(43,'← Мої корпуси')+heading('Корпус',x.title,'Відкрийте джерело для нотатки, твердження або цитування. Історія версій зберігає попередній склад; обмеження доступу до джерел продовжують діяти.',current?btn('Нова версія','edit')+(!x.frozen_at?btn('Зафіксувати склад','freeze'):''):'')+
    `<nav class="record-tabs" aria-label="Версії корпусу">${versions.map(v=>`<a href="${pg(44,{role:'R04',id:row.id,revision:v.id})}" ${r.id===v.id?'aria-current="page"':''}>Версія ${v.revision_no}${v.snapshot.frozen_at?' · зафіксована':''}</a>`).join('')}</nav>`+
    panel('Питання та добір',body(details([['Дослідницьке питання',x.research_question],['Критерії включення',x.inclusion_criteria],['Критерії виключення',x.exclusion_criteria],['Методичні нотатки',x.method_notes]])))+
-   panel('Джерела',table(['Джерело','Версія','Група','Підстава добору'],items.map(i=>{const src=sourceView(st,actor,i.target_entity_id,i.target_revision_id);return src?[sourceLink(src,{corpus:row.id,corpus_revision:r.id}),String(src.revision_no),esc(i.group_label||'—'),esc(i.selection_reason)]:['Джерело недоступне','—','—','—'];}))));
+   panel('Склад корпусу',table(['№','Елемент','Тип','Версія','Група','Підстава добору','Дії'],items.map(i=>{
+    const v=corpusTarget(st,actor,i);if(!v)return [String(i.position),'Елемент недоступний','—','—','—','—','Доступ змінено; запис збережено в історії'];
+    act('preview-'+i.position,()=>corpusPreview(discoveryCtx(),i));
+    return [String(i.position),link(45,v.title,{id:v.source.id,revision:v.source.revision_id,corpus:row.id,corpus_revision:r.id,item:i.position}),esc(corpusKind[v.type]),String(v.revision_no)+(v.newer?' · є новіша':''),esc(i.group_label||'—'),esc(i.selection_reason||'—'),btn('Переглянути','preview-'+i.position)];
+   })))+
+   panel('Контекст добору',body('<details><summary>Коли і за якими умовами сформовано корпус</summary>'+details([['Дата початкового добору',x.selection_context?.selected_at||r.recorded_at],['Дата цієї версії',r.recorded_at],['Джерело добору',x.saved_query_revision_id?'Збережений пошук':'Ручний добір або результати пошуку'],...Object.entries(spec||{}).filter(([k,v])=>v&&k!=='question').map(([k,v])=>[{q:'Пошуковий запит',kind:'Вид джерела',archive_id:'Архів',person:'Особа',place:'Місце',institution:'Установа',term:'Поняття',language:'Мова',media:'Медіа',verified:'Перевірка',date_from:'Від дати',date_to:'До дати',mode:'Спосіб пошуку',bounds:'Область карти'}[k]||k,({person:'people',place:'places',institution:'institutions',term:'terms'}[k]?filterLabel({person:'people',place:'places',institution:'institutions',term:'terms'}[k],v):k==='archive_id'?by('archive',v)?.name||'Збережений архів':k==='kind'?kinds[v]||v:k==='verified'?v==='verified'?'Підтверджені':'Без підтвердження':k==='mode'?v==='context'?'За змістовими зв’язками':'За словами':v)])])+(spec?link(41,'Повторити пошук за цими умовами',{...spec,...(x.saved_query_revision_id?{query:by('entity_revision',x.saved_query_revision_id).entity_id}:{})}):'')+hint('Відтворюваність','Корпус зберігає точний склад, порядок і версії. Повторний пошук може дати інші результати. Зміна доступу приховує матеріал, але не вилучає його з історії.')+'</details>'))+
+   (r.previous_revision_id?panel('Зміни складу',body((()=>{const before=corpusItems(st,r.previous_revision_id),a=new Map(before.map(i=>[corpusKey(i),i])),b=new Map(items.map(i=>[corpusKey(i),i]));return details([['Додано',String(items.filter(i=>!a.has(corpusKey(i))).length)],['Вилучено',String(before.filter(i=>!b.has(corpusKey(i))).length)],['Змінено порядок, групу або підставу',String(items.filter(i=>{const old=a.get(corpusKey(i));return old&&(old.position!==i.position||old.group_label!==i.group_label||old.selection_reason!==i.selection_reason);}).length)]]);})())):''));
  }
  function assertionWizard(src=null,corpusId=null){
   const pool=sources();if(src&&!pool.some(x=>x.id===src.id))pool.push(src);
@@ -71,7 +69,8 @@ export function researchPages(ctx){
  function cite(src){form('Підготувати цитування',details([['Джерело',src.title],['Версія',String(src.revision_no)]]),()=>({type:'research.citation',target_entity_id:src.id,target_revision_id:src.revision_id}),()=>go(55));}
  function source(){
   if(!p.has('id'))return search();const src=sourceView(st,actor,p.get('id'),p.get('revision'));if(!src)return denied();
-  const corpusId=p.get('corpus'),cr=p.get('corpus_revision');if(corpusId&&(!owns(st,actor,corpusId)||!corpusItems(st,cr||rev(corpusId)).some(x=>by('entity_revision',x.corpus_revision_id)?.entity_id===corpusId&&x.target_entity_id===src.id&&x.target_revision_id===src.revision_id)))return denied();
+  const corpusId=p.get('corpus'),cr=p.get('corpus_revision'),members=corpusId?corpusItems(st,cr||rev(corpusId)).filter(x=>by('entity_revision',x.corpus_revision_id)?.entity_id===corpusId&&corpusAnchor(x).id===src.id&&corpusAnchor(x).revision_id===src.revision_id&&corpusTarget(st,actor,x)):[],selectedItem=p.has('item')?members.find(x=>String(x.position)===p.get('item')):null;if(corpusId&&(!owns(st,actor,corpusId)||!members.length||p.has('item')&&!selectedItem))return denied();
+  if(selectedItem)act('corpus-preview',()=>corpusPreview(discoveryCtx(),selectedItem));
   act('note',()=>form('Додати нотатку',input('body','Нотатка','',true,true),v=>({type:'research.annotation',target_entity_id:src.id,target_revision_id:src.revision_id,corpus_id:corpusId,...v})));
   act('assert',()=>assertionWizard(src,corpusId));act('cite',()=>cite(src));
   const notes=visible('annotation').filter(x=>x.target_entity_id===src.id&&x.target_revision_id===src.revision_id&&(!corpusId||x.corpus_id===corpusId));
@@ -79,7 +78,8 @@ export function researchPages(ctx){
    heading('Джерело',src.title,'Нотатки й докази прив’язуються до відкритої версії. Дослідницька робота не змінює архівний опис.',btn('Додати нотатку','note',enabled)+btn('Створити твердження','assert',enabled)+btn('Цитувати','cite',enabled&&!!sourceView(st,actor,src.id,src.revision_id,'cite')))+
    `<div class="media-status"><span>${kinds[src.type]}</span><span>Версія ${src.revision_no}</span>${src.revision_id!==rev(src.id)?'<span>У корпусі збережено попередню версію опису.</span>':''}</div>`+
    panel('Опис джерела',body(`<p class="source-text">${esc(src.text||'Опис ще не заповнено.')}</p>`))+
-   discoverySourcePanels(discoveryCtx(),src)+
+   (selectedItem?panel('Вибраний елемент корпусу',body('<p>'+esc(corpusTarget(st,actor,selectedItem).title)+'</p>'+btn('Відкрити збережену версію','corpus-preview')+hint('Подальша робота','Відкрийте вибраний текст, медіа або фрагмент. Нотатки й твердження на цій сторінці стосуються джерела; точне місце можна зазначити в доказі.'))):'')+
+   (selectedItem&&selectedItem.target_entity_id!==src.id?'':discoverySourcePanels(discoveryCtx(),src))+
    panel('Мої нотатки до цієї версії',table(['Нотатка'],notes.map(x=>[esc(x.body)]),'Нотаток ще немає. Додайте спостереження або питання до джерела.')));
  }
  function propose(a){
@@ -95,7 +95,7 @@ export function researchPages(ctx){
    const proposed=own('candidate').some(x=>x.kind==='change_proposal'&&x.state==='pending'&&t.candidate_source.some(y=>y.candidate_id===x.id&&y.source_entity_id===a.id));
    act('propose',()=>propose(a));show(link(46,'← Мої твердження')+heading('Дослідницька робота','Дослідницьке твердження','Порівняйте висновок із доказом. Подайте обґрунтовану пропозицію, якщо в архівному описі потрібне уточнення.',proposed?button('Переглянути пропозиції',pg(47,{role:'R04'})):btn('Подати пропозицію архіву','propose'))+
     panel('Твердження',body(`<p class="source-text">${esc(a.statement_text)}</p>`))+
-    panel('Докази',table(['Джерело','Місце','Обґрунтування'],ev.map(x=>{const item=a.corpus_id&&t.corpus_item.find(i=>by('entity_revision',i.corpus_revision_id)?.entity_id===a.corpus_id&&i.target_entity_id===x.source_entity_id&&i.target_revision_id===x.source_revision_id);return [sourceLink(sourceView(st,actor,x.source_entity_id,x.source_revision_id),item?{corpus:a.corpus_id,corpus_revision:item.corpus_revision_id}:{}),esc(x.locator||'—'),esc(x.note)];}))));return;
+    panel('Докази',table(['Джерело','Місце','Обґрунтування'],ev.map(x=>{const item=a.corpus_id&&t.corpus_item.find(i=>by('entity_revision',i.corpus_revision_id)?.entity_id===a.corpus_id&&corpusAnchor(i).id===x.source_entity_id&&corpusAnchor(i).revision_id===x.source_revision_id&&corpusTarget(st,actor,i));return [sourceLink(sourceView(st,actor,x.source_entity_id,x.source_revision_id),item?{corpus:a.corpus_id,corpus_revision:item.corpus_revision_id}:{}),esc(x.locator||'—'),esc(x.note)];}))));return;
   }
   act('new',()=>assertionWizard());show(heading('Дослідницька робота','Мої твердження','Кожне твердження має джерело й обґрунтування. Відкрийте запис, щоб переглянути докази або подати пропозицію архіву.',btn('Створити твердження','new',enabled))+
    panel('Твердження',table(['Висновок','Джерело','Стан'],rows.map(x=>[link(46,x.statement_text,{id:x.id}),esc(sourceView(st,actor,x.subject_entity_id).title),'Дослідницький висновок']),'Створіть твердження під час роботи з джерелом.')));

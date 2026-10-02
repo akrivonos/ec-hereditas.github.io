@@ -9,7 +9,16 @@
   "phase": "M6",
   "tables": [
     "research_corpus",
-    "corpus_collaborator"
+    "corpus_collaborator",
+    "saved_query",
+    "corpus_item",
+    "entity",
+    "entity_revision",
+    "textual_representation",
+    "representation",
+    "media_segment",
+    "timed_layer",
+    "access_decision_resource"
   ],
   "fields_and_relations": "Власник/співпраця, тема, versions і frozen_at.",
   "required_interaction": "Створити/відкрити; чужий приватний корпус не показується.",
@@ -29,12 +38,12 @@
     "commands": [
       "research.corpus.create"
     ],
-    "view_model": "Owned corpus list, state/search filters, atomic creation wizard",
-    "completion": "partial",
+    "view_model": "Exact source/text/media/layer/segment targets with source and optional layer anchors, independent group/reason/order, selection context, immutable history, freeze, redacted unavailable items and exact source handoff",
+    "completion": "complete-for-local-WF-16",
     "limitations": [
-      "Collaborator invitation and shared editing remain pending."
+      "Shared editing/server ACL are outside the local prototype. Source-level notes and assertions remain WF-17/18; corpus byte export remains WF-19."
     ],
-    "state_storage": "Shared normalized browser store, fixture version 4; migration preserves existing edits and revoked grants",
+    "state_storage": "Shared normalized browser store v9; existing data and historical source-only corpora preserved",
     "permissions": [
       "research.write in an explicit archive grant",
       "owner_account_id for private objects",

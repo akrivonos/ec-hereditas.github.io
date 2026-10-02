@@ -1,14 +1,14 @@
-import {catalogRelations} from './catalog.mjs?v=20261002-wf15';
-import {intakeRelations} from './intake.mjs?v=20261002-wf15';
-import {sessionCommand,validateSession} from './session.mjs?v=20261002-wf15';
-import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-wf15';
-import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-wf15';
+import {catalogRelations} from './catalog.mjs?v=20261002-wf16';
+import {intakeRelations} from './intake.mjs?v=20261002-wf16';
+import {sessionCommand,validateSession} from './session.mjs?v=20261002-wf16';
+import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-wf16';
+import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-wf16';
 // Domain operations for the fieldwork and archive prototype. No backend persistence.
-import {mediaRelations} from './media.mjs?v=20261002-wf15';
-import {researchRelations} from './research.mjs?v=20261002-wf15';
-import {publicRelations} from './public.mjs?v=20261002-wf15';
-import {museumRelations} from './museum.mjs?v=20261002-wf15';
-import {workbenchRelations} from './workbench.mjs?v=20261002-wf15';
+import {mediaRelations} from './media.mjs?v=20261002-wf16';
+import {researchRelations} from './research.mjs?v=20261002-wf16';
+import {publicRelations} from './public.mjs?v=20261002-wf16';
+import {museumRelations} from './museum.mjs?v=20261002-wf16';
+import {workbenchRelations} from './workbench.mjs?v=20261002-wf16';
 export const fieldTypes=['field_research','work_group','participation','collecting_session','geographic_context','potential_respondent','document','information_unit','archive_node','place','institution','timed_layer'];
 const fields={
  field_research:['title','purpose','research_questions','date_from','date_to','preparation_notes','backup_plan'],
