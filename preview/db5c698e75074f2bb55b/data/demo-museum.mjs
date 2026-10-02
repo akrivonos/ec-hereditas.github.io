@@ -1,5 +1,5 @@
 // Optional synthetic walkthrough; uses domain commands and commits as one transaction.
-import {museumCommand,museumOwned,museumMaterials} from './museum.mjs?v=20261002-feedback3';
+import {museumCommand,museumOwned,museumMaterials} from './museum.mjs?v=20261002-annotations';
 
 export async function prepareMuseumDemo(s,actor,ctx){
  const t=s.tables,ids=s.demo.ids,archive=ids['archive-a'];

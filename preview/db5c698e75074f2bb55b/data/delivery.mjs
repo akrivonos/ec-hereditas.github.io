@@ -1,10 +1,10 @@
-import {owns,sourceView,corpusItems} from './research.mjs?v=20261002-feedback3';
-import {corpusTarget,corpusAnchor} from './corpus.mjs?v=20261002-feedback3';
-import {assertionEvidence,evidenceView,analysisTerms} from './analysis.mjs?v=20261002-feedback3';
-import {annotationView} from './reader.mjs?v=20261002-feedback3';
-import {accessPolicy,projectFields} from './rights.mjs?v=20261002-feedback3';
-import {rawHash,manifestPayload} from './media.mjs?v=20261002-feedback3';
-import {fileBytes} from './binary.mjs?v=20261002-feedback3';
+import {owns,sourceView,corpusItems} from './research.mjs?v=20261002-annotations';
+import {corpusTarget,corpusAnchor} from './corpus.mjs?v=20261002-annotations';
+import {assertionEvidence,evidenceView,analysisTerms} from './analysis.mjs?v=20261002-annotations';
+import {annotationView} from './reader.mjs?v=20261002-annotations';
+import {accessPolicy,projectFields} from './rights.mjs?v=20261002-annotations';
+import {rawHash,manifestPayload} from './media.mjs?v=20261002-annotations';
+import {fileBytes} from './binary.mjs?v=20261002-annotations';
 export const reference=(id,rid)=>'urn:hereditas:'+id+'#'+rid;
 export function deliveredSource(state,a,id,rid){
  const s={...state,clock:new Date().toISOString()},src=sourceView(s,a,id,rid,'cite');if(!src||!sourceView(s,a,id,rid,'download'))return null;

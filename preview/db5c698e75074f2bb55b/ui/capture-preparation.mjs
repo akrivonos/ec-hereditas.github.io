@@ -1,5 +1,5 @@
-import {captureProfiles,preparationFacts} from '../data/capture-preparation.mjs?v=20261002-feedback3';
-import {wizard} from './wizard.mjs?v=20261002-feedback3';
+import {captureProfiles,preparationFacts} from '../data/capture-preparation.mjs?v=20261002-annotations';
+import {wizard} from './wizard.mjs?v=20261002-annotations';
 export function preparationUI(ctx){
  const {st,t,by,entity,rev,label,visible,allowed,esc,pg,dialog,dispatch,render,flash,body,details,input,select,options,choices,panel,btn,action,table,history}=ctx;
  const done=message=>{flash(message);render();};

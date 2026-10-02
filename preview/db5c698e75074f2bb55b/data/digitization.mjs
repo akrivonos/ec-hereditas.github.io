@@ -1,5 +1,5 @@
-import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-feedback3';
-import {plannedOutputs,preparationFacts} from './capture-preparation.mjs?v=20261002-feedback3';
+import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-annotations';
+import {plannedOutputs,preparationFacts} from './capture-preparation.mjs?v=20261002-annotations';
 export const captureFormats={
  'image/png':'PNG','image/jpeg':'JPEG','image/tiff':'TIFF','image/webp':'WEBP',
  'audio/wav':'WAV','audio/x-wav':'WAV','audio/flac':'FLAC','audio/mpeg':'MP3','audio/ogg':'OGG','audio/webm':'WEBM','audio/mp4':'MP4',

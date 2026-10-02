@@ -62,11 +62,14 @@
       "field.session.form",
       "workbench.consent.create",
       "media.handover.create",
-      "field.save"
+      "field.save",
+      "field.session.layer",
+      "field.session.annotation.import"
     ],
-    "view_model": "WF-03: separate lists and contextual forms for session context, participants/consents, events, real media import and short device capture, playback, versioned primary index and frozen session form; WF-04 handoff; feedback: stable session participant codes, explicit per-unit performers/collectors, list/full-text search and in-place edit, private oral consent upload/interval/live recording and proof links Separate informants, collectors, consents and other attendees; distinct per-record attribution; direct exact-revision media fragment links and consent annotations.",
+    "view_model": "WF-03: separate lists and contextual forms for session context, participants/consents, events, real media import and short device capture, playback, versioned primary index and frozen session form; WF-04 handoff; feedback: stable session participant codes, explicit per-unit performers/collectors, list/full-text search and in-place edit, private oral consent upload/interval/live recording and proof links Separate informants, collectors, consents and other attendees; distinct per-record attribution; direct exact-revision media fragment links and consent annotations. Full-file annotation workspace: sticky player, decoded waveform, layer timelines, contents/layers modes, search, active text, interval selection, exact links and supported EAF 3.0 import/export.",
     "limitations": [
-      "Browser-local storage up to 2 MiB per file and 30 seconds per live recording; no shared backend, long continuous device recording, independent backups or network transfer. Full transcription/subtitle alignment remains WF-24."
+      "Browser-local storage up to 2 MiB per file and 30 seconds per live recording; no shared backend, long continuous device recording, independent backups or network transfer. Full transcription/subtitle alignment remains WF-24.",
+      "EAF subset: concrete time slots, independent alignable tiers, Symbolic Association/Subdivision. Other constraints, vocabularies, external links and nonzero media time origins are rejected. No automatic alignment or multi-file synchronized player."
     ],
     "completion": "core-interactive",
     "state_storage": "Shared normalized browser store; fixture version 9",

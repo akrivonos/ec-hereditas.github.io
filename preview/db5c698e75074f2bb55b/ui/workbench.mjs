@@ -1,9 +1,9 @@
-import {consentEvidenceFields,bindConsentEvidence,evidencePlayer,bindEvidencePlayers} from './consent-evidence.mjs?v=20261002-feedback3';
-import {mediaPreview} from './session-media.mjs?v=20261002-feedback3';
-import {processingPage} from './processing.mjs?v=20261002-feedback3';
-import {can,hash} from '../data/model.mjs?v=20261002-feedback3';
-import {textList,textView,textKinds,kindCode,useNames,useDecision} from '../data/workbench.mjs?v=20261002-feedback3';
-import {wizard} from './wizard.mjs?v=20261002-feedback3';
+import {consentEvidenceFields,bindConsentEvidence,evidencePlayer,bindEvidencePlayers} from './consent-evidence.mjs?v=20261002-annotations';
+import {mediaPreview} from './session-media.mjs?v=20261002-annotations';
+import {processingPage} from './processing.mjs?v=20261002-annotations';
+import {can,hash} from '../data/model.mjs?v=20261002-annotations';
+import {textList,textView,textKinds,kindCode,useNames,useDecision} from '../data/workbench.mjs?v=20261002-annotations';
+import {wizard} from './wizard.mjs?v=20261002-annotations';
 
 export function workbenchPages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search),role=p.get('role')||'R02';

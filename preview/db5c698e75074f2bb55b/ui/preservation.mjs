@@ -1,7 +1,7 @@
-import {preservationStatus} from '../data/preservation.mjs?v=20261002-feedback3';
-import {fileBytes,MAX_MEDIA_BYTES} from '../data/binary.mjs?v=20261002-feedback3';
-import {download,encode} from './session-media.mjs?v=20261002-feedback3';
-import {wizard} from './wizard.mjs?v=20261002-feedback3';
+import {preservationStatus} from '../data/preservation.mjs?v=20261002-annotations';
+import {fileBytes,MAX_MEDIA_BYTES} from '../data/binary.mjs?v=20261002-annotations';
+import {download,encode} from './session-media.mjs?v=20261002-annotations';
+import {wizard} from './wizard.mjs?v=20261002-annotations';
 
 const mime=file=>file.type||({tif:'image/tiff',tiff:'image/tiff',wav:'audio/wav',flac:'audio/flac',mkv:'video/x-matroska',mov:'video/quicktime'}[file.name.split('.').at(-1).toLowerCase()]||'application/octet-stream');
 async function selectedFile(d,selector='[data-copy-file]'){

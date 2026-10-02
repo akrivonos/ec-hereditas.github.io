@@ -1,8 +1,8 @@
-import {consentMedia} from './consent-media.mjs?v=20261002-feedback3';
-import {sourceView,sourceTypes} from './research.mjs?v=20261002-feedback3';
-import {discoverySource} from './discovery.mjs?v=20261002-feedback3';
-import {accessPolicy} from './rights.mjs?v=20261002-feedback3';
-import {can} from './model.mjs?v=20261002-feedback3';
+import {consentMedia} from './consent-media.mjs?v=20261002-annotations';
+import {sourceView,sourceTypes} from './research.mjs?v=20261002-annotations';
+import {discoverySource} from './discovery.mjs?v=20261002-annotations';
+import {accessPolicy} from './rights.mjs?v=20261002-annotations';
+import {can} from './model.mjs?v=20261002-annotations';
 export const corpusTypes=['information_unit','document','physical_object','textual_representation','representation','timed_layer','media_segment'];
 export const corpusKind={information_unit:'Джерело',document:'Документ',physical_object:'Носій',textual_representation:'Текст',representation:'Медіа',timed_layer:'Часовий шар',media_segment:'Фрагмент'};
 export const corpusAnchor=x=>({id:x.source_entity_id||x.target_entity_id,revision_id:x.source_revision_id||x.target_revision_id});

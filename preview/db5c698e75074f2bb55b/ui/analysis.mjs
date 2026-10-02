@@ -1,9 +1,9 @@
-import {corpusPreview} from './corpus.mjs?v=20261002-feedback3';
-import {corpusAnalysis,assertionEvidence,evidenceView,evidenceRoles,analysisTerms,analysisCandidateVisible} from '../data/analysis.mjs?v=20261002-feedback3';
-import {sourceView,owns,researchVisible} from '../data/research.mjs?v=20261002-feedback3';
-import {readerResources,annotationView} from '../data/reader.mjs?v=20261002-feedback3';
-import {wizard} from './wizard.mjs?v=20261002-feedback3';
-import {hint} from './help.mjs?v=20261002-feedback3';
+import {corpusPreview} from './corpus.mjs?v=20261002-annotations';
+import {corpusAnalysis,assertionEvidence,evidenceView,evidenceRoles,analysisTerms,analysisCandidateVisible} from '../data/analysis.mjs?v=20261002-annotations';
+import {sourceView,owns,researchVisible} from '../data/research.mjs?v=20261002-annotations';
+import {readerResources,annotationView} from '../data/reader.mjs?v=20261002-annotations';
+import {wizard} from './wizard.mjs?v=20261002-annotations';
+import {hint} from './help.mjs?v=20261002-annotations';
 export const researchStates={open:'Відкрите питання',supported:'Обґрунтовано дослідником',contested:'Є суперечності',withdrawn:'Відкликано дослідником'};
 export function analysisUI(c){
  const {st,actor,esc,pg,p,show,heading,panel,body,table,input,details,btn,act,link,dialog,dispatch,rev,sources,go}=c,t=st.tables,by=(k,id)=>t[k]?.find(x=>x.id===id);

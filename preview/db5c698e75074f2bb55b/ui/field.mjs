@@ -1,20 +1,20 @@
-import {consentMedia} from '../data/consent-media.mjs?v=20261002-feedback3';
-import {collectorCode,isCollector,participantCodes,unitPeople} from '../data/participants.mjs?v=20261002-feedback3';
-import {catalogPage} from './catalog.mjs?v=20261002-feedback3';
-import {mediaPreview} from './session-media.mjs?v=20261002-feedback3';
-import {sessionPage} from './session.mjs?v=20261002-feedback3';
-import {contactsPage} from './contacts.mjs?v=20261002-feedback3';
-import {preparationPage} from './preparation.mjs?v=20261002-feedback3';
-import {preparationStatus} from '../data/preparation.mjs?v=20261002-feedback3';
-import {can,hash} from '../data/model.mjs?v=20261002-feedback3';
-import {hint} from './help.mjs?v=20261002-feedback3';
-import {wizard} from './wizard.mjs?v=20261002-feedback3';
-import {mediaPages} from './media.mjs?v=20261002-feedback3';
+import {consentMedia} from '../data/consent-media.mjs?v=20261002-annotations';
+import {collectorCode,isCollector,participantCodes,unitPeople} from '../data/participants.mjs?v=20261002-annotations';
+import {catalogPage} from './catalog.mjs?v=20261002-annotations';
+import {mediaPreview} from './session-media.mjs?v=20261002-annotations';
+import {sessionPage} from './session.mjs?v=20261002-annotations';
+import {contactsPage} from './contacts.mjs?v=20261002-annotations';
+import {preparationPage} from './preparation.mjs?v=20261002-annotations';
+import {preparationStatus} from '../data/preparation.mjs?v=20261002-annotations';
+import {can,hash} from '../data/model.mjs?v=20261002-annotations';
+import {hint} from './help.mjs?v=20261002-annotations';
+import {wizard} from './wizard.mjs?v=20261002-annotations';
+import {mediaPages} from './media.mjs?v=20261002-annotations';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;
  const st=s(),t=st.tables,by=(table,id)=>t[table]?.find(x=>x.id===id),entity=id=>by('entity',id),rev=id=>entity(id)?.current_revision_id;
- const label=id=>{const e=entity(id),r=e&&by(e.entity_type,id);return r?.title||r?.preferred_name||r?.name||r?.display_hint||r?.original_filename||r?.external_key||'Без назви';};
+ const label=id=>{const e=entity(id),r=e&&by(e.entity_type,id);if(e?.entity_type==='timed_layer')return (r.name||'Часові позначки')+': '+label(by('representation',r.representation_id).asset_id);return r?.title||r?.preferred_name||r?.name||r?.display_hint||r?.original_filename||r?.external_key||'Без назви';};
  const params=new URLSearchParams(location.search),chosen=(rows)=>params.has('id')?rows.find(x=>x.id===params.get('id')):rows[0];
  const allowed=(id,p='domain.read')=>can(st,actor,p,entity(id)?.archive_id)&&(!consentMedia(st,id)||can(st,actor,'consent.read',entity(id)?.archive_id));
  const visible=table=>t[table].filter(x=>allowed(x.id)&&(!scope||entity(x.id).archive_id===scope));

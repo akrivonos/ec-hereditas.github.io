@@ -1,9 +1,9 @@
-import {feedbackReviewUI} from './delivery.mjs?v=20261002-feedback3';
-import {rightsUI} from './rights.mjs?v=20261002-feedback3';
-import {reconciliationUI,caseKinds,caseStates} from './reconciliation.mjs?v=20261002-feedback3';
-import {can} from '../data/model.mjs?v=20261002-feedback3';
-import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20261002-feedback3';
-import {wizard} from './wizard.mjs?v=20261002-feedback3';
+import {feedbackReviewUI} from './delivery.mjs?v=20261002-annotations';
+import {rightsUI} from './rights.mjs?v=20261002-annotations';
+import {reconciliationUI,caseKinds,caseStates} from './reconciliation.mjs?v=20261002-annotations';
+import {can} from '../data/model.mjs?v=20261002-annotations';
+import {archiveCandidate,archivePublications,publicationCheck,descriptionFields,reviewStates} from '../data/archive.mjs?v=20261002-annotations';
+import {wizard} from './wizard.mjs?v=20261002-annotations';
 
 export function archivePages(ctx){
  const {s,actor,scope,esc,pg,shell,heading,panel,dialog,dispatch,render,flash,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);

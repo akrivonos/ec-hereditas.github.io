@@ -1,7 +1,8 @@
-import {persistParticipantCodes,nextParticipantCode,participantCodes,unitPeople} from './participants.mjs?v=20261002-feedback3';
-import {fileBytes,mediaMime,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-feedback3';
-import {rawHash} from './media.mjs?v=20261002-feedback3';
-import {consentBasisValid,useNames} from './workbench.mjs?v=20261002-feedback3';
+import {annotationCommand,layerKinds} from './annotations.mjs?v=20261002-annotations';
+import {persistParticipantCodes,nextParticipantCode,participantCodes,unitPeople} from './participants.mjs?v=20261002-annotations';
+import {fileBytes,mediaMime,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-annotations';
+import {rawHash} from './media.mjs?v=20261002-annotations';
+import {consentBasisValid,useNames} from './workbench.mjs?v=20261002-annotations';
 export const eventKinds=[['participant_joined','Приєднання учасника'],['participant_left','Вихід учасника'],['interruption','Перерва'],['technical_incident','Технічна проблема'],['other','Інша подія']];
 export function recordingGaps(s,id,kind){
  const t=s.tables,use='record_'+kind,people=[...new Set(t.participation.filter(x=>x.session_id===id&&x.role_code==='performer').map(x=>x.person_id))];
@@ -12,7 +13,7 @@ export function markerEntries(s,layer,rid=null){return (s.tables.timed_layer_ent
 export function validateSession(s,ok,fk){
  const t=s.tables,by=(k,id)=>t[k]?.find(x=>x.id===id);
  for(const r of t.collecting_session){ok(!r.started_at||Number.isFinite(Date.parse(r.started_at)),'Час початку');ok(!r.ended_at||r.started_at&&Date.parse(r.ended_at)>=Date.parse(r.started_at),'Завершення перед початком');}
- for(const l of t.timed_layer||[]){ok(by('entity_revision',l.representation_revision_id)?.entity_id===l.representation_id,'Версія запису позначок');ok(['index','transcript','captions','translation'].includes(l.kind),'Тип часового шару');}
+ for(const l of t.timed_layer||[]){ok(by('entity_revision',l.representation_revision_id)?.entity_id===l.representation_id,'Версія запису позначок');ok(['other',...layerKinds.map(([k])=>k)].includes(l.kind),'Тип часового шару');}
  const positions=new Set();for(const x of t.timed_layer_entry||[]){
   const l=by('entity_revision',x.layer_revision_id),seg=by('entity_revision',x.segment_revision_id);ok(by('entity',l?.entity_id)?.entity_type==='timed_layer'&&by('entity',seg?.entity_id)?.entity_type==='media_segment','Версії позначки');
   ok(l.snapshot.representation_revision_id===seg.snapshot.representation_revision_id,'Позначка іншого запису');ok(!!x.text_value?.trim(),'Текст позначки');
@@ -70,19 +71,7 @@ export async function sessionCommand(s,actor,c,h){
   const rep=await newEntity('representation',{asset_id:asset.id,role:'received_original',representation_version:1,duration_ms:kind==='photo'?null:c.duration_ms??null,technical_metadata:{capture_event_id:capture.id}},arch(r.id));t.representation_file.push({representation_id:rep.id,file_id:f.id,position:1,component_label:f.original_filename,component_role:'primary',timeline_offset_ms:0});await revise(rep,'Додано первинний файл');
   await revise(r,'Додано медіазапис сеансу');return {id:rep.id,file_id:f.id};
  }
- if(c.type==='field.session.marker'){
-  const rep=sessionRepresentations(s,r.id).find(x=>x.id===c.representation_id);if(!rep)fail('invalid','Оберіть запис цього сеансу.');fresh(rep.id,c.representation_revision_id);
-  t.timed_layer??=[];t.timed_layer_entry??=[];let layer=t.timed_layer.find(x=>x.representation_revision_id===revision(rep.id)&&x.kind==='index');
-  if(layer)fresh(layer.id,c.layer_revision_id);else if(c.layer_revision_id)fail('stale','Шар позначок змінено.');
-  let entries=layer?structuredClone(markerEntries(s,layer)):[];const old=c.position?entries.find(x=>x.position===Number(c.position)):null;if(c.position&&!old)fail('stale','Позначку змінено.');
-  if(c.remove)entries=entries.filter(x=>x!==old);
-  else {const text=required(c.text_value),start=Number(c.start_ms),end=Number(c.end_ms);if(!Number.isInteger(start)||!Number.isInteger(end)||start<0||end<=start||rep.duration_ms!=null&&end>rep.duration_ms)fail('invalid','Кінець має бути після початку й у межах запису.');
-   const seg=await newEntity('media_segment',{representation_id:rep.id,representation_revision_id:revision(rep.id),start_ms:start,end_ms:end,channel:null},arch(r.id));const entry={segment_revision_id:revision(seg.id),text_part_id:null,text_value:text,position:old?.position||entries.length+1};if(old)Object.assign(old,entry);else entries.push(entry);}
-  if(layer)await revise(layer,'Уточнено первинні часові позначки');else layer=await newEntity('timed_layer',{representation_id:rep.id,representation_revision_id:revision(rep.id),kind:'index',language_tag:'uk',text_revision_id:null},arch(r.id));
-  entries.sort((a,b)=>by('entity_revision',a.segment_revision_id).snapshot.start_ms-by('entity_revision',b.segment_revision_id).snapshot.start_ms).forEach((x,i)=>t.timed_layer_entry.push({...x,layer_revision_id:revision(layer.id),position:i+1}));
-  const created=by('entity_revision',revision(layer.id));created.snapshot._relations={timed_layer_entry:structuredClone(markerEntries(s,layer))};created.snapshot_hash=await hash(created.snapshot);
-  await revise(r,'Уточнено часові позначки сеансу');return layer;
- }
+ if(['field.session.marker','field.session.layer','field.session.annotation.import'].includes(c.type))return annotationCommand(s,c,r,h);
  if(c.type==='field.session.form'){
   const people=t.participation.filter(x=>x.session_id===r.id),events=t.session_event.filter(x=>x.session_id===r.id).sort((a,b)=>a.position-b.position),reps=sessionRepresentations(s,r.id),geos=t.geographic_context.filter(x=>x.subject_entity_id===r.id);
   const text=['БЛАНК СЕАНСУ',r.title,'Дата: '+(r.date_label||r.date_from||'Не встановлена'),'Група: '+(r.work_group_id?by('work_group',r.work_group_id).name:'Не зазначено'),'Середовище: '+({indoor:'У приміщенні',outdoor:'Надворі',mixed:'Змішане',unknown:'Невідомо'}[r.location_environment]),'Програма: '+(r.programme_revision_id?by('entity_revision',r.programme_revision_id).snapshot.body_text:'Не зазначено'),'Початок: '+(r.started_at||'Не зазначено'),'Завершення: '+(r.ended_at||'Не зазначено'),'Місце: '+geos.map(x=>by('place',x.place_id).name).join(', '),r.location_description||'',r.recording_context||'',r.context_notes||'','УЧАСНИКИ',...people.map(p=>participantCodes(t,r.id).get(p.id)+' · '+by('person',p.person_id).preferred_name+' — '+({performer:'Виконавець / оповідач',collector:'Збирач',observer:'Присутній'}[p.role_code]||p.role_code)+'; '+(p.function_text||'')+'; '+(p.local_label||'')),'ПЕРЕБІГ',...events.map(x=>(x.occurred_at||'Час не зазначено')+' — '+x.note),'ЗАПИСИ',...t.information_unit.filter(x=>x.session_id===r.id).sort((a,b)=>a.position-b.position).map(x=>x.position+'. '+x.title+' — '+unitPeople(t,x,id=>by('person',id)?.preferred_name||'Особа')+'\n'+(x.summary||'Текст ще не додано')),'МЕДІА І ПОЗНАЧКИ',...reps.flatMap(x=>[by('media_asset',x.asset_id).title,...(t.timed_layer||[]).filter(l=>l.representation_id===x.id).flatMap(l=>markerEntries(s,l).map(e=>{const seg=by('entity_revision',e.segment_revision_id).snapshot;return (seg.start_ms/1000)+'–'+(seg.end_ms/1000)+' с: '+e.text_value;}))]),'ЗГОДИ',...t.consent_record.filter(x=>x.session_id===r.id).map(x=>by('person',x.person_id).preferred_name+': '+({active:'задокументована',partially_withdrawn:'частково відкликана',withdrawn:'відкликана'}[x.state]||x.state)+'; '+t.consent_scope.filter(v=>v.consent_id===x.id&&v.permission==='allowed').map(v=>useNames[v.use_code]).join(', '))].join('\n');

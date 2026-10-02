@@ -1,6 +1,6 @@
-import {collectorCode} from '../data/participants.mjs?v=20261002-feedback3';
-import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20261002-feedback3';
-import {hint} from './help.mjs?v=20261002-feedback3';
+import {collectorCode} from '../data/participants.mjs?v=20261002-annotations';
+import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20261002-annotations';
+import {hint} from './help.mjs?v=20261002-annotations';
 
 export function preparationPage(c,r){
  const {st,t,by,rev,label,visible,writable,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,save,show,edit,tabs,revisionHistory,programmeDialog,sessionWizard,dialog}=c;
