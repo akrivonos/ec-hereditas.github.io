@@ -1,14 +1,15 @@
-import {accessPolicy,attributionNames} from './rights.mjs?v=20261002-wf19';
+import {consentMedia} from './consent-media.mjs?v=20261002-feedback';
+import {accessPolicy,attributionNames} from './rights.mjs?v=20261002-feedback';
 // Public views use only an approved projection. Internal source rows never enter the public payload.
-import {activeAccount} from './model.mjs?v=20261002-wf19';
-import {rawHash} from './media.mjs?v=20261002-wf19';
-import {consentBasisValid} from './workbench.mjs?v=20261002-wf19';
+import {activeAccount} from './model.mjs?v=20261002-feedback';
+import {rawHash} from './media.mjs?v=20261002-feedback';
+import {consentBasisValid} from './workbench.mjs?v=20261002-feedback';
 export const publicTypes=['access_decision','publication_record','user_collection'];
 const publicFields=['title','summary','kind','category','place','period','attribution','terms','context_ids','resource_label'];
 export function publicAccessStamp(s){
  const ids=new Set((s.tables.publication_resource||[]).map(x=>x.resource_entity_id));
  for(const x of s.tables.publication_resource||[])for(const f of s.tables.entity_revision.find(r=>r.id===x.resource_revision_id)?.snapshot._relations?.representation_file||[])ids.add(f.file_id);
- return JSON.stringify([s.clock,...['publication_record','publication_basis','publication_resource','access_decision','access_decision_basis','access_decision_field','access_decision_resource','access_decision_use','access_decision_attribution','consent_record','consent_scope'].map(k=>s.tables[k]),s.tables.entity.filter(e=>['publication_record','access_decision','consent_record'].includes(e.entity_type)||ids.has(e.id))]);
+ return JSON.stringify([s.clock,...['publication_record','publication_basis','publication_resource','access_decision','access_decision_basis','access_decision_field','access_decision_resource','access_decision_use','access_decision_attribution','consent_record','consent_scope','evidence','evidence_link'].map(k=>s.tables[k]),s.tables.entity.filter(e=>['publication_record','access_decision','consent_record'].includes(e.entity_type)||ids.has(e.id))]);
 }
 export function publicRelations(t,type,id){
  const keys={access_decision:['access_decision_basis','access_decision_field','access_decision_resource','access_decision_use','access_decision_attribution'],publication_record:['publication_basis','publication_resource'],user_collection:['user_collection_item']};
@@ -55,7 +56,7 @@ export function publicResources(s,id,use='view'){
   const rows=t.access_decision_resource.filter(r=>r.decision_id===d.id&&r.resource_entity_id===x.resource_entity_id&&r.resource_revision_id===x.resource_revision_id);return rows.length&&rows.every(r=>r.effect==='allow');
  })).flatMap(x=>{
   const r=t.entity_revision.find(r=>r.id===x.resource_revision_id&&r.entity_id===x.resource_entity_id),e=r&&t.entity.find(e=>e.id===r.entity_id);
-  if(e?.entity_type!=='representation'||e.retired_at||separatelyGoverned(e.id,r.id))return [];
+  if(consentMedia(s,e?.id)||e?.entity_type!=='representation'||e.retired_at||separatelyGoverned(e.id,r.id))return [];
   return (r.snapshot._relations?.representation_file||[]).flatMap(part=>{
    const f=t.file_object.find(f=>f.id===part.file_id),fe=f&&t.entity.find(e=>e.id===f.id);
    // Public reader currently supports the real plain-text fixture; no raw filename or metadata.

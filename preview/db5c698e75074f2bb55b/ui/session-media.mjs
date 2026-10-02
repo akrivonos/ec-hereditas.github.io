@@ -1,12 +1,12 @@
-import {MAX_MEDIA_BYTES,mediaMime,mediaUrl,fileBytes} from '../data/binary.mjs?v=20261002-wf19';
-import {recordingGaps} from '../data/session.mjs?v=20261002-wf19';
+import {MAX_MEDIA_BYTES,mediaMime,mediaUrl,fileBytes} from '../data/binary.mjs?v=20261002-feedback';
+import {recordingGaps} from '../data/session.mjs?v=20261002-feedback';
 export function mediaPreview(content,mime,esc,id=''){
  const url=mediaUrl(content,mime);if(!url)return `<pre class="source-text reading-text">${esc(typeof content==='string'?content:'Браузер не підтримує перегляд цього формату. Завантажте оригінал.')}</pre>`;
  return mime.startsWith('image/')?`<img src="${url}" alt="Зображення" style="max-width:100%;max-height:440px;object-fit:contain">`:`<${mime.startsWith('audio/')?'audio':'video'} ${id?`id="${esc(id)}"`:''} controls preload="metadata" src="${url}" style="width:100%;max-height:440px"></${mime.startsWith('audio/')?'audio':'video'}>`;
 }
 export function download(content,mime,name){const u=URL.createObjectURL(new Blob([fileBytes(content)],{type:mime})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
 export async function encode(blob){const bytes=new Uint8Array(await blob.arrayBuffer());let raw='';for(let i=0;i<bytes.length;i+=8192)raw+=String.fromCharCode(...bytes.subarray(i,i+8192));return {encoding:'base64',data:btoa(raw)};}
-async function duration(blob){
+export async function duration(blob){
  if(blob.type.startsWith('image/'))return null;
  const u=URL.createObjectURL(blob),m=document.createElement(blob.type.startsWith('audio/')?'audio':'video');
  try{return await new Promise(resolve=>{const done=()=>{clearTimeout(timer);resolve(Number.isFinite(m.duration)&&m.duration>0?Math.round(m.duration*1000):null);},timer=setTimeout(done,3500);m.onloadedmetadata=done;m.onerror=done;m.src=u;});}finally{m.removeAttribute('src');m.load();URL.revokeObjectURL(u);}
@@ -16,14 +16,14 @@ export function demoWav(){
  word(0,'RIFF');v.setUint32(4,b.byteLength-8,true);word(8,'WAVE');word(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,8000,true);v.setUint32(28,16000,true);v.setUint16(32,2,true);v.setUint16(34,16,true);word(36,'data');v.setUint32(40,count*2,true);
  for(let i=0;i<count;i++)v.setInt16(44+i*2,Math.sin(i*2*Math.PI*(i<8000?440:660)/8000)*1800,true);return new Blob([b],{type:'audio/wav'});
 }
-export function sessionMediaDialogs(c,r,command){
+export function sessionMediaDialogs(c,r,command,options={}){
  const {st,esc,input,select,choices,dialog,dispatch,render,flash,label}=c;
- const saved=async payload=>{await dispatch(command('field.session.media',payload));flash('Медіазапис додано.');render();};
+ const saved=async payload=>{if(options.onSave)return options.onSave(payload);await dispatch(command('field.session.media',payload));flash('Медіазапис додано.');render();};
  const common=input('title','Назва запису')+input('source_path','Початковий шлях на носії','','text',false,'Наприклад DCIM/Camera/VID_001.mp4. Браузер не читає повний шлях автоматично; первісна назва файла зберігається без змін.')+input('origin_note','Походження та підстава запису','','textarea',true,'Для імпортованого файла вкажіть, хто й коли записав його та де зберігається згода. Збереження файла не надає дозволу на публікацію.')+input('occurred_at','Коли зроблено запис','','datetime-local')+input('device_model','Пристрій')+input('technical_incidents','Технічні зауваження','','textarea');
  function importDialog(demo=false){
   const accepts={all:'audio/*,video/*,image/png,image/jpeg,image/webp',audio:'audio/*',video:'video/*',photo:'image/png,image/jpeg,image/webp'};
-  const d=dialog(demo?'Додати навчальне аудіо':'Додати медіафайл',(demo?'<p>Дві синтетичні ноти, 2 секунди. Можна прослухати й позначити обидві частини.</p>':select('media_kind','Тип матеріалу',choices([['all','Аудіо, відео або фото'],['audio','Аудіо'],['video','Відео'],['photo','Фото']],'all'))+'<label>Файл<input name="media_file" type="file" accept="'+accepts.all+'" required></label>')+common+'<div data-duration>'+input('duration_seconds','Тривалість, секунд (якщо не визначається)','','number',false,'Потрібна для часових позначок; перевірте за оригінальним записом.')+'</div>',async fd=>{
-   const blob=demo?demoWav():fd.get('media_file'),mime=blob.type.split(';')[0];if(!mediaMime(mime)||!blob.size||blob.size>MAX_MEDIA_BYTES)throw Error('Оберіть підтримуваний медіафайл до 2 МБ.');
+  const d=dialog(demo?'Додати навчальне аудіо':'Додати медіафайл',(demo?'<p>Дві синтетичні ноти, 2 секунди. Можна прослухати й позначити обидві частини.</p>':'<p>Максимум 2 МіБ на файл. WAV, MP3, OGG, WebM, MP4, PNG, JPEG, WebP.</p><p data-file-size role="status"></p>'+select('media_kind','Тип матеріалу',choices([['all','Аудіо, відео або фото'],['audio','Аудіо'],['video','Відео'],['photo','Фото']],'all'))+'<label>Файл<input name="media_file" type="file" accept="'+accepts.all+'" required></label>')+common+'<div data-duration>'+input('duration_seconds','Тривалість, секунд (якщо не визначається)','','number',false,'Потрібна для часових позначок; перевірте за оригінальним записом.')+'</div>',async fd=>{
+   const blob=demo?demoWav():fd.get('media_file'),mime=blob.type.split(';')[0];if(!mediaMime(mime)||!blob.size||blob.size>MAX_MEDIA_BYTES)throw Error('Оберіть підтримуваний медіафайл до 2 МіБ.');
    const kind=mime.startsWith('image/')?'photo':mime.split('/')[0],requested=fd.get('media_kind');
    if(requested&&requested!=='all'&&requested!==kind)throw Error('Файл не відповідає обраному типу матеріалу.');
    const measured=await duration(blob),manual=Number(fd.get('duration_seconds'));await saved({...Object.fromEntries(fd),content:await encode(blob),mime_type:mime,filename:demo?'Навчальні-тони.wav':blob.name,duration_ms:kind==='photo'?null:measured||(manual>0?Math.round(manual*1000):null)});
@@ -32,15 +32,15 @@ export function sessionMediaDialogs(c,r,command){
   else {
    const type=d.querySelector('[name=media_kind]'),file=d.querySelector('[name=media_file]');
    const sync=()=>{file.accept=accepts[type.value];const photo=type.value==='photo'||file.files[0]?.type.startsWith('image/');d.querySelector('[data-duration]').hidden=photo;d.querySelector('[name=duration_seconds]').disabled=photo;};
-   type.onchange=()=>{file.value='';sync();};file.onchange=sync;
+   type.onchange=()=>{file.value='';sync();};file.onchange=()=>{sync();const f=file.files[0];d.querySelector('[data-file-size]').textContent=f?`${f.name}: ${(f.size/1048576).toFixed(2)} МіБ${f.size>MAX_MEDIA_BYTES?' — перевищує ліміт 2 МіБ':''}`:'';};
   }
  }
  function recordDialog(kind){
-  const gaps=recordingGaps(st,r.id,kind);if(gaps.length)throw Error('Спочатку задокументуйте дозвіл на '+({audio:'аудіозапис',video:'відеозапис',photo:'фотографування'}[kind])+': '+gaps.map(label).join(', ')+'.');
+  const gaps=options.evidence?[]:recordingGaps(st,r.id,kind);if(gaps.length)throw Error('Спочатку задокументуйте дозвіл на '+({audio:'аудіозапис',video:'відеозапис',photo:'фотографування'}[kind])+': '+gaps.map(label).join(', ')+'.');
   let stream=null,recorder=null,chunks=[],blob=null,url=null,timer=null,started=0,elapsed=0,pausedAt=0,pausedMs=0,closed=false,pending=false;
-  const d=dialog('Записати '+({audio:'аудіо',video:'відео',photo:'фото'}[kind]),common+'<p>Короткий запис: до 30 секунд і 2 МБ. Після зупинки перевірте й збережіть результат.</p><div class="actions"><button type="button" data-record="start" class="button">Увімкнути '+(kind==='audio'?'мікрофон':'камеру')+'</button><button type="button" data-record="pause" class="button secondary" disabled>Пауза</button><button type="button" data-record="stop" class="button secondary" disabled>'+ (kind==='photo'?'Зробити фото':'Зупинити')+'</button><button type="button" data-record="download" class="button secondary" disabled>Завантажити</button></div><p data-status role="status">Пристрій ще не ввімкнено.</p><div data-preview></div>',async fd=>{
+  const d=dialog('Записати '+({audio:'аудіо',video:'відео',photo:'фото'}[kind]),common+(options.evidence?'<label class="check-label"><input type="checkbox" name="recording_agreed">Учасник погодився на запис підтвердження згоди</label>':'')+'<p>Короткий запис: до 30 секунд і 2 МіБ. Після зупинки перевірте й збережіть результат.</p><div class="actions"><button type="button" data-record="start" class="button">Увімкнути '+(kind==='audio'?'мікрофон':'камеру')+'</button><button type="button" data-record="pause" class="button secondary" disabled>Пауза</button><button type="button" data-record="stop" class="button secondary" disabled>'+ (kind==='photo'?'Зробити фото':'Зупинити')+'</button><button type="button" data-record="download" class="button secondary" disabled>Завантажити</button></div><p data-status role="status">Пристрій ще не ввімкнено.</p><div data-preview></div>',async fd=>{
    if(!blob||recorder&&recorder.state!=='inactive')throw Error('Спочатку зупиніть запис.');if(blob.size>MAX_MEDIA_BYTES)throw Error('Запис завеликий. Завантажте його та імпортуйте коротший фрагмент.');
-   await saved({...Object.fromEntries(fd),content:await encode(blob),mime_type:blob.type.split(';')[0],filename:'Сеанс-'+new Date().toISOString().replace(/[:.]/g,'-')+(kind==='photo'?'.png':blob.type.includes('mp4')?'.mp4':'.webm'),duration_ms:kind==='photo'?null:await duration(blob)||elapsed,live:true});
+   await saved({...Object.fromEntries(fd),content:await encode(blob),mime_type:blob.type.split(';')[0],filename:'Сеанс-'+new Date().toISOString().replace(/[:.]/g,'-')+(kind==='photo'?'.png':blob.type.includes('mp4')?'.mp4':'.webm'),duration_ms:kind==='photo'?null:await duration(blob)||elapsed,live:true,recorded_evidence:!!options.evidence,recording_agreed:!!d.querySelector('[name=recording_agreed]')?.checked});
   });
   const q=x=>d.querySelector('[data-record='+x+']'),status=x=>d.querySelector('[data-status]').textContent=x;
   const release=()=>{clearTimeout(timer);stream?.getTracks().forEach(x=>x.stop());stream=null;};
@@ -49,6 +49,7 @@ export function sessionMediaDialogs(c,r,command){
   const preview=()=>{release();if(closed)return;url=URL.createObjectURL(blob);d.querySelector('[data-preview]').innerHTML=kind==='photo'?`<img src="${url}" alt="Щойно зроблене фото" style="max-width:100%">`:`<${kind} controls src="${url}" style="max-width:100%"></${kind}>`;q('download').disabled=false;q('stop').disabled=true;q('pause').disabled=true;status('Запис зупинено. Перевірте результат; його ще не збережено.');};
   q('start').onclick=async()=>{if(pending||closed)return;pending=true;q('start').disabled=true;try{
    if(!navigator.mediaDevices?.getUserMedia||kind!=='photo'&&!globalThis.MediaRecorder)throw Error('Браузер не підтримує запис. Скористайтеся додаванням файла.');
+   if(options.evidence&&!d.querySelector('[name=recording_agreed]').checked)throw Error('Спочатку підтвердьте домовленість про запис згоди.');
    if(!d.querySelector('[name=origin_note]').value.trim())throw Error('Вкажіть походження та підставу запису.');
    stream=await navigator.mediaDevices.getUserMedia({audio:kind!=='photo',video:kind!=='audio'});if(closed){release();return;}
    if(kind==='photo'){const v=document.createElement('video');v.autoplay=true;v.muted=true;v.playsInline=true;v.style.maxWidth='100%';v.srcObject=stream;d.querySelector('[data-preview]').replaceChildren(v);await v.play();}

@@ -1,11 +1,12 @@
-import {can} from './model.mjs?v=20261002-wf19';
-import {consentBasisValid} from './workbench.mjs?v=20261002-wf19';
+import {consentMedia} from './consent-media.mjs?v=20261002-feedback';
+import {can} from './model.mjs?v=20261002-feedback';
+import {consentBasisValid} from './workbench.mjs?v=20261002-feedback';
 export const rightsFields={title:'Назва',summary:'Опис / текст',kind:'Вид',category:'Тема',place:'Місце',period:'Період',attribution:'Джерело й авторство',terms:'Умови',context_ids:'Пов’язані записи',resource_label:'Назва ресурсу',reference:'Архівний шифр'};
 export const rightsPurposes={public:'Публічний показ',research:'Дослідницька робота',deposit:'Депонування',processing:'Машинне опрацювання'};
 export const rightsUses={view:'Перегляд',cite:'Цитування',download:'Завантаження',museum:'Музейний показ',deposit:'Депонування',machine_process:'Машинне опрацювання'};
 const reg=(s,id)=>s.tables.entity.find(x=>x.id===id);
 export function accessPolicy(s,id,rid,purpose,use='view'){
- const t=s.tables,now=Date.parse(s.clock),entity=reg(s,id);if(!entity||entity.retired_at)return null;
+ const t=s.tables,now=Date.parse(s.clock),entity=reg(s,id);if(!entity||entity.retired_at||consentMedia(s,id))return null;
  const ds=t.access_decision.filter(d=>d.target_entity_id===id&&d.purpose_code===purpose&&(!d.target_revision_id||d.target_revision_id===rid)&&d.state!=='superseded');
  if(!ds.length||ds.some(d=>reg(s,d.id)?.retired_at||d.state!=='effective'||d.access_level==='closed'||purpose==='public'&&d.access_level!=='public'||Date.parse(d.valid_from)>now||d.valid_until&&Date.parse(d.valid_until)<=now||d.embargo_until&&Date.parse(d.embargo_until)>now))return null;
  if(ds.some(d=>{const uses=t.access_decision_use.filter(x=>x.decision_id===d.id&&x.use_code===use),bases=t.access_decision_basis.filter(x=>x.decision_id===d.id);return !uses.length||uses.some(x=>x.effect!=='allow')||!bases.length||bases.some(b=>b.consent_id?!consentBasisValid(s,b,id,purpose,use):!b.basis_note?.trim());}))return null;

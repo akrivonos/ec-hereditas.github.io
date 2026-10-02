@@ -1,6 +1,7 @@
-import {can} from './model.mjs?v=20261002-wf19';
-import {sourceView,sourceTypes} from './research.mjs?v=20261002-wf19';
-import {accessPolicy} from './rights.mjs?v=20261002-wf19';
+import {consentMedia} from './consent-media.mjs?v=20261002-feedback';
+import {can} from './model.mjs?v=20261002-feedback';
+import {sourceView,sourceTypes} from './research.mjs?v=20261002-feedback';
+import {accessPolicy} from './rights.mjs?v=20261002-feedback';
 const by=(s,k,id)=>s.tables[k]?.find(x=>x.id===id),reg=(s,id)=>by(s,'entity',id),rev=(s,id)=>reg(s,id)?.current_revision_id;
 const norm=x=>String(x||'').normalize('NFKC').toLocaleLowerCase('uk').replace(/[’`ʼ]/g,"'");
 export const discoveryKeys=['q','kind','archive_id','person','place','institution','term','language','media','verified','date_from','date_to','mode','question','bounds'];
@@ -27,7 +28,7 @@ export const termLabel=(s,id)=>s.tables.term_label.find(x=>x.term_id===id&&x.kin
 export function discoverySource(state,actor,id,rid=null){
  const s={...state,clock:new Date().toISOString()},v=sourceView(s,actor,id,rid);if(!v)return null;const t=s.tables,ds=accessPolicy(s,id,v.revision_id,'research','view'),snap=by(s,'entity_revision',v.revision_id).snapshot;
  const field=key=>ds.every(d=>t.access_decision_field.some(x=>x.decision_id===d.id&&x.field_path===key&&x.effect==='allow'));
- const resource=(eid,revision)=>can(s,actor,'domain.read',reg(s,eid)?.archive_id)&&!reg(s,eid)?.retired_at&&ds.every(d=>t.access_decision_resource.some(x=>x.decision_id===d.id&&x.resource_entity_id===eid&&x.resource_revision_id===revision&&x.effect==='allow')&&!t.access_decision_resource.some(x=>x.decision_id===d.id&&x.resource_entity_id===eid&&x.effect==='deny'));
+ const resource=(eid,revision)=>!consentMedia(s,eid)&&can(s,actor,'domain.read',reg(s,eid)?.archive_id)&&!reg(s,eid)?.retired_at&&ds.every(d=>t.access_decision_resource.some(x=>x.decision_id===d.id&&x.resource_entity_id===eid&&x.resource_revision_id===revision&&x.effect==='allow')&&!t.access_decision_resource.some(x=>x.decision_id===d.id&&x.resource_entity_id===eid&&x.effect==='deny'));
  const context=field('context_ids')&&v.revision_id===rev(s,id),subjects=new Set([id,snap.session_id].filter(Boolean)),session=v.revision_id===rev(s,id)?by(s,'collecting_session',snap.session_id):null;if(session?.research_id)subjects.add(session.research_id);
  const people=context&&field('attribution')?t.access_decision_attribution.filter(x=>ds.some(d=>d.id===x.decision_id)&&x.mode!=='anonymous'&&ds.every(d=>t.access_decision_attribution.some(y=>y.decision_id===d.id&&y.person_id===x.person_id&&y.mode!=='anonymous'&&y.display_name===x.display_name))).map(x=>({id:x.person_id,label:x.display_name})):[];
  const places=context&&field('place')?(t.geographic_context||[]).filter(x=>subjects.has(x.subject_entity_id)&&x.role_code!=='superseded').map(x=>{const p=by(s,'place',x.place_id);return p&&can(s,actor,'domain.read',reg(s,p.id)?.archive_id)?{id:p.id,label:p.name,role:x.role_code,latitude:p.latitude,longitude:p.longitude,note:p.coordinate_note||null}:null;}).filter(Boolean):[];

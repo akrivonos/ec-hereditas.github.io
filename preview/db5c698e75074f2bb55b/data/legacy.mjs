@@ -1,6 +1,6 @@
-import {parseInventory,inventoryRows} from './legacy-import.mjs?v=20261002-wf19';
-import {rawHash,mediaCommand} from './media.mjs?v=20261002-wf19';
-import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-wf19';
+import {parseInventory,inventoryRows} from './legacy-import.mjs?v=20261002-feedback';
+import {rawHash,mediaCommand} from './media.mjs?v=20261002-feedback';
+import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-feedback';
 export const legacyTypes=['legacy_batch','legacy_inventory'];
 export function validateLegacy(s,ok,fk){
  const t=s.tables,by=(type,id)=>t[type]?.find(x=>x.id===id),same=(a,b)=>ok(by('entity',a)?.archive_id===by('entity',b)?.archive_id,'Інвентар поза архівом');

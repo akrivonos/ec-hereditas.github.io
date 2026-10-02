@@ -1,4 +1,5 @@
-import {fileBytes} from './binary.mjs?v=20261002-wf19';
+import {consentMedia} from './consent-media.mjs?v=20261002-feedback';
+import {fileBytes} from './binary.mjs?v=20261002-feedback';
 
 const canonical=v=>JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.fromEntries(Object.entries(x).sort(([a],[b])=>a<b?-1:a>b?1:0)):x);
 const digest=async bytes=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(x=>x.toString(16).padStart(2,'0')).join('');
@@ -25,6 +26,7 @@ export function transferProblems(s,h){
  return issues;
 }
 export async function transferBundle(s,h){
+ if(transferFiles(s,h).some(f=>consentMedia(s,f.id)))throw Error('Пакет містить приватний доказ згоди. Передавайте його окремим захищеним шляхом.');
  if(h.profile==='research-dataset/1')throw Error('Дослідницький пакет не є архівним переданням.');
  const t=s.tables,items=t.handover_item.filter(i=>i.handover_id===h.id).sort((a,b)=>a.position-b.position);
  const payload={handover_id:h.id,manifest_checksum:h.manifest_checksum,notes:h.notes,items:items.map(i=>({entity_id:i.entity_id,revision_id:i.revision_id,position:i.position,item_checksum:i.item_checksum,type:t.entity.find(e=>e.id===i.entity_id).entity_type,revision:structuredClone(t.entity_revision.find(r=>r.id===i.revision_id))})),files:transferFiles(s,h).map(f=>({id:f.id,filename:f.original_filename,mime_type:f.mime_type,sha256:f.sha256,byte_size:f.byte_size,content:structuredClone(s.demo.file_contents[f.id]),origins:structuredClone(t.file_ingest_occurrence.filter(x=>x.file_id===f.id)),captures:structuredClone(t.capture_event.filter(x=>t.capture_output.some(o=>o.file_id===f.id&&o.capture_event_id===x.id)))})),issues:structuredClone(h.preflight?.issues||[])};

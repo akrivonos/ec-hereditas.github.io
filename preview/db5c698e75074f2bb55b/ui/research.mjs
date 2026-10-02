@@ -1,14 +1,14 @@
-import {deliveryUI} from './delivery.mjs?v=20261002-wf19';
-import {analysisUI,researchStates} from './analysis.mjs?v=20261002-wf19';
-import {assertionEvidence} from '../data/analysis.mjs?v=20261002-wf19';
-import {readerWorkspace} from './reader.mjs?v=20261002-wf19';
-import {annotationView} from '../data/reader.mjs?v=20261002-wf19';
-import {corpusWizard as editCorpus,corpusPreview} from './corpus.mjs?v=20261002-wf19';
-import {corpusTarget,corpusAnchor,corpusKey,corpusKind} from '../data/corpus.mjs?v=20261002-wf19';
-import {discoveryContext,discoverySearchPage,discoverySourcePanels} from './discovery.mjs?v=20261002-wf19';
-import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261002-wf19';
-import {wizard} from './wizard.mjs?v=20261002-wf19';
-import {hint} from './help.mjs?v=20261002-wf19';
+import {deliveryUI} from './delivery.mjs?v=20261002-feedback';
+import {analysisUI,researchStates} from './analysis.mjs?v=20261002-feedback';
+import {assertionEvidence} from '../data/analysis.mjs?v=20261002-feedback';
+import {readerWorkspace} from './reader.mjs?v=20261002-feedback';
+import {annotationView} from '../data/reader.mjs?v=20261002-feedback';
+import {corpusWizard as editCorpus,corpusPreview} from './corpus.mjs?v=20261002-feedback';
+import {corpusTarget,corpusAnchor,corpusKey,corpusKind} from '../data/corpus.mjs?v=20261002-feedback';
+import {discoveryContext,discoverySearchPage,discoverySourcePanels} from './discovery.mjs?v=20261002-feedback';
+import {researchEnabled,owns,sourceView,searchSources,corpusItems,researchVisible,exportDownload} from '../data/research.mjs?v=20261002-feedback';
+import {wizard} from './wizard.mjs?v=20261002-feedback';
+import {hint} from './help.mjs?v=20261002-feedback';
 
 export function researchPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied}=ctx,st=s(),t=st.tables,p=new URLSearchParams(location.search);

@@ -1,7 +1,8 @@
-import {sourceView,sourceTypes} from './research.mjs?v=20261002-wf19';
-import {discoverySource} from './discovery.mjs?v=20261002-wf19';
-import {accessPolicy} from './rights.mjs?v=20261002-wf19';
-import {can} from './model.mjs?v=20261002-wf19';
+import {consentMedia} from './consent-media.mjs?v=20261002-feedback';
+import {sourceView,sourceTypes} from './research.mjs?v=20261002-feedback';
+import {discoverySource} from './discovery.mjs?v=20261002-feedback';
+import {accessPolicy} from './rights.mjs?v=20261002-feedback';
+import {can} from './model.mjs?v=20261002-feedback';
 export const corpusTypes=['information_unit','document','physical_object','textual_representation','representation','timed_layer','media_segment'];
 export const corpusKind={information_unit:'Джерело',document:'Документ',physical_object:'Носій',textual_representation:'Текст',representation:'Медіа',timed_layer:'Часовий шар',media_segment:'Фрагмент'};
 export const corpusAnchor=x=>({id:x.source_entity_id||x.target_entity_id,revision_id:x.source_revision_id||x.target_revision_id});
@@ -10,7 +11,7 @@ export const corpusKey=x=>[x.source_entity_id||x.target_entity_id,x.source_revis
 export function corpusTarget(state,actor,item){
  const s={...state,clock:new Date().toISOString()},t=s.tables,by=(k,id)=>t[k]?.find(x=>x.id===id),reg=id=>by('entity',id),exact=(id,rid)=>{const r=by('entity_revision',rid);return r?.entity_id===id?r:null;};
  const anchor=corpusAnchor(item),src=sourceView(s,actor,anchor.id,anchor.revision_id),e=reg(item.target_entity_id),r=exact(item.target_entity_id,item.target_revision_id);
- if(!src||!r||!e||e.retired_at||!corpusTypes.includes(e.entity_type)||!(e.entity_type==='media_segment'&&e.owner_account_id===actor&&e.archive_id===null||can(s,actor,'domain.read',e.archive_id)))return null;
+ if(consentMedia(s,item.target_entity_id)||!src||!r||!e||e.retired_at||!corpusTypes.includes(e.entity_type)||!(e.entity_type==='media_segment'&&e.owner_account_id===actor&&e.archive_id===null||can(s,actor,'domain.read',e.archive_id)))return null;
  const ds=accessPolicy(s,src.id,src.revision_id,'research','view');
  const readable=id=>reg(id)&&!reg(id).retired_at&&can(s,actor,'domain.read',reg(id).archive_id);
  const denied=id=>ds.some(d=>t.access_decision_resource.some(x=>x.decision_id===d.id&&x.resource_entity_id===id&&x.effect==='deny'));

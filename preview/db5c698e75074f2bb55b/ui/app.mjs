@@ -1,19 +1,20 @@
-import {prepareDelivery} from '../data/delivery-demo.mjs?v=20261002-wf19';
-import {prepareAnalysis} from '../data/analysis-demo.mjs?v=20261002-wf19';
-import {prepareReader} from '../data/reader-demo.mjs?v=20261002-wf19';
-import {prepareDiscovery} from '../data/discovery-demo.mjs?v=20261002-wf19';
-import {prepareSingleUser} from '../data/single-user.mjs?v=20261002-wf19';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261002-wf19";
-import {fieldPages} from './field.mjs?v=20261002-wf19';
-import {mediaPages} from './media.mjs?v=20261002-wf19';
-import {researchPages} from './research.mjs?v=20261002-wf19';
-import {publicPages} from './public.mjs?v=20261002-wf19';
-import {archivePages} from './archive.mjs?v=20261002-wf19';
-import {workbenchPages} from './workbench.mjs?v=20261002-wf19';
-import {museumPages} from './museum.mjs?v=20261002-wf19';
-import {museumStamp} from '../data/museum.mjs?v=20261002-wf19';
-import {publicAccessStamp} from '../data/public.mjs?v=20261002-wf19';
-import {bindHelp} from './help.mjs?v=20261002-wf19';
+import {prepareSessionFeedback} from '../data/session-feedback-demo.mjs?v=20261002-feedback';
+import {prepareDelivery} from '../data/delivery-demo.mjs?v=20261002-feedback';
+import {prepareAnalysis} from '../data/analysis-demo.mjs?v=20261002-feedback';
+import {prepareReader} from '../data/reader-demo.mjs?v=20261002-feedback';
+import {prepareDiscovery} from '../data/discovery-demo.mjs?v=20261002-feedback';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20261002-feedback';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261002-feedback";
+import {fieldPages} from './field.mjs?v=20261002-feedback';
+import {mediaPages} from './media.mjs?v=20261002-feedback';
+import {researchPages} from './research.mjs?v=20261002-feedback';
+import {publicPages} from './public.mjs?v=20261002-feedback';
+import {archivePages} from './archive.mjs?v=20261002-feedback';
+import {workbenchPages} from './workbench.mjs?v=20261002-feedback';
+import {museumPages} from './museum.mjs?v=20261002-feedback';
+import {museumStamp} from '../data/museum.mjs?v=20261002-feedback';
+import {publicAccessStamp} from '../data/public.mjs?v=20261002-feedback';
+import {bindHelp} from './help.mjs?v=20261002-feedback';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;
@@ -27,7 +28,7 @@ const stateLabels={open:"Відкрите",assigned:"Призначене",in_pr
 const badge=(s,label=stateLabels[s]||s)=>'<span class="badge '+esc(s)+'">'+esc(label)+'</span>';
 const button=(text,href,secondary=false)=>'<a class="button'+(secondary?' secondary':'')+'" href="'+esc(href)+'">'+esc(text)+'</a>';
 const date=value=>value?new Intl.DateTimeFormat("uk-UA",{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}).format(new Date(value)):"Не визначено";
-let manifest,base,store,actor,scope="",notice="",noticeType="info",catalogQuery="",catalogPhase="",catalogStatus="";
+let manifest,base,rawFixture,store,actor,scope="",notice="",noticeType="info",catalogQuery="",catalogPhase="",catalogStatus="";
 const app=document.getElementById("app");
 async function getJSON(path){const response=await fetch(url(path));if(!response.ok)throw new Error("Не вдалося завантажити "+path);return response.json();}
 function s(){return store.get();}
@@ -352,7 +353,7 @@ function bindShell(){
   location.href=roleHome(manifest.roles.find(r=>r.id===e.target.value));
  });
  document.getElementById("scope")?.addEventListener("change",e=>{scope=e.target.value;sessionStorage.setItem(scopeKey,scope);notice="";render();});
- document.getElementById("reset-demo").onclick=()=>dialog("Скинути демонстраційні дані","<p>Створені завдання, зміни станів, призначення прав і параметри буде повернуто до початкового синтетичного набору.</p>",async()=>{store.reset();flash("Початковий демонстраційний стан відновлено.");render();},"Скинути");
+ document.getElementById("reset-demo").onclick=()=>dialog("Скинути демонстраційні дані","<p>Створені завдання, зміни станів, призначення прав і параметри буде повернуто до початкового синтетичного набору.</p>",async()=>{const fresh=await prepareDemo(rawFixture,null),old=JSON.parse(localStorage.getItem(storageKey)||"null");localStorage.setItem(storageKey,JSON.stringify({generation:(old?.generation||0)+1,state:fresh.saved.state}));location.href=url("index.html");},"Скинути");
 }
 function render(){
  const publicCtx={s,actor,scope:currentScope(),esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch:c=>store.dispatch(actor,c),denied,date};
@@ -391,9 +392,10 @@ function render(){
  ...researchPages({s,actor,scope:currentScope(),esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch:c=>store.dispatch(actor,c),denied,date})};
  views[pageId]?.();
 }
+async function prepareDemo(initial,saved){return prepareSessionFeedback(await prepareDelivery(await prepareAnalysis(await prepareReader(await prepareDiscovery(await prepareSingleUser(initial,saved))))));}
 async function start(){
- [manifest,base]=await Promise.all([getJSON("manifest.json"),getJSON("fixtures/base.json")]);
- const existing=localStorage.getItem(storageKey),prepared=await prepareDelivery(await prepareAnalysis(await prepareReader(await prepareDiscovery(await prepareSingleUser(base,existing?JSON.parse(existing):null)))));
+ [manifest,rawFixture]=await Promise.all([getJSON("manifest.json"),getJSON("fixtures/base.json")]);
+ const existing=localStorage.getItem(storageKey),saved=existing?JSON.parse(existing):null,ready=saved?.state.version===rawFixture.version&&saved.state.demo.single_user===1&&saved.state.demo.session_feedback_v1===1,prepared=ready?{base:saved.state,saved,changed:false}:await prepareDemo(rawFixture,saved);
  base=prepared.base;
  if(prepared.changed){
   if(existing&&!localStorage.getItem(storageKey+'.before-single-user'))localStorage.setItem(storageKey+'.before-single-user',existing);

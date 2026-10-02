@@ -1,5 +1,5 @@
-import {can,canonical} from './model.mjs?v=20261002-wf19';
-import {classificationFits} from './catalog.mjs?v=20261002-wf19';
+import {can,canonical} from './model.mjs?v=20261002-feedback';
+import {classificationFits} from './catalog.mjs?v=20261002-feedback';
 export const reviewSourceTypes=['source_record','document','physical_object','media_asset','representation','file_object','information_unit','collecting_session','field_research','person','place','institution','textual_representation'];
 export const relationPredicates={
  represented_by:{label:'Представлено цифровим матеріалом',domain:['physical_object','information_unit','collecting_session','document'],range:['media_asset','representation','file_object'],symmetric:false},

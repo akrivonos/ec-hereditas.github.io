@@ -1,14 +1,15 @@
-import {catalogRelations} from './catalog.mjs?v=20261002-wf19';
-import {intakeRelations} from './intake.mjs?v=20261002-wf19';
-import {sessionCommand,validateSession} from './session.mjs?v=20261002-wf19';
-import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-wf19';
-import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-wf19';
+import {nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261002-feedback';
+import {catalogRelations} from './catalog.mjs?v=20261002-feedback';
+import {intakeRelations} from './intake.mjs?v=20261002-feedback';
+import {sessionCommand,validateSession} from './session.mjs?v=20261002-feedback';
+import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-feedback';
+import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-feedback';
 // Domain operations for the fieldwork and archive prototype. No backend persistence.
-import {mediaRelations} from './media.mjs?v=20261002-wf19';
-import {researchRelations} from './research.mjs?v=20261002-wf19';
-import {publicRelations} from './public.mjs?v=20261002-wf19';
-import {museumRelations} from './museum.mjs?v=20261002-wf19';
-import {workbenchRelations} from './workbench.mjs?v=20261002-wf19';
+import {mediaRelations} from './media.mjs?v=20261002-feedback';
+import {researchRelations} from './research.mjs?v=20261002-feedback';
+import {publicRelations} from './public.mjs?v=20261002-feedback';
+import {museumRelations} from './museum.mjs?v=20261002-feedback';
+import {workbenchRelations} from './workbench.mjs?v=20261002-feedback';
 export const fieldTypes=['field_research','work_group','participation','collecting_session','geographic_context','potential_respondent','document','information_unit','archive_node','place','institution','timed_layer'];
 const fields={
  field_research:['title','purpose','research_questions','date_from','date_to','preparation_notes','backup_plan'],
@@ -68,6 +69,7 @@ export function validateField(s,require,fk,canonical){
  for(const x of t.research_preparation_item){fk('field_research',x.research_id);require(['planned','ready','blocked','not_applicable'].includes(x.state),'Стан підготовки');require(preparationKinds.some(k=>k[0]===x.kind),'Тип підготовки');require(!!x.description?.trim(),'Опис підготовки');if(x.related_entity_id){fk('entity',x.related_entity_id);same(x.research_id,x.related_entity_id);}}
  for(const x of t.session_event){fk('collecting_session',x.session_id);if(x.participation_id)require(by('participation',x.participation_id)?.session_id===x.session_id,'Учасник іншого сеансу');}
  for(const x of t.geographic_context){fk('entity',x.subject_entity_id);fk('place',x.place_id);same(x.id,x.subject_entity_id);same(x.id,x.place_id);}
+ const participantCodesSeen=new Set();for(const p of t.participation.filter(p=>p.session_id&&p.participant_code)){const k=p.session_id+':'+p.participant_code;require(!participantCodesSeen.has(k),'Позначення учасника вже використано');participantCodesSeen.add(k);}
  for(const x of t.unit_participant){fk('information_unit',x.unit_id);fk('person',x.person_id);if(x.session_participation_id){const p=by('participation',x.session_participation_id);require(p?.session_id===by('information_unit',x.unit_id).session_id&&p.person_id===x.person_id,'Виконавець не відповідає участі в сеансі');}}
  for(const x of t.document_context){fk('document',x.document_id);fk('entity',x.target_entity_id);same(x.document_id,x.target_entity_id);if(x.target_revision_id)require(by('entity_revision',x.target_revision_id)?.entity_id===x.target_entity_id,'Чужа версія контексту');}
  for(const x of t.potential_respondent){fk('field_research',x.research_id);same(x.id,x.research_id);if(x.confirmed_person_id){fk('person',x.confirmed_person_id);same(x.id,x.confirmed_person_id);}}
@@ -95,6 +97,7 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
  const fresh=(id,expected)=>{if(reg(id)?.current_revision_id!==expected)fail('stale','Запис змінено. Оновіть сторінку перед збереженням.');};
  const required=v=>{if(!v?.trim())fail('invalid','Заповніть назву.');return v.trim();};
  const newEntity=async(type,row,archive)=>{
+  if(type==='participation'&&row.session_id){await persistParticipantCodes(t,row.session_id,revise);row.participant_code=nextParticipantCode(t,row.session_id,row.role_code);}
   const id=crypto.randomUUID(),rid=crypto.randomUUID();row={id,...row};t[type].push(row);
   t.entity.push({id,entity_type:type,owner_installation_id:s.demo.ids.installation,archive_id:archive,owner_account_id:null,current_revision_id:rid,retired_at:null});
   const snap=snapshot(t,type,row);t.entity_revision.push({id:rid,entity_id:id,revision_no:1,previous_revision_id:null,snapshot:snap,snapshot_hash:await hash(snap),recorded_at:s.clock,actor_account_id:actor,process_run_id:null,change_reason:'Створено запис'});
@@ -113,7 +116,7 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
   if(kind==='potential_respondent')fail('invalid','Редагуйте робочий контакт через список контактів.');
   if(kind==='document'&&row.kind==='session_form')fail('invalid','Сформуйте новий бланк із картки сеансу.');
   if(kind==='document'&&(row.kind==='research_programme'||t.document_context.some(x=>x.document_id===row.id&&['preparation','preparation_confirmation'].includes(x.context_role))))fail('invalid','Оновлюйте програму через дослідження.');
-  if(kind==='information_unit')sessionFresh(row.session_id);
+  if(kind==='information_unit'){sessionFresh(row.session_id);if(c.participant_ids!==undefined)setUnitParticipants(t,row,c.participant_ids,fail);}
   for(const [key,value]of Object.entries(c.values||{})){if(!fields[kind].includes(key))fail('invalid','Поле не доступне для зміни.');row[key]=typeof value==='string'?value.trim()||null:value;}
   if('title'in row)required(row.title);if('name'in row)required(row.name);if(kind==='person')required(row.preferred_name);
   await revise(row,'Оновлено запис');
@@ -167,7 +170,7 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
  }
  if(c.type==='field.unit.create'||c.type==='field.participant'||c.type==='field.event'||c.type==='field.reorder'){
   const r=lookup(c.id);if(reg(r.id).entity_type!=='collecting_session')fail('invalid','Оберіть сеанс.');fresh(r.id,c.expected_revision_id);let result={};
-  if(c.type==='field.unit.create')result=await newEntity('information_unit',{session_id:r.id,position:t.information_unit.filter(x=>x.session_id===r.id).length+1,unit_kind:c.unit_kind,title:required(c.title),incipit:null,summary:c.summary?.trim()||null,performance_mode:null,dialect_term_id:null,dialect_label_raw:null},arch(r.id));
+  if(c.type==='field.unit.create'){result=await newEntity('information_unit',{session_id:r.id,position:t.information_unit.filter(x=>x.session_id===r.id).length+1,unit_kind:c.unit_kind,title:required(c.title),incipit:null,summary:c.summary?.trim()||null,performance_mode:null,dialect_term_id:null,dialect_label_raw:null},arch(r.id));if(c.participant_ids!==undefined){setUnitParticipants(t,result,c.participant_ids,fail);await revise(result,'Зазначено учасників запису');}}
   if(c.type==='field.participant'){
    const person=lookup(c.person_id);if(reg(person.id).entity_type!=='person')fail('invalid','Оберіть особу.');
    if(!['performer','collector','observer'].includes(c.role_code))fail('invalid','Оберіть функцію.');

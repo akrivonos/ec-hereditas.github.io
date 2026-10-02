@@ -83,6 +83,7 @@
       "domain.read",
       "field.write or catalog.write in archive scope; vocabulary.write for terms"
     ],
-    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
+    "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure.",
+    "field_view": "R01: field record content, participant codes, edit dialog and return to its session; R02 archival tabs retained."
   }
 }

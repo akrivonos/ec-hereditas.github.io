@@ -11,7 +11,12 @@
   "tables": [
     "consent_record",
     "consent_scope",
-    "evidence_link"
+    "evidence_link",
+    "file_object",
+    "representation",
+    "representation_file",
+    "media_asset",
+    "media_segment"
   ],
   "fields_and_relations": "Особа, сеанс, обсяг/мета/use, докази, effective_at та revision history.",
   "required_interaction": "Часткове відкликання → нова версія й залежні перегляди; доказ лишається приватним.",
@@ -32,8 +37,8 @@
       "workbench.consent.create",
       "workbench.consent.withdraw"
     ],
-    "view_model": "Private consent list, evidence wizard, scopes, partial/complete withdrawal and dependent-policy/publication invalidation",
-    "completion": "partial",
+    "view_model": "Private consent list, evidence wizard, scopes, partial/complete withdrawal and dependent-policy/publication invalidation; document/audio/video evidence with exact source revisions, interval playback, explicit confirmation and original-file privacy",
+    "completion": "local-consent-evidence-and-withdrawal",
     "state_storage": "Normalized browser store v9; existing user state is preserved, new grants require explicit human review.",
     "permissions": [
       "Scoped text.read/write/review, consent.read/write, processing.run and deposit.manage are independent",
@@ -42,12 +47,9 @@
     ],
     "atomicity": "Command validates scope, expected version, exact relationships and immutable hashes before one commit; forms hold drafts until confirmation",
     "limitations": [
-      "Local browser prototype: source media playback and file-based local recognition are available; hosted inference and receiving transport are not connected.",
-      "Text parts use one line per utterance; derivation aligns equal line counts. Arbitrary many-to-many alignment, timed-layer editor and graphical music notation remain pending.",
-      "Human text review supports accept/reject/defer; correction is an explicit new content revision followed by review.",
-      "Consent create and partial/full withdrawal work. Separate replacement acts, broad multi-person policy authoring and rights renewal UI remain pending.",
-      "Deposits use an explicit title/summary whitelist and a restricted no-public-display snapshot. Receiving is an acknowledgement simulation; production entity_origin projection, receiver policy creation and independent receiving installation remain pending.",
-      "WF-14 uses a separate local recognition runner and portable results; PG-40 reviews each candidate before creating archival data."
+      "Local browser storage: up to 2 MiB per proof, 30-second device capture; no server upload/resume or protected proof transport.",
+      "Old evidence descriptions remain supported. Media proof does not automatically grant operational access.",
+      "Separate replacement consent acts and broad multi-person policy authoring remain additional work."
     ],
     "research_scope": "Explicit public/research purpose for view/citation consent; proof remains private. Recording a consent does not grant operational access."
   }

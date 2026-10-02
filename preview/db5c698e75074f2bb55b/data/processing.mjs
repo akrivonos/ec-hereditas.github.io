@@ -1,10 +1,11 @@
-import {can,hash} from './model.mjs?v=20261002-wf19';
-import {rawHash} from './media.mjs?v=20261002-wf19';
-import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-wf19';
-import {useDecision} from './workbench.mjs?v=20261002-wf19';
+import {consentMedia} from './consent-media.mjs?v=20261002-feedback';
+import {can,hash} from './model.mjs?v=20261002-feedback';
+import {rawHash} from './media.mjs?v=20261002-feedback';
+import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-feedback';
+import {useDecision} from './workbench.mjs?v=20261002-feedback';
 const by=(s,k,id)=>s.tables[k]?.find(x=>x.id===id),reg=(s,id)=>by(s,'entity',id),rev=(s,id)=>reg(s,id)?.current_revision_id;
 export const processingOperations={ocr:'Друкований текст',htr:'Рукопис',stt:'Мовлення',analyze:'Мова й метадані тексту'};
-export function processingDecision(s,id){
+export function processingDecision(s,id){if(consentMedia(s,id))return null;
  const d=useDecision({...s,clock:new Date().toISOString()},id,'processing','machine_process');if(!d)return null;
  const inputs=processingInputs(s,id),ids=new Set([id,...inputs.map(x=>x.id)]),rules=s.tables.access_decision_resource.filter(x=>x.decision_id===d.id&&ids.has(x.resource_entity_id));
  if(rules.some(x=>x.effect==='deny'))return null;
