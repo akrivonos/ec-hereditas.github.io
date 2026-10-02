@@ -1,7 +1,7 @@
-import {landPath} from '../vendor/discovery-land.mjs?v=20261002-feedback2';
-import {discoveryKeys,discoverySpec,discoverySearch,discoverySource,discoveryFacets,discoveryFile,termNeighbours} from '../data/discovery.mjs?v=20261002-feedback2';
-import {sourceView} from '../data/research.mjs?v=20261002-feedback2';
-import {mediaPreview} from './session-media.mjs?v=20261002-feedback2';
+import {landPath} from '../vendor/discovery-land.mjs?v=20261002-feedback3';
+import {discoveryKeys,discoverySpec,discoverySearch,discoverySource,discoveryFacets,discoveryFile,termNeighbours} from '../data/discovery.mjs?v=20261002-feedback3';
+import {sourceView} from '../data/research.mjs?v=20261002-feedback3';
+import {mediaPreview} from './session-media.mjs?v=20261002-feedback3';
 export const discoveryContext=p=>({...Object.fromEntries(discoveryKeys.map(k=>[k,p.get(k)||''])),archive_id:p.get('archive_id')||p.get('archive')||'',query:p.get('query')||''});
 export function discoverySearchPage(c){
  const {st,actor,scope,p,esc,pg,show,heading,panel,body,table,input,details,btn,act,link,form,go,enabled,corpusWizard,dialog}=c;

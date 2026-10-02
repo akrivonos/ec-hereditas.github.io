@@ -1,15 +1,15 @@
-import {nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261002-feedback2';
-import {catalogRelations} from './catalog.mjs?v=20261002-feedback2';
-import {intakeRelations} from './intake.mjs?v=20261002-feedback2';
-import {sessionCommand,validateSession} from './session.mjs?v=20261002-feedback2';
-import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-feedback2';
-import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-feedback2';
+import {collectorCode,nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261002-feedback3';
+import {catalogRelations} from './catalog.mjs?v=20261002-feedback3';
+import {intakeRelations} from './intake.mjs?v=20261002-feedback3';
+import {sessionCommand,validateSession} from './session.mjs?v=20261002-feedback3';
+import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-feedback3';
+import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-feedback3';
 // Domain operations for the fieldwork and archive prototype. No backend persistence.
-import {mediaRelations} from './media.mjs?v=20261002-feedback2';
-import {researchRelations} from './research.mjs?v=20261002-feedback2';
-import {publicRelations} from './public.mjs?v=20261002-feedback2';
-import {museumRelations} from './museum.mjs?v=20261002-feedback2';
-import {workbenchRelations} from './workbench.mjs?v=20261002-feedback2';
+import {mediaRelations} from './media.mjs?v=20261002-feedback3';
+import {researchRelations} from './research.mjs?v=20261002-feedback3';
+import {publicRelations} from './public.mjs?v=20261002-feedback3';
+import {museumRelations} from './museum.mjs?v=20261002-feedback3';
+import {workbenchRelations} from './workbench.mjs?v=20261002-feedback3';
 export const fieldTypes=['field_research','work_group','participation','collecting_session','geographic_context','potential_respondent','document','information_unit','archive_node','place','institution','timed_layer'];
 const fields={
  field_research:['title','purpose','research_questions','date_from','date_to','preparation_notes','backup_plan'],
@@ -195,6 +195,12 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
   await revise(doc,'Оновлено польовий зошит');return {id:doc.id};
  }
  if(c.type==='field.contact'||c.type.startsWith('field.contact.'))return contactCommand(s,actor,c,{need,fail,lookup,fresh,required,newEntity,revise,reg,arch,fieldCommand:next=>fieldCommand(s,actor,next,{need,can,fail,revise,audit,hash})});
+ if(c.type==='field.collector.save'){
+  need('field.write',c.id?arch(c.id):c.archive_id);
+  let person=c.id&&lookup(c.id,'field.write');if(person){if(!by('person',c.id))fail('invalid','Оберіть особу.');fresh(c.id,c.expected_revision_id);}
+  else person=await newEntity('person',{preferred_name:required(c.name),name_note:c.note?.trim()||null},c.archive_id);
+  person.preferred_name=required(c.name);person.name_note=c.note?.trim()||null;person.collector_code=collectorCode(t,person.id);await revise(person,'Оновлено картку збирача');return person;
+ }
  if(c.type==='field.authority.create'){
   need('catalog.write',c.archive_id);const name=required(c.name),rows={person:{preferred_name:name,name_note:null},place:{name,place_type_term_id:null,latitude:null,longitude:null,coordinate_note:null},institution:{name,short_name:null,institution_type:null,website_uri:null}};
   if(!rows[c.kind])fail('invalid','Оберіть тип запису.');return newEntity(c.kind,rows[c.kind],c.archive_id);

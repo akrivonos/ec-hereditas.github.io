@@ -1,5 +1,6 @@
-import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20261002-feedback2';
-import {hint} from './help.mjs?v=20261002-feedback2';
+import {collectorCode} from '../data/participants.mjs?v=20261002-feedback3';
+import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20261002-feedback3';
+import {hint} from './help.mjs?v=20261002-feedback3';
 
 export function preparationPage(c,r){
  const {st,t,by,rev,label,visible,writable,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,save,show,edit,tabs,revisionHistory,programmeDialog,sessionWizard,dialog}=c;
@@ -19,14 +20,14 @@ export function preparationPage(c,r){
    panel('Програма дослідження',body(`<div class="reading-text">${esc(program?.snapshot.body_text||'Програму ще не додано.')}</div>${program?`<small>Версія ${program.revision_no}</small>`:''}`),btn(program?'Оновити програму':'Додати програму','programme',write))+revisionHistory(r.id);
  }else if(section==='team'){
   const groupForm=g=>form(g?'Редагувати групу':'Нова група',input('name','Назва групи',g?.name||'','text',true)+input('notes','Завдання групи',g?.notes||'','textarea'),fd=>command('field.plan.group',{group_id:g?.id,...Object.fromEntries(fd)}));
-  const memberForm=(g,m)=>form(m?'Редагувати участь':'Додати учасника',select('person_id','Особа','<option value="">Нова особа</option>'+opts(visible('person'),m?.person_id))+input('person_name','Ім’я нової особи')+select('group_id','Група',opts(groups,g.id,x=>x.name))+select('role_code','Функція',choices(roles,m?.role_code||'collector'))+input('function_text','Конкретні обов’язки',m?.function_text||'','textarea',true),fd=>command('field.plan.member',{member_id:m?.id,...Object.fromEntries(fd)}));
+  const memberForm=(g,m)=>form(m?'Редагувати участь':'Додати до команди',select('person_id','Особа','<option value="">Нова особа</option>'+opts(visible('person'),m?.person_id))+input('person_name','Ім’я нової особи')+select('group_id','Група',opts(groups,g.id,x=>x.name))+select('role_code','Функція',choices(roles,m?.role_code||'collector'))+input('function_text','Конкретні обов’язки',m?.function_text||'','textarea',true),fd=>command('field.plan.member',{member_id:m?.id,...Object.fromEntries(fd)}));
   action('group-add',()=>groupForm(null));
-  content=panel('Робочі групи',table(['Група','Завдання','Дії'],groups.map(g=>{action('group-'+g.id,()=>groupForm(g));action('member-add-'+g.id,()=>memberForm(g,null));action('group-remove-'+g.id,()=>form('Завершити роботу групи',body(`<p>${esc(g.name)}</p><p>Спочатку перенесіть учасників або завершіть їхню участь. Попередні сеанси залишаться пов’язаними з групою.</p>`),()=>command('field.plan.group',{group_id:g.id,remove:true})));return [esc(g.name),esc(g.notes||'Не зазначено'),btn('Редагувати','group-'+g.id,write)+' '+btn('Додати учасника','member-add-'+g.id,write)+' '+btn('Завершити роботу','group-remove-'+g.id,write)];})),btn('Нова група','group-add',write));
+  content=panel('Робочі групи',table(['Група','Завдання','Дії'],groups.map(g=>{action('group-'+g.id,()=>groupForm(g));action('member-add-'+g.id,()=>memberForm(g,null));action('group-remove-'+g.id,()=>form('Завершити роботу групи',body(`<p>${esc(g.name)}</p><p>Спочатку перенесіть членів команди або завершіть їхню участь. Попередні сеанси залишаться пов’язаними з групою.</p>`),()=>command('field.plan.group',{group_id:g.id,remove:true})));return [esc(g.name),esc(g.notes||'Не зазначено'),btn('Редагувати','group-'+g.id,write)+' '+btn('Додати до команди','member-add-'+g.id,write)+' '+btn('Завершити роботу','group-remove-'+g.id,write)];})),btn('Нова група','group-add',write));
   const members=t.participation.filter(x=>x.research_id===r.id&&x.work_group_id);
-  content+=panel('Учасники й обов’язки',table(['Особа','Група','Функція','Обов’язки','Дії'],members.map(m=>{
+  content+=panel('Команда та обов’язки',table(['Особа','Група','Функція','Обов’язки','Дії'],members.map(m=>{
    const g=groups.find(x=>x.id===m.work_group_id);action('member-'+m.id,()=>memberForm(g,m));action('member-remove-'+m.id,()=>form('Завершити участь у групі',body(`<p>${esc(label(m.person_id))}</p><p>Попередні сеанси та історія участі збережуться.</p>`),()=>command('field.plan.member',{group_id:g.id,member_id:m.id,remove:true})));
-   return [esc(label(m.person_id)),esc(g.name),esc(roles.find(x=>x[0]===m.role_code)?.[1]||m.role_code),esc(m.function_text),btn('Редагувати','member-'+m.id,write)+' '+btn('Завершити участь','member-remove-'+m.id,write)];
-  })))+body(hint('Функції учасників','Одна особа може мати кілька функцій. Участь у підготовці не означає присутність у кожному сеансі; її фіксують окремо.'));
+   return [esc((m.role_code==='collector'?collectorCode(t,m.person_id)+' · ':'')+label(m.person_id)),esc(g.name),esc(roles.find(x=>x[0]===m.role_code)?.[1]||m.role_code),esc(m.function_text),btn('Редагувати','member-'+m.id,write)+' '+btn('Завершити участь','member-remove-'+m.id,write)];
+  })))+body(hint('Функції команди','Одна особа може мати кілька функцій. Участь у підготовці не означає присутність у кожному сеансі; її фіксують окремо.'));
  }else if(section==='route'){
   const routes=t.research_route_stop.filter(x=>x.research_id===r.id).sort((a,b)=>a.position-b.position);
   const routeForm=x=>form(x?'Редагувати зупинку':'Додати місце до маршруту',select('place_id','Місце','<option value="">Нове місце</option>'+opts(visible('place'),x?.place_id))+input('place_name','Назва нового місця')+input('planned_at','Час відвідування (UTC)',x?.planned_at?.slice(0,16)||'','datetime-local')+input('notes','Мета зупинки й домовленості',x?.notes||'','textarea'),fd=>command('field.route',{...Object.fromEntries(fd),edit:!!x,position:x?.position}));

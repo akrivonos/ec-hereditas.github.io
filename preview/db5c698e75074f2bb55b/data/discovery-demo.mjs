@@ -1,7 +1,7 @@
-import {hash,validate,verifyHashes} from './model.mjs?v=20261002-feedback2';
-import {snapshot,addMembers} from './field.mjs?v=20261002-feedback2';
-import {rawHash} from './media.mjs?v=20261002-feedback2';
-import {demoWav,encode} from '../ui/session-media.mjs?v=20261002-feedback2';
+import {hash,validate,verifyHashes} from './model.mjs?v=20261002-feedback3';
+import {snapshot,addMembers} from './field.mjs?v=20261002-feedback3';
+import {rawHash} from './media.mjs?v=20261002-feedback3';
+import {demoWav,encode} from '../ui/session-media.mjs?v=20261002-feedback3';
 // Additive, isolated synthetic examples. Never renew rights on existing user materials.
 export async function discoveryDemo(source){
  if(source.demo.discovery_v1)return structuredClone(source);

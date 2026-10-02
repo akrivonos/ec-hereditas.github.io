@@ -44,7 +44,7 @@
       "field.contact.clear",
       "field.contact.session"
     ],
-    "view_model": "WF-02: scoped contact/search, group/place, working notes, referrals with cycle checks, meetings/reschedule/refusal/unreachable, retention review, explicit person/location confirmation and atomic session handoff",
+    "view_model": "WF-02: scoped contact/search, group/place, working notes, referrals with cycle checks, meetings/reschedule/refusal/unreachable, retention review, explicit person/location confirmation and atomic session handoff Cross-research contacts list with search and research filter; create wizard chooses research; focused contact detail.",
     "limitations": [
       "Local browser prototype; retention uses fixture clock; clear deletes communication details, working notes and incoming recommendations, not historical identity hints. No shared backend, notifications or automatic respondent discovery."
     ],

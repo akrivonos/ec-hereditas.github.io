@@ -64,7 +64,7 @@
       "media.handover.create",
       "field.save"
     ],
-    "view_model": "WF-03: separate lists and contextual forms for session context, participants/consents, events, real media import and short device capture, playback, versioned primary index and frozen session form; WF-04 handoff; feedback: stable session participant codes, explicit per-unit performers/collectors, list/full-text search and in-place edit, private oral consent upload/interval/live recording and proof links",
+    "view_model": "WF-03: separate lists and contextual forms for session context, participants/consents, events, real media import and short device capture, playback, versioned primary index and frozen session form; WF-04 handoff; feedback: stable session participant codes, explicit per-unit performers/collectors, list/full-text search and in-place edit, private oral consent upload/interval/live recording and proof links Separate informants, collectors, consents and other attendees; distinct per-record attribution; direct exact-revision media fragment links and consent annotations.",
     "limitations": [
       "Browser-local storage up to 2 MiB per file and 30 seconds per live recording; no shared backend, long continuous device recording, independent backups or network transfer. Full transcription/subtitle alignment remains WF-24."
     ],

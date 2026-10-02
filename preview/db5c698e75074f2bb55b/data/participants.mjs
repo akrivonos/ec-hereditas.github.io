@@ -1,4 +1,6 @@
 const prefix=role=>({performer:'Р',collector:'З',observer:'П'})[role]||'П';
+export const collectorCode=(t,id)=>t.person.find(p=>p.id===id)?.collector_code||'З-'+String(t.person.findIndex(p=>p.id===id)+1).padStart(4,'0');
+export const isCollector=(t,id)=>!!t.person.find(p=>p.id===id)?.collector_code||t.participation.some(p=>p.person_id===id&&p.role_code==='collector')||t.unit_participant.some(p=>p.person_id===id&&p.role_code==='collector');
 export function participantCodes(t,session){
  const rows=t.participation.filter(p=>p.session_id===session),used=new Set(rows.flatMap(p=>[p.participant_code,...(p.previous_codes||[])].filter(Boolean))),result=new Map();
  for(const p of rows){let code=p.participant_code;if(!code){const pre=prefix(p.role_code);let n=1;while(used.has(pre+'-'+n))n++;code=pre+'-'+n;used.add(code);}result.set(p.id,code);}return result;
@@ -10,4 +12,4 @@ export function setUnitParticipants(t,unit,ids,fail){
  const rows=ids.map(id=>t.participation.find(p=>p.id===id));if(rows.some(p=>!p||p.session_id!==unit.session_id||!['performer','collector'].includes(p.role_code)))fail('invalid','Оберіть учасників цього сеансу.');
  t.unit_participant=t.unit_participant.filter(p=>p.unit_id!==unit.id||!['performer','collector'].includes(p.role_code)||!p.session_participation_id&&!t.participation.some(x=>x.session_id===unit.session_id&&x.person_id===p.person_id&&x.role_code===p.role_code));rows.forEach((p,i)=>t.unit_participant.push({unit_id:unit.id,person_id:p.person_id,session_participation_id:p.id,role_code:p.role_code,position:i+1}));
 }
-export function unitPeople(t,unit,label){const codes=participantCodes(t,unit.session_id);return t.unit_participant.filter(p=>p.unit_id===unit.id).map(p=>[codes.get(p.session_participation_id),label(p.person_id)].filter(Boolean).join(' · ')).join(', ')||'Виконавців не зазначено';}
+export function unitPeople(t,unit,label,role=null){const codes=participantCodes(t,unit.session_id);return t.unit_participant.filter(p=>p.unit_id===unit.id&&(!role||p.role_code===role)).map(p=>[codes.get(p.session_participation_id||t.participation.find(x=>x.session_id===unit.session_id&&x.person_id===p.person_id&&x.role_code===p.role_code)?.id),label(p.person_id)].filter(Boolean).join(' · ')).join(', ')||'Не зазначено';}

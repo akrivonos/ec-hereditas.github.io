@@ -1,9 +1,9 @@
-import {consentMedia} from './consent-media.mjs?v=20261002-feedback2';
-import {accessPolicy,attributionNames} from './rights.mjs?v=20261002-feedback2';
+import {consentMedia} from './consent-media.mjs?v=20261002-feedback3';
+import {accessPolicy,attributionNames} from './rights.mjs?v=20261002-feedback3';
 // Public views use only an approved projection. Internal source rows never enter the public payload.
-import {activeAccount} from './model.mjs?v=20261002-feedback2';
-import {rawHash} from './media.mjs?v=20261002-feedback2';
-import {consentBasisValid} from './workbench.mjs?v=20261002-feedback2';
+import {activeAccount} from './model.mjs?v=20261002-feedback3';
+import {rawHash} from './media.mjs?v=20261002-feedback3';
+import {consentBasisValid} from './workbench.mjs?v=20261002-feedback3';
 export const publicTypes=['access_decision','publication_record','user_collection'];
 const publicFields=['title','summary','kind','category','place','period','attribution','terms','context_ids','resource_label'];
 export function publicAccessStamp(s){

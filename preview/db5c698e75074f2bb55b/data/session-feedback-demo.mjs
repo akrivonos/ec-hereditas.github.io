@@ -1,4 +1,4 @@
-import {createStore,can} from './model.mjs?v=20261002-feedback2';
+import {createStore,can} from './model.mjs?v=20261002-feedback3';
 export async function sessionFeedbackDemo(source){
  if(source.demo.session_feedback_v1)return structuredClone(source);const store=createStore(source),a=source.demo.ids.admin,archive=source.tables.archive.find(x=>can(source,a,'field.write',x.id)&&can(source,a,'consent.write',x.id)),rev=id=>store.get().tables.entity.find(e=>e.id===id).current_revision_id;
  if(archive){const research=await store.dispatch(a,{type:'field.research.create',archive_id:archive.id,title:'Навчальний сеанс: учасники, текст і згода',purpose:'Синтетичний приклад для перевірки роботи збирача'}),session=await store.dispatch(a,{type:'field.session.create',research_id:research.id,title:'Навчальний сеанс: учасники, текст і згода',context_notes:'Синтетичні матеріали. Позначення й згоди створені лише для демонстрації.'}),people=[];

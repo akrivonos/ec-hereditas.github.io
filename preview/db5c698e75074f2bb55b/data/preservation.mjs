@@ -1,5 +1,5 @@
-import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-feedback2';
-import {captureFileProblem} from './digitization.mjs?v=20261002-feedback2';
+import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-feedback3';
+import {captureFileProblem} from './digitization.mjs?v=20261002-feedback3';
 
 export function preservationStatus(s,fileId,now=Date.now()){
  const t=s.tables,plan=(t.preservation_plan||[]).filter(x=>x.file_id===fileId).at(-1),required=plan?.required_copies||2,days=plan?.check_interval_days||90;

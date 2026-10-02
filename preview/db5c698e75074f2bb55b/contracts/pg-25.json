@@ -37,7 +37,7 @@
       "workbench.consent.create",
       "workbench.consent.withdraw"
     ],
-    "view_model": "Private consent list, evidence wizard, scopes, partial/complete withdrawal and dependent-policy/publication invalidation; document/audio/video evidence with exact source revisions, interval playback, explicit confirmation and original-file privacy",
+    "view_model": "Private consent list, evidence wizard, scopes, partial/complete withdrawal and dependent-policy/publication invalidation; document/audio/video evidence with exact source revisions, interval playback, explicit confirmation and original-file privacy Consent proof: scan, handwritten phone signature with frozen terms, exact audio/video annotations, protected fragment links and download of scanned PDF.",
     "completion": "local-consent-evidence-and-withdrawal",
     "state_storage": "Normalized browser store v9; existing user state is preserved, new grants require explicit human review.",
     "permissions": [

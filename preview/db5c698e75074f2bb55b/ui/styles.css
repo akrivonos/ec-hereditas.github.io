@@ -54,4 +54,8 @@
 
 .corpus-card .panel-body{padding:16px}.corpus-card h3{margin-top:0}
 
+/* Equal tab geometry in both selected and unselected states. */
+.record-tabs{gap:8px;align-items:center}.record-tabs>a,.record-tabs[aria-label]>a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 14px;line-height:1.4;border:1px solid transparent;border-radius:7px;text-decoration:none;box-sizing:border-box}.record-tabs>a[aria-current=page]{background:var(--forest);color:white;border-color:var(--forest)}.record-tabs>a:focus-visible{outline:2px solid var(--forest);outline-offset:3px}.actions{flex-wrap:wrap}.signature-pad{display:block;width:100%;height:auto;touch-action:none;border:1px solid var(--line);border-radius:8px;background:white}.annotation-link{overflow-wrap:anywhere}.media-table td .button{margin:3px 2px}.session-people-summary{display:flex;flex-wrap:wrap;gap:12px 24px;margin:0 0 20px}.session-people-summary p{margin:0}
+
 .reader-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;align-items:start}.reader-grid section{min-width:0}.reader-text{width:100%;min-height:340px;line-height:1.8;resize:vertical;background:#fff;white-space:pre-wrap}.reader-file{max-width:100%;max-height:550px;overflow:auto}.reader-grid h3{overflow-wrap:anywhere}.reader-grid details{margin-top:14px}[data-reader-segment][aria-current=true]{background:var(--accent,#245143);color:white}@media(max-width:600px){.reader-grid{grid-template-columns:minmax(0,1fr)}.reader-text{min-height:240px}}
+[hidden]{display:none!important}

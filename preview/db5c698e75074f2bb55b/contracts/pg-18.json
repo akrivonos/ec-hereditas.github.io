@@ -29,9 +29,10 @@
   "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
   "implementation": {
     "commands": [
-      "field.authority.create"
+      "field.authority.create",
+      "field.collector.save"
     ],
-    "view_model": "Type tabs, search, create distinct person/place/institution records",
+    "view_model": "Type tabs, search, create distinct person/place/institution records Collector directory for R01: independent person records with stable registry codes, edit and research/session links; no account required.",
     "limitations": [],
     "completion": "core-interactive",
     "state_storage": "Shared normalized browser store; fixture version 9",
