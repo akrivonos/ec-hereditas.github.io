@@ -34,10 +34,10 @@
       "research.assertion.revise",
       "research.analysis.run",
       "research.analysis.review",
-      "research.proposal"
+      "research.feedback"
     ],
     "view_model": "Private versioned assertions, exact multiple supports/contradicts/context evidence, quotes and annotation anchors, concept relations, immutable history and separate human review of computational candidates",
-    "completion": "complete-for-local-WF-18",
+    "completion": "complete-for-local-WF-18-and-WF-19",
     "limitations": [
       "Local descriptive counts and manual comparison; no inferential statistics, external AI model or shared editing. Research interpretations are not accepted archival descriptions or vocabulary mappings."
     ],
