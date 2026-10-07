@@ -14,7 +14,15 @@
     "place_name",
     "place_region",
     "institution_context",
-    "evidence"
+    "evidence",
+    "place",
+    "place_relation",
+    "geographic_context",
+    "place_administrative_state",
+    "place_administrative_level",
+    "place_identifier",
+    "regionalization_concept",
+    "regionalization_region"
   ],
   "fields_and_relations": "Різні профілі особи/місця/установи, доказові факти, дві схеми районування.",
   "required_interaction": "Суперечливі біографічні факти видимі як свідчення; говір не стає властивістю person.",
@@ -32,17 +40,24 @@
   "source": "docs/lnu/Е_План_макетів_сторінок.md#8",
   "implementation": {
     "commands": [
-      "field.save"
+      "field.save",
+      "field.place.state",
+      "field.place.coordinates",
+      "field.place.status",
+      "field.place.identifier",
+      "field.place.region"
     ],
-    "view_model": "Type-specific editable basic profiles; source names; linked materials; history",
+    "view_model": "Type-specific editable basic profiles; source names; linked materials; history Settlement directory: full administrative labels, historical-name/code search, sourced current and chronological descriptions, coordinates, foreign/disappeared places and multiple regional concepts. Existing sessions retain recorded wording.",
     "limitations": [
-      "Conflicting evidence-backed person facts and dual regional classification are pending."
+      "Browser-local storage only; synthetic examples; no register import or automatic reconciliation with D11/D20. Regional assignments and external identifiers are append-only in this first interface.",
+      "Conflicting evidence-backed person facts remain pending."
     ],
     "completion": "partial",
     "state_storage": "Shared normalized browser store; fixture version 9",
     "permissions": [
       "domain.read",
-      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+      "field.write or catalog.write in archive scope; vocabulary.write for terms",
+      "Settlement mutations require catalog.write in the archive; expected revision prevents stale edits."
     ],
     "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
   }

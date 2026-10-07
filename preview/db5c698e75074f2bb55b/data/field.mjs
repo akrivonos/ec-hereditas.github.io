@@ -1,17 +1,18 @@
-import {fieldNoteCommand,validateFieldNotes} from './field-notes.mjs?v=20261007-notes1';
-import {programmeRefs,programmeCommand,validateProgrammes} from './programmes.mjs?v=20261007-notes1';
-import {collectorCode,nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261007-notes1';
-import {catalogRelations} from './catalog.mjs?v=20261007-notes1';
-import {intakeRelations} from './intake.mjs?v=20261007-notes1';
-import {sessionCommand,validateSession} from './session.mjs?v=20261007-notes1';
-import {contactCommand,validateContacts} from './contacts.mjs?v=20261007-notes1';
-import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261007-notes1';
+import {settlementCommand,settlementRelations,validateSettlements} from './settlements.mjs?v=20261007-places1';
+import {fieldNoteCommand,validateFieldNotes} from './field-notes.mjs?v=20261007-places1';
+import {programmeRefs,programmeCommand,validateProgrammes} from './programmes.mjs?v=20261007-places1';
+import {collectorCode,nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261007-places1';
+import {catalogRelations} from './catalog.mjs?v=20261007-places1';
+import {intakeRelations} from './intake.mjs?v=20261007-places1';
+import {sessionCommand,validateSession} from './session.mjs?v=20261007-places1';
+import {contactCommand,validateContacts} from './contacts.mjs?v=20261007-places1';
+import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261007-places1';
 // Domain operations for the fieldwork and archive prototype. No backend persistence.
-import {mediaRelations} from './media.mjs?v=20261007-notes1';
-import {researchRelations} from './research.mjs?v=20261007-notes1';
-import {publicRelations} from './public.mjs?v=20261007-notes1';
-import {museumRelations} from './museum.mjs?v=20261007-notes1';
-import {workbenchRelations} from './workbench.mjs?v=20261007-notes1';
+import {mediaRelations} from './media.mjs?v=20261007-places1';
+import {researchRelations} from './research.mjs?v=20261007-places1';
+import {publicRelations} from './public.mjs?v=20261007-places1';
+import {museumRelations} from './museum.mjs?v=20261007-places1';
+import {workbenchRelations} from './workbench.mjs?v=20261007-places1';
 export const fieldTypes=['field_research','work_group','participation','collecting_session','geographic_context','potential_respondent','document','information_unit','archive_node','place','institution','timed_layer'];
 const fields={
  field_research:['title','purpose','research_questions','date_from','date_to','preparation_notes','backup_plan'],
@@ -23,7 +24,7 @@ const fields={
 };
 export function relations(t,type,id){
  const keys={field_research:[['research_route_stop','research_id'],['research_preparation_item','research_id']],collecting_session:[['session_event','session_id']],document:[['document_context','document_id']],information_unit:[['unit_participant','unit_id']],person:[['person_name','person_id']],place:[['place_name','place_id']]};
- return {...Object.fromEntries((keys[type]||[]).map(([table,key])=>[table,structuredClone((t[table]||[]).filter(x=>x[key]===id))])),...(type==='timed_layer'?{timed_layer_entry:structuredClone((t.timed_layer_entry||[]).filter(x=>x.layer_revision_id===t.entity.find(e=>e.id===id)?.current_revision_id))}:{}),...catalogRelations(t,type,id),...intakeRelations(t,type,id),...mediaRelations(t,type,id),...researchRelations(t,type,id),...publicRelations(t,type,id),...museumRelations(t,type,id),...workbenchRelations(t,type,id)};
+ return {...Object.fromEntries((keys[type]||[]).map(([table,key])=>[table,structuredClone((t[table]||[]).filter(x=>x[key]===id))])),...(type==='timed_layer'?{timed_layer_entry:structuredClone((t.timed_layer_entry||[]).filter(x=>x.layer_revision_id===t.entity.find(e=>e.id===id)?.current_revision_id))}:{}),...settlementRelations(t,type,id),...catalogRelations(t,type,id),...intakeRelations(t,type,id),...mediaRelations(t,type,id),...researchRelations(t,type,id),...publicRelations(t,type,id),...museumRelations(t,type,id),...workbenchRelations(t,type,id)};
 }
 export function snapshot(t,type,row){const rel=relations(t,type,row.id);return {...structuredClone(row),...(Object.keys(rel).length?{_relations:rel}:{})};}
 export function addMembers(t,type,id,revision){
@@ -79,6 +80,7 @@ export function validateField(s,require,fk,canonical){
  for(const table of ['respondent_contact','respondent_referral'])for(const x of t[table])fk('potential_respondent',x.respondent_id);
  validateFieldNotes(s,require,fk);validateContacts(s,require,fk);validateSession(s,require,fk);validateProgrammes(s,require);
  for(const x of t.place){if(x.place_type_term_id)term(x.place_type_term_id,'D15');require(x.latitude===null||Number.isFinite(x.latitude)&&Math.abs(x.latitude)<=90,'Широта');require(x.longitude===null||Number.isFinite(x.longitude)&&Math.abs(x.longitude)<=180,'Довгота');}
+ validateSettlements(s,require,fk);
  for(const x of t.vocabulary_term){fk('vocabulary_scheme',x.scheme_id);if(x.parent_id)require(by('vocabulary_term',x.parent_id)?.scheme_id===x.scheme_id,'Батьківський термін іншої схеми');}
  for(const x of t.term_label)fk('vocabulary_term',x.term_id);
  for(const x of t.archive_node){term(x.node_type_term_id,'D14');require(t.archive_vocabulary_binding.some(b=>b.archive_id===x.archive_id&&b.scheme_id===by('vocabulary_term',x.node_type_term_id).scheme_id),'Тип вузла іншого архіву');if(x.parent_id)require(by('archive_node',x.parent_id)?.archive_id===x.archive_id,'Батьківський вузол іншого архіву');}
@@ -115,6 +117,7 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
  if(c.type==='field.save'){
   const e=reg(c.id),kind=e?.entity_type;
   if(kind==='document'&&by('document',c.id)?.kind==='field_note')fail('forbidden','Редагуйте нотатку через її картку.');
+  if(kind==='place'&&by('place',c.id)?.is_settlement)fail('invalid','Редагуйте населений пункт через його картку.');
   if(!fields[kind])fail('invalid','Цей запис не підтримує редагування.');
   const permission=kind==='potential_respondent'?'contacts.write':['person','place','institution','archive_node'].includes(kind)?'catalog.write':'field.write';
   const row=lookup(c.id,permission);fresh(c.id,c.expected_revision_id);
@@ -189,6 +192,7 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
   }
   await revise(r,'Оновлено склад сеансу');return result;
  }
+ if(c.type.startsWith('field.place.'))return settlementCommand(s,actor,c,{need,fail,fresh,newEntity,revise,arch});
  if(c.type==='field.note')return fieldNoteCommand(s,actor,c,{fail,fresh,newEntity,revise,arch});
  if(c.type==='field.notebook'){
   const r=lookup(c.research_id);let doc;

@@ -1,22 +1,23 @@
-import {prepareProgrammesDemo} from '../data/programmes-demo.mjs?v=20261007-notes1';
-import {prepareAnnotationDemo} from '../data/annotation-demo.mjs?v=20261007-notes1';
-import {prepareSessionFeedback} from '../data/session-feedback-demo.mjs?v=20261007-notes1';
-import {prepareDelivery} from '../data/delivery-demo.mjs?v=20261007-notes1';
-import {prepareAnalysis} from '../data/analysis-demo.mjs?v=20261007-notes1';
-import {prepareReader} from '../data/reader-demo.mjs?v=20261007-notes1';
-import {prepareDiscovery} from '../data/discovery-demo.mjs?v=20261007-notes1';
-import {prepareSingleUser} from '../data/single-user.mjs?v=20261007-notes1';
-import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261007-notes1";
-import {fieldPages} from './field.mjs?v=20261007-notes1';
-import {mediaPages} from './media.mjs?v=20261007-notes1';
-import {researchPages} from './research.mjs?v=20261007-notes1';
-import {publicPages} from './public.mjs?v=20261007-notes1';
-import {archivePages} from './archive.mjs?v=20261007-notes1';
-import {workbenchPages} from './workbench.mjs?v=20261007-notes1';
-import {museumPages} from './museum.mjs?v=20261007-notes1';
-import {museumStamp} from '../data/museum.mjs?v=20261007-notes1';
-import {publicAccessStamp} from '../data/public.mjs?v=20261007-notes1';
-import {bindHelp} from './help.mjs?v=20261007-notes1';
+import {prepareSettlements} from '../data/settlements-demo.mjs?v=20261007-places1';
+import {prepareProgrammesDemo} from '../data/programmes-demo.mjs?v=20261007-places1';
+import {prepareAnnotationDemo} from '../data/annotation-demo.mjs?v=20261007-places1';
+import {prepareSessionFeedback} from '../data/session-feedback-demo.mjs?v=20261007-places1';
+import {prepareDelivery} from '../data/delivery-demo.mjs?v=20261007-places1';
+import {prepareAnalysis} from '../data/analysis-demo.mjs?v=20261007-places1';
+import {prepareReader} from '../data/reader-demo.mjs?v=20261007-places1';
+import {prepareDiscovery} from '../data/discovery-demo.mjs?v=20261007-places1';
+import {prepareSingleUser} from '../data/single-user.mjs?v=20261007-places1';
+import {createStore,can,grants,scopes,tasks,taskView,grantKey,activeAccount,ModelError} from "../data/model.mjs?v=20261007-places1";
+import {fieldPages} from './field.mjs?v=20261007-places1';
+import {mediaPages} from './media.mjs?v=20261007-places1';
+import {researchPages} from './research.mjs?v=20261007-places1';
+import {publicPages} from './public.mjs?v=20261007-places1';
+import {archivePages} from './archive.mjs?v=20261007-places1';
+import {workbenchPages} from './workbench.mjs?v=20261007-places1';
+import {museumPages} from './museum.mjs?v=20261007-places1';
+import {museumStamp} from '../data/museum.mjs?v=20261007-places1';
+import {publicAccessStamp} from '../data/public.mjs?v=20261007-places1';
+import {bindHelp} from './help.mjs?v=20261007-places1';
 
 const root=new URL("../",import.meta.url);
 const pageId=document.body.dataset.page;
@@ -85,7 +86,7 @@ function roleNav(){
  if(role.id==='R05-M')return '<div class="role-switch"><label>Перегляд ролі<select id="role-view" aria-label="Перегляд ролі">'+manifest.roles.map(r=>'<option value="'+r.id+'"'+(r.id===role.id?' selected':'')+'>'+esc(r.title)+'</option>').join('')+'</select></label></div><div class="nav-group"><p class="nav-label">Музейна робота</p><nav aria-label="Робочі сторінки">'+[[56,'Експозиції'],[59,'Точки доступу']].map(([n,title])=>{const active=pageId==='PG-'+n||n===56&&['catalog','workflows','PG-01','PG-57','PG-58'].includes(pageId)||n===59&&pageId==='PG-60';return '<a href="'+pg(n,{role:'R05-M'})+'"'+(active?' aria-current="page"':'')+'>'+title+'</a>';}).join('')+'</nav></div>';
  if(role.id==='R05')return '<div class="role-switch"><label>Перегляд ролі<select id="role-view" aria-label="Перегляд ролі">'+manifest.roles.map(r=>'<option value="'+r.id+'"'+(r.id===role.id?' selected':'')+'>'+esc(r.title)+'</option>').join('')+'</select></label></div><div class="nav-group"><p class="nav-label">Відкривайте та зберігайте</p><nav aria-label="Робочі сторінки">'+[[48,'Головна'],[49,'Каталог'],[53,'Мої добірки'],[55,'Цитування та експорт']].map(([n,title])=>{const active=pageId==='PG-'+n||n===48&&['catalog','workflows','PG-01'].includes(pageId)||n===49&&['PG-50','PG-51','PG-52'].includes(pageId)||n===53&&pageId==='PG-54';return '<a href="'+pg(n,{role:'R05'})+'"'+(active?' aria-current="page"':'')+'>'+title+'</a>';}).join('')+'</nav></div>';
  if(role.id==='R04')return '<div class="role-switch"><label>Перегляд ролі<select id="role-view" aria-label="Перегляд ролі">'+manifest.roles.map(r=>'<option value="'+r.id+'"'+(r.id===role.id?' selected':'')+'>'+esc(r.title)+'</option>').join('')+'</select></label></div><div class="nav-group"><p class="nav-label">Дослідницька робота</p><nav aria-label="Робочі сторінки">'+[[41,'Пошук джерел'],[42,'Збережені пошуки'],[43,'Мої корпуси'],[46,'Мої твердження'],[47,'Мої пропозиції'],[55,'Цитування та експорт']].map(([n,title])=>{const active=pageId==='PG-'+n||n===41&&['catalog','workflows','PG-01'].includes(pageId)||n===43&&pageId==='PG-44'||pageId==='PG-45'&&n===(new URLSearchParams(location.search).has('corpus')?43:41);return '<a href="'+pg(n,{role:'R04'})+'"'+(active?' aria-current="page"':'')+'>'+title+'</a>';}).join('')+'</nav></div>';
- if(role.id==='R01')return '<div class="role-switch"><label>Перегляд ролі<select id="role-view" aria-label="Перегляд ролі">'+manifest.roles.map(r=>'<option value="'+r.id+'"'+(r.id===role.id?' selected':'')+'>'+esc(r.title)+'</option>').join('')+'</select></label></div><div class="nav-group"><p class="nav-label">Польова робота</p><nav aria-label="Робочі сторінки">'+[[4,'Дослідження'],[7,'Сеанси'],[6,'Контакти та зустрічі'],[18,'Збирачі'],[9,'Польові нотатки'],[10,'Передання'],[12,'Тексти'],[15,'Глосарій'],[25,'Згоди']].map(([n,title])=>{const active=pageId==='PG-'+String(n).padStart(2,'0')||n===4&&['catalog','workflows','PG-01','PG-05'].includes(pageId)||n===7&&['PG-08','PG-17','PG-35'].includes(pageId)||n===10&&pageId==='PG-11'||n===12&&['PG-13','PG-14'].includes(pageId);return '<a href="'+pg(n,{role:'R01',...(n===10?{tab:'outgoing'}:n===18?{directory:'collectors'}:{})})+'"'+(active?' aria-current="page"':'')+'>'+title+'</a>';}).join('')+'</nav></div>';
+ if(role.id==='R01')return '<div class="role-switch"><label>Перегляд ролі<select id="role-view" aria-label="Перегляд ролі">'+manifest.roles.map(r=>'<option value="'+r.id+'"'+(r.id===role.id?' selected':'')+'>'+esc(r.title)+'</option>').join('')+'</select></label></div><div class="nav-group"><p class="nav-label">Польова робота</p><nav aria-label="Робочі сторінки">'+[[4,'Дослідження'],[7,'Сеанси'],[6,'Контакти та зустрічі'],[18,'Збирачі'],[18,'Населені пункти'],[9,'Польові нотатки'],[10,'Передання'],[12,'Тексти'],[15,'Глосарій'],[25,'Згоди']].map(([n,title])=>{const active=n===18?(['PG-18','PG-19'].includes(pageId)&&(title==='Населені пункти')===(new URLSearchParams(location.search).get('kind')==='place')):pageId==='PG-'+String(n).padStart(2,'0')||n===4&&['catalog','workflows','PG-01','PG-05'].includes(pageId)||n===7&&['PG-08','PG-17','PG-35'].includes(pageId)||n===10&&pageId==='PG-11'||n===12&&['PG-13','PG-14'].includes(pageId);return '<a href="'+pg(n,{role:'R01',...(n===10?{tab:'outgoing'}:n===18?(title==='Населені пункти'?{kind:'place'}:{directory:'collectors'}):{})})+'"'+(active?' aria-current="page"':'')+'>'+title+'</a>';}).join('')+'</nav></div>';
  if(role.id==='R02')return '<div class="role-switch"><label>Перегляд ролі<select id="role-view" aria-label="Перегляд ролі">'+manifest.roles.map(r=>'<option value="'+r.id+'"'+(r.id===role.id?' selected':'')+'>'+esc(r.title)+'</option>').join('')+'</select></label></div><div class="nav-group"><p class="nav-label">Архівна робота</p><nav aria-label="Робочі сторінки">'+[[10,'Надходження'],[17,'Матеріали'],[16,'Структура архіву'],[21,'Спадкові джерела'],[18,'Особи, місця, установи'],[20,'Довідники'],[23,'Перевірка'],[26,'Доступ'],[27,'Публікації'],[56,'Запити музею'],[12,'Тексти'],[25,'Згоди'],[29,'Депонування']].map(([n,title])=>{const active=pageId==='PG-'+String(n).padStart(2,'0')||n===10&&['catalog','workflows','PG-01','PG-11','PG-39'].includes(pageId)||n===12&&['PG-13','PG-14','PG-15'].includes(pageId)||n===29&&pageId==='PG-30'||n===23&&pageId==='PG-24'||n===27&&pageId==='PG-28'||n===21&&pageId==='PG-22'||n===18&&pageId==='PG-19';return '<a href="'+pg(n,{role:'R02'})+'"'+(active?' aria-current="page"':'')+'>'+title+'</a>';}).join('')+'</nav></div>';
  if(role.id==='R03')return '<div class="role-switch"><label>Перегляд ролі<select id="role-view" aria-label="Перегляд ролі">'+manifest.roles.map(r=>'<option value="'+r.id+'"'+(r.id===role.id?' selected':'')+'>'+esc(r.title)+'</option>').join('')+'</select></label></div><div class="nav-group"><p class="nav-label">Оцифрування та збереження</p><nav aria-label="Робочі сторінки">'+[[34,'Оцифрування'],[31,'Фізичні носії'],[37,'Цифрові ресурси'],[39,'Збереження копій'],[33,'Місця зберігання'],[40,'Машинне опрацювання'],[12,'Тексти']].map(([n,title])=>{const active=pageId==='PG-'+n||n===34&&['catalog','workflows','PG-35','PG-36'].includes(pageId)||n===31&&pageId==='PG-32'||n===37&&pageId==='PG-38'||n===12&&['PG-13','PG-14','PG-15'].includes(pageId);return '<a href="'+pg(n,{role:'R03'})+'"'+(active?' aria-current="page"':'')+'>'+title+'</a>';}).join('')+'</nav></div>';
  const entry=role.groups[0].pages.filter(id=>!["PG-03","PG-11","PG-14"].includes(id)).slice(0,5);
@@ -394,10 +395,10 @@ function render(){
  ...researchPages({s,actor,scope:currentScope(),esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch:c=>store.dispatch(actor,c),denied,date})};
  views[pageId]?.();
 }
-async function prepareDemo(initial,saved){return prepareProgrammesDemo(await prepareAnnotationDemo(await prepareSessionFeedback(await prepareDelivery(await prepareAnalysis(await prepareReader(await prepareDiscovery(await prepareSingleUser(initial,saved))))))));}
+async function prepareDemo(initial,saved){return prepareSettlements(await prepareProgrammesDemo(await prepareAnnotationDemo(await prepareSessionFeedback(await prepareDelivery(await prepareAnalysis(await prepareReader(await prepareDiscovery(await prepareSingleUser(initial,saved)))))))));}
 async function start(){
  [manifest,rawFixture]=await Promise.all([getJSON("manifest.json"),getJSON("fixtures/base.json")]);
- const existing=localStorage.getItem(storageKey),saved=existing?JSON.parse(existing):null,ready=saved?.state.version===rawFixture.version&&saved.state.demo.single_user===1&&saved.state.demo.session_feedback_v1===1&&saved.state.demo.annotation_workspace_v1===1&&saved.state.demo.programmes_v1===1,prepared=ready?{base:saved.state,saved,changed:false}:await prepareDemo(rawFixture,saved);
+ const existing=localStorage.getItem(storageKey),saved=existing?JSON.parse(existing):null,ready=saved?.state.version===rawFixture.version&&saved.state.demo.single_user===1&&saved.state.demo.session_feedback_v1===1&&saved.state.demo.annotation_workspace_v1===1&&saved.state.demo.programmes_v1===1&&saved.state.demo.settlements_v1===1,prepared=ready?{base:saved.state,saved,changed:false}:await prepareDemo(rawFixture,saved);
  base=prepared.base;
  if(prepared.changed){
   if(existing&&!localStorage.getItem(storageKey+'.before-single-user'))localStorage.setItem(storageKey+'.before-single-user',existing);

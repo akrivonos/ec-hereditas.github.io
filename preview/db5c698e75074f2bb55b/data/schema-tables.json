@@ -87,10 +87,14 @@
   "person_name",
   "physical_object",
   "place",
+  "place_administrative_level",
+  "place_administrative_state",
+  "place_identifier",
   "place_name",
   "place_region",
   "place_relation",
   "potential_respondent",
+  "preservation_plan",
   "preserved_dialect_form",
   "process_input",
   "process_run",
@@ -101,6 +105,8 @@
   "qc_record",
   "region_scheme_detail",
   "region_term_detail",
+  "regionalization_concept",
+  "regionalization_region",
   "relation_type_endpoint",
   "relation_type_rule",
   "representation",
@@ -150,6 +156,5 @@
   "work_item_event",
   "work_item_target",
   "workflow_object",
-  "workflow_run",
-  "preservation_plan"
+  "workflow_run"
 ]

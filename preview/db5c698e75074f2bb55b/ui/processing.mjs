@@ -1,6 +1,6 @@
-import {processingOperations,processingInputs,processingSource,processingDecision,processingProblem,processingJob} from '../data/processing.mjs?v=20261007-notes1';
-import {mediaPreview,download} from './session-media.mjs?v=20261007-notes1';
-import {wizard} from './wizard.mjs?v=20261007-notes1';
+import {processingOperations,processingInputs,processingSource,processingDecision,processingProblem,processingJob} from '../data/processing.mjs?v=20261007-places1';
+import {mediaPreview,download} from './session-media.mjs?v=20261007-places1';
+import {wizard} from './wizard.mjs?v=20261007-places1';
 export function processingPage(ctx){
  const {st,t,p,actor,scope,esc,pg,dialog,dispatch,done,denied,by,reg,rev,allowed,some,btn,act,link,go,body,input,area,options,select,checks,details,table,show,heading,panel}=ctx;
  const sourceLabel=id=>processingSource(st,id),labelState={running:'Очікує результату',succeeded:'Результат отримано',failed:'Не виконано'},candidateState={pending:'Очікує перевірки',deferred:'Відкладено',accepted:'Прийнято',corrected:'Виправлено',rejected:'Відхилено'},kind={text:'Текст',segmentation:'Часові межі та мовці',metadata:'Метадані'},metadataKind={language:'Мова',person:'Особа',place:'Місце',date:'Дата',topic:'Тема'};

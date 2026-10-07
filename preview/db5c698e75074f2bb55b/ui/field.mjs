@@ -1,26 +1,28 @@
-import {isFieldNote,noteResearch,noteAuthor,noteCreated,noteDate,researchTeamAccess} from '../data/field-notes.mjs?v=20261007-notes1';
-import {programmeEditor} from './programmes.mjs?v=20261007-notes1';
-import {programmeVersions} from '../data/programmes.mjs?v=20261007-notes1';
-import {consentMedia} from '../data/consent-media.mjs?v=20261007-notes1';
-import {collectorCode,isCollector,participantCodes,unitPeople} from '../data/participants.mjs?v=20261007-notes1';
-import {catalogPage} from './catalog.mjs?v=20261007-notes1';
-import {mediaPreview} from './session-media.mjs?v=20261007-notes1';
-import {sessionPage} from './session.mjs?v=20261007-notes1';
-import {contactsPage} from './contacts.mjs?v=20261007-notes1';
-import {preparationPage} from './preparation.mjs?v=20261007-notes1';
-import {preparationStatus} from '../data/preparation.mjs?v=20261007-notes1';
-import {can,hash} from '../data/model.mjs?v=20261007-notes1';
-import {hint} from './help.mjs?v=20261007-notes1';
-import {wizard} from './wizard.mjs?v=20261007-notes1';
-import {mediaPages} from './media.mjs?v=20261007-notes1';
+import {settlementPage} from './settlements.mjs?v=20261007-places1';
+import {placeLabel} from '../data/settlements.mjs?v=20261007-places1';
+import {isFieldNote,noteResearch,noteAuthor,noteCreated,noteDate,researchTeamAccess} from '../data/field-notes.mjs?v=20261007-places1';
+import {programmeEditor} from './programmes.mjs?v=20261007-places1';
+import {programmeVersions} from '../data/programmes.mjs?v=20261007-places1';
+import {consentMedia} from '../data/consent-media.mjs?v=20261007-places1';
+import {collectorCode,isCollector,participantCodes,unitPeople} from '../data/participants.mjs?v=20261007-places1';
+import {catalogPage} from './catalog.mjs?v=20261007-places1';
+import {mediaPreview} from './session-media.mjs?v=20261007-places1';
+import {sessionPage} from './session.mjs?v=20261007-places1';
+import {contactsPage} from './contacts.mjs?v=20261007-places1';
+import {preparationPage} from './preparation.mjs?v=20261007-places1';
+import {preparationStatus} from '../data/preparation.mjs?v=20261007-places1';
+import {can,hash} from '../data/model.mjs?v=20261007-places1';
+import {hint} from './help.mjs?v=20261007-places1';
+import {wizard} from './wizard.mjs?v=20261007-places1';
+import {mediaPages} from './media.mjs?v=20261007-places1';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;
  const st=s(),t=st.tables,by=(table,id)=>t[table]?.find(x=>x.id===id),entity=id=>by('entity',id),rev=id=>entity(id)?.current_revision_id;
- const label=id=>{const e=entity(id),r=e&&by(e.entity_type,id);if(e?.entity_type==='timed_layer')return (r.name||'Часові позначки')+': '+label(by('representation',r.representation_id).asset_id);return r?.title||r?.preferred_name||r?.name||r?.display_hint||r?.original_filename||r?.external_key||'Без назви';};
+ const label=id=>{const e=entity(id),r=e&&by(e.entity_type,id);if(e?.entity_type==='place')return placeLabel(t,r);if(e?.entity_type==='timed_layer')return (r.name||'Часові позначки')+': '+label(by('representation',r.representation_id).asset_id);return r?.title||r?.preferred_name||r?.name||r?.display_hint||r?.original_filename||r?.external_key||'Без назви';};
  const params=new URLSearchParams(location.search),chosen=(rows)=>params.has('id')?rows.find(x=>x.id===params.get('id')):rows[0];
  const allowed=(id,p='domain.read')=>can(st,actor,p,entity(id)?.archive_id)&&(!consentMedia(st,id)||can(st,actor,'consent.read',entity(id)?.archive_id));
- const visible=table=>t[table].filter(x=>allowed(x.id)&&(!scope||entity(x.id).archive_id===scope));
+ const visible=table=>t[table].filter(x=>!x.administrative_node&&allowed(x.id)&&(!scope||entity(x.id).archive_id===scope));
  const archive=scope||st.tables.archive.find(x=>can(st,actor,'domain.read',x.id))?.id;
  const writable=(id,p='field.write')=>allowed(id,p);
  const activeArchive=p=>can(st,actor,p,archive);
@@ -200,7 +202,9 @@ export function fieldPages(ctx){
   if(!params.has('id')&&!params.has('material')){if(curatorRole)materials();else sessions();return;}
   catalogPage({st,t,actor,scope,params,by,entity,rev,label,allowed,visible,writable,action,show,heading,panel,body,table,details,btn,button,pg,esc,input,select,opts,choices,dialog,form,dispatch,render,denied});
  }
+ const settlementView=()=>settlementPage({st,t,params,by,entity,rev,label,allowed,visible,writable,archive,action,show,heading,panel,body,table,details,btn,button,pg,esc,input,select,choices,dialog,form,dispatch,render,denied,revisionHistory});
  function authorities(){
+  if(params.get('kind')==='place'){settlementView();return;}
   if(params.get('directory')==='collectors'){collectors();return;}
   const kind=params.get('kind')||'person',types=[['person','Особи'],['place','Місця'],['institution','Установи']];
   if(!types.some(x=>x[0]===kind)){denied();return;}
@@ -211,6 +215,7 @@ export function fieldPages(ctx){
  function authorityDetail(){
   if(!params.has('id')){authorities();return;}
   const row=chosen(['person','place','institution'].flatMap(visible));if(!row){denied();return;}
+  if(entity(row.id).entity_type==='place'){settlementView();return;}
   const kind=entity(row.id).entity_type,defs={person:[['preferred_name','Основне ім’я'],['name_note','Примітка до імені','textarea']],place:[['name','Назва'],['latitude','Широта','number'],['longitude','Довгота','number'],['coordinate_note','Примітка до координат','textarea']],institution:[['name','Назва'],['short_name','Скорочення'],['institution_type','Тип установи'],['website_uri','Вебсайт']]};
   action('edit',()=>edit(row,defs[kind]));
   const related=kind==='person'?t.participation.filter(x=>x.person_id===row.id&&x.session_id).map(x=>x.session_id):kind==='place'?t.geographic_context.filter(x=>x.place_id===row.id).map(x=>x.subject_entity_id):t.institution_context.filter(x=>x.institution_id===row.id).map(x=>x.subject_entity_id);

@@ -1,4 +1,4 @@
-import {programmeVersions,programmePdf} from './programmes.mjs?v=20261007-notes1';
+import {programmeVersions,programmePdf} from './programmes.mjs?v=20261007-places1';
 // WF-01 uses the canonical preparation checklist, documents and contextual participation.
 export const preparationKinds=[['equipment','Обладнання'],['carrier','Носії'],['consent_template','Бланки згод'],['recording_method','Способи фіксації'],['ethics','Організація та етика'],['reference','Джерела й попередні матеріали'],['other','Інше']];
 export const preparationStates=[['planned','Заплановано'],['ready','Готово'],['blocked','Є перешкода'],['not_applicable','Не потрібно']];

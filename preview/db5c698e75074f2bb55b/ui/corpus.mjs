@@ -1,8 +1,8 @@
-import {corpusTarget,corpusCandidates,corpusKey} from '../data/corpus.mjs?v=20261007-notes1';
-import {corpusItems} from '../data/research.mjs?v=20261007-notes1';
-import {wizard} from './wizard.mjs?v=20261007-notes1';
-import {hint} from './help.mjs?v=20261007-notes1';
-import {mediaPreview} from './session-media.mjs?v=20261007-notes1';
+import {corpusTarget,corpusCandidates,corpusKey} from '../data/corpus.mjs?v=20261007-places1';
+import {corpusItems} from '../data/research.mjs?v=20261007-places1';
+import {wizard} from './wizard.mjs?v=20261007-places1';
+import {hint} from './help.mjs?v=20261007-places1';
+import {mediaPreview} from './session-media.mjs?v=20261007-places1';
 export function corpusWizard(c,selected=[],old=null){
  const {st,actor,p,esc,dialog,input,details,sources,rev,dispatch,go,queryContext}=c;
  const existing=old?corpusItems(st,rev(old.id)):[],pool=new Map();

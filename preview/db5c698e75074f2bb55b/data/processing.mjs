@@ -1,8 +1,8 @@
-import {consentMedia} from './consent-media.mjs?v=20261007-notes1';
-import {can,hash} from './model.mjs?v=20261007-notes1';
-import {rawHash} from './media.mjs?v=20261007-notes1';
-import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261007-notes1';
-import {useDecision} from './workbench.mjs?v=20261007-notes1';
+import {consentMedia} from './consent-media.mjs?v=20261007-places1';
+import {can,hash} from './model.mjs?v=20261007-places1';
+import {rawHash} from './media.mjs?v=20261007-places1';
+import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261007-places1';
+import {useDecision} from './workbench.mjs?v=20261007-places1';
 const by=(s,k,id)=>s.tables[k]?.find(x=>x.id===id),reg=(s,id)=>by(s,'entity',id),rev=(s,id)=>reg(s,id)?.current_revision_id;
 export const processingOperations={ocr:'Друкований текст',htr:'Рукопис',stt:'Мовлення',analyze:'Мова й метадані тексту'};
 export function processingDecision(s,id){if(consentMedia(s,id))return null;

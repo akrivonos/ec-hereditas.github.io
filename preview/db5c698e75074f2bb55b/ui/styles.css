@@ -67,3 +67,8 @@
 .programme-actions{display:flex;flex-wrap:wrap;gap:6px}.programme-actions .button{max-width:100%}@media(max-width:600px){.programme-list .panel-head{flex-direction:column;align-items:stretch}.programme-list .panel-head .button{width:100%}}
 
 .note-help{display:inline-block;position:relative;width:26px;min-height:26px;flex:0 0 26px;vertical-align:middle;margin-left:10px}
+
+.place-level{display:grid;grid-template-columns:1fr 2fr auto;gap:12px;align-items:end;margin:14px 0;padding:14px;border:1px solid var(--line);border-radius:8px}.place-history-item+ .place-history-item{border-top:1px solid var(--line)}@media(max-width:640px){.place-level{grid-template-columns:1fr}.place-level button{justify-self:start}}
+
+.settlement-details .detail-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 32px}.settlement-details .detail-list>div{margin:0}.settlement-details dd{overflow-wrap:anywhere}@media(max-width:640px){.settlement-details .detail-list{grid-template-columns:1fr}}
+@media(max-width:600px){.settlement-card .panel-head{flex-direction:column;align-items:stretch;gap:14px}.settlement-card .panel-head .actions{justify-content:flex-start;flex-wrap:wrap}}

@@ -1,7 +1,7 @@
-import {corpusTarget,corpusKey,corpusAnchor} from './corpus.mjs?v=20261007-notes1';
-import {discoverySource,termLabel} from './discovery.mjs?v=20261007-notes1';
-import {accessPolicy} from './rights.mjs?v=20261007-notes1';
-import {can} from './model.mjs?v=20261007-notes1';
+import {corpusTarget,corpusKey,corpusAnchor} from './corpus.mjs?v=20261007-places1';
+import {discoverySource,termLabel} from './discovery.mjs?v=20261007-places1';
+import {accessPolicy} from './rights.mjs?v=20261007-places1';
+import {can} from './model.mjs?v=20261007-places1';
 export const noteTypes={note:'Нотатка',doubt:'Сумнів',alternative:'Альтернативне тлумачення'};
 export function readerResources(state,actor,source){
  const s={...state,clock:new Date().toISOString()},t=s.tables,ds=accessPolicy(s,source.id,source.revision_id,'research','view');if(!ds)return [];

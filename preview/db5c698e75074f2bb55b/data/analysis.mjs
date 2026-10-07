@@ -1,7 +1,7 @@
-import {owns,sourceView,corpusItems,researchVisible} from './research.mjs?v=20261007-notes1';
-import {corpusTarget,corpusAnchor} from './corpus.mjs?v=20261007-notes1';
-import {discoverySource,termLabel} from './discovery.mjs?v=20261007-notes1';
-import {annotationView} from './reader.mjs?v=20261007-notes1';
+import {owns,sourceView,corpusItems,researchVisible} from './research.mjs?v=20261007-places1';
+import {corpusTarget,corpusAnchor} from './corpus.mjs?v=20261007-places1';
+import {discoverySource,termLabel} from './discovery.mjs?v=20261007-places1';
+import {annotationView} from './reader.mjs?v=20261007-places1';
 export const evidenceRoles={supports:'Підтверджує',contradicts:'Суперечить',review:'Контекст'};
 export function assertionEvidence(s,row,rid=null){
  const current=rid||s.tables.entity.find(x=>x.id===row.id)?.current_revision_id;

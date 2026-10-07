@@ -11,7 +11,16 @@
     "person",
     "place",
     "institution",
-    "identifier"
+    "identifier",
+    "place_name",
+    "place_relation",
+    "place_region",
+    "geographic_context",
+    "place_administrative_state",
+    "place_administrative_level",
+    "place_identifier",
+    "regionalization_concept",
+    "regionalization_region"
   ],
   "fields_and_relations": "Пошук за назвою/варіантами/ідентифікаторами; три типи сутностей.",
   "required_interaction": "Порожній результат/можливий дублікат; створення пропозиції замість автоматичного merge.",
@@ -30,15 +39,19 @@
   "implementation": {
     "commands": [
       "field.authority.create",
-      "field.collector.save"
+      "field.collector.save",
+      "field.place.create"
     ],
-    "view_model": "Type tabs, search, create distinct person/place/institution records Collector directory for R01: independent person records with stable registry codes, edit and research/session links; no account required.",
-    "limitations": [],
+    "view_model": "Type tabs, search, create distinct person/place/institution records Collector directory for R01: independent person records with stable registry codes, edit and research/session links; no account required. Settlement directory: full administrative labels, historical-name/code search, sourced current and chronological descriptions, coordinates, foreign/disappeared places and multiple regional concepts. Existing sessions retain recorded wording.",
+    "limitations": [
+      "Browser-local storage only; synthetic examples; no register import or automatic reconciliation with D11/D20. Regional assignments and external identifiers are append-only in this first interface."
+    ],
     "completion": "core-interactive",
     "state_storage": "Shared normalized browser store; fixture version 9",
     "permissions": [
       "domain.read",
-      "field.write or catalog.write in archive scope; vocabulary.write for terms"
+      "field.write or catalog.write in archive scope; vocabulary.write for terms",
+      "Settlement mutations require catalog.write in the archive; expected revision prevents stale edits."
     ],
     "atomicity": "Authorize, expected revision, clone, validate, hash, commit. No partial mutation on failure."
   }

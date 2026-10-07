@@ -1906,23 +1906,23 @@
     },
     {
       "path": "docs/lnu/Б_Об'єкти_та_документи.md",
-      "sha256": "a714ba5d125bd4020cb582cc38305ffee3f81b185c9c0a0103054c27254476e5"
+      "sha256": "a36f7cbfbc852375447fe4b8ea192a9ed0258d7b27d97218cc4b7c4abab60daa"
     },
     {
       "path": "docs/lnu/В_Довідники.md",
-      "sha256": "0de44db174b5a98c335fcd43dbd04ea64604690ffe0b45524bb7561c293474b1"
+      "sha256": "380f43c4fd71ad3cb1787a371e2b56370cfda2fc47c17e6f85a3581f85431f26"
     },
     {
       "path": "docs/lnu/Г_Структура_бази_даних.md",
-      "sha256": "f12e6ae2bbacb1a27dbdfc8ad462b4d844f51c6b4c965f5002956629ef1452cd"
+      "sha256": "06398551f9ba38dd082d8e9712e02cb0eb6ecb64a565070e459edcec0890ba41"
     },
     {
       "path": "docs/lnu/Д_Сторінки_ролі_та_процеси.md",
-      "sha256": "09479f687c288a8463099cf3cd0515b136da4c509bda517fb02bb306a97d668a"
+      "sha256": "609b3431936b05b38d523f123ad9a5adb8a68a9d2d1e5f6a120665edaede4b16"
     },
     {
       "path": "docs/lnu/Е_План_макетів_сторінок.md",
-      "sha256": "24a8f09d153f890f1a11fce36613fc0617ff9894536892a00607b7e2a4917dae"
+      "sha256": "a3147e625122001a8742bc90d7e91b5072c93eacb3cd89ca6cda6595c298a13a"
     }
   ]
 }
