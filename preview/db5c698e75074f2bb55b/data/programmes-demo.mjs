@@ -1,5 +1,5 @@
-import {createStore,can} from './model.mjs?v=20261002-programmes2';
-import {programmeRefs} from './programmes.mjs?v=20261002-programmes2';
+import {createStore,can} from './model.mjs?v=20261007-notes1';
+import {programmeRefs} from './programmes.mjs?v=20261007-notes1';
 export async function programmesDemo(source){
  if(source.demo.programmes_v1)return structuredClone(source);const store=createStore(source),actor=source.demo.ids.admin,ids=source.demo.session_feedback_ids,r=source.tables.field_research.find(r=>r.id===ids?.research),archive=source.tables.entity.find(e=>e.id===r?.id)?.archive_id,rev=id=>store.get().tables.entity.find(e=>e.id===id).current_revision_id;
  if(r&&!programmeRefs(r).length&&can(source,actor,'field.write',archive)){

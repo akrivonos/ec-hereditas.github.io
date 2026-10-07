@@ -1,17 +1,18 @@
-import {programmeEditor} from './programmes.mjs?v=20261002-programmes2';
-import {programmeVersions} from '../data/programmes.mjs?v=20261002-programmes2';
-import {consentMedia} from '../data/consent-media.mjs?v=20261002-programmes2';
-import {collectorCode,isCollector,participantCodes,unitPeople} from '../data/participants.mjs?v=20261002-programmes2';
-import {catalogPage} from './catalog.mjs?v=20261002-programmes2';
-import {mediaPreview} from './session-media.mjs?v=20261002-programmes2';
-import {sessionPage} from './session.mjs?v=20261002-programmes2';
-import {contactsPage} from './contacts.mjs?v=20261002-programmes2';
-import {preparationPage} from './preparation.mjs?v=20261002-programmes2';
-import {preparationStatus} from '../data/preparation.mjs?v=20261002-programmes2';
-import {can,hash} from '../data/model.mjs?v=20261002-programmes2';
-import {hint} from './help.mjs?v=20261002-programmes2';
-import {wizard} from './wizard.mjs?v=20261002-programmes2';
-import {mediaPages} from './media.mjs?v=20261002-programmes2';
+import {isFieldNote,noteResearch,noteAuthor,noteCreated,noteDate,researchTeamAccess} from '../data/field-notes.mjs?v=20261007-notes1';
+import {programmeEditor} from './programmes.mjs?v=20261007-notes1';
+import {programmeVersions} from '../data/programmes.mjs?v=20261007-notes1';
+import {consentMedia} from '../data/consent-media.mjs?v=20261007-notes1';
+import {collectorCode,isCollector,participantCodes,unitPeople} from '../data/participants.mjs?v=20261007-notes1';
+import {catalogPage} from './catalog.mjs?v=20261007-notes1';
+import {mediaPreview} from './session-media.mjs?v=20261007-notes1';
+import {sessionPage} from './session.mjs?v=20261007-notes1';
+import {contactsPage} from './contacts.mjs?v=20261007-notes1';
+import {preparationPage} from './preparation.mjs?v=20261007-notes1';
+import {preparationStatus} from '../data/preparation.mjs?v=20261007-notes1';
+import {can,hash} from '../data/model.mjs?v=20261007-notes1';
+import {hint} from './help.mjs?v=20261007-notes1';
+import {wizard} from './wizard.mjs?v=20261007-notes1';
+import {mediaPages} from './media.mjs?v=20261007-notes1';
 
 export function fieldPages(ctx){
  const {s,actor,scope,esc,pg,button,panel,heading,shell,dialog,render,flash,dispatch,denied,date}=ctx;
@@ -40,7 +41,7 @@ export function fieldPages(ctx){
  const save=async c=>{const result=await dispatch(c);flash('Зміни збережено.');render();return result;};
  const form=(title,html,makeCommand,after)=>dialog(title,html,async fd=>{const result=await dispatch(await makeCommand(fd));flash('Зміни збережено.');if(after)after(result);else render();});
  const revisionHistory=id=>`<details class="record-history"><summary>Історія змін</summary>${table(['Версія','Дата','Зміна'],t.entity_revision.filter(x=>x.entity_id===id).slice().reverse().map(r=>[String(r.revision_no),esc(date(r.recorded_at)),esc(r.change_reason)]))}</details>`;
- const tabs=r=>`<nav class="record-tabs" aria-label="Дослідження">${[[5,'Підготовка',''],[5,'Програми та питальники','programmes'],[6,'Контакти та зустрічі',''],[7,'Сеанси',''],[9,'Польовий зошит','']].map(([n,title,section])=>`<a href="${pg(n,{[n===5?'id':'research']:r.id,section,role:params.get('role')||'R01'})}" ${document.body.dataset.page==='PG-'+String(n).padStart(2,'0')&&(n!==5||((params.get('section')==='programmes')===(section==='programmes')))?'aria-current="page"':''}>${title}</a>`).join('')}</nav>`;
+ const tabs=r=>`<nav class="record-tabs" aria-label="Дослідження">${[[5,'Підготовка',''],[5,'Програми та питальники','programmes'],[6,'Контакти та зустрічі',''],[7,'Сеанси',''],[9,'Польові нотатки','']].map(([n,title,section])=>`<a href="${pg(n,{[n===5?'id':'research']:r.id,section,role:params.get('role')||'R01'})}" ${document.body.dataset.page==='PG-'+String(n).padStart(2,'0')&&(n!==5||((params.get('section')==='programmes')===(section==='programmes')))?'aria-current="page"':''}>${title}</a>`).join('')}</nav>`;
  const research=()=>visible('field_research').find(x=>x.id===params.get('research'));
  const kinds=[['recorded_work','Твір'],['fei','Фольклорно-етнографічна інформація']];
  const participantRole=code=>({performer:'Респондент',collector:'Збирач',observer:'Присутній'})[code]||code;
@@ -76,21 +77,28 @@ export function fieldPages(ctx){
   const rows=visible('field_research').filter(r=>!permission||can(st,actor,permission,r.id));
   show(heading('Польова робота',title,'Оберіть дослідження зі списку. Для приватних контактів потрібен окремо наданий доступ.')+panel('Оберіть дослідження',table(['Дослідження',''],rows.map(r=>[esc(r.title),button('Відкрити',pg(number,{research:r.id,role:'R01'}),true)]))));
  }
- function notebookEditor(r,doc=null){
-  const sessions=visible('collecting_session').filter(x=>x.research_id===r?.id),linked=t.document_context.filter(x=>x.document_id===doc?.id).map(x=>x.target_entity_id);
-  wizard({dialog,esc},{title:doc?'Редагувати зошит':'Новий польовий зошит',submit:'Зберегти зошит',steps:[
-   {title:'Дослідження та сеанси',body:(r?body(details([['Дослідження',r.title]])):select('research_id','Дослідження',opts(visible('field_research').filter(x=>writable(x.id)))))+input('title','Назва',doc?.title||'Польовий зошит','text',true)+(sessions.length?`<fieldset><legend>Пов’язані сеанси</legend>${sessions.map(x=>`<label class="check-label"><input type="checkbox" name="session_ids" value="${x.id}" ${linked.includes(x.id)||params.get('session')===x.id?'checked':''}>${esc(x.title)}</label>`).join('')}</fieldset>`:'')},
-   {title:'Польові нотатки',body:input('body_text','Нотатки',doc?.body_text||'','textarea')}
-  ],summary:v=>details([['Назва',v.title],['Дослідження',r?.title||label(v.research_id)],['Пов’язані сеанси',(v.session_ids||[]).map(label).join(', ')||'Без прив’язки до сеансу'],['Нотатки',v.body_text]]),onSubmit:async v=>{await dispatch({type:'field.notebook',...v,id:doc?.id,expected_revision_id:doc?rev(doc.id):undefined,research_id:r?.id||v.research_id,session_ids:v.session_ids||[]});done('Польові нотатки збережено.');}});
+ const noteAuthorName=doc=>{const account=by('account',noteAuthor(t,doc));return account?label(account.person_id):'Автор не зазначений';};
+ const noteHelp=()=>'<span class="note-help">'+hint('Польові нотатки','Нотуйте події, спостереження, думки, враження та емоції поза часом проведення сеансів. Нотатки призначені для команди дослідження; редагує їх автор. У цьому макеті зміни зберігаються лише в поточному браузері.')+'</span>';
+ const notesFor=r=>visible('document').filter(d=>isFieldNote(d)&&researchTeamAccess(st,actor,noteResearch(t,d))&&(!r||noteResearch(t,d)===r.id));
+ function notebookEditor(r,doc=null,initialText=""){
+  if(!r||!researchTeamAccess(st,actor,r.id)){denied();return;}
+  if(doc&&noteAuthor(t,doc)!==actor){denied();return;}
+  const author=by('account',actor),title=doc?(doc.kind==='field_note'?doc.note_title||'':doc.title):'';
+  form(doc?'Редагувати нотатку':'Нова нотатка',body(details([['Дослідження',r.title],['Автор нотатки',label(author?.person_id)]]))+input('title','Назва (необов’язково)',title)+input('body_text','Текст нотатки',doc?.body_text||initialText,'textarea',true),fd=>({type:'field.note',id:doc?.id,expected_revision_id:doc?rev(doc.id):undefined,research_id:r.id,title:fd.get('title'),body_text:fd.get('body_text')}),result=>{location.href=pg(9,{id:result.id,research:r.id,role:params.get('role')||'R01'});});
  }
  function notebookList(){
-  const r=research();if(params.get('research')&&!r){denied();return;}
-  if(params.get('session')&&!visible('collecting_session').some(x=>x.id===params.get('session')&&(!r||x.research_id===r.id))){denied();return;}
-  const q=(params.get('q')||'').toLocaleLowerCase('uk'),docs=visible('document').filter(x=>x.kind==='field_notebook'&&x.title.toLocaleLowerCase('uk').includes(q)&&(!r||t.document_context.some(c=>c.document_id===x.id&&c.target_entity_id===r.id))&&(!params.get('session')||t.document_context.some(c=>c.document_id===x.id&&c.target_entity_id===params.get('session'))));
-  action('add',()=>notebookEditor(r));docs.forEach(doc=>action('notebook-'+doc.id,()=>notebookEditor(by('field_research',t.document_context.find(c=>c.document_id===doc.id&&c.context_role==='research')?.target_entity_id),doc)));
-  show(heading(r?.title||'Польова робота','Польові зошити','Зошити можуть об’єднувати кілька сеансів. Для прив’язки нового зошита до сеансів спочатку оберіть дослідження у списку.',primary('Новий зошит','add',r?writable(r.id):activeArchive('field.write')))+
-   `<form class="filters"><input type="hidden" name="role" value="${esc(listContext().role)}">${select('research','Дослідження','<option value="">Усі дослідження</option>'+opts(visible('field_research'),r?.id))}${input('q','Знайти зошит',params.get('q')||'')}<button class="button">Знайти</button></form>`+
-   panel('Зошити',table(['Зошит','Дослідження','Дія'],docs.map(doc=>[`<a href="${pg(9,{...listContext(),id:doc.id,session:params.get('session')})}">${esc(doc.title)}</a>`,esc(label(t.document_context.find(c=>c.document_id===doc.id&&c.context_role==='research')?.target_entity_id)),btn('Редагувати','notebook-'+doc.id,writable(doc.id))]))));
+  const r=research();if(params.get('research')&&(!r||!researchTeamAccess(st,actor,r.id))){denied();return;}
+  const researches=visible('field_research').filter(x=>researchTeamAccess(st,actor,x.id));
+  if(!r){
+   show(heading('Польова робота','Польові нотатки','',noteHelp())+panel('Оберіть дослідження',table(['Дослідження','Нотатки',''],researches.map(x=>[esc(x.title),String(notesFor(x).length),button('Відкрити нотатки',pg(9,{research:x.id,role:params.get('role')||'R01'}),true)]))));return;
+  }
+  const q=(params.get('q')||'').toLocaleLowerCase('uk'),author=params.get('author')||'',all=notesFor(r);
+  const docs=all.filter(d=>(!author||noteAuthor(t,d)===author)&&[d.title,d.body_text,noteAuthorName(d)].join(' ').toLocaleLowerCase('uk').includes(q)).sort((a,b)=>(noteCreated(t,b)||'').localeCompare(noteCreated(t,a)||''));
+  action('add',()=>notebookEditor(r));
+  const authors=[...new Set(all.map(d=>noteAuthor(t,d)).filter(Boolean))];
+  show(heading(r.title,'Польові нотатки','',btn('Нотатка','add')+noteHelp())+tabs(r)+
+   `<form class="filters"><input type="hidden" name="role" value="${esc(params.get('role')||'R01')}"><input type="hidden" name="research" value="${esc(r.id)}">${input('q','Пошук у нотатках',params.get('q')||'')}${select('author','Автор','<option value="">Усі автори</option>'+authors.map(id=>`<option value="${esc(id)}" ${id===author?'selected':''}>${esc(label(by('account',id)?.person_id))}</option>`).join(''))}<button class="button">Знайти</button></form>`+
+   panel('Нотатки команди',docs.length?table(['Дата','Нотатка','Автор'],docs.map(d=>[esc(noteDate(noteCreated(t,d),d.created_timezone)),`<div><a href="${pg(9,{id:d.id,research:r.id,role:params.get('role')||'R01'})}">${esc(d.title)}</a><p class="muted">${esc((d.body_text||'').slice(0,160))}</p></div>`,esc(noteAuthorName(d))])):body(`<p>${q||author?'За цими умовами нотаток не знайдено.':'Нотаток ще немає. Натисніть «Нотатка», щоб записати спостереження.'}</p>`)));
  }
  function edit(row,definitions,title='Редагувати опис'){
   const html=definitions.map(([key,name,type='text',tip=''])=>input(key,name,row[key]??'',type,['title','name','preferred_name'].includes(key),tip)).join('');
@@ -142,13 +150,12 @@ export function fieldPages(ctx){
  }
  function notebook(){
   if(!params.has('id')){notebookList();return;}
-  const doc=visible('document').find(x=>x.id===params.get('id')&&x.kind==='field_notebook'),researchId=doc&&t.document_context.find(c=>c.document_id===doc.id&&c.context_role==='research')?.target_entity_id,r=visible('field_research').find(x=>x.id===researchId);
-  if(!doc||!r||(params.get('research')&&params.get('research')!==r.id)){denied();return;}
-  const docs=visible('document').filter(x=>x.kind==='field_notebook'&&t.document_context.some(c=>c.document_id===x.id&&c.target_entity_id===r.id));
-  const sessions=visible('collecting_session').filter(x=>x.research_id===r.id),linked=t.document_context.filter(x=>x.document_id===doc.id).map(x=>x.target_entity_id);
-  action('edit',()=>notebookEditor(r,doc));action('add',()=>notebookEditor(r));
-  show(heading(r.title,doc?.title||'Польовий зошит','Один зошит може об’єднувати нотатки кількох сеансів.',button('← Польові зошити',pg(9,{...listContext(),session:params.get('session')}),true))+tabs(r)+`<div class="two-col"><div>`+panel('Нотатки',body(`<div class="reading-text notebook-text">${esc(doc?.body_text||'Нотаток ще немає.')}</div>`),btn(doc?'Редагувати':'Додати нотатки','edit',writable(r.id)))+(doc?revisionHistory(doc.id):'')+`</div><aside>`+panel('Сеанси зошита',body(sessions.filter(x=>linked.includes(x.id)).map(x=>`<p>${link(8,x)}</p>`).join('')||'<p>Сеансів ще не пов’язано.</p>'))+panel('Зошити дослідження',body(docs.map(x=>`<p><a href="${pg(9,{id:x.id,research:r.id})}">${esc(x.title)}</a></p>`).join('')||'<p>Зошитів ще немає.</p>'))+'</aside></div>');
+  const doc=visible('document').find(d=>d.id===params.get('id')&&isFieldNote(d)),r=doc&&visible('field_research').find(x=>x.id===noteResearch(t,doc));
+  if(!doc||!r||!researchTeamAccess(st,actor,r.id)||(params.get('research')&&params.get('research')!==r.id)){denied();return;}
+  action('edit',()=>notebookEditor(r,doc));action('copy-note',()=>notebookEditor(r,null,doc.body_text||''));
+  show(heading(r.title,doc.title,'',button('← Польові нотатки',pg(9,{research:r.id,role:params.get('role')||'R01'}),true)+noteHelp())+tabs(r)+panel('Нотатка',body(details([['Автор нотатки',noteAuthorName(doc)],['Створено',noteDate(noteCreated(t,doc),doc.created_timezone)]]))+body(`<div class="reading-text notebook-text" style="white-space:pre-wrap">${esc(doc.body_text||'')}</div>`),noteAuthor(t,doc)===actor?btn('Редагувати нотатку','edit'):!noteAuthor(t,doc)?btn('Створити мою нотатку','copy-note'):'')+revisionHistory(doc.id));
  }
+
  function materials(){
   if(params.has('intake')){
    const receipt=by('intake_record',params.get('intake'));if(!receipt||!allowed(receipt.id)||(scope&&receipt.archive_id!==scope)){denied();return;}

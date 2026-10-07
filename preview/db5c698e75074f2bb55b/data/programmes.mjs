@@ -1,5 +1,5 @@
-import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-programmes2';
-import {rawHash} from './media.mjs?v=20261002-programmes2';
+import {fileBytes,MAX_MEDIA_BYTES} from './binary.mjs?v=20261007-notes1';
+import {rawHash} from './media.mjs?v=20261007-notes1';
 export const programmeRefs=row=>row?.programme_revision_ids??(row?.programme_revision_id?[row.programme_revision_id]:[]);
 export const programmeVersions=(s,row)=>programmeRefs(row).map(id=>s.tables.entity_revision.find(v=>v.id===id)).filter(Boolean);
 export function programmePdf(s,doc){const rep=s.tables.entity_revision.find(v=>v.id===doc.programme_pdf_revision_id);return rep&&s.tables.file_object.find(f=>rep.snapshot._relations?.representation_file?.some(x=>x.file_id===f.id));}

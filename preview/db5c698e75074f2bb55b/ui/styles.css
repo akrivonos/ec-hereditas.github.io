@@ -65,3 +65,5 @@
 .programme-pdf{width:100%;height:65vh;border:1px solid var(--line);border-radius:8px}.programme-text{max-height:55vh;overflow:auto;padding:12px}.programme-pdf+*{margin-top:12px}
 
 .programme-actions{display:flex;flex-wrap:wrap;gap:6px}.programme-actions .button{max-width:100%}@media(max-width:600px){.programme-list .panel-head{flex-direction:column;align-items:stretch}.programme-list .panel-head .button{width:100%}}
+
+.note-help{display:inline-block;position:relative;width:26px;min-height:26px;flex:0 0 26px;vertical-align:middle;margin-left:10px}

@@ -1,14 +1,14 @@
-import {programmePanel} from './programmes.mjs?v=20261002-programmes2';
-import {programmeRefs,programmeVersions} from '../data/programmes.mjs?v=20261002-programmes2';
-import {annotationWorkspace,formatTime} from './annotation-workspace.mjs?v=20261002-programmes2';
-import {consentEvidenceFields,bindConsentEvidence} from './consent-evidence.mjs?v=20261002-programmes2';
-import {consentMedia} from '../data/consent-media.mjs?v=20261002-programmes2';
-import {sessionRecords,bindSessionText} from './session-records.mjs?v=20261002-programmes2';
-import {collectorCode,isCollector,participantCodes} from '../data/participants.mjs?v=20261002-programmes2';
-import {eventKinds,sessionRepresentations,markerEntries} from '../data/session.mjs?v=20261002-programmes2';
-import {useNames} from '../data/workbench.mjs?v=20261002-programmes2';
-import {hint} from './help.mjs?v=20261002-programmes2';
-import {mediaPreview,download,sessionMediaDialogs} from './session-media.mjs?v=20261002-programmes2';
+import {programmePanel} from './programmes.mjs?v=20261007-notes1';
+import {programmeRefs,programmeVersions} from '../data/programmes.mjs?v=20261007-notes1';
+import {annotationWorkspace,formatTime} from './annotation-workspace.mjs?v=20261007-notes1';
+import {consentEvidenceFields,bindConsentEvidence} from './consent-evidence.mjs?v=20261007-notes1';
+import {consentMedia} from '../data/consent-media.mjs?v=20261007-notes1';
+import {sessionRecords,bindSessionText} from './session-records.mjs?v=20261007-notes1';
+import {collectorCode,isCollector,participantCodes} from '../data/participants.mjs?v=20261007-notes1';
+import {eventKinds,sessionRepresentations,markerEntries} from '../data/session.mjs?v=20261007-notes1';
+import {useNames} from '../data/workbench.mjs?v=20261007-notes1';
+import {hint} from './help.mjs?v=20261007-notes1';
+import {mediaPreview,download,sessionMediaDialogs} from './session-media.mjs?v=20261007-notes1';
 export function sessionPage(c,r){
  const {st,t,actor,by,rev,label,visible,writable,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,save,show,revisionHistory,dialog,unitDialog,prepareHandover}=c;
  const write=writable(r.id),expected=rev(r.id),command=(type,v={})=>({type,id:r.id,expected_revision_id:expected,...v});
@@ -47,5 +47,5 @@ export function sessionPage(c,r){
   docs.forEach(({doc})=>{action('view-'+doc.id,()=>{const d=dialog(doc.title,body(`<pre class="reading-text" style="white-space:pre-wrap">${esc(doc.body_text)}</pre>`),null,'Закрити');d.querySelector('.cancel').hidden=true;});action('download-form-'+doc.id,()=>download(doc.body_text,'text/plain;charset=utf-8',doc.title+'.txt'));});
   content=panel('Бланки сеансу',table(['Бланк','Відповідність сеансу','Дії'],docs.slice().reverse().map(({context,doc})=>[esc(doc.title),context.target_revision_id===expected&&t.document_context.filter(x=>x.document_id===doc.id).every(x=>x.context_role==='form_programme'?programmeRefs(r).includes(x.target_revision_id):x.target_revision_id===rev(x.target_entity_id))?'Поточний':'Сеанс змінено після формування',btn('Переглянути','view-'+doc.id)+' '+btn('Завантажити','download-form-'+doc.id)])),btn('Сформувати бланк','form',write));
  }
- show(heading(r.research_id?label(r.research_id):'Польова робота',r.title,'',button('← Сеанси',pg(7,{research:params.get('research')||r.research_id,q:params.get('q')||'',role:params.get('role')||'R01'}),true))+`<div class="actions" style="margin-bottom:16px">${btn('Редагувати сеанс','edit',write)}${button('Польовий зошит',pg(9,{research:r.research_id,session:r.id}),true)}${btn('Підготувати передання','handover',writable(r.id,'intake.send'))}</div>`+`<div class="session-people-summary"><p><strong>Респонденти:</strong> ${esc(people.filter(p=>p.role_code==='performer').map(p=>participantCodes(t,r.id).get(p.id)+' · '+label(p.person_id)).join(', ')||'Не зазначено')}</p><p><strong>Збирачі:</strong> ${esc(people.filter(p=>p.role_code==='collector').map(p=>participantCodes(t,r.id).get(p.id)+' · '+label(p.person_id)+' ('+collectorCode(t,p.person_id)+')').join(', ')||'Не зазначено')}</p></div>`+`<nav class="record-tabs field-control" style="padding-right:42px" aria-label="Розділи сеансу">${sections.map(([key,title])=>`<a href="${url(key)}" ${section===key?'aria-current="page"':''}>${title}</a>`).join('')}${hint('Робота із сеансом','Уточніть обставини, респондентів, збирачів і згоди. Додавайте нотатки, події, аудіозаписи, відео та фото; позначайте зміст фрагментів без остаточної каталогізації. Файли до 2 МіБ зберігаються лише в цьому браузері. Навчальне аудіо — синтетичний приклад. Після завершення сформуйте бланк і перейдіть до звірки та передання.')}</nav>`+content);bindSessionText();bindAnnotations();
+ show(heading(r.research_id?label(r.research_id):'Польова робота',r.title,'',button('← Сеанси',pg(7,{research:params.get('research')||r.research_id,q:params.get('q')||'',role:params.get('role')||'R01'}),true))+`<div class="actions" style="margin-bottom:16px">${btn('Редагувати сеанс','edit',write)}${btn('Підготувати передання','handover',writable(r.id,'intake.send'))}</div>`+`<div class="session-people-summary"><p><strong>Респонденти:</strong> ${esc(people.filter(p=>p.role_code==='performer').map(p=>participantCodes(t,r.id).get(p.id)+' · '+label(p.person_id)).join(', ')||'Не зазначено')}</p><p><strong>Збирачі:</strong> ${esc(people.filter(p=>p.role_code==='collector').map(p=>participantCodes(t,r.id).get(p.id)+' · '+label(p.person_id)+' ('+collectorCode(t,p.person_id)+')').join(', ')||'Не зазначено')}</p></div>`+`<nav class="record-tabs field-control" style="padding-right:42px" aria-label="Розділи сеансу">${sections.map(([key,title])=>`<a href="${url(key)}" ${section===key?'aria-current="page"':''}>${title}</a>`).join('')}${hint('Робота із сеансом','Уточніть обставини, респондентів, збирачів і згоди. Додавайте нотатки, події, аудіозаписи, відео та фото; позначайте зміст фрагментів без остаточної каталогізації. Файли до 2 МіБ зберігаються лише в цьому браузері. Навчальне аудіо — синтетичний приклад. Після завершення сформуйте бланк і перейдіть до звірки та передання.')}</nav>`+content);bindSessionText();bindAnnotations();
 }

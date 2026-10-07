@@ -1,9 +1,9 @@
-import {programmeRefs,programmeVersions,programmePdf} from './programmes.mjs?v=20261002-programmes2';
-import {annotationCommand,layerKinds} from './annotations.mjs?v=20261002-programmes2';
-import {persistParticipantCodes,nextParticipantCode,participantCodes,unitPeople} from './participants.mjs?v=20261002-programmes2';
-import {fileBytes,mediaMime,MAX_MEDIA_BYTES} from './binary.mjs?v=20261002-programmes2';
-import {rawHash} from './media.mjs?v=20261002-programmes2';
-import {consentBasisValid,useNames} from './workbench.mjs?v=20261002-programmes2';
+import {programmeRefs,programmeVersions,programmePdf} from './programmes.mjs?v=20261007-notes1';
+import {annotationCommand,layerKinds} from './annotations.mjs?v=20261007-notes1';
+import {persistParticipantCodes,nextParticipantCode,participantCodes,unitPeople} from './participants.mjs?v=20261007-notes1';
+import {fileBytes,mediaMime,MAX_MEDIA_BYTES} from './binary.mjs?v=20261007-notes1';
+import {rawHash} from './media.mjs?v=20261007-notes1';
+import {consentBasisValid,useNames} from './workbench.mjs?v=20261007-notes1';
 export const eventKinds=[['participant_joined','Приєднання учасника'],['participant_left','Вихід учасника'],['interruption','Перерва'],['technical_incident','Технічна проблема'],['other','Інша подія']];
 export function recordingGaps(s,id,kind){
  const t=s.tables,use='record_'+kind,people=[...new Set(t.participation.filter(x=>x.session_id===id&&x.role_code==='performer').map(x=>x.person_id))];

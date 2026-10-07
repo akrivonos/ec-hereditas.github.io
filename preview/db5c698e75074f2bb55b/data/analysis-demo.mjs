@@ -1,5 +1,5 @@
-import {createStore} from './model.mjs?v=20261002-programmes2';
-import {sourceView,researchEnabled} from './research.mjs?v=20261002-programmes2';
+import {createStore} from './model.mjs?v=20261007-notes1';
+import {sourceView,researchEnabled} from './research.mjs?v=20261007-notes1';
 export async function analysisDemo(source){
  if(source.demo.analysis_v1)return structuredClone(source);
  const store=createStore(source),actor=source.demo.ids.admin,ids=source.demo.reader_ids,rev=id=>source.tables.entity.find(x=>x.id===id)?.current_revision_id;

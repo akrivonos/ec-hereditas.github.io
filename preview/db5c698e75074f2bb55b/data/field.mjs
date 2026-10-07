@@ -1,16 +1,17 @@
-import {programmeRefs,programmeCommand,validateProgrammes} from './programmes.mjs?v=20261002-programmes2';
-import {collectorCode,nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261002-programmes2';
-import {catalogRelations} from './catalog.mjs?v=20261002-programmes2';
-import {intakeRelations} from './intake.mjs?v=20261002-programmes2';
-import {sessionCommand,validateSession} from './session.mjs?v=20261002-programmes2';
-import {contactCommand,validateContacts} from './contacts.mjs?v=20261002-programmes2';
-import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261002-programmes2';
+import {fieldNoteCommand,validateFieldNotes} from './field-notes.mjs?v=20261007-notes1';
+import {programmeRefs,programmeCommand,validateProgrammes} from './programmes.mjs?v=20261007-notes1';
+import {collectorCode,nextParticipantCode,persistParticipantCodes,setUnitParticipants} from './participants.mjs?v=20261007-notes1';
+import {catalogRelations} from './catalog.mjs?v=20261007-notes1';
+import {intakeRelations} from './intake.mjs?v=20261007-notes1';
+import {sessionCommand,validateSession} from './session.mjs?v=20261007-notes1';
+import {contactCommand,validateContacts} from './contacts.mjs?v=20261007-notes1';
+import {preparationCommand,preparationKinds,preparationStatus} from './preparation.mjs?v=20261007-notes1';
 // Domain operations for the fieldwork and archive prototype. No backend persistence.
-import {mediaRelations} from './media.mjs?v=20261002-programmes2';
-import {researchRelations} from './research.mjs?v=20261002-programmes2';
-import {publicRelations} from './public.mjs?v=20261002-programmes2';
-import {museumRelations} from './museum.mjs?v=20261002-programmes2';
-import {workbenchRelations} from './workbench.mjs?v=20261002-programmes2';
+import {mediaRelations} from './media.mjs?v=20261007-notes1';
+import {researchRelations} from './research.mjs?v=20261007-notes1';
+import {publicRelations} from './public.mjs?v=20261007-notes1';
+import {museumRelations} from './museum.mjs?v=20261007-notes1';
+import {workbenchRelations} from './workbench.mjs?v=20261007-notes1';
 export const fieldTypes=['field_research','work_group','participation','collecting_session','geographic_context','potential_respondent','document','information_unit','archive_node','place','institution','timed_layer'];
 const fields={
  field_research:['title','purpose','research_questions','date_from','date_to','preparation_notes','backup_plan'],
@@ -76,7 +77,7 @@ export function validateField(s,require,fk,canonical){
  for(const x of t.document_context){fk('document',x.document_id);fk('entity',x.target_entity_id);same(x.document_id,x.target_entity_id);if(x.target_revision_id)require(by('entity_revision',x.target_revision_id)?.entity_id===x.target_entity_id,'Чужа версія контексту');}
  for(const x of t.potential_respondent){fk('field_research',x.research_id);same(x.id,x.research_id);if(x.confirmed_person_id){fk('person',x.confirmed_person_id);same(x.id,x.confirmed_person_id);}}
  for(const table of ['respondent_contact','respondent_referral'])for(const x of t[table])fk('potential_respondent',x.respondent_id);
- validateContacts(s,require,fk);validateSession(s,require,fk);validateProgrammes(s,require);
+ validateFieldNotes(s,require,fk);validateContacts(s,require,fk);validateSession(s,require,fk);validateProgrammes(s,require);
  for(const x of t.place){if(x.place_type_term_id)term(x.place_type_term_id,'D15');require(x.latitude===null||Number.isFinite(x.latitude)&&Math.abs(x.latitude)<=90,'Широта');require(x.longitude===null||Number.isFinite(x.longitude)&&Math.abs(x.longitude)<=180,'Довгота');}
  for(const x of t.vocabulary_term){fk('vocabulary_scheme',x.scheme_id);if(x.parent_id)require(by('vocabulary_term',x.parent_id)?.scheme_id===x.scheme_id,'Батьківський термін іншої схеми');}
  for(const x of t.term_label)fk('vocabulary_term',x.term_id);
@@ -113,6 +114,7 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
  if(c.type.startsWith('field.plan.'))return preparationCommand(s,actor,c,{lookup,fresh,required,newEntity,revise,fail,reg,arch});
  if(c.type==='field.save'){
   const e=reg(c.id),kind=e?.entity_type;
+  if(kind==='document'&&by('document',c.id)?.kind==='field_note')fail('forbidden','Редагуйте нотатку через її картку.');
   if(!fields[kind])fail('invalid','Цей запис не підтримує редагування.');
   const permission=kind==='potential_respondent'?'contacts.write':['person','place','institution','archive_node'].includes(kind)?'catalog.write':'field.write';
   const row=lookup(c.id,permission);fresh(c.id,c.expected_revision_id);
@@ -187,6 +189,7 @@ export async function fieldCommand(s,actor,c,{need,can,fail,revise,audit,hash}){
   }
   await revise(r,'Оновлено склад сеансу');return result;
  }
+ if(c.type==='field.note')return fieldNoteCommand(s,actor,c,{fail,fresh,newEntity,revise,arch});
  if(c.type==='field.notebook'){
   const r=lookup(c.research_id);let doc;
   if(c.id){doc=lookup(c.id);fresh(c.id,c.expected_revision_id);if(doc.kind!=='field_notebook')fail('invalid','Оберіть польовий зошит.');doc.title=required(c.title);doc.body_text=c.body_text;}

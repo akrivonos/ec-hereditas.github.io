@@ -1,8 +1,8 @@
-import {programmePanel} from './programmes.mjs?v=20261002-programmes2';
-import {programmeRefs} from '../data/programmes.mjs?v=20261002-programmes2';
-import {collectorCode} from '../data/participants.mjs?v=20261002-programmes2';
-import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20261002-programmes2';
-import {hint} from './help.mjs?v=20261002-programmes2';
+import {programmePanel} from './programmes.mjs?v=20261007-notes1';
+import {programmeRefs} from '../data/programmes.mjs?v=20261007-notes1';
+import {collectorCode} from '../data/participants.mjs?v=20261007-notes1';
+import {preparationKinds,preparationStates,preparationStatus} from '../data/preparation.mjs?v=20261007-notes1';
+import {hint} from './help.mjs?v=20261007-notes1';
 
 export function preparationPage(c,r){
  const {st,t,by,rev,label,visible,writable,params,pg,button,panel,heading,esc,body,table,details,input,select,choices,opts,btn,form,action,save,show,edit,tabs,revisionHistory,programmeDialog,sessionWizard,dialog}=c;

@@ -1,12 +1,12 @@
-import {evidenceRoles} from '../data/analysis.mjs?v=20261002-programmes2';
-import {fileBytes} from '../data/binary.mjs?v=20261002-programmes2';
-import {datasetProjection,deliveredSource,materialCitationView,assertionResult} from '../data/delivery.mjs?v=20261002-programmes2';
-import {sourceView,corpusItems,owns,researchVisible,exportDownload} from '../data/research.mjs?v=20261002-programmes2';
-import {corpusTarget} from '../data/corpus.mjs?v=20261002-programmes2';
-import {annotationView} from '../data/reader.mjs?v=20261002-programmes2';
-import {feedbackView,feedbackTerms,feedbackFields,feedbackKinds} from '../data/feedback.mjs?v=20261002-programmes2';
-import {wizard} from './wizard.mjs?v=20261002-programmes2';
-import {hint} from './help.mjs?v=20261002-programmes2';
+import {evidenceRoles} from '../data/analysis.mjs?v=20261007-notes1';
+import {fileBytes} from '../data/binary.mjs?v=20261007-notes1';
+import {datasetProjection,deliveredSource,materialCitationView,assertionResult} from '../data/delivery.mjs?v=20261007-notes1';
+import {sourceView,corpusItems,owns,researchVisible,exportDownload} from '../data/research.mjs?v=20261007-notes1';
+import {corpusTarget} from '../data/corpus.mjs?v=20261007-notes1';
+import {annotationView} from '../data/reader.mjs?v=20261007-notes1';
+import {feedbackView,feedbackTerms,feedbackFields,feedbackKinds} from '../data/feedback.mjs?v=20261007-notes1';
+import {wizard} from './wizard.mjs?v=20261007-notes1';
+import {hint} from './help.mjs?v=20261007-notes1';
 const states={pending:'Очікує розгляду',accepted:'Прийнято',corrected:'Уточнено й прийнято',rejected:'Відхилено',deferred:'Відкладено',superseded:'Замінено новою пропозицією'};
 export function deliveryUI(c){
  const {st,actor,esc,pg,show,heading,panel,body,table,input,details,btn,act,link,dialog,dispatch,rev,sources,go}=c,t=st.tables,own=type=>t[type].filter(x=>owns(st,actor,x.id)),by=(k,id)=>t[k]?.find(x=>x.id===id);

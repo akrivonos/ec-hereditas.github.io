@@ -1,9 +1,9 @@
-import {layerKinds,layerEntries} from '../data/annotations.mjs?v=20261002-programmes2';
-import {parseEaf,exportEaf} from '../data/elan.mjs?v=20261002-programmes2';
-import {consentMedia} from '../data/consent-media.mjs?v=20261002-programmes2';
-import {fileBytes} from '../data/binary.mjs?v=20261002-programmes2';
-import {mediaPreview,download} from './session-media.mjs?v=20261002-programmes2';
-import {participantCodes} from '../data/participants.mjs?v=20261002-programmes2';
+import {layerKinds,layerEntries} from '../data/annotations.mjs?v=20261007-notes1';
+import {parseEaf,exportEaf} from '../data/elan.mjs?v=20261007-notes1';
+import {consentMedia} from '../data/consent-media.mjs?v=20261007-notes1';
+import {fileBytes} from '../data/binary.mjs?v=20261007-notes1';
+import {mediaPreview,download} from './session-media.mjs?v=20261007-notes1';
+import {participantCodes} from '../data/participants.mjs?v=20261007-notes1';
 export function formatTime(ms){const v=Math.max(0,Math.round(ms||0)),h=Math.floor(v/3600000),m=Math.floor(v/60000)%60,s=Math.floor(v/1000)%60;return [h,m,s].map(x=>String(x).padStart(2,'0')).join(':')+(v%1000?'.'+String(v%1000).padStart(3,'0'):'');}
 export function parseTime(value){const s=String(value).trim().replace(',','.');if(!/^\d+(?::[0-5]\d){0,2}(?:\.\d{1,3})?$/.test(s))throw Error('Вкажіть час як гг:хх:сс або хх:сс.');return Math.round(s.split(':').reduce((n,p)=>n*60+Number(p),0)*1000);}
 export function annotationWorkspace(c,r,rep){

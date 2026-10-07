@@ -1,14 +1,14 @@
-import {feedbackCommand,feedbackReadable} from './feedback.mjs?v=20261002-programmes2';
-import {deliveryCommand,datasetDownload,materialCitationView} from './delivery.mjs?v=20261002-programmes2';
-import {analysisCommand,analysisCandidateVisible,assertionEvidence,evidenceView,analysisTerms} from './analysis.mjs?v=20261002-programmes2';
-import {annotationView,validateAnnotation,readerTags,noteTypes} from './reader.mjs?v=20261002-programmes2';
-import {relationPredicates} from './reconciliation.mjs?v=20261002-programmes2';
-import {corpusTarget,corpusTypes,corpusAnchor,corpusKey} from './corpus.mjs?v=20261002-programmes2';
-import {discoverySearch,discoverySpec} from './discovery.mjs?v=20261002-programmes2';
-import {accessPolicy,projectFields,attributionNames} from './rights.mjs?v=20261002-programmes2';
+import {feedbackCommand,feedbackReadable} from './feedback.mjs?v=20261007-notes1';
+import {deliveryCommand,datasetDownload,materialCitationView} from './delivery.mjs?v=20261007-notes1';
+import {analysisCommand,analysisCandidateVisible,assertionEvidence,evidenceView,analysisTerms} from './analysis.mjs?v=20261007-notes1';
+import {annotationView,validateAnnotation,readerTags,noteTypes} from './reader.mjs?v=20261007-notes1';
+import {relationPredicates} from './reconciliation.mjs?v=20261007-notes1';
+import {corpusTarget,corpusTypes,corpusAnchor,corpusKey} from './corpus.mjs?v=20261007-notes1';
+import {discoverySearch,discoverySpec} from './discovery.mjs?v=20261007-notes1';
+import {accessPolicy,projectFields,attributionNames} from './rights.mjs?v=20261007-notes1';
 // Private research objects reference exact archival revisions. Access is checked on every projection.
-import {can} from './model.mjs?v=20261002-programmes2';
-import {rawHash} from './media.mjs?v=20261002-programmes2';
+import {can} from './model.mjs?v=20261007-notes1';
+import {rawHash} from './media.mjs?v=20261007-notes1';
 export const researchTypes=['saved_query','research_corpus','annotation','assertion','citation','bibliographic_export'];
 export const sourceTypes=['information_unit','document','physical_object'];
 export const researchEnabled=(s,a)=>s.tables.archive.some(x=>can(s,a,'research.write',x.id));

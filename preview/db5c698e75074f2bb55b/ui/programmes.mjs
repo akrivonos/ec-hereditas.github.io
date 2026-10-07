@@ -1,7 +1,7 @@
-import {programmeRefs,programmeVersions,programmePdf} from '../data/programmes.mjs?v=20261002-programmes2';
-import {encode,download} from './session-media.mjs?v=20261002-programmes2';
-import {fileBytes,MAX_MEDIA_BYTES} from '../data/binary.mjs?v=20261002-programmes2';
-import {hint} from './help.mjs?v=20261002-programmes2';
+import {programmeRefs,programmeVersions,programmePdf} from '../data/programmes.mjs?v=20261007-notes1';
+import {encode,download} from './session-media.mjs?v=20261007-notes1';
+import {fileBytes,MAX_MEDIA_BYTES} from '../data/binary.mjs?v=20261007-notes1';
+import {hint} from './help.mjs?v=20261007-notes1';
 export function programmeEditor(c,r,v=null){
  const {st,rev,form,input,select,choices,esc}=c,doc=v?.snapshot,pdf=doc&&programmePdf(st,doc);
  return form(v?'Редагувати питальник':'Додати програму / питальник',input('title','Назва',doc?.title||'','text',true)+select('programme_kind','Тип',choices([['general','Загальна програма'],['thematic','Тематичний питальник']],doc?.programme_kind||'general'))+input('body_text','Текст програми / питання',doc?.body_text||'','textarea')+(pdf?'<p>PDF: '+esc(pdf.original_filename)+'</p><label class="check-label"><input type="checkbox" name="remove_pdf">Прибрати прикріплений PDF</label>':'')+'<label>PDF-файл<input type="file" name="pdf" accept="application/pdf,.pdf"></label><div class="field-control"><p>Текст або PDF до 2 МіБ</p>'+hint('Текст і PDF','Можна додати текст, PDF до 2 МіБ або обидва. PDF збереже музичні знаки та спеціальні шрифти оригіналу. Новий файл замінить вкладення лише у новій версії.')+'</div>',async fd=>{const f=fd.get('pdf');let pdf;if(f?.size){if(f.size>MAX_MEDIA_BYTES)throw Error('Оберіть PDF до 2 МіБ.');pdf={filename:f.name,mime_type:f.type||'application/pdf',content:await encode(f)};}return {type:'field.programme.item',id:r.id,expected_revision_id:rev(r.id),document_id:v?.entity_id,document_revision_id:v?rev(v.entity_id):undefined,title:fd.get('title'),programme_kind:fd.get('programme_kind'),body_text:fd.get('body_text'),remove_pdf:fd.has('remove_pdf'),pdf};});
